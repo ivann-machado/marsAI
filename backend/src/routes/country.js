@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const indexCtrl = require("../controllers/country");
+const countryCtrl = require("../controllers/country");
 
-router.get("/", indexCtrl.getCountry);
+router.get("/", countryCtrl.getCountry);
 
 module.exports = router;
