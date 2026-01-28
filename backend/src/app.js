@@ -1,41 +1,20 @@
 const express = require("express");
+const cors = require("cors");
+const config = require("./config");
+// const authRoutes = require('./routes/auth.routes');
+
 const app = express();
+
+//  Middleware
+app.use(cors(config.CORS_OPTIONS));
 app.use(express.json());
-//const mongoose = require("mongoose");
-/* const recetteRoute = require("./routes/recette");
-const utilisateurRoute = require("./routes/utilisateur"); */
-const countryRoute = require("./routes/country");
-const path = require("path");
 
-/* CONNEXION */
-/* const uri = process.env.DB_URI;
-
-const clientOptions = {
-  serverApi: { version: "1", strict: true, deprecationErrors: true },
-};
-mongoose
-  .connect(uri, clientOptions)
-  .then(() => console.log("Connexion à MongoDB réussie !"))
-
-  .catch(() => console.log("Connexion à MongoDB échouée !"));
- */
-/* HEADERS CORS */
-
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization",
-  );
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, DELETE, PATCH, OPTIONS",
-  );
-  next();
+// Public routes
+app.get("/", (req, res) => {
+  res.json({ message: "" });
 });
+// app.use('/api', authRoutes);
 
-/* ROUTES */
-
-app.use("/", countryRoute);
+// Protected routes
 
 module.exports = app;
