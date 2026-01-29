@@ -1,12 +1,12 @@
-const config = require('./src/config');
-// const connectDB = require('./src/database');
-const http = require("http");
-const app = require('./src/app');
+import { PORT } from './src/config/index.js';
+import connectDB from './src/database/index.js';
+import { createServer } from "http";
+import app from './src/app.js';
 
-// connectDB();
+connectDB();
 
-const serveurHTTP = http.createServer(app)
+const serveurHTTP = createServer(app)
 
-serveurHTTP.listen(config.PORT, () => {
-	console.log(`Server started on http://localhost:${config.PORT}`)
+serveurHTTP.listen(PORT, () => {
+	console.log(`Server started on http://localhost:${PORT}`)
 })
