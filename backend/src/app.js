@@ -8,8 +8,7 @@ import authRoutes from './routes/auth.routes.js';
 
 const app = express();
 
-// Security Middleware
-app.use(helmet()); // Secure HTTP headers
+//  Middleware
 app.use(cors(CORS_OPTIONS));
 app.use(express.json());
 
@@ -24,21 +23,12 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// Public routes
 app.get('/', (req, res) => {
-	res.status(200).json({ message: 'Welcome to MarsAI API' });
+	res.json({ message: '' });
 });
 app.use('/api/auth', authRoutes);
 
 // Protected routes
 
-// Global Error Handling Middleware
-app.use((err, req, res, next) => {
-	console.error(err.stack);
-	res.status(500).json({
-		status: 'error',
-		message: 'Internal Server Error'
-	});
-});
 
 export default app;
