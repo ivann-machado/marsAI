@@ -1,0 +1,26 @@
+{
+	"name": "marsai",
+	"version": "1.0.0",
+	"description": "",
+	"homepage": "https://github.com/ivann-machado/marsAI#readme",
+	"bugs": {
+		"url": "https://github.com/ivann-machado/marsAI/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/ivann-machado/marsAI.git"
+	},
+	"license": "ISC",
+	"author": "",
+	"scripts": {
+		"dev": "concurrently \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\"",
+		"start": "concurrently \"npm start --prefix backend\" \"npm run preview --prefix frontend\"",
+		"backend": "npm run dev --prefix backend",
+		"frontend": "npm run dev --prefix frontend"
+	},
+	"devDependencies": {
+		"concurrently": "^8.2.0"
+	},
+	"dependencies": {
+	}
+}
