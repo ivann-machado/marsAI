@@ -16,7 +16,7 @@ const connectDB = async () => {
 	} catch (err) {
 		console.error("Error connecting to the database: ", err);
 	} finally {
-		if (conn) conn.release(); // release to pool
+		if (conn) conn.release();
 	}
 };
 
