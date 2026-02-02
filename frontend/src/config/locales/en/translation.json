@@ -10,5 +10,11 @@
     "faq" : "FAQ",
     "contact" : "Contact",
     "legal_notices" : "Legal Notices",
-    "stay_connected" : "Stay Connected"
+    "stay_connected" : "Stay Connected",
+    "return_gallery" : "Return to Gallery",
+    "producer" : "Producer",
+    "country_of_origin" : "Country",
+    "media_links" : "Media Links",
+    "synopsis" : "Synopsis",
+    "ai_used" : "AI agents used"
 }
