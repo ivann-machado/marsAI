@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import { JWT_SECRET } from '../config/index.js';
 
 export const verifyToken = (req, res, next) => {
-	const token = req.headers['authorization']?.split(' ')[1]; // Bearer <token>
+	const token = req.headers['authorization']?.split(' ')[1];
 
 	if (!token) {
 		return res.status(403).json({ message: 'No token provided' });
