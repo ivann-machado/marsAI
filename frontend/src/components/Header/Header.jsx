@@ -28,9 +28,9 @@ function Header() {
         }
     }, [isOpen])
     return (
-        <header className="w-screen p-4 border-red-600 border bg-gray-900">           
+        <header className="w-screen p-4 bg-gray-900">           
             <nav className="border-2 border-black/25 rounded-full bg-white/30 max-w-1200px mx-auto p-6  flex flex-row justify-between items-center ">
-            <div className="flex flex-row justify-center items-center border-red-600 border">
+            <div className="flex flex-row justify-center items-center">
                 <p className="text-2xl font-bold text-white hover:cursor-pointer">MARS <span className="text-4xl text-indigo-500 font-bold">AI</span></p>
             </div>                
                 {!isOpen && (
