@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import AIList from "../components/AIList/AIList";
 import "flag-icons/css/flag-icons.min.css";
-//import Header from "../components/Header";
+import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
 
 function VideoDetail(props) {
@@ -29,6 +29,7 @@ function VideoDetail(props) {
 
   return (
     <>
+      <Header />
       <section className="w-full min-h-screen bg-[url('../src/assets/background.jpg')] bg-cover bg-fixed text-white py-8">
         <div className="m-4 mb-8">
           <a className="text-white hover:text-blue-900 visited:text-white">
