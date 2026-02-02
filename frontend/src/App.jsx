@@ -1,13 +1,19 @@
-import './App.css'
-import Homepage from './pages/homepage/Homepage.jsx'
+import "./App.css";
+import VideoDetail from "./pages/VideoDetail";
+import Footer from "./components/Footer/Footer";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import "./App.css";
+import Homepage from "./pages/homepage/Homepage.jsx";
 
 function App() {
- 
   return (
-    <>
-    <Homepage />
-    </>
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Homepage />} />
+        <Route path="/video/:videoId" element={<VideoDetail />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
