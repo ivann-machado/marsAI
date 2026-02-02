@@ -10,5 +10,9 @@
     "faq" : "FAQ",
     "contact" : "Contact",
     "legal_notices" : "Legal Notices",
-    "stay_connected" : "Stay Connected"
+    "stay_connected" : "Stay Connected",
+    "home" : "Home",
+    "participate" : "Participate",
+    "board" : "Board",
+    "about" : "About"
 }
