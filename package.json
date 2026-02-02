@@ -22,5 +22,9 @@
 		"concurrently": "^8.2.0"
 	},
 	"dependencies": {
+		"@tailwindcss/vite": "^4.1.18",
+		"i18next": "^25.8.0",
+		"react-i18next": "^16.5.4",
+		"tailwindcss": "^4.1.18"
 	}
 }

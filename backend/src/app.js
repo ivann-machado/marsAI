@@ -4,7 +4,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import rateLimit from 'express-rate-limit';
 import { CORS_OPTIONS } from './config/index.js';
-// import authRoutes from './routes/auth.routes.js';
+import authRoutes from './routes/auth.routes.js';
 
 const app = express();
 
@@ -28,7 +28,7 @@ app.use(limiter);
 app.get('/', (req, res) => {
 	res.status(200).json({ message: 'Welcome to MarsAI API' });
 });
-// app.use('/api', authRoutes);
+app.use('/api/auth', authRoutes);
 
 // Protected routes
 
