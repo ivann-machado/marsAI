@@ -24,7 +24,7 @@ const limiter = rateLimit({
 app.use(limiter);
 
 app.get('/', (req, res) => {
-	res.json({ message: '' });
+  res.json({ message: 'API MarsAI OK' });
 });
 app.use('/api/auth', authRoutes);
 
