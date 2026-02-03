@@ -4,51 +4,48 @@ import reactLogo from '../../assets/react.svg'
 import { useTranslation } from 'react-i18next';
 
 function UploadForm(){
+    const { t } = useTranslation();
     return(
         <form className="bg-gray-800">
-            <h3>Postez votre film !</h3>
+            <h3>{t('upload_form.upload_message') } !</h3>
             <div className="border border-black">
-                <p>Informations globales</p>
+                <p>{t('upload_form.global_infos')}</p>
                 <div>
-                    <label htmlFor="">Titre</label>
+                    <label htmlFor="">{t('upload_form.title')}</label>
                     <input type="text" name="" id="" className="border border-black rounded-lg" />
                 </div>
                 <div>
-                    <label htmlFor="">Durée</label>
-                    <input type="text" name="" id="" className="border border-black rounded-lg" />
-                </div>
-                <div>
-                    <label htmlFor="">Vidéo</label>
+                    <label htmlFor="">{t('upload_form.video')}</label>
                     <input type="file" name="" id="" className="border border-black rounded-lg" />
                 </div>
                 <div>
-                    <label htmlFor="">Image</label>
+                    <label htmlFor="">{t('upload_form.image')}</label>
                     <input type="file" name="" id="" className="border border-black rounded-lg" />
                 </div>
             </div>
             <div className="border border-black">
-                <p>Réalisation</p>
+                <p>{t('upload_form.production')}</p>
                 <div>
-                    <label htmlFor="">IA scénario</label>
+                    <label htmlFor="">{t('upload_form.scenario_ai')}</label>
                     <input type="text" name="" id="" className="border border-black rounded-lg" />
                 </div>
                 <div>
-                    <label htmlFor="">IA générative vidéo</label>
+                    <label htmlFor="">{t('upload_form.video_ai')}</label>
                     <input type="text" name="" id="" className="border border-black rounded-lg" />
                 </div>
                 <div>
-                    <label htmlFor="">IA sons et musiques</label>
+                    <label htmlFor="">{t('upload_form.sound_ai')}</label>
                     <input type="text" name="" id="" className="border border-black rounded-lg" />
                 </div>
                 <div>
-                    <label htmlFor="">IA post-production</label>
+                    <label htmlFor="">{t('upload_form.post_prod_ai')}</label>
                     <input type="text" name="" id="" className="border border-black rounded-lg" />
                 </div>
             </div>
             <div className="border border-black">
-                <p>Informations complémentaires</p>
+                <p>{t('upload_form.production')}</p>
                 <div>
-                    <label htmlFor="">Producteur</label>
+                    <label htmlFor="">{t('upload_form.more_info')}</label>
                     <input type="text" name="" id="" className="border border-black rounded-lg" />
                 </div>
                 <div>
@@ -64,7 +61,7 @@ function UploadForm(){
                     <input type="text" name="" id="" className="border border-black rounded-lg" />
                 </div>
             </div>
-            <button type="submit" className="bg-amber-300 p-2 rounded-lg">Finaliser ma soumission</button>
+            <button type="submit" className="bg-amber-300 p-2 rounded-lg">{t('upload_form.submit_btn')} {'>>'} </button>
         </form>
     )
 }
