@@ -1,4 +1,4 @@
-import { pool } from '../database/index.js';
+import { pool } from '../config/db.js';
 
 export const createToken = async (token, admin_id) => {
 	const query = `INSERT INTO tokens (value, admin_id) VALUES (?, ?)`;

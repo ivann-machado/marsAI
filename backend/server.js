@@ -1,5 +1,5 @@
 import { PORT } from './src/config/index.js';
-import connectDB, { pool } from './src/database/index.js';
+import connectDB, { pool } from './src/config/db.js';
 import { createServer } from "http";
 import app from './src/app.js';
 

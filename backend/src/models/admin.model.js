@@ -1,4 +1,4 @@
-import { pool } from '../database/index.js';
+import { pool } from '../config/db.js';
 
 export const createAdmin = async (login, password, role = 'admin') => {
 	const query = `INSERT INTO admins (login, password, role) VALUES (?, ?, ?)`;
