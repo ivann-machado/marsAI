@@ -59,7 +59,7 @@ CREATE TABLE videos (
     email VARCHAR(50) NOT NULL,
     cover_image VARCHAR(100) NOT NULL,
     verified TINYINT(1) DEFAULT 0,
-    status ENUM('unverified','verified','selected','grand_prix_1','grand_prix_2','grand_prix_3') NOT NULL,
+    status ENUM('unverified','verified', 'denied','selected','grand_prix_1','grand_prix_2','grand_prix_3') NOT NULL DEFAULT 'unverified',
     producer VARCHAR(50),
     tags VARCHAR(100),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
