@@ -15,7 +15,7 @@
 "participate" : "Participer",
 "board" : "Jury",
 "about" : "A Propos",
-
+"homepage" : {
 "hero_badge": "LE PROTOCOLE TEMPOREL 2026",
 "hero_tagline": "IMAGINEZ DES",
 "hero_tagline_highlight": "FUTURS",
@@ -108,4 +108,28 @@
 "partners_title_highlight": "LE FUTUR",
 "partners_hover_text": "Any Video Any Language",
 "partners_cta": "DEVENIR PARTENAIRE →"
+},
+"gallery": {
+"gallery_badge": "🎬 SÉLECTION MARS.AI 2026",
+"gallery_title": "GALERIE",
+"gallery_title_highlight": "DE FILMS",
+"gallery_description": "Découvrez les œuvres pionnières qui redéfinissent les frontières de la création assistée par IA",
+"gallery_stat_1": "600+",
+"gallery_stat_1_label": "FILMS SOUMIS",
+"gallery_stat_2": "120",
+"gallery_stat_2_label": "PAYS",
+"gallery_stat_3": "50",
+"gallery_stat_3_label": "SÉLECTIONNÉS",
+"gallery_stat_4": "60s",
+"gallery_stat_4_label": "MAX",
+"gallery_filter_all": "TOUS LES FILMS",
+"gallery_filter_competition": "EN COMPÉTITION",
+"gallery_filter_selection": "SÉLECTION OFFICIELLE",
+"gallery_filter_hors": "HORS COMPÉTITION",
+"gallery_films_found": "film(s) trouvé(s)",
+"gallery_empty_title": "Aucun film trouvé",
+"gallery_empty_desc": "Essayez de sélectionner une autre catégorie",
+"gallery_load_more": "CHARGER PLUS DE FILMS",
+"gallery_watch": "REGARDER LE FILM",
+"gallery_share": "PARTAGER"}
 }

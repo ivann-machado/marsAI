@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from 'react-router-dom';
 import viteLogo from '/vite.svg'
 import reactLogo from '../../assets/react.svg'
 import { useTranslation } from 'react-i18next';
@@ -48,13 +49,13 @@ function Header() {
                             <ul className="bg-gray-800 overflow-y-hidden fixed z-10 top-0 left-0
                             w-screen min-h-screen flex justify-center items-center flex-col gap-10
                             duration-300 ease-in border-red-600 border" >
-                                <li className="hover:underline">{t('home')}</li>
-                                <li className="hover:underline">{t('gallery')}</li>
-                                <li className="hover:underline">{t('participate')}</li>
-                                <li className="hover:underline">{t('board')}</li>
-                                <li className="hover:underline">{t('partners')}</li>
-                                <li className="hover:underline">{t('about')}</li>
-                                <li className="hover:underline">{t('schedule')}</li>
+                                <li className="hover:underline"><Link to="/" onClick={toggleMenu}>{t('home')}</Link></li>
+                                <li className="hover:underline"><Link to="/gallery" onClick={toggleMenu}>{t('gallery')}</Link></li>
+                                <li className="hover:underline"><Link to="/participate" onClick={toggleMenu}>{t('participate')}</Link></li>
+                                <li className="hover:underline"><Link to="/board" onClick={toggleMenu}>{t('board')}</Link></li>
+                                <li className="hover:underline"><Link to="/partners" onClick={toggleMenu}>{t('partners')}</Link></li>
+                                <li className="hover:underline"><Link to="/about" onClick={toggleMenu}>{t('about')}</Link></li>
+                                <li className="hover:underline"><Link to="/schedule" onClick={toggleMenu}>{t('schedule')}</Link></li>
                             </ul>
                         </div>
                     ):(
@@ -63,13 +64,13 @@ function Header() {
                             duration-300 ease-in"></div>                        
                     )}
                     <ul className="items-center gap-4 hidden md:flex" >
-                        <li className="hover:underline hover:cursor-pointer">{t('home')}</li>
-                        <li className="hover:underline hover:cursor-pointer">{t('gallery')}</li>
-                        <li className="hover:underline hover:cursor-pointer">{t('participate')}</li>
-                        <li className="hover:underline hover:cursor-pointer">{t('board')}</li>
-                        <li className="hover:underline hover:cursor-pointer">{t('partners')}</li>
-                        <li className="hover:underline hover:cursor-pointer">{t('about')}</li>
-                        <li className="hover:underline hover:cursor-pointer">{t('schedule')}</li>
+                        <li className="hover:underline hover:cursor-pointer"><Link to="/">{t('home')}</Link></li>
+                        <li className="hover:underline hover:cursor-pointer"><Link to="/gallery">{t('gallery')}</Link></li>
+                        <li className="hover:underline hover:cursor-pointer"><Link to="/participate">{t('participate')}</Link></li>
+                        <li className="hover:underline hover:cursor-pointer"><Link to="/board">{t('board')}</Link></li>
+                        <li className="hover:underline hover:cursor-pointer"><Link to="/partners">{t('partners')}</Link></li>
+                        <li className="hover:underline hover:cursor-pointer"><Link to="/about">{t('about')}</Link></li>
+                        <li className="hover:underline hover:cursor-pointer"><Link to="/schedule">{t('schedule')}</Link></li>
                     </ul>              
                 </nav>
         </header>
