@@ -1,12 +1,12 @@
-import { pool } from '../config/db.js';
+import { pool } from "../config/db.js";
 
 export const VideoModel = {
   getAll() {
-    return pool.query('SELECT * FROM videos');
+    return pool.query("SELECT * FROM videos");
   },
 
   getById(id) {
-    return pool.query('SELECT * FROM videos WHERE id = ?', [id]);
+    return pool.query("SELECT * FROM videos WHERE id = ?", [id]);
   },
 
   create(video) {
@@ -25,11 +25,18 @@ export const VideoModel = {
   update(id, video) {
     return pool.query(
       `UPDATE videos SET title=?, description=?, status=?, verified=?, tags=? WHERE id=?`,
-      [video.title, video.description, video.status, video.verified, video.tags, id]
+      [
+        video.title,
+        video.description,
+        video.status,
+        video.verified,
+        video.tags,
+        id,
+      ],
     );
   },
 
   remove(id) {
-    return pool.query('DELETE FROM videos WHERE id=?', [id]);
-  }
+    return pool.query("DELETE FROM videos WHERE id=?", [id]);
+  },
 };
