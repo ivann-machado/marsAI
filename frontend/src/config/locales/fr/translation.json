@@ -30,6 +30,7 @@
         "upload_message" : "Postez votre Film",
         "global_infos" : "Informations globales",
         "title" : "Titre",
+        "desc" : "Description",
         "video" : "Vidéo",
         "image" : "Image",
         "production" : "Réalisation",
@@ -38,6 +39,7 @@
         "sound_ai" : "IA sons et musiques",
         "post_prod_ai" : "IA post-production",
         "more_info" : "Informations complémentaires",
+        "producer" : "Producteur",
         "submit_btn" : "Finaliser ma soumission"
     }
 }

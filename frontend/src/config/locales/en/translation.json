@@ -30,6 +30,7 @@
         "upload_message" : "Post your movie",
         "global_infos" : "Global Informations",
         "title" : "Title",
+        "desc" : "Description",
         "video" : "Video",
         "image" : "Image",
         "production" : "Production",
@@ -38,6 +39,7 @@
         "sound_ai" : "Music and Sound AI",
         "post_prod_ai" : "post-production AI",
         "more_info" : "Complementary informations",
+        "producer" : "Producer",
         "submit_btn" : "Finalize my submission"
     }
     
