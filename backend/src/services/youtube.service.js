@@ -7,7 +7,7 @@ import { getYouTubeClient, getOAuth2Client } from '../config/youtube.js';
  * @param {object} metadata - Video metadata (title, description, tags, etc.)
  * @returns {Promise<{videoId: string, title: string}>}
  */
-export const uploadVideo = async (filePath, metadata = {}) => {
+export const uploadVideo = async (filePath, metadata = {}, privacyStatus = 'private') => {
 	try {
 		console.log('Starting YouTube video upload...');
 
@@ -21,7 +21,7 @@ export const uploadVideo = async (filePath, metadata = {}) => {
 			title = metadata.title,
 			description = '',
 			tags = [],
-			privacyStatus = 'private',
+			privacyStatus = privacyStatus,
 			categoryId = '1'
 		} = metadata;
 
