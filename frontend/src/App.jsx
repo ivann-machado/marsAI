@@ -6,6 +6,7 @@ import AdminLogin from "./pages/AdminLogin/AdminLogin.jsx";
 import AdminVideos from "./pages/AdminVideos/AdminVideos.jsx";
 import AdminVideo from "./pages/AdminVideo/AdminVideo.jsx";
 import AdminDashboard from "./pages/AdminDashboard/AdminDashboard.jsx";
+import AdminUsers from "./pages/AdminUsers/AdminUsers.jsx";
 
 function App() {
   if (window.location.host.split(".")[0] == "admin")
@@ -16,6 +17,7 @@ function App() {
           <Route path="/login" element={<AdminLogin />} />
           <Route path="/videos" element={<AdminVideos />} />
           <Route path="/video/:id" element={<AdminVideo />} />
+          <Route path="/users" element={<AdminUsers />} />
         </Routes>
       </BrowserRouter>
     );

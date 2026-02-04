@@ -1,156 +1,69 @@
-function AdminVideosDash() {
-  let mockedVideosQueue = [
-    {
-      id: 1,
-      src: "https://www.youtube.com/embed/_cPdvX-0kRA?si=MP3jAxInyj04TUlx",
-      title: "Test Video",
-      producer: "John Doe",
-      producer_image: "../src/assets/producer_image.png",
-      description:
-        "Dans une ville côtière battue par les tempêtes, Élias, un ancien ingénieur radio marqué par la disparition inexpliquée de sa femme, vit reclus dans un phare abandonné. Une nuit, il capte sur une fréquence interdite un message codé… prononcé avec la voix exacte de sa femme, pourtant déclarée morte depuis dix ans.",
-      cover_image: "",
-      country_name: "France",
-      country_iso: "FR",
-      linkedin_link: "",
-      youtube_link: "",
-      scenario_ai: "ChatGPT, Claude",
-      video_gen_ai: "Sona",
-      sound_ai: "",
-      postprod_ai: "",
-      status: "unverified",
-    },
-    {
-      id: 2,
-      src: "https://www.youtube.com/embed/_cPdvX-0kRA?si=MP3jAxInyj04TUlx",
-      title: "Test Video",
-      producer: "John Doe",
-      producer_image: "../src/assets/producer_image.png",
-      description:
-        "Dans une ville côtière battue par les tempêtes, Élias, un ancien ingénieur radio marqué par la disparition inexpliquée de sa femme, vit reclus dans un phare abandonné. Une nuit, il capte sur une fréquence interdite un message codé… prononcé avec la voix exacte de sa femme, pourtant déclarée morte depuis dix ans.",
-      cover_image: "",
-      country_name: "France",
-      country_iso: "FR",
-      linkedin_link: "",
-      youtube_link: "",
-      scenario_ai: "ChatGPT, Claude",
-      video_gen_ai: "Sona",
-      sound_ai: "",
-      postprod_ai: "",
-      status: "verified",
-    },
-    {
-      id: 3,
-      src: "https://www.youtube.com/embed/_cPdvX-0kRA?si=MP3jAxInyj04TUlx",
-      title: "Test Video",
-      producer: "John Doe",
-      producer_image: "../src/assets/producer_image.png",
-      description:
-        "Dans une ville côtière battue par les tempêtes, Élias, un ancien ingénieur radio marqué par la disparition inexpliquée de sa femme, vit reclus dans un phare abandonné. Une nuit, il capte sur une fréquence interdite un message codé… prononcé avec la voix exacte de sa femme, pourtant déclarée morte depuis dix ans.",
-      cover_image: "",
-      country_name: "France",
-      country_iso: "FR",
-      linkedin_link: "",
-      youtube_link: "",
-      scenario_ai: "ChatGPT, Claude",
-      video_gen_ai: "Sona",
-      sound_ai: "",
-      postprod_ai: "",
-      status: "verified",
-    },
-  ];
+import { useState, useEffect } from "react";
+import VideoList from "./VideoList.jsx";
 
-  let mockedVideos = [
-    {
-      id: 1,
-      src: "https://www.youtube.com/embed/_cPdvX-0kRA?si=MP3jAxInyj04TUlx",
-      title: "Test Video",
-      producer: "John Doe",
-      producer_image: "../src/assets/producer_image.png",
-      description:
-        "Dans une ville côtière battue par les tempêtes, Élias, un ancien ingénieur radio marqué par la disparition inexpliquée de sa femme, vit reclus dans un phare abandonné. Une nuit, il capte sur une fréquence interdite un message codé… prononcé avec la voix exacte de sa femme, pourtant déclarée morte depuis dix ans.",
-      cover_image: "",
-      country_name: "France",
-      country_iso: "FR",
-      linkedin_link: "",
-      youtube_link: "",
-      scenario_ai: "ChatGPT, Claude",
-      video_gen_ai: "Sona",
-      sound_ai: "",
-      postprod_ai: "",
-      status: "unverified",
-    },
-    {
-      id: 2,
-      src: "https://www.youtube.com/embed/_cPdvX-0kRA?si=MP3jAxInyj04TUlx",
-      title: "Test Video",
-      producer: "John Doe",
-      producer_image: "../src/assets/producer_image.png",
-      description:
-        "Dans une ville côtière battue par les tempêtes, Élias, un ancien ingénieur radio marqué par la disparition inexpliquée de sa femme, vit reclus dans un phare abandonné. Une nuit, il capte sur une fréquence interdite un message codé… prononcé avec la voix exacte de sa femme, pourtant déclarée morte depuis dix ans.",
-      cover_image: "",
-      country_name: "France",
-      country_iso: "FR",
-      linkedin_link: "",
-      youtube_link: "",
-      scenario_ai: "ChatGPT, Claude",
-      video_gen_ai: "Sona",
-      sound_ai: "",
-      postprod_ai: "",
-      status: "verified",
-    },
-    {
-      id: 3,
-      src: "https://www.youtube.com/embed/_cPdvX-0kRA?si=MP3jAxInyj04TUlx",
-      title: "Test Video",
-      producer: "John Doe",
-      producer_image: "../src/assets/producer_image.png",
-      description:
-        "Dans une ville côtière battue par les tempêtes, Élias, un ancien ingénieur radio marqué par la disparition inexpliquée de sa femme, vit reclus dans un phare abandonné. Une nuit, il capte sur une fréquence interdite un message codé… prononcé avec la voix exacte de sa femme, pourtant déclarée morte depuis dix ans.",
-      cover_image: "",
-      country_name: "France",
-      country_iso: "FR",
-      linkedin_link: "",
-      youtube_link: "",
-      scenario_ai: "ChatGPT, Claude",
-      video_gen_ai: "Sona",
-      sound_ai: "",
-      postprod_ai: "",
-      status: "verified",
-    },
-  ];
+function AdminVideosDash() {
+  const [videoQueue, setVideoQueue] = useState(null);
+  const [otherVideo, setOtherVideo] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/data.json");
+        if (!response.ok) throw new Error("Erreur fetch JSON");
+        const json = await response.json();
+        setVideoQueue(json.mockedVideosQueue);
+        setOtherVideo(json.mockedVideosQueue);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (!videoQueue || !otherVideo) return <p>Loading...</p>;
+
   return (
-    <>
-      <h1>Gestion des films</h1>
+    <div className="w-4/5 bg-gray-950">
+      <h1 className="py-2 font-bold text-3xl text-white text-center">
+        Gestion des films
+      </h1>
+
       {/* MOVIE QUEUE */}
-      <div>
-        {mockedVideosQueue.map((video) => (
-          <div key={video.id}>
-            <img src={video.cover_image}></img>
-            <p>{video.title}</p>
-            <p>{video.producer}</p>
-            <p>{video.status}</p>
-            <a src={"/video/" + video.id}>Details</a>
-          </div>
-        ))}
-      </div>
+      <VideoList videoList={videoQueue} />
+
       {/* SEARCH BAR */}
-      <div>
-        <input type="text" placeholder="rechercher"></input>
-        <input type="button" value="Filtrer"></input>
+      <div className="w-full bg-gray-500 grid grid-cols-6">
+        <input
+          type="text"
+          placeholder="titre..."
+          className="bg-gray-200 p-1 col-span-2 mr-1"
+        ></input>
+        <input
+          type="text"
+          placeholder="realisateur..."
+          className="bg-gray-200 p-1 mr-1"
+        ></input>
+        <select>
+          <option>Unverified</option>
+          <option>Verified</option>
+          <option>Selected</option>
+          <option>Denied</option>
+        </select>
+        <select>
+          <option>Selection</option>
+          <option>Pas en selection</option>
+        </select>
+        <input
+          type="button"
+          value="Filtrer"
+          className="ml-5 bg-gray-300 text-black p-1"
+        ></input>
       </div>
+
       {/* OTHER MOVIES */}
-      <div>
-        {mockedVideosQueue.map((video) => (
-          <div key={video.id}>
-            <img src={video.cover_image}></img>
-            <p>{video.title}</p>
-            <p>{video.producer}</p>
-            <p>{video.status}</p>
-            <a src={"/video/" + video.id}>Details</a>
-          </div>
-        ))}
-      </div>
-    </>
+      <VideoList videoList={otherVideo} />
+    </div>
   );
 }
 
