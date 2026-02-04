@@ -113,5 +113,16 @@
     "partners_title": "THEY SUPPORT",
     "partners_title_highlight": "THE FUTURE",
     "partners_hover_text": "Any Video Any Language",
-    "partners_cta": "BECOME A PARTNER →"
+    "partners_cta": "BECOME A PARTNER →",
+    "admin_login" : {
+        "title" : "Admin Login",
+        "submit" : "Submit"
+    },
+    "admin_sidebar" : {
+        "overview" : "Overview",
+        "videos" : "Manage movies",
+        "users" : "Manage users",
+        "events" : "Manage events",
+        "website" : "Manage website"
+    }
 }

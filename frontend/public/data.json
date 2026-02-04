@@ -1,0 +1,28 @@
+{
+    "mockedVideo" : {
+    "src": "https://www.youtube.com/embed/_cPdvX-0kRA?si=MP3jAxInyj04TUlx",
+    "title": "Test Video",
+    "producer": "John Doe",
+    "producer_image": "../../assets/producer_image.png",
+    "description":
+      "Dans une ville côtière battue par les tempêtes, Élias, un ancien ingénieur radio marqué par la disparition inexpliquée de sa femme, vit reclus dans un phare abandonné. Une nuit, il capte sur une fréquence interdite un message codé… prononcé avec la voix exacte de sa femme, pourtant déclarée morte depuis dix ans.",
+    "cover_image": "/vite.svg",
+    "country_name": "France",
+    "country_iso": "FR",
+    "linkedin_link": "",
+    "youtube_link": "",
+    "scenario_ai": "ChatGPT, Claude",
+    "video_gen_ai": "Sona",
+    "sound_ai": "",
+    "postprod_ai": ""
+  },
+
+  "mockedReview" : {
+    "id": 1,
+    "admin_id": 1,
+    "video_id": 2,
+    "note": "Ancien commentaire",
+    "grade": 0,
+    "status": "assigned"
+  }
+}
