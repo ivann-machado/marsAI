@@ -5,6 +5,7 @@ import morgan from "morgan";
 import rateLimit from "express-rate-limit";
 import { CORS_OPTIONS } from "./config/index.js";
 import authRoutes from "./routes/auth.routes.js";
+import videoRoutes from "./routes/videos.routes.js";
 
 const app = express();
 
@@ -12,6 +13,7 @@ const app = express();
 app.use(helmet()); // Secure HTTP headers
 app.use(cors(CORS_OPTIONS));
 app.use(express.json());
+app.use("/api/videos", videoRoutes);
 
 // Logging
 app.use(morgan("dev")); // Log requests
