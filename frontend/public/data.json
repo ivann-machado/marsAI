@@ -171,5 +171,25 @@
       "title_main_page" : "MarsAI",
       "primary_color" : "#FFFFFF",
       "secondary_color" : "#0144DC"
-    }
+    },
+    "event_participants" : [
+      { 
+        "id" : 1,
+        "firstname" : "a",
+        "lastname" : "b",
+        "email" : "tralalal"
+      },
+       { 
+        "id" : 2,
+        "firstname" : "a",
+        "lastname" : "b",
+        "email" : "tralalal"
+      },
+      { 
+        "id" : 3,
+        "firstname" : "a",
+        "lastname" : "b",
+        "email" : "tralalal"
+      }
+    ]
 }
