@@ -106,7 +106,70 @@
       "login" : "Admin4",
       "role" : "Admin"
     }
-  ]
+  ],
+  "mockedEvents" : [
+    {
+      "id" : 1,
+      "type" : "atelier",
+      "name" : "IA et vous",
+      "url" : "/atelier/1",
+      "logo" : "/vite.svg",
+      "date" : "2026/10/10",
+      "info" : "fgzgazegz",
+      "place" : "Amphi",
+      "duration": 60,
+      "cover_image": "/background.jpg"
+    },
+    {
+      "id" : 2,
+      "type" : "atelier",
+      "name" : "IA generative",
+      "url" : "/atelier/2",
+      "logo" : "/vite.svg",
+      "date" : "2026/10/11",
+      "info" : "fgzgazegz",
+      "place" : "Amphi",
+      "duration": 60,
+      "cover_image": "/background.jpg"
+    },
+    {
+      "id" : 3,
+      "type" : "atelier",
+      "name" : "Les dangers de l'IA",
+      "url" : "/atelier/3",
+      "logo" : "/vite.svg",
+      "date" : "2026/10/12",
+      "info" : "fgzgazegz",
+      "place" : "Amphi",
+      "duration": 60,
+      "cover_image": "/background.jpg"
+    }
+  ],
 
+    "mockedSettings" : [
+      {
+        "name" : "phase",
+        "value" : 1
+      },
+      {
+        "name" : "title_main_page",
+        "value" : "MarsAI"
+      },
+      {
+        "name" : "primary_color",
+        "value" : "#FFFFFF"
+      },
+      {
+        "name" : "secondary_color",
+        "value" : "#0144DC"
+      }
+    ],
 
+    "mockedSettings2" : 
+    {
+      "phase" : 1,
+      "title_main_page" : "MarsAI",
+      "primary_color" : "#FFFFFF",
+      "secondary_color" : "#0144DC"
+    }
 }

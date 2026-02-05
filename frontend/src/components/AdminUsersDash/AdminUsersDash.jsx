@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-function AdminVideosDash() {
+function AdminUsersDash() {
   const [users, setUsers] = useState(null);
 
   useEffect(() => {
@@ -54,4 +54,4 @@ function AdminVideosDash() {
   );
 }
 
-export default AdminVideosDash;
+export default AdminUsersDash;
