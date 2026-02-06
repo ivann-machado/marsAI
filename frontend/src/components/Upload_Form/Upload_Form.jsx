@@ -98,6 +98,16 @@ function UploadForm(){
 						</div>
 					</div>
 				</div>
+				<div className=" flex flex-col gap-2 p-2 w-9/10 md:flex-row md:justify-evenly md:p-2">
+					<div className="flex flex-row">
+							<input type="checkbox" name="" id="" className="bg-gray-700 border border-gray-500 rounded-lg"/>
+							<label htmlFor="" className="text-white">{t('upload_form.producer')}</label>
+						</div>
+						<div className="flex flex-row">
+							<input type="checkbox" name="" id="" className="bg-gray-700 border border-gray-500 rounded-lg"/>
+							<label htmlFor="" className="text-white">{t('upload_form.producer')}</label>							
+						</div>
+				</div>
 				<button type="submit" className="bg-amber-300 p-2 rounded-lg md:max-w-5/10 md:hover:cursor-pointer">{t('upload_form.submit_btn')} {'>>'} </button>
         </form>
 		</div>
