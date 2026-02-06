@@ -1,7 +1,7 @@
 {
 "footer_message": "\"La plateforme mondiale de la narration generative, ancrée dans la lumiére de Marseille.\"",
 "navigation" : "Navigation",
-"gallery" : "Galerie",
+"video_gallery" : "Galerie",
 "schedule" : "Programme",
 "top50" : "Top 50",
 "tickets" : "Billeterie",
@@ -114,6 +114,11 @@
 "partners_title_highlight": "LE FUTUR",
 "partners_hover_text": "Any Video Any Language",
 "partners_cta": "DEVENIR PARTENAIRE →"
+
+},
+"admin_login" : {
+    "title" : "Connexion Admin",
+    "submit" : "Soumettre"
 },
 "gallery": {
 "gallery_badge": "🎬 SÉLECTION MARS.AI 2026",

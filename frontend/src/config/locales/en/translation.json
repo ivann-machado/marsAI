@@ -1,7 +1,7 @@
 {
     "footer_message": "\"The global platform for generative storytelling, anchored in the light of Marseille.\"",
     "navigation" : "Navigation",
-    "gallery" : "Gallery",
+    "video_gallery" : "Gallery",
     "schedule" : "Schedule",
     "top50" : "Top 50",
     "tickets" : "Tickets",
@@ -115,6 +115,20 @@
     "partners_hover_text": "Any Video Any Language",
     "partners_cta": "BECOME A PARTNER →"
     },
+    "admin_login" : {
+        "title" : "Admin Login",
+        "submit" : "Submit"
+    },
+    "admin_sidebar" : {
+        "overview" : "Overview",
+        "videos" : "Manage movies",
+        "users" : "Manage users",
+        "events" : "Manage events",
+        "settings" : "Manage settings",
+        "content" : "Manage content",
+        "jury" : "Manage jury",
+        "partners" : "Manage partners"
+    },
 "gallery": {
     "gallery_badge": "🎬 MARS.AI SELECTION 2026",
     "gallery_title": "FILM",
@@ -138,4 +152,5 @@
     "gallery_load_more": "LOAD MORE FILMS",
     "gallery_watch": "WATCH FILM",
     "gallery_share": "SHARE"
-}}
+}
+}

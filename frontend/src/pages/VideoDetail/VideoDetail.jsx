@@ -1,9 +1,9 @@
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import AIList from "../components/AIList/AIList";
+import AIList from "../../components/AIList/AIList";
 import "flag-icons/css/flag-icons.min.css";
-import Header from "../components/Header/Header";
-import Footer from "../components/Footer/Footer";
+import Header from "../../components/Header/Header";
+import Footer from "../../components/Footer/Footer";
 
 function VideoDetail(props) {
   const { t } = useTranslation();
