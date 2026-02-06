@@ -123,6 +123,9 @@
         "videos" : "Manage movies",
         "users" : "Manage users",
         "events" : "Manage events",
-        "website" : "Manage website"
+        "settings" : "Manage settings",
+        "content" : "Manage content",
+        "jury" : "Manage jury",
+        "partners" : "Manage partners"
     }
 }

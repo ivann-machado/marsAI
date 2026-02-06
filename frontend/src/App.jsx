@@ -9,6 +9,7 @@ import AdminDashboard from "./pages/AdminDashboard/AdminDashboard.jsx";
 import AdminUsers from "./pages/AdminUsers/AdminUsers.jsx";
 import AdminEvents from "./pages/AdminEvents/AdminEvents.jsx";
 import AdminSettings from "./pages/AdminSettings/AdminSettings.jsx";
+import AdminContent from "./pages/AdminContent/AdminContent.jsx";
 
 function App() {
   if (window.location.host.split(".")[0] == "admin")
@@ -22,6 +23,7 @@ function App() {
           <Route path="/users" element={<AdminUsers />} />
           <Route path="/events" element={<AdminEvents />} />
           <Route path="/settings" element={<AdminSettings />} />
+          <Route path="/content" element={<AdminContent />} />
         </Routes>
       </BrowserRouter>
     );

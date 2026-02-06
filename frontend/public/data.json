@@ -191,5 +191,42 @@
         "lastname" : "b",
         "email" : "tralalal"
       }
+    ],
+    "mockedContent" : 
+    {
+      "main_title" : "MarsAI",
+      "homepage_presentation" : "Presentation mars_ai",
+      "festival_info" : "un truc trop long pout tester xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    },
+
+    "mockedJury" : [
+      {
+        "id" : 1,
+        "edition_id" : 2026,
+        "name" : "Pierre Gerard",
+        "bio" : "Réalisateur",
+        "photo" : "/producer_image.png"
+      },
+      {
+        "id" : 2,
+        "edition_id" : 2026,
+        "name" : "John Doe",
+        "bio" : "Journaliste",
+        "photo" : "/producer_image.png"
+      },
+      {
+        "id" : 3,
+        "edition_id" : 2026,
+        "name" : "John Doe",
+        "bio" : "Journaliste",
+        "photo" : "/producer_image.png"
+      },
+      {
+        "id" : 4,
+        "edition_id" : 2026,
+        "name" : "John Doe",
+        "bio" : "Journaliste",
+        "photo" : "/producer_image.png"
+      }
     ]
 }

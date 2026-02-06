@@ -1,9 +1,7 @@
 import AdminEventCard from "./AdminEventCard";
 import { useState, useEffect } from "react";
-import AdminEventParticipants from "./AdminEventParticipants";
 
 function AdminEventDash() {
-  const [isOpen, setIsOpen] = useState(false);
   const [events, setEvents] = useState(null);
 
   useEffect(() => {
@@ -28,16 +26,6 @@ function AdminEventDash() {
       {events.map((event) => (
         <AdminEventCard event={event} key={event.id} />
       ))}
-      <div>
-        <AdminEventParticipants isOpen={isOpen} eventId={1} />
-      </div>
-      <div
-        onClick={() => {
-          setIsOpen(!isOpen);
-        }}
-      >
-        Click
-      </div>
     </div>
   );
 }
