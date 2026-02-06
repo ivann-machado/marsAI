@@ -1,6 +1,7 @@
 import express from "express";
 import {
 	login,
+	logout,
 	verifyInvite,
 	acceptInvite,
 	inviteAdmin,
@@ -8,6 +9,7 @@ import {
 import {
 	verifyToken,
 	requireSuperAdmin,
+	requireGuest,
 } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
@@ -15,14 +17,16 @@ const router = express.Router();
  * Auth routes
  * - POST `/login` : authenticate and get a JWT token.
  * - POST `/invite` : invite a new admin (super amdin only).
- * - GET `/validate` : validate an invite token.
- * - POST `/validate` : accept an invite and set password.
+ * - GET `/validate/:token` : validate an invite token.
+ * - POST `/validate/:token` : accept an invite and set password.
+ * - POST `/logout` : log out.
  */
 
-router.post("/login", login);
+router.post("/login", requireGuest, login);
 router.post("/invite", verifyToken, requireSuperAdmin, inviteAdmin);
+router.post("/logout", verifyToken, logout);
 
-router.get("/validate", verifyInvite);
-router.post("/validate", acceptInvite);
+router.get("/validate/:token", requireGuest, verifyInvite);
+router.post("/validate/:token", requireGuest, acceptInvite);
 
 export default router;

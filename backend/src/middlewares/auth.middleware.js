@@ -24,3 +24,18 @@ export const requireSuperAdmin = (req, res, next) => {
 		res.status(403).json({ message: 'Require Super Admin Role' });
 	}
 };
+
+export const requireGuest = (req, res, next) => {
+	const token = req.headers['authorization']?.split(' ')[1];
+
+	if (!token) {
+		return next();
+	}
+
+	jwt.verify(token, JWT_SECRET, (err, decoded) => {
+		if (err) {
+			return next();
+		}
+		return res.status(403).json({ message: 'You are already logged in' });
+	});
+};
