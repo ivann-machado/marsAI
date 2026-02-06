@@ -1,4 +1,51 @@
 {
+    "footer" : {
+        "footer_message": "\"The global platform for generative storytelling, anchored in the light of Marseille.\"",
+        "navigation" : "Navigation",
+        "gallery" : "Gallery",
+        "schedule" : "Schedule",
+        "top50" : "Top 50",
+        "tickets" : "Tickets",
+        "legal" : "Legal",
+        "partners" : "Partners",
+        "faq" : "FAQ",
+        "contact" : "Contact",
+        "legal_notices" : "Legal Notices",
+        "stay_connected" : "Stay Connected",
+        "home" : "Home",
+        "participate" : "Participate",
+        "board" : "Board",
+        "about" : "About"
+    },
+    "header" : {
+        "home" : "Home",
+        "gallery" : "Gallery",
+        "participate" : "Participate",
+        "board" : "Board",
+        "partners" : "Partners",
+        "about" : "About",
+        "schedule" : "Schedule"
+    },
+    "upload_form" : {
+        "upload_message" : "Post your movie",
+        "global_infos" : "Global Informations",
+        "title" : "Title",
+        "desc" : "Description",
+        "video" : "Video",
+        "image" : "Image",
+        "production" : "Production",
+        "scenario_ai" : "Scenario AI",
+        "video_ai" : "Video generation AI",
+        "sound_ai" : "Music and Sound AI",
+        "post_prod_ai" : "post-production AI",
+        "more_info" : "Complementary informations",
+        "producer" : "Producer",
+        "majority_certification" : "By clicking on this, i certify that i am 18 or older.",
+        "right_givaway" : "By clicking here, I agree to transfer my property rights to the festival organizers and I hereby waive my copyright and ownership of the video that I am about to publish.",
+        "submit_btn" : "Finalize my submission"
+    },
+    
+
     "footer_message": "\"The global platform for generative storytelling, anchored in the light of Marseille.\"",
     "navigation" : "Navigation",
     "video_gallery" : "Gallery",
