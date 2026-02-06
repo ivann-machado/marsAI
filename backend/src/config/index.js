@@ -6,6 +6,8 @@ const allowedOrigins = process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS
 export const PORT = process.env.PORT || 3000;
 export const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '24h';
 export const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key';
+export const DEV_MODE = process.env.DEV_MODE === 'true';
+export const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
 
 export const CORS_OPTIONS = {
 	origin: (origin, callback) => {

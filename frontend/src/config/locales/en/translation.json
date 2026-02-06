@@ -1,7 +1,7 @@
 {
     "footer_message": "\"The global platform for generative storytelling, anchored in the light of Marseille.\"",
     "navigation" : "Navigation",
-    "gallery" : "Gallery",
+    "video_gallery" : "Gallery",
     "schedule" : "Schedule",
     "top50" : "Top 50",
     "tickets" : "Tickets",
@@ -21,7 +21,7 @@
     "participate" : "Participate",
     "board" : "Board",
     "about" : "About",
-
+"homepage" : {
     "hero_badge": "THE TEMPORAL PROTOCOL 2026",
     "hero_tagline": "IMAGINE",
     "hero_tagline_highlight": "DESIRABLE",
@@ -128,4 +128,28 @@
         "jury" : "Manage jury",
         "partners" : "Manage partners"
     }
-}
+    },
+"gallery": {
+    "gallery_badge": "🎬 MARS.AI SELECTION 2026",
+    "gallery_title": "FILM",
+    "gallery_title_highlight": "GALLERY",
+    "gallery_description": "Discover the pioneering works that redefine the boundaries of AI-assisted creation",
+    "gallery_stat_1": "600+",
+    "gallery_stat_1_label": "FILMS SUBMITTED",
+    "gallery_stat_2": "120",
+    "gallery_stat_2_label": "COUNTRIES",
+    "gallery_stat_3": "50",
+    "gallery_stat_3_label": "SELECTED",
+    "gallery_stat_4": "60s",
+    "gallery_stat_4_label": "MAX",
+    "gallery_filter_all": "ALL FILMS",
+    "gallery_filter_competition": "IN COMPETITION",
+    "gallery_filter_selection": "OFFICIAL SELECTION",
+    "gallery_filter_hors": "OUT OF COMPETITION",
+    "gallery_films_found": "film(s) found",
+    "gallery_empty_title": "No films found",
+    "gallery_empty_desc": "Try selecting another category",
+    "gallery_load_more": "LOAD MORE FILMS",
+    "gallery_watch": "WATCH FILM",
+    "gallery_share": "SHARE"
+}}
