@@ -1,10 +1,10 @@
 import './App.css'
-import UploadPage from './pages/Upload_page'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import UploadPage from './pages/Upload_page';
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Homepage from './pages/homepage/Homepage.jsx'
 import Gallery from './pages/galery/galery.jsx'
 
-import VideoDetail from "./pages/VideoDetail";
+import VideoDetail from "./pages/VideoDetail"
 
 function App() {
   return (
@@ -15,7 +15,7 @@ function App() {
         <Route path="/" element={<Homepage />} />
         <Route path="/video/:videoId" element={<VideoDetail />} />
         <Route path="/gallery" element={<Gallery />} />
-        <Route path="/upload" element={<UploadPage />} />
+        <Route path="/participate" element={<UploadPage />} />
       </Routes>
     </BrowserRouter>
   );

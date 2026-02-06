@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import viteLogo from '/vite.svg'
 import reactLogo from '../../assets/react.svg'
 import { useTranslation } from 'react-i18next';
@@ -8,9 +8,10 @@ function UploadForm(){
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		const form = e.target;
+		const title = useRef('title');
 		const formData = new FormData(form);
 		 const data = {
-			title: formData.get('title'),
+			title: title,
 			description: formData.get('description'),
 			video: formData.get('video'),
 			image: formData.get('image'),
@@ -34,7 +35,7 @@ function UploadForm(){
 					<div className=" flex flex-col md:flex-row md:justify-evenly md:p-2">
 						<div className="flex flex-col">
 							<label htmlFor="title" className="text-white">{t('upload_form.title')} :</label>
-							<input type="text" name="title" id="title" className="bg-gray-700 border border-gray-500 rounded-lg" />
+							<input type="text" name="title" id="title" ref={'title'} className="bg-gray-700 border border-gray-500 rounded-lg" />
 						</div>
 						<div className="flex flex-col">
 							<label htmlFor="description" className="text-white">{t('upload_form.desc')} :</label>
@@ -98,14 +99,14 @@ function UploadForm(){
 						</div>
 					</div>
 				</div>
-				<div className=" flex flex-col gap-2 p-2 w-9/10 md:flex-row md:justify-evenly md:p-2">
-					<div className="flex flex-row">
+				<div className=" flex flex-col gap-2 p-2 w-9/10 md:flex-row md:justify-evenly md:p-2 outline outline-red-500">
+					<div className="flex flex-row outline md:w-4/10 outline-red-500">
 							<input type="checkbox" name="" id="" className="bg-gray-700 border border-gray-500 rounded-lg"/>
-							<label htmlFor="" className="text-white">{t('upload_form.producer')}</label>
+							<label htmlFor="" className="text-white">{t('upload_form.majority_certification')}</label>
 						</div>
-						<div className="flex flex-row">
-							<input type="checkbox" name="" id="" className="bg-gray-700 border border-gray-500 rounded-lg"/>
-							<label htmlFor="" className="text-white">{t('upload_form.producer')}</label>							
+						<div className="flex flex-row justify-evenly md:w-4/10 outline outline-red-500">
+							<input type="checkbox" name="right_givaway" id="right_givaway" className="bg-gray-700 border border-gray-500 rounded-lg"/>
+							<label htmlFor="right_givaway" className="text-white w-5/10">{t('upload_form.right_givaway')}</label>							
 						</div>
 				</div>
 				<button type="submit" className="bg-amber-300 p-2 rounded-lg md:max-w-5/10 md:hover:cursor-pointer">{t('upload_form.submit_btn')} {'>>'} </button>

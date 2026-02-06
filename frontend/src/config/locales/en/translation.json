@@ -40,6 +40,8 @@
         "post_prod_ai" : "post-production AI",
         "more_info" : "Complementary informations",
         "producer" : "Producer",
+        "majority_certification" : "By clicking on this, i certify that i am 18 or older.",
+        "right_givaway" : "By clicking here, I agree to transfer my property rights to the festival organizers and I hereby waive my copyright and ownership of the video that I am about to publish.",
         "submit_btn" : "Finalize my submission"
     },
     
