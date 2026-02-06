@@ -23,7 +23,11 @@ app.use(morgan("dev")); // Log requests
 const limiter = rateLimit({
 	windowMs: 15 * 60 * 1000, // 15 minutes
 	max: 100, // Limit each IP to 100 requests per windowMs
-	message: "Too many requests from this IP, please try again after 15 minutes",
+	handler: (req, res, next, options) => {
+		res.status(options.statusCode).send(
+			`Too many requests from this IP, please try again after ${options.windowMs / (60 * 1000)} minutes`
+		);
+	},
 	skip: (req) => {
 		try {
 			const token = req.headers["authorization"]?.split(" ")[1];
