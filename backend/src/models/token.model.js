@@ -7,9 +7,9 @@ import { pool } from "../config/db.js";
  * @returns {Promise<number>} Inserted token ID.
  */
 export const createToken = async (token, admin_id) => {
-  const query = `INSERT INTO tokens (value, admin_id) VALUES (?, ?)`;
-  const result = await pool.query(query, [token, admin_id]);
-  return result.insertId;
+	const query = `INSERT INTO tokens (value, admin_id) VALUES (?, ?)`;
+	const result = await pool.query(query, [token, admin_id]);
+	return result.insertId;
 };
 
 /**
@@ -18,9 +18,9 @@ export const createToken = async (token, admin_id) => {
  * @returns {Promise<Object|undefined>} Token row or undefined if not found.
  */
 export const findToken = async (token) => {
-  const query = `SELECT * FROM tokens WHERE value = ?`;
-  const rows = await pool.query(query, [token]);
-  return rows[0];
+	const query = `SELECT * FROM tokens WHERE value = ?`;
+	const rows = await pool.query(query, [token]);
+	return rows[0];
 };
 
 /**
@@ -30,7 +30,7 @@ export const findToken = async (token) => {
  * @returns {Promise<Object>} Result row from the update query .
  */
 export const updateTokenStatus = async (token, status) => {
-  const query = `UPDATE tokens set status = ? WHERE value = ?`;
-  const rows = await pool.query(query, [status, token]);
-  return rows[0];
+	const query = `UPDATE tokens set status = ? WHERE value = ?`;
+	const rows = await pool.query(query, [status, token]);
+	return rows[0];
 };
