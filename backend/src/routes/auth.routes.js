@@ -1,13 +1,13 @@
 import express from "express";
 import {
-  login,
-  verifyInvite,
-  acceptInvite,
-  inviteAdmin,
+	login,
+	verifyInvite,
+	acceptInvite,
+	inviteAdmin,
 } from "../controllers/auth.controller.js";
 import {
-  verifyToken,
-  requireSuperAdmin,
+	verifyToken,
+	requireSuperAdmin,
 } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
