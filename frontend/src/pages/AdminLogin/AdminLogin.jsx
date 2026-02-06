@@ -18,9 +18,9 @@ function AdminLogin() {
       if (!response.ok) throw new Error("Erreur lors de la sauvegarde");
 
       const loginResponse = await response.json();
-      if (loginResponse) console.log("mettre en useContext");
+      if (loginResponse) console.log("mettre en useContext", loginResponse);
     } catch (err) {
-      console.error(err);
+      console.log(err);
     }
   };
 
