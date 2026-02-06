@@ -20,15 +20,15 @@ app.use(morgan("dev")); // Log requests
 
 // Rate Limiting
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per windowMs
-  message: "Too many requests from this IP, please try again after 15 minutes",
+	windowMs: 15 * 60 * 1000, // 15 minutes
+	max: 100, // Limit each IP to 100 requests per windowMs
+	message: "Too many requests from this IP, please try again after 15 minutes",
 });
 app.use(limiter);
 
 // Public routes
 app.get("/", (req, res) => {
-  res.status(200).json({ message: "Welcome to MarsAI API" });
+	res.status(200).json({ message: "Welcome to MarsAI API" });
 });
 app.use("/api/auth", authRoutes);
 
@@ -36,11 +36,11 @@ app.use("/api/auth", authRoutes);
 
 // Global Error Handling Middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({
-    status: "error",
-    message: "Internal Server Error",
-  });
+	console.error(err.stack);
+	res.status(500).json({
+		status: "error",
+		message: "Internal Server Error",
+	});
 });
 
 export default app;
