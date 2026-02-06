@@ -3,9 +3,10 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import rateLimit from "express-rate-limit";
-import { CORS_OPTIONS } from "./config/index.js";
+import { CORS_OPTIONS, JWT_SECRET } from "./config/index.js";
 import authRoutes from "./routes/auth.routes.js";
 import videoRoutes from "./routes/videos.routes.js";
+import jwt from "jsonwebtoken";
 
 const app = express();
 
@@ -23,6 +24,17 @@ const limiter = rateLimit({
 	windowMs: 15 * 60 * 1000, // 15 minutes
 	max: 100, // Limit each IP to 100 requests per windowMs
 	message: "Too many requests from this IP, please try again after 15 minutes",
+	skip: (req) => {
+		try {
+			const token = req.headers["authorization"]?.split(" ")[1];
+			if (!token) return false;
+
+			const decoded = jwt.verify(token, JWT_SECRET);
+			return decoded.role === "admin" || decoded.role === "super admin";
+		} catch (error) {
+			return false;
+		}
+	},
 });
 app.use(limiter);
 
