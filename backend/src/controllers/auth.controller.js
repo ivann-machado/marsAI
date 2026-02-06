@@ -12,7 +12,7 @@ import {
 	findToken,
 	updateTokenStatus,
 } from "../models/token.model.js";
-import { JWT_SECRET, JWT_EXPIRES_IN } from "../config/index.js";
+import { JWT_SECRET, JWT_EXPIRES_IN, DEV_MODE, FRONTEND_URL } from "../config/index.js";
 
 /**
  * Authenticate an admin and return a JWT token.
@@ -78,9 +78,11 @@ export const inviteAdmin = async (req, res) => {
 		await createToken(token, adminId);
 		//TEMP PLACEHOLDER FOR EMAIL
 		const inviteLink = `${FRONTEND_URL}/validate?token=${token}`;
-		console.log(
-			`[EMAIL MOCK] To: ${login}, Subject: Admin Invite, Body: Cliquer ici pour définir votre mot de passe: ${inviteLink}`,
-		);
+		if (DEV_MODE) {
+			console.log(
+				`[EMAIL MOCK] To: ${login}, Subject: Admin Invite, Body: Cliquer ici pour définir votre mot de passe: ${inviteLink}`,
+			);
+		}
 
 		res
 			.status(201)
@@ -128,7 +130,9 @@ const validateInviteToken = async (token) => {
 	}
 
 	const existingToken = await findToken(token);
-	console.log("ValidateToken found:", existingToken);
+	if (DEV_MODE) {
+		console.log("ValidateToken found:", existingToken);
+	}
 
 	if (!existingToken) {
 		throw { status: 401, message: "Invalid token" };
