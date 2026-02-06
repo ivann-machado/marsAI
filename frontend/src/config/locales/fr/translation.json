@@ -160,6 +160,11 @@
 "partners_title_highlight": "LE FUTUR",
 "partners_hover_text": "Any Video Any Language",
 "partners_cta": "DEVENIR PARTENAIRE →"
+
+},
+"admin_login" : {
+    "title" : "Connexion Admin",
+    "submit" : "Soumettre"
 },
 "gallery": {
 "gallery_badge": "🎬 SÉLECTION MARS.AI 2026",

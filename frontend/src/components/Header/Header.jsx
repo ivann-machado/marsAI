@@ -1,21 +1,21 @@
 import { useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
-import viteLogo from '/vite.svg'
-import reactLogo from '../../assets/react.svg'
-import { useTranslation } from 'react-i18next';
+import { Link } from "react-router-dom";
+import viteLogo from "/vite.svg";
+import reactLogo from "../../assets/react.svg";
+import { useTranslation } from "react-i18next";
 
 function Header() {
-    const { t } = useTranslation();
-    const [isOpen, setIsOpen] = useState(false);
-    const toggleMenu = () => {
-        setIsOpen(!isOpen)
-    };
+  const { t } = useTranslation();
+  const [isOpen, setIsOpen] = useState(false);
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
     useEffect(() =>{
         const handleResize = () =>{
             if (window.innerWidth >= 768){
                 setIsOpen(false)
             }
-        }
+    }
         window.addEventListener('resize', handleResize)
         return () => {
             window.removeEventListener('resize', handleResize)
