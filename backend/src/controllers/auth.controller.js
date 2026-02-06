@@ -77,7 +77,7 @@ export const inviteAdmin = async (req, res) => {
 		const token = crypto.randomUUID();
 		await createToken(token, adminId);
 		//TEMP PLACEHOLDER FOR EMAIL
-		const inviteLink = `${FRONTEND_URL}/validate?token=${token}`;
+		const inviteLink = `${FRONTEND_URL}/validate/${token}`;
 		if (DEV_MODE) {
 			console.log(
 				`[EMAIL MOCK] To: ${login}, Subject: Admin Invite, Body: Cliquer ici pour définir votre mot de passe: ${inviteLink}`,
@@ -97,24 +97,8 @@ export const inviteAdmin = async (req, res) => {
 };
 
 export const logout = async (req, res) => {
-	try {
-		const token = req.headers["authorization"]?.split(" ")[1];
-
-		if (!token) {
-			return res.status(400).json({ message: "No token provided" });
-		}
-
-		const existingToken = await findToken(token);
-		if (existingToken) {
-			await updateTokenStatus(token, "revoked");
-			return res.status(200).json({ message: "Logged out successfully" });
-		} else {
-			return res.status(400).json({ message: "Invalid token" });
-		}
-	} catch (error) {
-		console.error("Logout Error:", error);
-		res.status(500).json({ message: "Server error" });
-	}
+	// Stateless authentication: Client is responsible for removing the token.
+	return res.status(200).json({ message: "Logged out successfully" });
 };
 
 /**
@@ -151,7 +135,7 @@ const validateInviteToken = async (token) => {
 };
 
 export const verifyInvite = async (req, res) => {
-	const token = req.query.token;
+	const token = req.params.token;
 	try {
 		await validateInviteToken(token);
 		return res.status(200).json({ valid: true, message: "Token is valid" });
@@ -164,7 +148,7 @@ export const verifyInvite = async (req, res) => {
 };
 
 export const acceptInvite = async (req, res) => {
-	const token = req.body.token;
+	const token = req.params.token;
 	try {
 		const { admin } = await validateInviteToken(token);
 
