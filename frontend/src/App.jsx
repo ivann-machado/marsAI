@@ -24,6 +24,7 @@ function App() {
           <Route path="/events" element={<AdminEvents />} />
           <Route path="/settings" element={<AdminSettings />} />
           <Route path="/content" element={<AdminContent />} />
+          <Route path="/jury" element={<AdminJury />} />
         </Routes>
       </BrowserRouter>
     );

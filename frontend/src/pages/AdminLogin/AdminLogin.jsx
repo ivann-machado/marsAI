@@ -7,7 +7,7 @@ function AdminLogin() {
 
   const submitLogin = async () => {
     try {
-      const response = await fetch("/api/login/" + login, {
+      const response = await fetch("http://localhost:3000/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -46,7 +46,9 @@ function AdminLogin() {
         type="button"
         value={t("admin_login.submit")}
         className="bg-white m-2 p-2 hover:bg-gray-300"
-        onClick={submitLogin}
+        onClick={() => {
+          submitLogin();
+        }}
       ></input>
     </div>
   );
