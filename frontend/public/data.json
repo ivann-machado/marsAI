@@ -228,5 +228,37 @@
         "bio" : "Journaliste",
         "photo" : "/producer_image.png"
       }
+    ],
+
+    "mockedData" : {
+    "phase" : 1,
+    "videos_total": 456,
+    "videos_evaluated": 300,
+    "countries": 56,
+    "total_event_places": 500,
+    "event_signups": 45,
+    "top_videos": [
+      {
+        "id": 1,
+        "title": "Fara",
+        "grade": 4.8,
+        "cover_image": "/vite.svg",
+        "producer": "J. Li"
+      },
+      {
+        "id": 2,
+        "title": "Zorb",
+        "grade": 4.7,
+        "cover_image": "/vite.svg",
+        "producer": "P. Samson"
+      },
+      {
+        "id": 3,
+        "title": "Demain",
+        "grade": 4.5,
+        "cover_image": "/vite.svg",
+        "producer": "Pierre Claude"
+      }
     ]
+  }
 }

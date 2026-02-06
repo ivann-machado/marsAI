@@ -24,12 +24,13 @@ function AdminVideosDash() {
   if (!videoQueue || !otherVideo) return <p>Loading...</p>;
 
   return (
-    <div className="w-4/5 bg-gray-950">
+    <div className="w-4/5 bg-gray-950 px-4">
       <h1 className="py-2 font-bold text-3xl text-white text-center">
         Gestion des films
       </h1>
 
       {/* MOVIE QUEUE */}
+      <h2 className="text-2xl font-bold ml-8 text-white">Films attribuées:</h2>
       <VideoList videoList={videoQueue} />
 
       {/* SEARCH BAR */}
