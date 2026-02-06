@@ -51,7 +51,7 @@ const checkOrigin = (origin, callback) => {
 		// Invalid origin URL, block it
 	}
 
-	callback(new Error('Non autorisé par CORS'));
+	callback(new Error('Origin not allowed'));
 };
 
 export const CORS_OPTIONS = {
