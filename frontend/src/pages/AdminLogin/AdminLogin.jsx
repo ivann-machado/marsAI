@@ -1,39 +1,54 @@
-import { useTranslation } from "react-i18next";
 import { useState } from "react";
+import { useauth } from "../../context/AuthContext";
+import { useTranslation } from "react-i18next";
+import { jwtDecode } from "jwt-decode";
 
 function AdminLogin() {
-  const [login, setLogin] = useState("");
+  const { t } = useTranslation();
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { user, login } = useauth();
 
   const submitLogin = async () => {
     try {
+      console.log(email, password);
       const response = await fetch("http://localhost:3000/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ login, password }),
+        body: JSON.stringify({ login: email, password }),
       });
 
-      if (!response.ok) throw new Error("Erreur lors de la sauvegarde");
+      if (!response.ok) throw new Error("Erreur lors de la connexion");
 
       const loginResponse = await response.json();
-      if (loginResponse) console.log("mettre en useContext", loginResponse);
+      if (loginResponse) {
+        const login_info = jwtDecode(loginResponse.token);
+        //console.log("text", login_info.exp);
+        login(
+          login_info.login,
+          login_info.role,
+          login_info.exp,
+          loginResponse.token,
+        );
+        //console.log(login_info);
+        //login();
+      }
     } catch (err) {
       console.log(err);
     }
   };
 
-  const { t } = useTranslation();
   return (
     <div className="flex flex-col w-1/4 items-center bg-gray-400 m-auto mt-20">
       <h2 className="text-white font-bold ">{t("admin_login.title")}</h2>
       <input
         type="text"
         placeholder="login"
-        value={login}
+        value={email}
         className="bg-white m-2 p-2"
-        onChange={(e) => setLogin(e.target.value)}
+        onChange={(e) => setEmail(e.target.value)}
       ></input>
       <input
         type="password"

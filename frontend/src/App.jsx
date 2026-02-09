@@ -13,6 +13,7 @@ import AdminEvents from "./pages/AdminEvents/AdminEvents.jsx";
 import AdminSettings from "./pages/AdminSettings/AdminSettings.jsx";
 import AdminContent from "./pages/AdminContent/AdminContent.jsx";
 import AdminJury from "./pages/AdminJury/AdminJury.jsx";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.jsx";
 
 function App() {
   if (window.location.host.split(".")[0] == "admin")
@@ -21,13 +22,62 @@ function App() {
         <Routes>
           <Route path="/" element={<AdminDashboard />} />
           <Route path="/login" element={<AdminLogin />} />
-          <Route path="/videos" element={<AdminVideos />} />
-          <Route path="/video/:id" element={<AdminVideo />} />
-          <Route path="/users" element={<AdminUsers />} />
-          <Route path="/events" element={<AdminEvents />} />
-          <Route path="/settings" element={<AdminSettings />} />
-          <Route path="/content" element={<AdminContent />} />
-          <Route path="/jury" element={<AdminJury />} />
+          <Route
+            path="/videos"
+            element={
+              <ProtectedRoute>
+                <AdminVideos />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/video/:id"
+            element={
+              <ProtectedRoute>
+                <AdminVideo />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/users"
+            element={
+              <ProtectedRoute requiredRole={"superadmin"}>
+                <AdminUsers />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/events"
+            element={
+              <ProtectedRoute requiredRole={"superadmin"}>
+                <AdminEvents />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute requiredRole={"superadmin"}>
+                <AdminSettings />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/content"
+            element={
+              <ProtectedRoute requiredRole={"superadmin"}>
+                <AdminContent />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/jury"
+            element={
+              <ProtectedRoute requiredRole={"superadmin"}>
+                <AdminJury />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </BrowserRouter>
     );
