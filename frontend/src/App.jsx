@@ -2,8 +2,8 @@ import "./App.css";
 import VideoDetail from "./pages/VideoDetail/VideoDetail.jsx";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Homepage from "./pages/homepage/Homepage.jsx";
-import UploadPage from './pages/Upload_page';
-import Gallery from './pages/galery/galery.jsx'
+import UploadPage from "./pages/Upload_page";
+import Gallery from "./pages/galery/galery.jsx";
 import AdminLogin from "./pages/AdminLogin/AdminLogin.jsx";
 import AdminVideos from "./pages/AdminVideos/AdminVideos.jsx";
 import AdminVideo from "./pages/AdminVideo/AdminVideo.jsx";
@@ -36,7 +36,7 @@ function App() {
           <Route path="/" element={<Homepage />} />
           <Route path="/video/:videoId" element={<VideoDetail />} />
           <Route path="/gallery" element={<Gallery />} />
-        <Route path="/participate" element={<UploadPage />} />
+          <Route path="/participate" element={<UploadPage />} />
         </Routes>
       </BrowserRouter>
     );
