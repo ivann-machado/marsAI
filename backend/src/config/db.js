@@ -1,12 +1,34 @@
 import mariadb from "mariadb";
-import dotenv from "dotenv";
 
-dotenv.config();
-
-export const pool = mariadb.createPool({
-  host: process.env.DB_HOST || "localhost",
-  user: process.env.DB_USER || "root",
-  password: process.env.DB_PASSWORD || "",
-  database: process.env.DB_NAME || "marsai",
-  connectionLimit: 5,
+/**
+ * MariaDB connection pool.
+ * Uses environment variables: DB_HOST, DB_USER, DB_PASSWORD, DB_NAME.
+ * @type {import('mariadb').Pool}
+ */
+const pool = mariadb.createPool({
+	host: process.env.DB_HOST,
+	user: process.env.DB_USER,
+	password: process.env.DB_PASSWORD,
+	database: process.env.DB_NAME,
+	connectionLimit: 5,
 });
+
+/**
+ * Test a connection from the pool.
+ * @returns {Promise<void>}
+ */
+const connectDB = async () => {
+	let conn;
+	try {
+		conn = await pool.getConnection();
+		console.log("Connected to the database");
+	} catch (err) {
+		console.log(process.env.DB_USER);
+		console.error("Error connecting to the database: ", err);
+	} finally {
+		if (conn) conn.release();
+	}
+};
+
+export { pool };
+export default connectDB;

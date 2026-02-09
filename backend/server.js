@@ -1,9 +1,11 @@
 import { PORT } from './src/config/index.js';
-import connectDB, { pool } from './src/database/index.js';
+import connectDB, { pool } from './src/config/db.js';
+import { loadSettings } from './src/config/settings.js';
 import { createServer } from "http";
 import app from './src/app.js';
 
 connectDB();
+await loadSettings();
 
 const server = createServer(app);
 
