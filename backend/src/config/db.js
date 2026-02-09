@@ -29,5 +29,13 @@ const connectDB = async () => {
 	}
 };
 
-export { pool };
+/**
+ * Get a connection from the pool for transaction use.
+ * @returns {Promise<import('mariadb').PoolConnection>}
+ */
+const getConnection = async () => {
+	return await pool.getConnection();
+};
+
+export { pool, getConnection };
 export default connectDB;
