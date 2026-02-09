@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.3
+-- version 5.2.2deb1+deb13u1
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:3306
--- Généré le : mar. 27 jan. 2026 à 14:04
--- Version du serveur : 5.5.68-MariaDB
--- Version de PHP : 7.4.30
+-- Généré le : ven. 06 fév. 2026 à 08:55
+-- Version du serveur : 11.8.3-MariaDB-0+deb13u1 from Debian
+-- Version de PHP : 8.4.16
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -32,7 +32,7 @@ CREATE TABLE `admins` (
   `login` varchar(50) NOT NULL,
   `password` varchar(100) NOT NULL,
   `role` enum('admin','super admin','','') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -44,18 +44,32 @@ CREATE TABLE `countries` (
   `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
   `iso_code` varchar(5) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+
+--
+-- Déchargement des données de la table `countries`
+--
+
+INSERT INTO `countries` (`id`, `name`, `iso_code`) VALUES
+(1, 'France', 'FR');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `edtions`
+-- Structure de la table `editions`
 --
 
-CREATE TABLE `edtions` (
+CREATE TABLE `editions` (
   `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+
+--
+-- Déchargement des données de la table `editions`
+--
+
+INSERT INTO `editions` (`id`, `name`) VALUES
+(3, 'Edition MarsAI Test');
 
 -- --------------------------------------------------------
 
@@ -70,7 +84,7 @@ CREATE TABLE `events` (
   `url` varchar(100) NOT NULL,
   `logo` varchar(100) NOT NULL,
   `date` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -84,7 +98,7 @@ CREATE TABLE `jury` (
   `name` varchar(50) NOT NULL,
   `bio` varchar(200) NOT NULL,
   `photo` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -95,7 +109,7 @@ CREATE TABLE `jury` (
 CREATE TABLE `newsletters` (
   `id` int(11) NOT NULL,
   `email` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -109,7 +123,7 @@ CREATE TABLE `reservations` (
   `firstname` varchar(50) NOT NULL,
   `lastname` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -124,7 +138,7 @@ CREATE TABLE `reviews` (
   `note` varchar(300) NOT NULL,
   `grade` int(11) NOT NULL,
   `status` enum('assigned','done','','') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -135,7 +149,7 @@ CREATE TABLE `reviews` (
 CREATE TABLE `selected_videos` (
   `video_id` int(11) NOT NULL,
   `prix` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -147,7 +161,7 @@ CREATE TABLE `settings` (
   `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
   `value` varchar(500) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -162,7 +176,7 @@ CREATE TABLE `sponsors` (
   `name` varchar(50) NOT NULL,
   `url` varchar(100) NOT NULL,
   `logo` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -175,7 +189,7 @@ CREATE TABLE `subtitles` (
   `video_id` int(11) NOT NULL,
   `language` enum('french','english','','') NOT NULL,
   `filename` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -185,7 +199,7 @@ CREATE TABLE `subtitles` (
 
 CREATE TABLE `videos` (
   `id` int(11) NOT NULL,
-  `edition_id` int(11) NOT NULL DEFAULT '2026',
+  `edition_id` int(11) NOT NULL,
   `url` varchar(100) NOT NULL,
   `filename` varchar(100) NOT NULL,
   `email` varchar(50) NOT NULL,
@@ -204,7 +218,14 @@ CREATE TABLE `videos` (
   `sound_ai` varchar(50) NOT NULL,
   `postprod_ai` varchar(50) NOT NULL,
   `tags` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_uca1400_ai_ci;
+
+--
+-- Déchargement des données de la table `videos`
+--
+
+INSERT INTO `videos` (`id`, `edition_id`, `url`, `filename`, `email`, `cover_image`, `verified`, `title`, `description`, `status`, `country_id`, `producer`, `producer_image`, `linkedin_link`, `youtube_link`, `scenario_ai`, `video_gen_ai`, `sound_ai`, `postprod_ai`, `tags`) VALUES
+(1, 3, 'https://www.youtube.com/watch?v=2PuFyjAs7JA', 'youtube_2PuFyjAs7JA.mp4', 'test@mail.com', 'default_cover.jpg', 0, 'Vidéo Test YouTube', 'Test insertion vidéo', 'unverified', 1, 'Test Producer', '', '', 'https://www.youtube.com/watch?v=2PuFyjAs7JA', '', '', '', '', 'youtube,test');
 
 --
 -- Index pour les tables déchargées
@@ -223,9 +244,9 @@ ALTER TABLE `countries`
   ADD PRIMARY KEY (`id`);
 
 --
--- Index pour la table `edtions`
+-- Index pour la table `editions`
 --
-ALTER TABLE `edtions`
+ALTER TABLE `editions`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -311,7 +332,13 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT pour la table `countries`
 --
 ALTER TABLE `countries`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT pour la table `editions`
+--
+ALTER TABLE `editions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `events`
@@ -365,7 +392,7 @@ ALTER TABLE `subtitles`
 -- AUTO_INCREMENT pour la table `videos`
 --
 ALTER TABLE `videos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Contraintes pour les tables déchargées
@@ -375,7 +402,7 @@ ALTER TABLE `videos`
 -- Contraintes pour la table `jury`
 --
 ALTER TABLE `jury`
-  ADD CONSTRAINT `jury_ibfk_1` FOREIGN KEY (`edition_id`) REFERENCES `edtions` (`id`);
+  ADD CONSTRAINT `jury_ibfk_1` FOREIGN KEY (`edition_id`) REFERENCES `editions` (`id`);
 
 --
 -- Contraintes pour la table `reservations`
@@ -387,8 +414,8 @@ ALTER TABLE `reservations`
 -- Contraintes pour la table `reviews`
 --
 ALTER TABLE `reviews`
-  ADD CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`admin_id`) REFERENCES `admins` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`video_id`) REFERENCES `videos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`video_id`) REFERENCES `videos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`admin_id`) REFERENCES `admins` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `selected_videos`
@@ -400,7 +427,7 @@ ALTER TABLE `selected_videos`
 -- Contraintes pour la table `sponsors`
 --
 ALTER TABLE `sponsors`
-  ADD CONSTRAINT `sponsors_ibfk_1` FOREIGN KEY (`edition_id`) REFERENCES `edtions` (`id`);
+  ADD CONSTRAINT `sponsors_ibfk_1` FOREIGN KEY (`edition_id`) REFERENCES `editions` (`id`);
 
 --
 -- Contraintes pour la table `subtitles`
@@ -412,8 +439,8 @@ ALTER TABLE `subtitles`
 -- Contraintes pour la table `videos`
 --
 ALTER TABLE `videos`
-  ADD CONSTRAINT `videos_ibfk_2` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`),
-  ADD CONSTRAINT `videos_ibfk_1` FOREIGN KEY (`edition_id`) REFERENCES `edtions` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `videos_ibfk_1` FOREIGN KEY (`edition_id`) REFERENCES `editions` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `videos_ibfk_2` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
