@@ -19,9 +19,9 @@ export const createAdmin = async (login, password, role = "admin") => {
  * @returns {Promise<Object|undefined>} Admin row or undefined if not found.
  */
 export const findAdminByLogin = async (login) => {
-	const query = `SELECT * FROM admins WHERE login = ?`;
-	const rows = await pool.query(query, [login]);
-	return rows[0];
+  const query = `SELECT * FROM admins WHERE login = ?`;
+  const rows = await pool.query(query, [login]);
+  return rows[0];
 };
 
 /**
@@ -30,9 +30,9 @@ export const findAdminByLogin = async (login) => {
  * @returns {Promise<Object|undefined>} Admin row or undefined if not found.
  */
 export const findAdminById = async (id) => {
-	const query = `SELECT * FROM admins WHERE id = ?`;
-	const rows = await pool.query(query, [id]);
-	return rows[0];
+  const query = `SELECT * FROM admins WHERE id = ?`;
+  const rows = await pool.query(query, [id]);
+  return rows[0];
 };
 
 /**
@@ -42,7 +42,7 @@ export const findAdminById = async (id) => {
  * @returns {Promise<number>} Number of affected rows.
  */
 export const addPasswordAdmin = async (id, password) => {
-	const query = `UPDATE admins SET password = ? WHERE id = ?`;
-	const result = await pool.query(query, [password, id]);
-	return result.affectedRows;
+  const query = `UPDATE admins SET password = ? WHERE id = ?`;
+  const result = await pool.query(query, [password, id]);
+  return result.affectedRows;
 };

@@ -23,6 +23,7 @@ const connectDB = async () => {
 		conn = await pool.getConnection();
 		console.log("Connected to the database");
 	} catch (err) {
+		console.log(process.env.DB_USER);
 		console.error("Error connecting to the database: ", err);
 	} finally {
 		if (conn) conn.release();
