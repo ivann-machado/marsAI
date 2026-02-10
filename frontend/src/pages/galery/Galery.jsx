@@ -5,10 +5,10 @@ import { useTranslation } from 'react-i18next';
 function Gallery () { const { t } = useTranslation();
     const [selectedCategory, setSelectedCategory] = useState('all');
     const [selectedFilm, setSelectedFilm] = useState(null);
+    const [searchQuery, setSearchQuery] = useState('');
 
     const categories = [
         { id: 'all', name: t('gallery.gallery_filter_all') },
-        { id: 'competition', name: t('gallery.gallery_filter_competition') },
         { id: 'selection', name: t('gallery.gallery_filter_selection') },
         { id: 'hors-competition', name: t('gallery.gallery_filter_hors') }
     ];
@@ -19,7 +19,7 @@ function Gallery () { const { t } = useTranslation();
             title: 'PROTOCOL ALPHA',
             director: 'Jean Dupont',
             duration: '00:58',
-            category: 'competition',
+            category: 'selection',
             thumbnail: 'gradient-purple',
             year: 2026,
             country: 'France',
@@ -30,7 +30,7 @@ function Gallery () { const { t } = useTranslation();
             title: 'NEURAL DREAM',
             director: 'Marie Laurent',
             duration: '00:45',
-            category: 'competition',
+            category: 'selection',
             thumbnail: 'gradient-pink',
             year: 2026,
             country: 'Belgique',
@@ -41,7 +41,7 @@ function Gallery () { const { t } = useTranslation();
             title: 'CYBER MARSEILLE',
             director: 'Ahmed Karim',
             duration: '00:52',
-            category: 'competition',
+            category: 'hors-competition',
             thumbnail: 'gradient-rainbow',
             year: 2026,
             country: 'France',
@@ -115,9 +115,15 @@ function Gallery () { const { t } = useTranslation();
         }
     ];
 
-    const filteredFilms = selectedCategory === 'all' 
-        ? films 
-        : films.filter(film => film.category === selectedCategory);
+    const filteredFilms = films.filter(film => {
+        const matchesCategory = selectedCategory === 'all' || film.category === selectedCategory;
+        const matchesSearch = searchQuery === '' || 
+            film.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            film.director.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            film.country.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            film.description.toLowerCase().includes(searchQuery.toLowerCase());
+        return matchesCategory && matchesSearch;
+    });
 
     return (
         <>
@@ -171,9 +177,36 @@ function Gallery () { const { t } = useTranslation();
                     </div>
                 </section>
 
-                {/* Filters */}
+                {/* Search & Filters */}
                 <section className="py-12 bg-[#0a0a0f] sticky top-0 z-40 border-b border-white/5 backdrop-blur-lg">
                     <div className="max-w-7xl mx-auto px-10">
+                        {/* Search Bar */}
+                        <div className="max-w-2xl mx-auto mb-8">
+                            <div className="relative">
+                                <svg className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-[#6b6b85]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                                <input
+                                    type="text"
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    placeholder={t('gallery.gallery_search_placeholder') || 'Rechercher un film, réalisateur...'}
+                                    className="w-full pl-14 pr-5 py-4 bg-white/5 border border-white/10 rounded-full text-white placeholder-[#6b6b85] font-inter focus:outline-none focus:border-[#a855f7] focus:ring-2 focus:ring-[#a855f7]/20 transition-all duration-300"
+                                />
+                                {searchQuery && (
+                                    <button
+                                        onClick={() => setSearchQuery('')}
+                                        className="absolute right-5 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center text-[#6b6b85] hover:text-white transition-colors duration-200"
+                                    >
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Category Filters */}
                         <div className="flex flex-wrap gap-4 justify-center">
                             {categories.map((category) => (
                                 <button
@@ -189,6 +222,7 @@ function Gallery () { const { t } = useTranslation();
                                 </button>
                             ))}
                         </div>
+
                         <div className="text-center mt-6">
                             <span className="text-sm text-[#6b6b85] font-inter">
                                 {filteredFilms.length} {t('gallery.gallery_films_found')}

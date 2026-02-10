@@ -193,6 +193,7 @@
     "gallery_filter_competition": "IN COMPETITION",
     "gallery_filter_selection": "OFFICIAL SELECTION",
     "gallery_filter_hors": "OUT OF COMPETITION",
+    "gallery_search_placeholder": "Search for a film, director...",
     "gallery_films_found": "film(s) found",
     "gallery_empty_title": "No films found",
     "gallery_empty_desc": "Try selecting another category",

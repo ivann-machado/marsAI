@@ -183,6 +183,7 @@
 "gallery_filter_competition": "EN COMPÉTITION",
 "gallery_filter_selection": "SÉLECTION OFFICIELLE",
 "gallery_filter_hors": "HORS COMPÉTITION",
+"gallery_search_placeholder": "Rechercher un film, réalisateur...",
 "gallery_films_found": "film(s) trouvé(s)",
 "gallery_empty_title": "Aucun film trouvé",
 "gallery_empty_desc": "Essayez de sélectionner une autre catégorie",
