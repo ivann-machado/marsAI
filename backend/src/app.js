@@ -7,6 +7,7 @@ import { CORS_OPTIONS, JWT_SECRET } from "./config/index.js";
 import authRoutes from "./routes/auth.routes.js";
 import videoRoutes from "./routes/videos.routes.js";
 import jwt from "jsonwebtoken";
+import newsletterRoutes from "./routes/newsletter.routes.js";
 
 const app = express();
 
@@ -14,6 +15,7 @@ const app = express();
 app.use(cors(CORS_OPTIONS));
 app.use(express.json());
 app.use("/api/videos", videoRoutes);
+app.use("/api/newsletter", newsletterRoutes);
 
 // Logging
 app.use(morgan("dev")); // Log requests
@@ -24,7 +26,7 @@ const limiter = rateLimit({
 	max: 100, // Limit each IP to 100 requests per windowMs
 	handler: (req, res, next, options) => {
 		res.status(options.statusCode).send(
-			`Too many requests from this IP, please try again after ${options.windowMs / (60 * 1000)} minutes`
+			`Too many requests from this IP, please try again after ${options.windowMs / (60 * 1000)} minutes`,
 		);
 	},
 	skip: (req) => {
