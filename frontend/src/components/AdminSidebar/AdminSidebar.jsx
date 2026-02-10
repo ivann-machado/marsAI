@@ -6,13 +6,20 @@ function AdminSidebar() {
   const { t } = useTranslation();
   const { user, userRole, logout } = useauth();
 
-  const logoutRoutine = () => {
-    logout();
-  };
-
   return (
     <div className="w-1/5 min-w-20 bg-gray-800 min-h-screen">
-      <p className="text-white mb-8 p-3 text-center font-bold">Pages admin:</p>
+      <div className="bg-gray-900">
+        <p className="text-white p-3 text-center font-bold">
+          Bienvenue <span className="text-amber-600">{user}</span>
+        </p>
+        <p className="text-white mb-8 p-3 text-center font-bold">
+          Role: <span className="text-amber-600">{userRole}</span>
+        </p>
+      </div>
+      <p className="text-white mb-8 p-3 text-center font-bold">
+        Pages {userRole}:
+      </p>
+
       <div className="flex flex-col text-gray-100">
         {userRole && userRole === "super admin" ? (
           <SidebarButton link="/" name={t("admin_sidebar.overview")} />
@@ -39,7 +46,11 @@ function AdminSidebar() {
           <SidebarButton link="/partners" name={t("admin_sidebar.partners")} />
         ) : null}
         {userRole ? (
-          <SidebarButton name={t("Logout")} clickAction={logout} />
+          <SidebarButton
+            name={t("Logout")}
+            clickAction={logout}
+            type={"logout"}
+          />
         ) : null}
       </div>
     </div>
