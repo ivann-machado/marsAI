@@ -33,7 +33,7 @@ function AdminLogin() {
           login_info.exp,
           loginResponse.token,
         );
-        if (login_info.role === "superadmin")
+        if (login_info.role === "super admin")
           navigate("/", { replace: "true" });
         else navigate("/videos", { replace: "true" });
       }

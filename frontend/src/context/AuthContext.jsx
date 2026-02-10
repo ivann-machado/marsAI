@@ -21,21 +21,7 @@ export const AuthProvider = ({ children }) => {
       const { storedUser, storedRole, storedExpiration, storedToken } =
         JSON.parse(stored);
 
-      /* console.log(
-        "test",
-        Date.now(),
-        storedExpiration * 1000,
-        Date.now() < storedExpiration * 1000,
-      ); */
-
       if (Date.now() < storedExpiration * 1000) {
-        console.log(
-          "ici",
-          storedUser,
-          storedRole,
-          storedExpiration,
-          storedToken,
-        );
         setUser(storedUser);
         setUserRole(storedRole);
         setSessionExpiration(storedExpiration);
@@ -45,7 +31,7 @@ export const AuthProvider = ({ children }) => {
       }
     }
 
-    // si on veut verifier
+    // si on veut verifier dans la DB que le token est toujours valide
     /* fetch("/api/check-auth")
       .then((response) => response.json())
       .then((data) => {
@@ -87,6 +73,9 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     setUserRole(null);
     setSessionExpiration(null);
+    setToken(null);
+
+    localStorage.removeItem("auth");
   };
 
   return (
