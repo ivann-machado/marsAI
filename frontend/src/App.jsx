@@ -20,12 +20,19 @@ function App() {
     return (
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<AdminDashboard />} />
           <Route path="/login" element={<AdminLogin />} />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute requiredRole={"admin"}>
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/videos"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute requiredRole={"admin"}>
                 <AdminVideos />
               </ProtectedRoute>
             }
@@ -33,7 +40,7 @@ function App() {
           <Route
             path="/video/:id"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute requiredRole={"admin"}>
                 <AdminVideo />
               </ProtectedRoute>
             }

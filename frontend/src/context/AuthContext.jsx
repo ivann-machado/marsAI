@@ -21,7 +21,21 @@ export const AuthProvider = ({ children }) => {
       const { storedUser, storedRole, storedExpiration, storedToken } =
         JSON.parse(stored);
 
-      if (Date.now() < storedExpiration) {
+      /* console.log(
+        "test",
+        Date.now(),
+        storedExpiration * 1000,
+        Date.now() < storedExpiration * 1000,
+      ); */
+
+      if (Date.now() < storedExpiration * 1000) {
+        console.log(
+          "ici",
+          storedUser,
+          storedRole,
+          storedExpiration,
+          storedToken,
+        );
         setUser(storedUser);
         setUserRole(storedRole);
         setSessionExpiration(storedExpiration);
@@ -30,8 +44,6 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem("auth");
       }
     }
-
-    console.log(user, userRole, token, sessionExpiration);
 
     // si on veut verifier
     /* fetch("/api/check-auth")
@@ -60,10 +72,15 @@ export const AuthProvider = ({ children }) => {
 
     localStorage.setItem(
       "auth",
-      JSON.stringify({ loggedInUser, loggedInRole, sessionExpiration, token }),
+      JSON.stringify({
+        storedUser: loggedInUser,
+        storedRole: loggedInRole,
+        storedExpiration: sessionExpiration,
+        storedToken: token,
+      }),
     );
 
-    console.log(localStorage.getItem("auth"));
+    //console.log(localStorage.getItem("auth"));
   };
 
   const logout = () => {

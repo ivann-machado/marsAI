@@ -4,11 +4,11 @@ import { Navigate } from "react-router-dom";
 const ProtectedRoute = ({ requiredRole, children }) => {
   const { user, userRole, login, logout } = useauth();
 
-  console.log("USer", user, requiredRole, userRole);
-  if (!user || (requiredRole === "superadmin" && userRole !== "superadmin")) {
+  if (!user || (userRole !== "superadmin" && requiredRole === "superadmin")) {
+    //console.log("protected ", user, userRole);
     return <Navigate to="/login" replace />;
   }
-
+  //console.log("protected ", user, userRole);
   return children;
 };
 

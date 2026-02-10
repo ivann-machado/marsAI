@@ -2,16 +2,17 @@ import { useState } from "react";
 import { useauth } from "../../context/AuthContext";
 import { useTranslation } from "react-i18next";
 import { jwtDecode } from "jwt-decode";
-
+import { useNavigate } from "react-router-dom";
 function AdminLogin() {
   const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { user, login } = useauth();
+  const navigate = useNavigate();
 
   const submitLogin = async () => {
     try {
-      console.log(email, password);
+      //console.log(email, password);
       const response = await fetch("http://localhost:3000/api/auth/login", {
         method: "POST",
         headers: {
@@ -32,8 +33,9 @@ function AdminLogin() {
           login_info.exp,
           loginResponse.token,
         );
-        //console.log(login_info);
-        //login();
+        if (login_info.role === "superadmin")
+          navigate("/", { replace: "true" });
+        else navigate("/videos", { replace: "true" });
       }
     } catch (err) {
       console.log(err);
