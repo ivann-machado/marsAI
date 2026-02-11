@@ -56,7 +56,7 @@ function Footer() {
         <div className="md:w-2/6">
           <form className="rounded-3xl border bg-gray-800 p-10">
             <h3 className="text-white text-3xl font-bold mb-7">
-              {t("stay_connected")}
+              {t("footer.stay_connected")}
             </h3>
             <input
               type="text"
