@@ -9,6 +9,7 @@ import videoRoutes from "./routes/videos.routes.js";
 import jwt from "jsonwebtoken";
 import newsletterRoutes from "./routes/newsletter.routes.js";
 import settingRoutes from "./routes/setting.routes.js";
+import reservationRoutes from "./routes/reservation.routes.js";
 
 const app = express();
 
