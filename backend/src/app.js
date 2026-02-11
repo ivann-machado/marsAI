@@ -8,7 +8,7 @@ import authRoutes from "./routes/auth.routes.js";
 import videoRoutes from "./routes/videos.routes.js";
 import jwt from "jsonwebtoken";
 import newsletterRoutes from "./routes/newsletter.routes.js";
-import reservationRoutes from "./routes/reservation.routes.js";
+import settingRoutes from "./routes/setting.routes.js";
 
 const app = express();
 
@@ -52,6 +52,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes);
 
 // Protected routes
+app.use("/api/settings", settingRoutes);
 
 // Global Error Handling Middleware
 app.use((err, req, res, next) => {
