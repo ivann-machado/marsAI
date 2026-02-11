@@ -260,5 +260,21 @@
         "producer": "Pierre Claude"
       }
     ]
+  },
+  "mockedFormData" : {
+    "title" : "",
+    "description" : "",
+    "url" : "",
+    "filename" : "",
+    "email" : "",
+    "producer" : "",
+    "producer_image" : "",
+    "linkedin_link" : "",
+    "youtube_link" : "",
+    "scenario_ai" : "",
+    "video_gen_ai" : "",
+    "sound_ai" : "",
+    "postprod_ai" : "",
+    "tags" : ""
   }
 }

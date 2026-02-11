@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 
 function UploadForm() {
   const { t } = useTranslation();
+  //variables des inputs
   const title = useRef(null);
   const description = useRef(null);
   const video = useRef(null);
@@ -17,6 +18,20 @@ function UploadForm() {
   const instagram = useRef(null);
   const linkedin = useRef(null);
   const youtube = useRef(null);
+  //Messages d'erreur
+  const [titleError, SetTitleError] = useState();
+  const [DescError, SetDescError] = useState("");
+  const [videoError, SetVideoError] = useState("");
+  const [imageError, SetImageError] = useState("");
+  const [scenarioAiError, SetScenarioAiError] = useState("");
+  const [videoAiError, SetVideoAiError] = useState("");
+  const [Error, SetError] = useState("");
+  const [Error, SetError] = useState("");
+  const [Error, SetError] = useState("");
+  const [Error, SetError] = useState("");
+  const [Error, SetError] = useState("");
+  const [Error, SecError] = useState("");
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -37,6 +52,26 @@ function UploadForm() {
     };
     console.log(data);
   };
+
+  function titleCheck() {
+    if (title.current.value.trim() === "") {
+      SetTitleError(t("upload_form.upload_message"));
+      console.log("Input is empty");
+    } else {
+      SetTitleError();
+      console.log(title.current.value);
+    }
+  }
+  function descCheck() {
+    if (description.current.value.trim() === "") {
+      SetDescError("Email invalide");
+      console.log("Input is empty");
+    } else {
+      SetTitleError("");
+      console.log(description.current.value);
+    }
+  }
+  const formSubmit = useState(false);
   return (
     <div className="flex justify-center bg-black pt-4 pb-4">
       <form
@@ -56,8 +91,12 @@ function UploadForm() {
                 name="title"
                 id="title"
                 ref={title}
+                onChange={() => {
+                  titleCheck();
+                }}
                 className="bg-gray-700 border border-gray-500 rounded-lg"
               />
+              <p className="text-white">{titleError}</p>
             </div>
             <div className="flex flex-col">
               <label htmlFor="description" className="text-white">
@@ -68,8 +107,12 @@ function UploadForm() {
                 name="description"
                 id="description"
                 ref={description}
+                onChange={() => {
+                  descCheck();
+                }}
                 className="bg-gray-700 border border-gray-500 rounded-lg"
               />
+              <p className="text-white">{DescError}</p>
             </div>
           </div>
           <div className=" flex flex-col md:flex-row md:justify-evenly md:p-2">
@@ -235,6 +278,9 @@ function UploadForm() {
         </div>
         <button
           type="submit"
+          name="submit_button"
+          id="submit_button"
+          onClick={(formSubmit) => true}
           className="bg-amber-300 p-2 rounded-lg md:max-w-5/10 md:hover:cursor-pointer"
         >
           {t("upload_form.submit_btn")} {">>"}{" "}
