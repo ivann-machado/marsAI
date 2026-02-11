@@ -14,9 +14,11 @@ import AdminSettings from "./pages/AdminSettings/AdminSettings.jsx";
 import AdminContent from "./pages/AdminContent/AdminContent.jsx";
 import AdminJury from "./pages/AdminJury/AdminJury.jsx";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.jsx";
+import JuryPage from "./pages/JuryPage/JuryPage.jsx";
 
 function App() {
   if (window.location.host.split(".")[0] == "admin")
+    /* PAGES ADMIN */
     return (
       <BrowserRouter>
         <Routes>
@@ -89,6 +91,7 @@ function App() {
       </BrowserRouter>
     );
   else
+    /* PAGES PUBLIQUES */
     return (
       <BrowserRouter>
         <Routes>
@@ -96,6 +99,7 @@ function App() {
           <Route path="/video/:videoId" element={<VideoDetail />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/participate" element={<UploadPage />} />
+          <Route path="/jury" element={<JuryPage />} />
         </Routes>
       </BrowserRouter>
     );

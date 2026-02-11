@@ -13,7 +13,7 @@ function Footer() {
           <p className="text-4xl font-bold text-white mb-7">
             MARS <span className="text-4xl text-indigo-500 font-bold">AI</span>
           </p>
-          <p className="text-gray-600 mb-7">{t("footer_message")}</p>
+          <p className="text-gray-600 mb-7">{t("footer.footer_message")}</p>
           <div className="flex">
             <img
               src={fbLogo}
@@ -34,27 +34,29 @@ function Footer() {
           </div>
         </div>
         <div className="md:w-1/6">
-          <h4 className="text-purple-600 mb-7">{t("navigation")}</h4>
+          <h4 className="text-purple-600 mb-7">{t("footer.navigation")}</h4>
           <ul>
-            <li className="mb-7 hover:underline">{t("gallery")}</li>
-            <li className="mb-7 hover:underline">{t("schedule")}</li>
-            <li className="mb-7 hover:underline">{t("top50")}</li>
-            <li className="mb-7 hover:underline">{t("tickets")}</li>
+            <li className="mb-7 hover:underline">{t("footer.gallery")}</li>
+            <li className="mb-7 hover:underline">{t("footer.schedule")}</li>
+            <li className="mb-7 hover:underline">{t("footer.top50")}</li>
+            <li className="mb-7 hover:underline">{t("footer.tickets")}</li>
           </ul>
         </div>
         <div className="md:w-1/6">
-          <h4 className="text-pink-600 mb-7">{t("legal")}</h4>
+          <h4 className="text-pink-600 mb-7">{t("footer.legal")}</h4>
           <ul>
-            <li className="mb-7 hover:underline">{t("partners")}</li>
-            <li className="mb-7 hover:underline">{t("faq")}</li>
-            <li className="mb-7 hover:underline">{t("contact")}</li>
-            <li className="mb-7 hover:underline">{t("legal_notices")}</li>
+            <li className="mb-7 hover:underline">{t("footer.partners")}</li>
+            <li className="mb-7 hover:underline">{t("footer.faq")}</li>
+            <li className="mb-7 hover:underline">{t("footer.contact")}</li>
+            <li className="mb-7 hover:underline">
+              {t("footer.legal_notices")}
+            </li>
           </ul>
         </div>
         <div className="md:w-2/6">
           <form className="rounded-3xl border bg-gray-800 p-10">
             <h3 className="text-white text-3xl font-bold mb-7">
-              {t("stay_connected")}
+              {t("footer.stay_connected")}
             </h3>
             <input
               type="text"
