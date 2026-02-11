@@ -20,7 +20,6 @@ app.use(express.json());
 app.use("/api/videos", videoRoutes);
 app.use("/api/newsletter", newsletterRoutes);
 app.use("/api/reservations", reservationRoutes);
-
 // Logging
 app.use(morgan("dev")); // Log requests
 
