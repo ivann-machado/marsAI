@@ -5,6 +5,11 @@ import {
 	deleteReservationById,
 } from "../models/reservation.model.js";
 
+/**
+ * Create a new reservation
+ * @param {import('express').Request} req - Express request object
+ * @param {import('express').Response} res - Express response object
+ */
 export const create = async (req, res) => {
 	try {
 		const { event_id, firstname, lastname, email } = req.body;
@@ -24,7 +29,7 @@ export const create = async (req, res) => {
 
 		res.status(201).json({
 			message: "Reservation created",
-			id: Number (id),
+			id: Number(id),
 		});
 	} catch (error) {
 		console.error("Create Reservation Error:", error);
@@ -32,6 +37,11 @@ export const create = async (req, res) => {
 	}
 };
 
+/**
+ * Get all reservations
+ * @param {import('express').Request} req - Express request object
+ * @param {import('express').Response} res - Express response object
+ */
 export const getAll = async (req, res) => {
 	try {
 		const reservations = await findAllReservations();
@@ -42,6 +52,11 @@ export const getAll = async (req, res) => {
 	}
 };
 
+/**
+ * Get a reservation by ID
+ * @param {import('express').Request} req - Express request object
+ * @param {import('express').Response} res - Express response object
+ */
 export const getById = async (req, res) => {
 	try {
 		const reservation = await findReservationById(req.params.id);
@@ -55,6 +70,11 @@ export const getById = async (req, res) => {
 	}
 };
 
+/**
+ * Delete a reservation by ID
+ * @param {import('express').Request} req - Express request object
+ * @param {import('express').Response} res - Express response object
+ */
 export const remove = async (req, res) => {
 	try {
 		await deleteReservationById(req.params.id);
