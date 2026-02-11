@@ -8,6 +8,7 @@ import authRoutes from "./routes/auth.routes.js";
 import videoRoutes from "./routes/videos.routes.js";
 import jwt from "jsonwebtoken";
 import newsletterRoutes from "./routes/newsletter.routes.js";
+import reservationRoutes from "./routes/reservation.routes.js";
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(cors(CORS_OPTIONS));
 app.use(express.json());
 app.use("/api/videos", videoRoutes);
 app.use("/api/newsletter", newsletterRoutes);
+app.use("/api/reservations", reservationRoutes);
 
 // Logging
 app.use(morgan("dev")); // Log requests
