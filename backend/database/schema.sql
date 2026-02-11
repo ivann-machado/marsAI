@@ -25,7 +25,7 @@ CREATE TABLE countries (
 INSERT INTO countries (id, name, iso_code) VALUES (1, 'France', 'FR');
 
 -- --------------------------------------------------------
--- Table: editions (Fixed typo from 'edtions')
+-- Table: editions
 -- --------------------------------------------------------
 CREATE TABLE editions (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -68,7 +68,7 @@ CREATE TABLE videos (
 ) ENGINE=InnoDB;
 
 -- --------------------------------------------------------
--- Table: settings (Normalized to schema.sql style)
+-- Table: settings
 -- --------------------------------------------------------
 CREATE TABLE settings (
     key_name VARCHAR(100) PRIMARY KEY,
