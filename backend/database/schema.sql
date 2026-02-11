@@ -144,7 +144,7 @@ CREATE TABLE reservations (
 -- Table: settings
 -- --------------------------------------------------------
 CREATE TABLE settings (
-    key_name VARCHAR(100) PRIMARY KEY,
+    name VARCHAR(100) PRIMARY KEY,
     value TEXT,
     -- description TEXT,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -154,7 +154,7 @@ CREATE TABLE settings (
 -- Table: content (Key-Value style for dynamic UI text)
 -- --------------------------------------------------------
 CREATE TABLE content (
-    key_name VARCHAR(100) PRIMARY KEY,
+    name VARCHAR(100) PRIMARY KEY,
     value TEXT NOT NULL,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
