@@ -6,7 +6,7 @@ const router = express.Router();
 
 /**
  * Setting routes
- * - GET  `/`  : get all settings (authenticated admins).
+ * - GET  `/`  : get all settings (super admin only).
  * - PUT  `/`  : update a setting (super admin only).
  */
 
