@@ -191,5 +191,10 @@
     "narrative_detail": "The force of the history beign told in 60 seconds",
     "impact": "Emotion and impact",
     "impact_detail": "The capacity of touching the viewer's emotions"
+  },
+
+  "sponsors_page": {
+    "official_sponsors": "Official Sponsors",
+    "website": "Website"
   }
 }
