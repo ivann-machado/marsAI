@@ -1,5 +1,4 @@
 import "./App.css";
-import Homepage from "./pages/homepage/Homepage.jsx";
 import HomepagePhase2 from "./pages/Homepage-Phase2/Homepage2.jsx";
 import VideoDetail from "./pages/VideoDetail/VideoDetail.jsx";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -104,6 +103,7 @@ function App() {
           <Route path="/participate" element={<UploadPage />} />
           <Route path="/jury" element={<JuryPage />} />
           <Route path="/partners" element={<SponsorsPage />} />
+          <Route path="/contact" element={<SponsorsPage />} />
         </Routes>
       </BrowserRouter>
     );
