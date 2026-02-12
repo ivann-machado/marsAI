@@ -258,5 +258,104 @@
         "producer": "Pierre Claude"
       }
     ]
-  }
+  },
+
+  "mockedSponsors": [
+    {
+      "id": 1,
+      "edition_id": 1,
+      "type": "official",
+      "name": "Official Sponsor",
+      "url": "sponsor.com",
+      "logo": "/vite.svg"
+    },
+    {
+      "id": 2,
+      "edition_id": 1,
+      "type": "official",
+      "name": "Official Sponsor",
+      "url": "sponsor.com",
+      "logo": "/vite.svg"
+    },
+    {
+      "id": 3,
+      "edition_id": 1,
+      "type": "official",
+      "name": "Official Sponsor",
+      "url": "sponsor.com",
+      "logo": "/vite.svg"
+    },
+    {
+      "id": 4,
+      "edition_id": 1,
+      "type": "media",
+      "name": "Media Sponsor",
+      "url": "sponsor.com",
+      "logo": "/vite.svg"
+    },
+    {
+      "id": 5,
+      "edition_id": 1,
+      "type": "media",
+      "name": "Media Sponsor",
+      "url": "sponsor.com",
+      "logo": "/vite.svg"
+    },
+    {
+      "id": 6,
+      "edition_id": 1,
+      "type": "media",
+      "name": "Media Sponsor",
+      "url": "sponsor.com",
+      "logo": "/vite.svg"
+    },
+    {
+      "id": 7,
+      "edition_id": 1,
+      "type": "technical",
+      "name": "Technical Sponsor",
+      "url": "sponsor.com",
+      "logo": "/vite.svg"
+    },
+    {
+      "id": 8,
+      "edition_id": 1,
+      "type": "technical",
+      "name": "Technical Sponsor",
+      "url": "sponsor.com",
+      "logo": "/vite.svg"
+    },
+    {
+      "id": 9,
+      "edition_id": 1,
+      "type": "other",
+      "name": "Other Sponsor",
+      "url": "sponsor.com",
+      "logo": "/vite.svg"
+    },
+    {
+      "id": 10,
+      "edition_id": 1,
+      "type": "other",
+      "name": "Other Sponsor",
+      "url": "sponsor.com",
+      "logo": "/vite.svg"
+    },
+    {
+      "id": 11,
+      "edition_id": 1,
+      "type": "other",
+      "name": "Other Sponsor",
+      "url": "sponsor.com",
+      "logo": "/vite.svg"
+    },
+    {
+      "id": 12,
+      "edition_id": 1,
+      "type": "other",
+      "name": "Other Sponsor",
+      "url": "sponsor.com",
+      "logo": "/vite.svg"
+    }
+  ]
 }
