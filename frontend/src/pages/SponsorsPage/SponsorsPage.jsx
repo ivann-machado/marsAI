@@ -29,13 +29,16 @@ function SponsorsPage() {
   if (!sponsors) return <p>Loading..</p>;
 
   return (
-    <div className="bg-gray-900 text-white">
-      PartnersPage: Official, Media, Technical, Other
-      <OfficialSponsors sponsors={sponsors} />
-      <MediaSponsors />
-      <TechnicalSponsors />
-      <OtherSponsors />
-    </div>
+    <>
+      <Header />
+      <div className="bg-gray-900 text-white">
+        <OfficialSponsors sponsors={sponsors} />
+        <MediaSponsors sponsors={sponsors} />
+        <TechnicalSponsors sponsors={sponsors} />
+        <OtherSponsors sponsors={sponsors} />
+      </div>
+      <Footer />
+    </>
   );
 }
 

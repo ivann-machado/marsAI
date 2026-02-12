@@ -194,7 +194,10 @@
   },
 
   "sponsors_page": {
-    "official_sponsors": "Official Sponsors",
+    "official_sponsors": "Official partners",
+    "media_sponsors": "Media partners",
+    "technical_sponsors": "Technical partners",
+    "other_sponsors": "Other sponsors",
     "website": "Website"
   }
 }
