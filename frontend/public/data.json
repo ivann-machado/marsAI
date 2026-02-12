@@ -1,11 +1,10 @@
 {
-    "mockedVideo" : {
+  "mockedVideo": {
     "src": "https://www.youtube.com/embed/_cPdvX-0kRA?si=MP3jAxInyj04TUlx",
     "title": "Test Video",
     "producer": "John Doe",
     "producer_image": "../../assets/producer_image.png",
-    "description":
-      "Dans une ville côtière battue par les tempêtes, Élias, un ancien ingénieur radio marqué par la disparition inexpliquée de sa femme, vit reclus dans un phare abandonné. Une nuit, il capte sur une fréquence interdite un message codé… prononcé avec la voix exacte de sa femme, pourtant déclarée morte depuis dix ans.",
+    "description": "Dans une ville côtière battue par les tempêtes, Élias, un ancien ingénieur radio marqué par la disparition inexpliquée de sa femme, vit reclus dans un phare abandonné. Une nuit, il capte sur une fréquence interdite un message codé… prononcé avec la voix exacte de sa femme, pourtant déclarée morte depuis dix ans.",
     "cover_image": "/vite.svg",
     "country_name": "France",
     "country_iso": "FR",
@@ -17,7 +16,7 @@
     "postprod_ai": ""
   },
 
-  "mockedReview" : {
+  "mockedReview": {
     "id": 1,
     "admin_id": 1,
     "video_id": 2,
@@ -25,15 +24,14 @@
     "grade": 0,
     "status": "assigned"
   },
-  "mockedVideosQueue" : [
+  "mockedVideosQueue": [
     {
       "id": 1,
       "src": "https://www.youtube.com/embed/_cPdvX-0kRA?si=MP3jAxInyj04TUlx",
       "title": "Test Video",
       "producer": "John Doe",
       "producer_image": "../src/assets/producer_image.png",
-      "description":
-        "Dans une ville côtière battue par les tempêtes, Élias, un ancien ingénieur radio marqué par la disparition inexpliquée de sa femme, vit reclus dans un phare abandonné. Une nuit, il capte sur une fréquence interdite un message codé… prononcé avec la voix exacte de sa femme, pourtant déclarée morte depuis dix ans.",
+      "description": "Dans une ville côtière battue par les tempêtes, Élias, un ancien ingénieur radio marqué par la disparition inexpliquée de sa femme, vit reclus dans un phare abandonné. Une nuit, il capte sur une fréquence interdite un message codé… prononcé avec la voix exacte de sa femme, pourtant déclarée morte depuis dix ans.",
       "cover_image": "/vite.svg",
       "country_name": "France",
       "country_iso": "FR",
@@ -51,8 +49,7 @@
       "title": "Test Video",
       "producer": "John Doe",
       "producer_image": "../src/assets/producer_image.png",
-      "description":
-        "Dans une ville côtière battue par les tempêtes, Élias, un ancien ingénieur radio marqué par la disparition inexpliquée de sa femme, vit reclus dans un phare abandonné. Une nuit, il capte sur une fréquence interdite un message codé… prononcé avec la voix exacte de sa femme, pourtant déclarée morte depuis dix ans.",
+      "description": "Dans une ville côtière battue par les tempêtes, Élias, un ancien ingénieur radio marqué par la disparition inexpliquée de sa femme, vit reclus dans un phare abandonné. Une nuit, il capte sur une fréquence interdite un message codé… prononcé avec la voix exacte de sa femme, pourtant déclarée morte depuis dix ans.",
       "cover_image": "/vite.svg",
       "country_name": "France",
       "country_iso": "FR",
@@ -70,8 +67,7 @@
       "title": "Test Video",
       "producer": "John Doe",
       "producer_image": "../src/assets/producer_image.png",
-      "description":
-        "Dans une ville côtière battue par les tempêtes, Élias, un ancien ingénieur radio marqué par la disparition inexpliquée de sa femme, vit reclus dans un phare abandonné. Une nuit, il capte sur une fréquence interdite un message codé… prononcé avec la voix exacte de sa femme, pourtant déclarée morte depuis dix ans.",
+      "description": "Dans une ville côtière battue par les tempêtes, Élias, un ancien ingénieur radio marqué par la disparition inexpliquée de sa femme, vit reclus dans un phare abandonné. Une nuit, il capte sur une fréquence interdite un message codé… prononcé avec la voix exacte de sa femme, pourtant déclarée morte depuis dix ans.",
       "cover_image": "/vite.svg",
       "country_name": "France",
       "country_iso": "FR",
@@ -85,153 +81,155 @@
     }
   ],
 
-  "mockedUsers" : [
+  "mockedUsers": [
     {
-      "id" : 1,
-      "login" : "Admin",
-      "role" : "Admin"
+      "id": 1,
+      "login": "Admin",
+      "role": "Admin"
     },
     {
-      "id" : 2,
-      "login" : "Admin2",
-      "role" : "Admin"
+      "id": 2,
+      "login": "Admin2",
+      "role": "Admin"
     },
     {
-      "id" : 3,
-      "login" : "Admin3",
-      "role" : "SuperAdmin"
+      "id": 3,
+      "login": "Admin3",
+      "role": "SuperAdmin"
     },
     {
-      "id" : 4,
-      "login" : "Admin4",
-      "role" : "Admin"
+      "id": 4,
+      "login": "Admin4",
+      "role": "Admin"
     }
   ],
-  "mockedEvents" : [
+  "mockedEvents": [
     {
-      "id" : 1,
-      "type" : "atelier",
-      "name" : "IA et vous",
-      "url" : "/atelier/1",
-      "logo" : "/vite.svg",
-      "date" : "2026/10/10",
-      "info" : "fgzgazegz",
-      "place" : "Amphi",
+      "id": 1,
+      "type": "atelier",
+      "name": "IA et vous",
+      "url": "/atelier/1",
+      "logo": "/vite.svg",
+      "date": "2026/10/10",
+      "info": "fgzgazegz",
+      "place": "Amphi",
       "duration": 60,
       "cover_image": "/background.jpg"
     },
     {
-      "id" : 2,
-      "type" : "atelier",
-      "name" : "IA generative",
-      "url" : "/atelier/2",
-      "logo" : "/vite.svg",
-      "date" : "2026/10/11",
-      "info" : "fgzgazegz",
-      "place" : "Amphi",
+      "id": 2,
+      "type": "atelier",
+      "name": "IA generative",
+      "url": "/atelier/2",
+      "logo": "/vite.svg",
+      "date": "2026/10/11",
+      "info": "fgzgazegz",
+      "place": "Amphi",
       "duration": 60,
       "cover_image": "/background.jpg"
     },
     {
-      "id" : 3,
-      "type" : "atelier",
-      "name" : "Les dangers de l'IA",
-      "url" : "/atelier/3",
-      "logo" : "/vite.svg",
-      "date" : "2026/10/12",
-      "info" : "fgzgazegz",
-      "place" : "Amphi",
+      "id": 3,
+      "type": "atelier",
+      "name": "Les dangers de l'IA",
+      "url": "/atelier/3",
+      "logo": "/vite.svg",
+      "date": "2026/10/12",
+      "info": "fgzgazegz",
+      "place": "Amphi",
       "duration": 60,
       "cover_image": "/background.jpg"
     }
   ],
 
-    "mockedSettings" : [
-      {
-        "name" : "phase",
-        "value" : 1
-      },
-      {
-        "name" : "title_main_page",
-        "value" : "MarsAI"
-      },
-      {
-        "name" : "primary_color",
-        "value" : "#FFFFFF"
-      },
-      {
-        "name" : "secondary_color",
-        "value" : "#0144DC"
-      }
-    ],
-
-    "mockedSettings2" : 
+  "mockedSettings": [
     {
-      "phase" : 1,
-      "title_main_page" : "MarsAI",
-      "primary_color" : "#FFFFFF",
-      "secondary_color" : "#0144DC"
+      "name": "phase",
+      "value": 1
     },
-    "event_participants" : [
-      { 
-        "id" : 1,
-        "firstname" : "a",
-        "lastname" : "b",
-        "email" : "tralalal"
-      },
-       { 
-        "id" : 2,
-        "firstname" : "a",
-        "lastname" : "b",
-        "email" : "tralalal"
-      },
-      { 
-        "id" : 3,
-        "firstname" : "a",
-        "lastname" : "b",
-        "email" : "tralalal"
-      }
-    ],
-    "mockedContent" : 
     {
-      "main_title" : "MarsAI",
-      "homepage_presentation" : "Presentation mars_ai",
-      "festival_info" : "un truc trop long pout tester xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+      "name": "title_main_page",
+      "value": "MarsAI"
     },
+    {
+      "name": "primary_color",
+      "value": "#FFFFFF"
+    },
+    {
+      "name": "secondary_color",
+      "value": "#0144DC"
+    }
+  ],
 
-    "mockedJury" : [
-      {
-        "id" : 1,
-        "edition_id" : 2026,
-        "name" : "Pierre Gerard",
-        "bio" : "Réalisateur",
-        "photo" : "/producer_image.png"
-      },
-      {
-        "id" : 2,
-        "edition_id" : 2026,
-        "name" : "John Doe",
-        "bio" : "Journaliste",
-        "photo" : "/producer_image.png"
-      },
-      {
-        "id" : 3,
-        "edition_id" : 2026,
-        "name" : "John Doe",
-        "bio" : "Journaliste",
-        "photo" : "/producer_image.png"
-      },
-      {
-        "id" : 4,
-        "edition_id" : 2026,
-        "name" : "John Doe",
-        "bio" : "Journaliste",
-        "photo" : "/producer_image.png"
-      }
-    ],
+  "mockedSettings2": {
+    "phase": 1,
+    "title_main_page": "MarsAI",
+    "primary_color": "#FFFFFF",
+    "secondary_color": "#0144DC"
+  },
+  "event_participants": [
+    {
+      "id": 1,
+      "firstname": "a",
+      "lastname": "b",
+      "email": "tralalal"
+    },
+    {
+      "id": 2,
+      "firstname": "a",
+      "lastname": "b",
+      "email": "tralalal"
+    },
+    {
+      "id": 3,
+      "firstname": "a",
+      "lastname": "b",
+      "email": "tralalal"
+    }
+  ],
+  "mockedContent": {
+    "main_title": "MarsAI",
+    "homepage_presentation": "Presentation mars_ai",
+    "festival_info": "un truc trop long pout tester xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  },
 
-    "mockedData" : {
-    "phase" : 1,
+  "mockedJury": [
+    {
+      "id": 1,
+      "edition_id": 2026,
+      "name": "Pierre Gerard",
+      "bio": "Réalisateur du grand film Titanic, il aime nages avec les requins et aime les glaces au vanille. Il a aussi une grade passion pour les velos",
+      "photo": "/producer_image.png",
+      "profession": "Président du Jury"
+    },
+    {
+      "id": 2,
+      "edition_id": 2026,
+      "name": "John Doe",
+      "bio": "Journaliste",
+      "photo": "/producer_image.png",
+      "profession": "Journaliste"
+    },
+    {
+      "id": 3,
+      "edition_id": 2026,
+      "name": "John Doe",
+      "bio": "Journaliste",
+      "photo": "/producer_image.png",
+      "profession": "Journaliste"
+    },
+    {
+      "id": 4,
+      "edition_id": 2026,
+      "name": "John Doe",
+      "bio": "Journaliste",
+      "photo": "/producer_image.png",
+      "profession": "Activiste"
+    }
+  ],
+
+  "mockedData": {
+    "phase": 1,
     "videos_total": 456,
     "videos_evaluated": 300,
     "countries": 56,
@@ -260,5 +258,104 @@
         "producer": "Pierre Claude"
       }
     ]
-  }
+  },
+
+  "mockedSponsors": [
+    {
+      "id": 1,
+      "edition_id": 1,
+      "type": "official",
+      "name": "Official Sponsor",
+      "url": "sponsor.com",
+      "logo": "/vite.svg"
+    },
+    {
+      "id": 2,
+      "edition_id": 1,
+      "type": "official",
+      "name": "Official Sponsor",
+      "url": "sponsor.com",
+      "logo": "/vite.svg"
+    },
+    {
+      "id": 3,
+      "edition_id": 1,
+      "type": "official",
+      "name": "Official Sponsor",
+      "url": "sponsor.com",
+      "logo": "/vite.svg"
+    },
+    {
+      "id": 4,
+      "edition_id": 1,
+      "type": "media",
+      "name": "Media Sponsor",
+      "url": "sponsor.com",
+      "logo": "/vite.svg"
+    },
+    {
+      "id": 5,
+      "edition_id": 1,
+      "type": "media",
+      "name": "Media Sponsor",
+      "url": "sponsor.com",
+      "logo": "/vite.svg"
+    },
+    {
+      "id": 6,
+      "edition_id": 1,
+      "type": "media",
+      "name": "Media Sponsor",
+      "url": "sponsor.com",
+      "logo": "/vite.svg"
+    },
+    {
+      "id": 7,
+      "edition_id": 1,
+      "type": "technical",
+      "name": "Technical Sponsor",
+      "url": "sponsor.com",
+      "logo": "/vite.svg"
+    },
+    {
+      "id": 8,
+      "edition_id": 1,
+      "type": "technical",
+      "name": "Technical Sponsor",
+      "url": "sponsor.com",
+      "logo": "/vite.svg"
+    },
+    {
+      "id": 9,
+      "edition_id": 1,
+      "type": "other",
+      "name": "Other Sponsor",
+      "url": "sponsor.com",
+      "logo": "/vite.svg"
+    },
+    {
+      "id": 10,
+      "edition_id": 1,
+      "type": "other",
+      "name": "Other Sponsor",
+      "url": "sponsor.com",
+      "logo": "/vite.svg"
+    },
+    {
+      "id": 11,
+      "edition_id": 1,
+      "type": "other",
+      "name": "Other Sponsor",
+      "url": "sponsor.com",
+      "logo": "/vite.svg"
+    },
+    {
+      "id": 12,
+      "edition_id": 1,
+      "type": "other",
+      "name": "Other Sponsor",
+      "url": "sponsor.com",
+      "logo": "/vite.svg"
+    }
+  ]
 }

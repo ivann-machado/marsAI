@@ -25,7 +25,7 @@ CREATE TABLE countries (
 INSERT INTO countries (id, name, iso_code) VALUES (1, 'France', 'FR');
 
 -- --------------------------------------------------------
--- Table: editions (Fixed typo from 'edtions')
+-- Table: editions
 -- --------------------------------------------------------
 CREATE TABLE editions (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -59,8 +59,15 @@ CREATE TABLE videos (
     email VARCHAR(50) NOT NULL,
     cover_image VARCHAR(100) NOT NULL,
     verified TINYINT(1) DEFAULT 0,
-    status ENUM('unverified','verified', 'denied','selected','grand_prix_1','grand_prix_2','grand_prix_3') NOT NULL DEFAULT 'unverified',
+    status ENUM('unverified','verified', 'denied','selected') NOT NULL DEFAULT 'unverified',
     producer VARCHAR(50),
+    producer_image VARCHAR(100),
+    linkedin_link VARCHAR(50),
+    youtube_link VARCHAR(50),
+    scenario_ai VARCHAR(50),
+    video_gen_ai VARCHAR(50),
+    sound_ai VARCHAR(50),
+    postprod_ai VARCHAR(50),
     tags VARCHAR(100),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (edition_id) REFERENCES editions(id) ON DELETE NO ACTION,
@@ -68,10 +75,76 @@ CREATE TABLE videos (
 ) ENGINE=InnoDB;
 
 -- --------------------------------------------------------
--- Table: settings (Normalized to schema.sql style)
+-- Table: subtitles
+-- --------------------------------------------------------
+CREATE TABLE subtitles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    video_id INT NOT NULL,
+    language ENUM('french','english') NOT NULL,
+    filename VARCHAR(100) NOT NULL,
+    FOREIGN KEY (video_id) REFERENCES videos(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- --------------------------------------------------------
+-- Table: prized_videos
+-- --------------------------------------------------------
+CREATE TABLE prized_videos (
+    video_id INT PRIMARY KEY,
+    prix VARCHAR(50) NOT NULL,
+    FOREIGN KEY (video_id) REFERENCES videos(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- --------------------------------------------------------
+-- Table: jury
+-- --------------------------------------------------------
+CREATE TABLE jury (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    edition_id INT NOT NULL,
+    name VARCHAR(50) NOT NULL,
+    bio VARCHAR(200) NOT NULL,
+    photo VARCHAR(50) NOT NULL,
+    profession VARCHAR(50) NOT NULL,
+    FOREIGN KEY (edition_id) REFERENCES editions(id)
+) ENGINE=InnoDB;
+
+-- --------------------------------------------------------
+-- Table: sponsors
+-- --------------------------------------------------------
+CREATE TABLE sponsors (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    edition_id INT NOT NULL,
+    type ENUM('official','media','technical','other') NOT NULL,
+    name VARCHAR(50) NOT NULL,
+    url VARCHAR(100) NOT NULL,
+    logo VARCHAR(100) NOT NULL,
+    FOREIGN KEY (edition_id) REFERENCES editions(id)
+) ENGINE=InnoDB;
+
+-- --------------------------------------------------------
+-- Table: newsletters
+-- --------------------------------------------------------
+CREATE TABLE newsletters (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(50) NOT NULL UNIQUE
+) ENGINE=InnoDB;
+
+-- --------------------------------------------------------
+-- Table: reservations
+-- --------------------------------------------------------
+CREATE TABLE reservations (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    event_id INT NOT NULL,
+    firstname VARCHAR(50) NOT NULL,
+    lastname VARCHAR(50) NOT NULL,
+    email VARCHAR(50) NOT NULL,
+    FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- --------------------------------------------------------
+-- Table: settings
 -- --------------------------------------------------------
 CREATE TABLE settings (
-    key_name VARCHAR(100) PRIMARY KEY,
+    name VARCHAR(100) PRIMARY KEY,
     value TEXT,
     -- description TEXT,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -81,7 +154,7 @@ CREATE TABLE settings (
 -- Table: content (Key-Value style for dynamic UI text)
 -- --------------------------------------------------------
 CREATE TABLE content (
-    key_name VARCHAR(100) PRIMARY KEY,
+    name VARCHAR(100) PRIMARY KEY,
     value TEXT NOT NULL,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
