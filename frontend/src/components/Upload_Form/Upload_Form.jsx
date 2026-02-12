@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import viteLogo from "/vite.svg";
 import reactLogo from "../../assets/react.svg";
 import { useTranslation } from "react-i18next";
+import "../Upload_Form/upload.css";
 
 function UploadForm() {
   const { t } = useTranslation();
@@ -52,7 +53,7 @@ function UploadForm() {
     };
     console.log(data);
   };
-
+  //Vérification des champs du formulaire
   function titleCheck() {
     if (title.current.value.trim() === "") {
       SetTitleError(t("upload_form.upload_message"));
@@ -163,14 +164,14 @@ function UploadForm() {
   }
   const formSubmit = useState(false);
   return (
-    <div className="flex justify-center bg-black pt-4 pb-4">
+    <div className="flex justify-center bg-[#050505] pt-4 pb-4">
       <form
         onSubmit={handleSubmit}
-        className="bg-gray-800 shadow-[0px_0px_10px_2px] shadow-blue-600/75 w-9/10 rounded-md flex flex-col items-center gap-2 pt-2 pb-2"
+        className="bg-[#1B1B1B] shadow-[0px_0px_10px_2px] shadow-blue-600/75 w-9/10 rounded-4xl flex flex-col items-center gap-2 pt-2 pb-2"
       >
         <h3 className="text-white">{t("upload_form.upload_message")} !</h3>
         <div className=" flex flex-col gap-2 p-2 w-9/10">
-          <p className="text-purple-400">{t("upload_form.global_infos")}</p>
+          <p className="text-[#C27AFF]">{t("upload_form.global_infos")}</p>
           <div className=" flex flex-col md:flex-row md:justify-evenly md:p-2">
             <div className="flex flex-col">
               <label htmlFor="title" className="text-white">
@@ -184,7 +185,7 @@ function UploadForm() {
                 onChange={() => {
                   titleCheck();
                 }}
-                className="bg-gray-700 border border-gray-500 rounded-lg"
+                className="bg-[#626262]/50 border-2 border-[#F2F2F2]/20 rounded-lg md:w-100"
               />
               <p className="text-white">{titleError}</p>
             </div>
@@ -200,7 +201,7 @@ function UploadForm() {
                 onChange={() => {
                   descCheck();
                 }}
-                className="bg-gray-700 border border-gray-500 rounded-lg"
+                className="bg-[#626262]/50 border border-[#F2F2F2]/20 rounded-lg md:w-100"
               />
               <p className="text-white">{descError}</p>
             </div>
@@ -382,8 +383,8 @@ function UploadForm() {
             </div>
           </div>
         </div>
-        <div className=" flex flex-col gap-2 p-2 w-9/10 md:flex-row md:justify-evenly md:p-2 outline outline-red-500">
-          <div className="flex flex-row outline md:w-4/10 outline-red-500">
+        <div className=" flex flex-col gap-2 p-2 w-9/10 md:flex-row md:justify-evenly md:p-2">
+          <div className="flex flex-row md:w-4/10">
             <input
               type="checkbox"
               name=""
@@ -394,7 +395,7 @@ function UploadForm() {
               {t("upload_form.majority_certification")}
             </label>
           </div>
-          <div className="flex flex-row justify-evenly md:w-4/10 outline outline-red-500">
+          <div className="flex flex-row justify-evenly md:w-4/10">
             <input
               type="checkbox"
               name="right_givaway"
@@ -411,7 +412,7 @@ function UploadForm() {
           name="submit_button"
           id="submit_button"
           onClick={(formSubmit) => true}
-          className="bg-amber-300 p-2 rounded-lg md:max-w-5/10 md:hover:cursor-pointer"
+          className="bg-linear-to-b from-[#fbc700] via-[#f0b100] to-[#d08700] p-2 rounded-lg md:max-w-5/10 md:hover:cursor-pointer"
         >
           {t("upload_form.submit_btn")} {">>"}{" "}
         </button>
