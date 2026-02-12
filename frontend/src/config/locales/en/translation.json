@@ -199,5 +199,13 @@
     "gallery_load_more": "LOAD MORE FILMS",
     "gallery_watch": "WATCH FILM",
     "gallery_share": "SHARE"
-}
+},
+"page_contact": {
+    "contact_badge": "GET IN TOUCH",
+    "contact_title": "CONTACT US",
+    "contact_description": "Have questions or want to get involved? Reach out to us!",
+    "contact_email": "Email",
+    "contact_message": "Your Message",
+    "contact_submit": "Send Message"
+} 
 }

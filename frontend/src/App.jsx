@@ -12,6 +12,7 @@ import AdminUsers from "./pages/AdminUsers/AdminUsers.jsx";
 import AdminEvents from "./pages/AdminEvents/AdminEvents.jsx";
 import AdminSettings from "./pages/AdminSettings/AdminSettings.jsx";
 import AdminContent from "./pages/AdminContent/AdminContent.jsx";
+import Contact from "./pages/Contact/contact.jsx";
 
 function App() {
   if (window.location.host.split(".")[0] == "admin")
@@ -37,6 +38,7 @@ function App() {
           <Route path="/video/:videoId" element={<VideoDetail />} />
           <Route path="/gallery" element={<Gallery />} />
         <Route path="/participate" element={<UploadPage />} />
+        <Route path="/Contact" element={<Contact />} />
         </Routes>
       </BrowserRouter>
     );
