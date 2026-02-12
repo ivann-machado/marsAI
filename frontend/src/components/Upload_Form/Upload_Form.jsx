@@ -56,7 +56,7 @@ function UploadForm() {
   //Vérification des champs du formulaire
   function titleCheck() {
     if (title.current.value.trim() === "") {
-      SetTitleError(t("upload_form.upload_message"));
+      SetTitleError("Champ vide");
       console.log("Input is empty");
     } else {
       SetTitleError();
@@ -167,14 +167,16 @@ function UploadForm() {
     <div className="flex justify-center bg-[#050505] pt-4 pb-4">
       <form
         onSubmit={handleSubmit}
-        className="bg-[#1B1B1B] shadow-[0px_0px_10px_2px] shadow-blue-600/75 w-9/10 rounded-4xl flex flex-col items-center gap-2 pt-2 pb-2"
+        className="bg-[#1B1B1B] shadow-[0px_0px_10px_2px] shadow-blue-600/75 w-9/10 rounded-4xl flex flex-col items-center gap-2 pt-4 pb-4"
       >
         <h3 className="text-white">{t("upload_form.upload_message")} !</h3>
         <div className=" flex flex-col gap-2 p-2 w-9/10">
-          <p className="text-[#C27AFF]">{t("upload_form.global_infos")}</p>
-          <div className=" flex flex-col md:flex-row md:justify-evenly md:p-2">
-            <div className="flex flex-col">
-              <label htmlFor="title" className="text-white">
+          <p className="text-[#C27AFF] text-2xl">
+            {t("upload_form.global_infos")}
+          </p>
+          <div className="flex flex-col md:flex-row md:justify-evenly md:p-4 md:gap-10 md:w-full">
+            <div className="flex flex-col md:w-full md:max-w-150">
+              <label htmlFor="title" className="text-white text-lg">
                 {t("upload_form.title")} :
               </label>
               <input
@@ -185,11 +187,11 @@ function UploadForm() {
                 onChange={() => {
                   titleCheck();
                 }}
-                className="bg-[#626262]/50 border-2 border-[#F2F2F2]/20 rounded-lg md:w-100"
+                className="bg-gray-900 text-white border-2 border-[#F2F2F2]/20 rounded-lg w-full h-10 p-1"
               />
               <p className="text-white">{titleError}</p>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col md:w-full md:max-w-150">
               <label htmlFor="description" className="text-white">
                 {t("upload_form.desc")} :
               </label>
@@ -201,13 +203,13 @@ function UploadForm() {
                 onChange={() => {
                   descCheck();
                 }}
-                className="bg-[#626262]/50 border border-[#F2F2F2]/20 rounded-lg md:w-100"
+                className="bg-gray-900 text-white border-2 border-[#F2F2F2]/20 rounded-lg w-full h-10 p-1"
               />
               <p className="text-white">{descError}</p>
             </div>
           </div>
-          <div className=" flex flex-col md:flex-row md:justify-evenly md:p-2">
-            <div className="flex flex-col md:max-w-4/10">
+          <div className="flex flex-col md:flex-row md:justify-evenly md:p-4 md:gap-10 md:w-full">
+            <div className="flex flex-col md:w-full md:max-w-150">
               <label htmlFor="video" className="text-white">
                 {t("upload_form.video")} :
               </label>
@@ -219,11 +221,11 @@ function UploadForm() {
                 onChange={() => {
                   videoCheck();
                 }}
-                className="bg-gray-700 border border-gray-500 rounded-lg"
+                className="bg-gray-900 text-white border-2 border-[#F2F2F2]/20 rounded-lg w-full h-10 p-1"
               />
               <p className="text-white">{videoError}</p>
             </div>
-            <div className="flex flex-col md:max-w-4/10">
+            <div className="flex flex-col md:w-full md:max-w-150">
               <label htmlFor="image" className="text-white">
                 {t("upload_form.image")} :
               </label>
@@ -235,16 +237,18 @@ function UploadForm() {
                 onChange={() => {
                   imageCheck();
                 }}
-                className="bg-gray-700 border border-gray-500 rounded-lg"
+                className="bg-gray-900 text-white border-2 border-[#F2F2F2]/20 rounded-lg w-full h-10 p-1"
               />
               <p className="text-white">{imageError}</p>
             </div>
           </div>
         </div>
         <div className=" flex flex-col gap-2 p-2 w-9/10">
-          <p className="text-purple-400">{t("upload_form.production")}</p>
-          <div className=" flex flex-col md:flex-row md:justify-evenly md:p-2">
-            <div className="flex flex-col">
+          <p className="text-[#C27AFF] text-2xl">
+            {t("upload_form.production")}
+          </p>
+          <div className=" flex flex-col md:flex-row md:justify-evenly md:p-4 md:gap-10 md:w-full">
+            <div className="flex flex-col md:w-full md:max-w-150">
               <label htmlFor="scenario_ai" className="text-white">
                 {t("upload_form.scenario_ai")} :
               </label>
@@ -256,11 +260,11 @@ function UploadForm() {
                 onChange={() => {
                   scenarioAiCheck();
                 }}
-                className="bg-gray-700 border border-gray-500 rounded-lg"
+                className="bg-gray-900 text-white border-2 border-[#F2F2F2]/20 rounded-lg w-full h-10 p-1"
               />
               <p className="text-white">{scenarioAiError}</p>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col md:w-full md:max-w-150">
               <label htmlFor="video_ai" className="text-white">
                 {t("upload_form.video_ai")} :
               </label>
@@ -272,13 +276,13 @@ function UploadForm() {
                 onChange={() => {
                   videoAiCheck();
                 }}
-                className="bg-gray-700 border border-gray-500 rounded-lg"
+                className="bg-gray-900 text-white border-2 border-[#F2F2F2]/20 rounded-lg w-full h-10 p-1"
               />
               <p className="text-white">{videoAiError}</p>
             </div>
           </div>
-          <div className=" flex flex-col md:flex-row md:justify-evenly md:p-2">
-            <div className="flex flex-col">
+          <div className="flex flex-col md:flex-row md:justify-evenly md:p-4 md:gap-10 md:w-full">
+            <div className="flex flex-col md:w-full md:max-w-150">
               <label htmlFor="sound_ai" className="text-white">
                 {t("upload_form.sound_ai")} :
               </label>
@@ -290,11 +294,11 @@ function UploadForm() {
                 onChange={() => {
                   soundAiCheck();
                 }}
-                className="bg-gray-700 border border-gray-500 rounded-lg"
+                className="bg-gray-900 text-white border-2 border-[#F2F2F2]/20 rounded-lg w-full h-10 p-1"
               />
               <p className="text-white">{soundAiError}</p>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col md:w-full md:max-w-150">
               <label htmlFor="post_prod_ai" className="text-white">
                 {t("upload_form.post_prod_ai")} :
               </label>
@@ -306,16 +310,18 @@ function UploadForm() {
                 onChange={() => {
                   postProdAiCheck();
                 }}
-                className="bg-gray-700 border border-gray-500 rounded-lg"
+                className="bg-gray-900 text-white border-2 border-[#F2F2F2]/20 rounded-lg w-full h-10 p-1"
               />
               <p className="text-white">{postProdAiError}</p>
             </div>
           </div>
         </div>
         <div className=" flex flex-col gap-2 p-2 w-9/10">
-          <p className="text-purple-400">{t("upload_form.more_info")}</p>
-          <div className=" flex flex-col md:flex-row md:justify-evenly md:p-2">
-            <div className="flex flex-col">
+          <p className="text-[#C27AFF] text-2xl">
+            {t("upload_form.more_info")}
+          </p>
+          <div className="flex flex-col md:flex-row md:justify-evenly md:p-4 md:gap-10 md:w-full">
+            <div className="flex flex-col md:w-full md:max-w-150">
               <label htmlFor="more_info" className="text-white">
                 {t("upload_form.producer")} :
               </label>
@@ -327,11 +333,11 @@ function UploadForm() {
                 onChange={() => {
                   moreInfoCheck();
                 }}
-                className="bg-gray-700 border border-gray-500 rounded-lg"
+                className="bg-gray-900 text-white border-2 border-[#F2F2F2]/20 rounded-lg w-full h-10 p-1"
               />
               <p className="text-white">{moreInfoError}</p>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col md:w-full md:max-w-150">
               <label htmlFor="instagram" className="text-white">
                 Instagram :
               </label>
@@ -343,13 +349,13 @@ function UploadForm() {
                 onChange={() => {
                   instagramCheck();
                 }}
-                className="bg-gray-700 border border-gray-500 rounded-lg"
+                className="bg-gray-900 text-white border-2 border-[#F2F2F2]/20 rounded-lg w-full h-10 p-1"
               />
               <p className="text-white">{instagramError}</p>
             </div>
           </div>
-          <div className=" flex flex-col md:flex-row md:justify-evenly md:p-2">
-            <div className="flex flex-col">
+          <div className="flex flex-col md:flex-row md:justify-evenly md:p-4 md:gap-10 md:w-full">
+            <div className="flex flex-col md:w-full md:max-w-150">
               <label htmlFor="linkedin" className="text-white">
                 Linkedin :
               </label>
@@ -361,11 +367,11 @@ function UploadForm() {
                 onChange={() => {
                   linkedinCheck();
                 }}
-                className="bg-gray-700 border border-gray-500 rounded-lg"
+                className="bg-gray-900 text-white border-2 border-[#F2F2F2]/20 rounded-lg w-full h-10 p-1"
               />
               <p className="text-white">{linkedinError}</p>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col md:w-full md:max-w-150">
               <label htmlFor="youtube" className="text-white">
                 Youtube :
               </label>
@@ -377,7 +383,7 @@ function UploadForm() {
                 onChange={() => {
                   youtubeCheck();
                 }}
-                className="bg-gray-700 border border-gray-500 rounded-lg"
+                className="bg-gray-900 text-white border-2 border-[#F2F2F2]/20 rounded-lg w-full h-10 p-1"
               />
               <p className="text-white">{youtubeError}</p>
             </div>
