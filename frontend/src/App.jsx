@@ -15,6 +15,7 @@ import AdminContent from "./pages/AdminContent/AdminContent.jsx";
 import AdminJury from "./pages/AdminJury/AdminJury.jsx";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.jsx";
 import JuryPage from "./pages/JuryPage/JuryPage.jsx";
+import SponsorsPage from "./pages/SponsorsPage/SponsorsPage.jsx";
 
 function App() {
   if (window.location.host.split(".")[0] == "admin")
@@ -100,6 +101,7 @@ function App() {
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/participate" element={<UploadPage />} />
           <Route path="/jury" element={<JuryPage />} />
+          <Route path="/sponsors" element={<SponsorsPage />} />
         </Routes>
       </BrowserRouter>
     );
