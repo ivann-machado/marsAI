@@ -10,6 +10,7 @@ import jwt from "jsonwebtoken";
 import newsletterRoutes from "./routes/newsletter.routes.js";
 import settingRoutes from "./routes/setting.routes.js";
 import reservationRoutes from "./routes/reservation.routes.js";
+import contentRoutes from "./routes/content.routes.js";
 
 const app = express();
 
@@ -54,6 +55,7 @@ app.use("/api/auth", authRoutes);
 
 // Protected routes
 app.use("/api/settings", settingRoutes);
+app.use("/api/content", contentRoutes);
 
 // Global Error Handling Middleware
 app.use((err, req, res, next) => {
