@@ -148,7 +148,7 @@ function Gallery() {
             <div className="absolute bottom-20 left-10 w-[400px] h-[400px] bg-[radial-gradient(circle,rgba(236,72,153,0.15)_0%,transparent_70%)] blur-3xl"></div>
           </div>
 
-          <div className="max-w-7xl mx-auto relative z-10">
+          <div className="max-w-7xl mx-auto relative z-5">
             <div className="text-center">
               <div className="text-[#06b6d4] text-xs tracking-[3px] uppercase mb-6 font-inter">
                 {t("gallery.gallery_badge")}
@@ -204,7 +204,7 @@ function Gallery() {
         </section>
 
         {/* Search & Filters */}
-        <section className="py-12 bg-[#0a0a0f] sticky top-0 z-40 border-b border-white/5 backdrop-blur-lg">
+        <section className="py-12 bg-[#0a0a0f] sticky top-0 z-7 border-b border-white/5 backdrop-blur-lg">
           <div className="max-w-7xl mx-auto px-10">
             {/* Search Bar */}
             <div className="max-w-2xl mx-auto mb-8">

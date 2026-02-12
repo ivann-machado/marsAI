@@ -33,11 +33,11 @@ function Header() {
   }, [isOpen]);
 
   return (
-    <header className="w-screen p-4 bg-gray-900">
-      <nav className="border-2 border-black/25 rounded-full bg-white/30 max-w-1200px mx-auto p-6 flex flex-row justify-between items-center ">
+    <header className="w-screen p-4 bg-gray-950">
+      <nav className="border-2 border-white/25 rounded-full bg-white/30 max-w-1200px mx-auto p-6 flex flex-row justify-between items-center">
         <div className="flex flex-row justify-center items-center">
           <p className="text-2xl font-bold text-white hover:cursor-pointer">
-            MARS <span className="text-4xl text-indigo-500 font-bold">AI</span>
+            MARS<span className="text-4xl text-indigo-500 font-bold">AI</span>
           </p>
         </div>
         {!isOpen && (
@@ -109,7 +109,7 @@ function Header() {
                             duration-300 ease-in"
           ></div>
         )}
-        <ul className="items-center gap-4 hidden md:flex">
+        <ul className="items-center gap-4 hidden md:flex text-gray-200 text-2xl">
           <li className="hover:underline hover:cursor-pointer">
             <Link to="/">{t("header.home")}</Link>
           </li>
