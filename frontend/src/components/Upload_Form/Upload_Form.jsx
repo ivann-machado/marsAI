@@ -20,17 +20,17 @@ function UploadForm() {
   const youtube = useRef(null);
   //Messages d'erreur
   const [titleError, SetTitleError] = useState();
-  const [DescError, SetDescError] = useState("");
+  const [descError, SetDescError] = useState("");
   const [videoError, SetVideoError] = useState("");
   const [imageError, SetImageError] = useState("");
   const [scenarioAiError, SetScenarioAiError] = useState("");
   const [videoAiError, SetVideoAiError] = useState("");
-  const [Error, SetError] = useState("");
-  const [Error, SetError] = useState("");
-  const [Error, SetError] = useState("");
-  const [Error, SetError] = useState("");
-  const [Error, SetError] = useState("");
-  const [Error, SecError] = useState("");
+  const [soundAiError, SetSoundAiError] = useState("");
+  const [postProdAiError, SetPostProdAiError] = useState("");
+  const [moreInfoError, SetMoreInfoError] = useState("");
+  const [instagramError, SetInstagramError] = useState("");
+  const [linkedinError, SetLinkedinError] = useState("");
+  const [youtubeError, SetYoutubeError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -64,11 +64,101 @@ function UploadForm() {
   }
   function descCheck() {
     if (description.current.value.trim() === "") {
-      SetDescError("Email invalide");
+      SetDescError("Champ vide");
       console.log("Input is empty");
     } else {
-      SetTitleError("");
+      SetDescError("");
       console.log(description.current.value);
+    }
+  }
+  function videoCheck() {
+    if (video.current.value.trim() === "") {
+      SetVideoError("Champ vide");
+      console.log("Input is empty");
+    } else {
+      SetVideoError("");
+      console.log(video.current.value);
+    }
+  }
+  function imageCheck() {
+    if (image.current.value.trim() === "") {
+      SetImageError("Champ vide");
+      console.log("Input is empty");
+    } else {
+      SetImageError("");
+      console.log(image.current.value);
+    }
+  }
+  function scenarioAiCheck() {
+    if (scenario_ai.current.value.trim() === "") {
+      SetScenarioAiError("Champ vide");
+      console.log("Input is empty");
+    } else {
+      SetScenarioAiError("");
+      console.log(scenario_ai.current.value);
+    }
+  }
+  function videoAiCheck() {
+    if (video_ai.current.value.trim() === "") {
+      SetVideoAiError("Champ vide");
+      console.log("Input is empty");
+    } else {
+      SetVideoAiError("");
+      console.log(video_ai.current.value);
+    }
+  }
+  function soundAiCheck() {
+    if (sound_ai.current.value.trim() === "") {
+      SetSoundAiError("Champ vide");
+      console.log("Input is empty");
+    } else {
+      SetSoundAiError("");
+      console.log(sound_ai.current.value);
+    }
+  }
+  function postProdAiCheck() {
+    if (post_prod_ai.current.value.trim() === "") {
+      SetPostProdAiError("Champ vide");
+      console.log("Input is empty");
+    } else {
+      SetPostProdAiError("");
+      console.log(post_prod_ai.current.value);
+    }
+  }
+  function moreInfoCheck() {
+    if (more_info.current.value.trim() === "") {
+      SetMoreInfoError("Champ vide");
+      console.log("Input is empty");
+    } else {
+      SetMoreInfoError("");
+      console.log(more_info.current.value);
+    }
+  }
+  function instagramCheck() {
+    if (instagram.current.value.trim() === "") {
+      SetInstagramError("Champ vide");
+      console.log("Input is empty");
+    } else {
+      SetInstagramError("");
+      console.log(instagram.current.value);
+    }
+  }
+  function linkedinCheck() {
+    if (linkedin.current.value.trim() === "") {
+      SetLinkedinError("Champ vide");
+      console.log("Input is empty");
+    } else {
+      SetLinkedinError("");
+      console.log(linkedin.current.value);
+    }
+  }
+  function youtubeCheck() {
+    if (youtube.current.value.trim() === "") {
+      SetYoutubeError("Champ vide");
+      console.log("Input is empty");
+    } else {
+      Set("");
+      console.log(youtube.current.value);
     }
   }
   const formSubmit = useState(false);
@@ -112,7 +202,7 @@ function UploadForm() {
                 }}
                 className="bg-gray-700 border border-gray-500 rounded-lg"
               />
-              <p className="text-white">{DescError}</p>
+              <p className="text-white">{descError}</p>
             </div>
           </div>
           <div className=" flex flex-col md:flex-row md:justify-evenly md:p-2">
@@ -125,8 +215,12 @@ function UploadForm() {
                 name="video"
                 id="video"
                 ref={video}
+                onChange={() => {
+                  videoCheck();
+                }}
                 className="bg-gray-700 border border-gray-500 rounded-lg"
               />
+              <p className="text-white">{videoError}</p>
             </div>
             <div className="flex flex-col md:max-w-4/10">
               <label htmlFor="image" className="text-white">
@@ -137,8 +231,12 @@ function UploadForm() {
                 name="image"
                 id="image"
                 ref={image}
+                onChange={() => {
+                  imageCheck();
+                }}
                 className="bg-gray-700 border border-gray-500 rounded-lg"
               />
+              <p className="text-white">{imageError}</p>
             </div>
           </div>
         </div>
@@ -154,8 +252,12 @@ function UploadForm() {
                 name="scenario_ai"
                 id="scenario_ai"
                 ref={scenario_ai}
+                onChange={() => {
+                  scenarioAiCheck();
+                }}
                 className="bg-gray-700 border border-gray-500 rounded-lg"
               />
+              <p className="text-white">{scenarioAiError}</p>
             </div>
             <div className="flex flex-col">
               <label htmlFor="video_ai" className="text-white">
@@ -166,8 +268,12 @@ function UploadForm() {
                 name="video_ai"
                 id="video_ai"
                 ref={video_ai}
+                onChange={() => {
+                  videoAiCheck();
+                }}
                 className="bg-gray-700 border border-gray-500 rounded-lg"
               />
+              <p className="text-white">{videoAiError}</p>
             </div>
           </div>
           <div className=" flex flex-col md:flex-row md:justify-evenly md:p-2">
@@ -180,8 +286,12 @@ function UploadForm() {
                 name="sound_ai"
                 id="sound_ai"
                 ref={sound_ai}
+                onChange={() => {
+                  soundAiCheck();
+                }}
                 className="bg-gray-700 border border-gray-500 rounded-lg"
               />
+              <p className="text-white">{soundAiError}</p>
             </div>
             <div className="flex flex-col">
               <label htmlFor="post_prod_ai" className="text-white">
@@ -192,8 +302,12 @@ function UploadForm() {
                 name="post_prod_ai"
                 id="post_prod_ai"
                 ref={post_prod_ai}
+                onChange={() => {
+                  postProdAiCheck();
+                }}
                 className="bg-gray-700 border border-gray-500 rounded-lg"
               />
+              <p className="text-white">{postProdAiError}</p>
             </div>
           </div>
         </div>
@@ -209,8 +323,12 @@ function UploadForm() {
                 name="more_info"
                 id="more_info"
                 ref={more_info}
+                onChange={() => {
+                  moreInfoCheck();
+                }}
                 className="bg-gray-700 border border-gray-500 rounded-lg"
               />
+              <p className="text-white">{moreInfoError}</p>
             </div>
             <div className="flex flex-col">
               <label htmlFor="instagram" className="text-white">
@@ -221,8 +339,12 @@ function UploadForm() {
                 name="instagram"
                 id="instagram"
                 ref={instagram}
+                onChange={() => {
+                  instagramCheck();
+                }}
                 className="bg-gray-700 border border-gray-500 rounded-lg"
               />
+              <p className="text-white">{instagramError}</p>
             </div>
           </div>
           <div className=" flex flex-col md:flex-row md:justify-evenly md:p-2">
@@ -235,8 +357,12 @@ function UploadForm() {
                 name="linkedin"
                 id="linkedin"
                 ref={linkedin}
+                onChange={() => {
+                  linkedinCheck();
+                }}
                 className="bg-gray-700 border border-gray-500 rounded-lg"
               />
+              <p className="text-white">{linkedinError}</p>
             </div>
             <div className="flex flex-col">
               <label htmlFor="youtube" className="text-white">
@@ -247,8 +373,12 @@ function UploadForm() {
                 name="youtube"
                 id="youtube"
                 ref={youtube}
+                onChange={() => {
+                  youtubeCheck();
+                }}
                 className="bg-gray-700 border border-gray-500 rounded-lg"
               />
+              <p className="text-white">{youtubeError}</p>
             </div>
           </div>
         </div>
