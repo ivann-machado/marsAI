@@ -32,15 +32,16 @@ function Contact() {
     <><Header />
     <div className="min-h-screen flex items-center justify-center bg-gray-800 px-4">
       <div className="w-full max-w-lg bg-gray-900 rounded-2xl shadow-lg p-8">
-        <h1 className="text-3xl font-bold text-center mb-6 text-white">
-          {t("page_contact.contact_title")}
-        </h1>
+        <h1 className="text-3xl font-bold text-center mb-6 bg-gradient-to-r from-pink-500 to-violet-500 bg-clip-text text-transparent">
+  {t("page_contact.contact_title")}
+</h1>
 
 
 
-        <form className="space-y-5">
+
+                <form className="space-y-5">
           <div>
-            <label className="block text-sm font-medium text-white mb-1">
+            <label className="block text-sm font-medium mb-1 bg-gradient-to-r from-pink-400 to-violet-400 bg-clip-text text-transparent">
               Nom
             </label>
             <input
@@ -48,12 +49,11 @@ function Contact() {
               onChange={(e) => setName(e.target.value)}
               type="text"
               placeholder="Votre nom"
-              className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+              className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"/>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-white mb-1">
+            <label className="block text-sm font-medium mb-1 bg-gradient-to-r from-pink-400 to-violet-400 bg-clip-text text-transparent">
               Email
             </label>
             <input
@@ -61,12 +61,12 @@ function Contact() {
               onChange={(e) => setEmail(e.target.value)}
               type="email"
               placeholder="exemple@email.com"
-              className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-white mb-1">
+            <label className="block text-sm font-medium mb-1 bg-gradient-to-r from-pink-400 to-violet-400 bg-clip-text text-transparent">
               Message
             </label>
             <textarea
@@ -74,7 +74,7 @@ function Contact() {
               onChange={(e) => setMessage(e.target.value)}
               rows="5"
               placeholder="Votre message..."
-              className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
             />
           </div>
 
