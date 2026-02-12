@@ -188,5 +188,16 @@
 "gallery_empty_desc": "Essayez de sélectionner une autre catégorie",
 "gallery_load_more": "CHARGER PLUS DE FILMS",
 "gallery_watch": "REGARDER LE FILM",
-"gallery_share": "PARTAGER"}
+"gallery_share": "PARTAGER"
+},
+
+"page_contact": {
+    "contact_badge": "PRENEZ CONTACT",
+    "contact_title": "CONTACTEZ-NOUS",
+    "contact_description": "Des questions ? Vous souhaitez participer ? Contactez-nous !",
+    "contact_submit": "Envoyer le message",
+    "contact_name_placeholder": "Votre nom",
+    "contact_email_placeholder": "exemple@email.com",
+    "contact_message_placeholder": "Votre message..."
+}
 }

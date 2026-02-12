@@ -1,14 +1,15 @@
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Footer from '../../components/Footer/Footer.jsx';
 import Header from '../../components/Header/Header.jsx';
 
 
 function Contact() {
   const { t } = useTranslation();
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
+  //const [name, setName] = useState('');
+  const name =useRef()
+  const email = useRef();
+  const message = useRef();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -33,22 +34,17 @@ function Contact() {
     <div className="min-h-screen flex items-center justify-center bg-gray-800 px-4">
       <div className="w-full max-w-lg bg-gray-900 rounded-2xl shadow-lg p-8">
         <h1 className="text-3xl font-bold text-center mb-6 bg-gradient-to-r from-pink-500 to-violet-500 bg-clip-text text-transparent">
-  {t("page_contact.contact_title")}
-</h1>
-
-
-
-
+      {t("page_contact.contact_title")}
+      </h1>
                 <form className="space-y-5">
           <div>
             <label className="block text-sm font-medium mb-1 bg-gradient-to-r from-pink-400 to-violet-400 bg-clip-text text-transparent">
               Nom
             </label>
             <input
-              value = {name}
-              onChange={(e) => setName(e.target.value)}
+              ref={name}
               type="text"
-              placeholder="Votre nom"
+              placeholder={t("page_contact.contact_name_placeholder")}
               className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"/>
           </div>
 
@@ -57,10 +53,9 @@ function Contact() {
               Email
             </label>
             <input
-              value = {email}
-              onChange={(e) => setEmail(e.target.value)}
+              ref = {email}
               type="email"
-              placeholder="exemple@email.com"
+              placeholder={t("page_contact.contact_email_placeholder")}
               className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
             />
           </div>
@@ -70,10 +65,9 @@ function Contact() {
               Message
             </label>
             <textarea
-              value = {message}
-              onChange={(e) => setMessage(e.target.value)}
+              ref = {message}
               rows="5"
-              placeholder="Votre message..."
+              placeholder={t("page_contact.contact_message_placeholder")}
               className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
             />
           </div>

@@ -204,8 +204,9 @@
     "contact_badge": "GET IN TOUCH",
     "contact_title": "CONTACT US",
     "contact_description": "Have questions or want to get involved? Reach out to us!",
-    "contact_email": "Email",
-    "contact_message": "Your Message",
-    "contact_submit": "Send Message"
+    "contact_submit": "Send Message",
+    "contact_name_placeholder": "Your Name",
+    "contact_email_placeholder": "example@email.com",
+    "contact_message_placeholder": "Your Message..."
 } 
 }
