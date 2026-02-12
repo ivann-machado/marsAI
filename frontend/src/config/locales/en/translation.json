@@ -164,6 +164,11 @@
     "phase2_closing_night": "MARS.AI NIGHT - Closing Ceremony",
     "phase2_event": "Event",
     "phase2_special_event": "⭐ SPECIAL EVENT",
+    "phase2_day2_conference_ai_cinema": "Conference: AI in Cinema - Revolution or Evolution?",
+    "phase2_projection_bloc_3": "Official Selection Screening - Block 3",
+    "phase2_day2_workshop_sora": "Workshop: Generate Videos with Sora",
+    "phase2_day2_panel_creators": "Panel: AI Creators Testimonials",
+    "phase2_projection_bloc_4": "Official Selection Screening - Block 4",
     "phase2_add_agenda": "ADD TO MY AGENDA",
     "phase2_book": "BOOK",
     "phase2_full": "FULL",
@@ -187,5 +192,16 @@
 
     "phase2_follow_live": "FOLLOW THE EVENT",
     "phase2_follow_live_2": "LIVE",
-    "phase2_join_conversation": "Join the conversation with #MarsAI2026"
+    "phase2_join_conversation": "Join the conversation with #MarsAI2026",
+
+    "gallery_badge": "🏆 OFFICIAL SELECTION 2026",
+    "gallery_title": "THE 50",
+    "gallery_title_highlight": "FILMS",
+    "gallery_description": "Discover the 50 one-minute short films selected from over 600 submissions from 120 countries.",
+    "gallery_all": "ALL",
+    "gallery_scifi": "SCI-FI",
+    "gallery_drama": "DRAMA",
+    "gallery_experimental": "EXPERIMENTAL",
+    "gallery_documentary": "DOCUMENTARY",
+    "gallery_films_count": "films"
 }

@@ -164,6 +164,11 @@
 "phase2_closing_night": "MARS.AI NIGHT - Cérémonie de Clôture",
 "phase2_event": "Événement",
 "phase2_special_event": "⭐ ÉVÉNEMENT SPÉCIAL",
+"phase2_day2_conference_ai_cinema": "Conférence : L'IA au Cinéma - Révolution ou Évolution ?",
+"phase2_projection_bloc_3": "Projection Sélection Officielle - Bloc 3",
+"phase2_day2_workshop_sora": "Workshop : Générer des Vidéos avec Sora",
+"phase2_day2_panel_creators": "Panel : Témoignages de Créateurs IA",
+"phase2_projection_bloc_4": "Projection Sélection Officielle - Bloc 4",
 "phase2_add_agenda": "AJOUTER À MON AGENDA",
 "phase2_book": "RÉSERVER",
 "phase2_full": "COMPLET",
@@ -187,5 +192,16 @@
 
 "phase2_follow_live": "SUIVEZ L'ÉVÉNEMENT",
 "phase2_follow_live_2": "EN DIRECT",
-"phase2_join_conversation": "Rejoignez la conversation avec #MarsAI2026"
+"phase2_join_conversation": "Rejoignez la conversation avec #MarsAI2026",
+
+"gallery_badge": "🏆 SÉLECTION OFFICIELLE 2026",
+"gallery_title": "LES 50",
+"gallery_title_highlight": "FILMS",
+"gallery_description": "Découvrez les 50 courts-métrages d'une minute sélectionnés parmi plus de 600 soumissions venues de 120 pays.",
+"gallery_all": "TOUS",
+"gallery_scifi": "SCI-FI",
+"gallery_drama": "DRAME",
+"gallery_experimental": "EXPÉRIMENTAL",
+"gallery_documentary": "DOCUMENTAIRE",
+"gallery_films_count": "films"
 }
