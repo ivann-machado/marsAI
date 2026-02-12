@@ -24,7 +24,8 @@
     "board": "Jury",
     "partners": "Partenaires",
     "about": "A Propos",
-    "schedule": "Programme"
+    "schedule": "Programme",
+    "contact": "Contact"
   },
   "upload_form": {
     "upload_message": "Postez votre Film",
@@ -264,6 +265,15 @@
     "gallery_share": "PARTAGER"
   },
 
+  "page_contact": {
+    "contact_badge": "PRENEZ CONTACT",
+    "contact_title": "CONTACTEZ-NOUS",
+    "contact_description": "Des questions ? Vous souhaitez participer ? Contactez-nous !",
+    "contact_submit": "Envoyer le message",
+    "contact_name_placeholder": "Votre nom",
+    "contact_email_placeholder": "exemple@email.com",
+    "contact_message_placeholder": "Votre message..."
+  },
   "jury_page": {
     "title": "Membres du jury",
     "description": "À l’avant-garde du cinéma augmenté, notre jury incarne la rencontre entre l’imagination humaine et la puissance algorithmique",
