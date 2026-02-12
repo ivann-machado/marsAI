@@ -4,11 +4,13 @@ import { pool } from "../config/db.js";
  * Create a new invite token linked to an admin.
  * @param {string} token - Random token value.
  * @param {number} admin_id - Related admin ID.
+ * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
  * @returns {Promise<number>} Inserted token ID.
  */
-export const createToken = async (token, admin_id) => {
+export const createToken = async (token, admin_id, conn = null) => {
 	const query = `INSERT INTO tokens (value, admin_id) VALUES (?, ?)`;
-	const result = await pool.query(query, [token, admin_id]);
+	const db = conn || pool;
+	const result = await db.query(query, [token, admin_id]);
 	return result.insertId;
 };
 
