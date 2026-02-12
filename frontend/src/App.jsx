@@ -12,6 +12,7 @@ import AdminUsers from "./pages/AdminUsers/AdminUsers.jsx";
 import AdminEvents from "./pages/AdminEvents/AdminEvents.jsx";
 import AdminSettings from "./pages/AdminSettings/AdminSettings.jsx";
 import AdminContent from "./pages/AdminContent/AdminContent.jsx";
+import Contact from "./pages/Contact/contact.jsx";
 import AdminJury from "./pages/AdminJury/AdminJury.jsx";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.jsx";
 import JuryPage from "./pages/JuryPage/JuryPage.jsx";
@@ -100,6 +101,7 @@ function App() {
           <Route path="/video/:videoId" element={<VideoDetail />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/participate" element={<UploadPage />} />
+          <Route path="/Contact" element={<Contact />} />
           <Route path="/jury" element={<JuryPage />} />
           <Route path="/partners" element={<SponsorsPage />} />
         </Routes>
