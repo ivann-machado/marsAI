@@ -102,10 +102,9 @@ function App() {
           <Route path="/video/:videoId" element={<VideoDetail />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/participate" element={<UploadPage />} />
-          <Route path="/Contact" element={<Contact />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/jury" element={<JuryPage />} />
           <Route path="/partners" element={<SponsorsPage />} />
-          <Route path="/contact" element={<SponsorsPage />} />
         </Routes>
       </BrowserRouter>
     );
