@@ -1,0 +1,59 @@
+import { useEffect, useState } from "react";
+import JuryCard from "../../components/JuryCard/JuryCard";
+import { useTranslation } from "react-i18next";
+import Header from "../../components/Header/Header";
+import Footer from "../../components/Footer/Footer";
+import JuryChart from "../../components/JuryChart/JuryChart";
+
+function JuryPage() {
+  const [jury, setJury] = useState(null);
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/data.json");
+        if (!response.ok) throw new Error("Erreur fetch JSON");
+        const json = await response.json();
+        setJury(json.mockedJury);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (!jury) return <p>Loading..</p>;
+
+  return (
+    <>
+      <Header />
+      <div className="w-full min-h-screen bg-[url('../src/assets/background.jpg')] bg-cover bg-fixed text-white py-8">
+        <h1 className="text-5xl text-violet-700 font-extrabold text-center mb-8">
+          {t("jury_page.title")}
+        </h1>
+        <p className="text-lg mx-4 mb-8 text-white">
+          {t("jury_page.description")}
+        </p>
+        <div className="md:flex flex-wrap">
+          {jury.map((member) => {
+            return (
+              <JuryCard
+                key={member.id}
+                image_url={member.photo}
+                name={member.name}
+                profession={member.profession}
+                bio={member.bio}
+              />
+            );
+          })}
+        </div>
+        <JuryChart />
+      </div>
+      <Footer />
+    </>
+  );
+}
+
+export default JuryPage;

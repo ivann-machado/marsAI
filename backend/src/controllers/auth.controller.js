@@ -13,6 +13,10 @@ import {
 	updateTokenStatus,
 } from "../models/token.model.js";
 import { JWT_SECRET, JWT_EXPIRES_IN, DEV_MODE, FRONTEND_URL } from "../config/index.js";
+import { getConnection } from "../config/db.js";
+import { renderView } from "../utils/view.util.js";
+import { sendEmail } from "../services/brevo.service.js";
+
 
 /**
  * Authenticate an admin and return a JWT token.
@@ -60,6 +64,7 @@ export const login = async (req, res) => {
 };
 
 export const inviteAdmin = async (req, res) => {
+	let conn;
 	try {
 		const { login } = req.body;
 
@@ -72,17 +77,20 @@ export const inviteAdmin = async (req, res) => {
 			return res.status(409).json({ message: "Admin already exists" });
 		}
 
-		const adminId = await createAdmin(login, null, "admin");
+		conn = await getConnection();
+		await conn.beginTransaction();
+
+		const adminId = await createAdmin(login, null, "admin", conn);
 
 		const token = crypto.randomUUID();
-		await createToken(token, adminId);
-		//TEMP PLACEHOLDER FOR EMAIL
-		const inviteLink = `${FRONTEND_URL}/validate?token=${token}`;
-		if (DEV_MODE) {
-			console.log(
-				`[EMAIL MOCK] To: ${login}, Subject: Admin Invite, Body: Cliquer ici pour définir votre mot de passe: ${inviteLink}`,
-			);
-		}
+		await createToken(token, adminId, conn);
+		const inviteLink = `${FRONTEND_URL}/validate/${token}`;
+
+		const htmlContent = await renderView('emails/inviteAdmin.html', { inviteLink });
+
+		await sendEmail(login, "Invitation Admin MarsAI", htmlContent);
+
+		await conn.commit();
 
 		res
 			.status(201)
@@ -91,30 +99,21 @@ export const inviteAdmin = async (req, res) => {
 				adminId: adminId.toString(),
 			});
 	} catch (error) {
+		if (conn) {
+			await conn.rollback();
+		}
 		console.error("Invite Error:", error);
 		res.status(500).json({ message: "Server error" });
+	} finally {
+		if (conn) {
+			conn.release();
+		}
 	}
 };
 
 export const logout = async (req, res) => {
-	try {
-		const token = req.headers["authorization"]?.split(" ")[1];
-
-		if (!token) {
-			return res.status(400).json({ message: "No token provided" });
-		}
-
-		const existingToken = await findToken(token);
-		if (existingToken) {
-			await updateTokenStatus(token, "revoked");
-			return res.status(200).json({ message: "Logged out successfully" });
-		} else {
-			return res.status(400).json({ message: "Invalid token" });
-		}
-	} catch (error) {
-		console.error("Logout Error:", error);
-		res.status(500).json({ message: "Server error" });
-	}
+	// Placeholder for future implementation
+	return res.status(200).json({ message: "Logged out successfully" });
 };
 
 /**
@@ -151,7 +150,7 @@ const validateInviteToken = async (token) => {
 };
 
 export const verifyInvite = async (req, res) => {
-	const token = req.query.token;
+	const token = req.params.token;
 	try {
 		await validateInviteToken(token);
 		return res.status(200).json({ valid: true, message: "Token is valid" });
@@ -164,7 +163,7 @@ export const verifyInvite = async (req, res) => {
 };
 
 export const acceptInvite = async (req, res) => {
-	const token = req.body.token;
+	const token = req.params.token;
 	try {
 		const { admin } = await validateInviteToken(token);
 
