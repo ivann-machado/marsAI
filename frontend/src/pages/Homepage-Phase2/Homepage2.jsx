@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 
 function HomepagePhase2() {
+    const { t } = useTranslation();
     const [scrollY, setScrollY] = useState(0);
     const [timeLeft, setTimeLeft] = useState({
         days: 0,
@@ -67,11 +69,11 @@ function HomepagePhase2() {
                             <div className="flex items-center gap-2 px-6 py-3 bg-red-600/20 backdrop-blur-sm border border-red-500/50 rounded-full">
                                 <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
                                 <span className="text-red-400 font-inter font-bold text-sm tracking-wider uppercase">
-                                    EN DIRECT - JOUR {currentDay}/2
+                                    {t('phase2_live_badge')} {currentDay}{t('phase2_live_badge_of')}
                                 </span>
                             </div>
                             <div className="text-[#06b6d4] text-xs tracking-[2px] uppercase font-inter">
-                                📍 LA PLATEFORME • MARSEILLE
+                                {t('phase2_location')}
                             </div>
                         </div>
                         
@@ -89,12 +91,12 @@ function HomepagePhase2() {
                         </h1>
                         
                         <p className="font-orbitron font-semibold text-[clamp(20px,3vw,36px)] mb-6 tracking-wide text-white">
-                            L'ÉVÉNEMENT EST <span className="text-[#10b981]">EN COURS</span>
+                            {t('phase2_event_ongoing')} <span className="text-[#10b981]">{t('phase2_event_ongoing_status')}</span>
                         </p>
                         
                         <p className="text-[clamp(14px,2vw,18px)] text-[#a0a0b8] mb-3 max-w-3xl mx-auto leading-relaxed">
-                            Rejoignez-nous pour 2 jours exceptionnels de projections, conférences et workshops<br />
-                            dédiés aux futurs souhaitables créés par l'IA
+                            {t('phase2_hero_description')}<br />
+                            {t('phase2_hero_description_2')}
                         </p>
                         
                         {/* Quick Actions */}
@@ -102,14 +104,14 @@ function HomepagePhase2() {
                             <button className="px-9 py-4 bg-gradient-to-br from-[#10b981] to-[#059669] text-white font-inter font-semibold text-sm tracking-wider uppercase rounded-full shadow-[0_10px_30px_rgba(16,185,129,0.3)] hover:translate-y-[-3px] hover:shadow-[0_15px_40px_rgba(16,185,129,0.5)] transition-all duration-300">
                                 <span className="flex items-center gap-2">
                                     <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
-                                    PROGRAMME EN DIRECT
+                                    {t('phase2_live_program')}
                                 </span>
                             </button>
                             <button className="px-9 py-4 bg-gradient-to-br from-[#a855f7] to-[#ec4899] text-white font-inter font-semibold text-sm tracking-wider uppercase rounded-full shadow-[0_10px_30px_rgba(168,85,247,0.3)] hover:translate-y-[-3px] hover:shadow-[0_15px_40px_rgba(168,85,247,0.5)] transition-all duration-300">
-                                VOIR LA SÉLECTION OFFICIELLE →
+                                {t('phase2_official_selection_btn')}
                             </button>
                             <button className="px-9 py-4 bg-transparent text-white font-inter font-semibold text-sm tracking-wider uppercase rounded-full border-2 border-[#06b6d4] hover:bg-[#06b6d4] hover:translate-y-[-3px] hover:shadow-[0_10px_30px_rgba(6,182,212,0.3)] transition-all duration-300">
-                                INFOS PRATIQUES
+                                {t('phase2_practical_info_btn')}
                             </button>
                         </div>
                     </div>
@@ -120,10 +122,10 @@ function HomepagePhase2() {
                     <div className="max-w-7xl mx-auto px-10">
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
                             {[
-                                { number: '3,247', label: 'VISITEURS SUR SITE', icon: '👥', color: 'text-[#10b981]' },
-                                { number: '50', label: 'FILMS EN SÉLECTION', icon: '🎬', color: 'text-[#ec4899]' },
-                                { number: '120', label: 'PAYS REPRÉSENTÉS', icon: '🌍', color: 'text-[#06b6d4]' },
-                                { number: '60+', label: 'EXPERTS IA & ICC', icon: '⭐', color: 'text-[#a855f7]' }
+                                { number: '3,247', label: t('phase2_visitors'), icon: '👥', color: 'text-[#10b981]' },
+                                { number: '50', label: t('phase2_films_selection'), icon: '🎬', color: 'text-[#ec4899]' },
+                                { number: '120', label: t('phase2_countries'), icon: '🌍', color: 'text-[#06b6d4]' },
+                                { number: '60+', label: t('phase2_experts'), icon: '⭐', color: 'text-[#a855f7]' }
                             ].map((stat, index) => (
                                 <div key={index} className="group">
                                     <div className="text-3xl mb-2">{stat.icon}</div>
@@ -146,26 +148,26 @@ function HomepagePhase2() {
                     <div className="max-w-5xl mx-auto px-10 text-center relative z-10">
                         <div className="inline-block px-6 py-2 bg-[#ec4899]/20 border border-[#ec4899]/50 rounded-full mb-8">
                             <span className="text-[#ec4899] font-inter font-semibold text-sm tracking-wider uppercase">
-                                ⏰ CÉRÉMONIE DE CLÔTURE
+                                {t('phase2_closing_ceremony')}
                             </span>
                         </div>
                         
                         <h2 className="font-orbitron font-black text-[clamp(32px,6vw,56px)] leading-tight mb-6">
-                            MARS.A.I <span className="text-[#ec4899]">NIGHT</span>
+                            {t('night_title')} <span className="text-[#ec4899]">{t('night_title_highlight')}</span>
                         </h2>
                         
                         <p className="text-[#a0a0b8] text-lg mb-12 max-w-2xl mx-auto">
-                            Fête-Élection mêlant art & futurs souhaitables<br />
-                            <span className="text-white font-semibold">13 juin • 20H • Salle des Sucres</span>
+                            {t('phase2_night_description')}<br />
+                            <span className="text-white font-semibold">{t('phase2_night_date')}</span>
                         </p>
                         
                         {/* Countdown Timer */}
                         <div className="grid grid-cols-4 gap-6 max-w-3xl mx-auto mb-10">
                             {[
-                                { value: timeLeft.days, label: 'JOURS' },
-                                { value: timeLeft.hours, label: 'HEURES' },
-                                { value: timeLeft.minutes, label: 'MINUTES' },
-                                { value: timeLeft.seconds, label: 'SECONDES' }
+                                { value: timeLeft.days, label: t('phase2_days') },
+                                { value: timeLeft.hours, label: t('phase2_hours') },
+                                { value: timeLeft.minutes, label: t('phase2_minutes') },
+                                { value: timeLeft.seconds, label: t('phase2_seconds') }
                             ].map((time, index) => (
                                 <div key={index} className="bg-[#1a1a24] rounded-3xl p-8 border border-[#ec4899]/30">
                                     <div className="font-orbitron font-black text-6xl text-[#ec4899] mb-2">
@@ -179,7 +181,7 @@ function HomepagePhase2() {
                         </div>
                         
                         <button className="px-12 py-4 bg-gradient-to-r from-[#ec4899] to-[#a855f7] text-white font-inter font-semibold text-base tracking-wider uppercase rounded-full hover:translate-y-[-3px] hover:shadow-[0_20px_50px_rgba(236,72,153,0.6)] transition-all duration-300">
-                            RÉSERVER MA PLACE
+                            {t('phase2_book_seat')}
                         </button>
                     </div>
                 </section>
@@ -190,18 +192,18 @@ function HomepagePhase2() {
                         <div className="text-center mb-16">
                             <div className="inline-block px-6 py-2 bg-[#a855f7]/20 border border-[#a855f7]/50 rounded-full mb-6">
                                 <span className="text-[#a855f7] font-inter font-semibold text-sm tracking-wider uppercase">
-                                    🏆 50 FILMS FINALISTES
+                                    {t('phase2_finalists')}
                                 </span>
                             </div>
                             
                             <h2 className="font-orbitron font-black text-[clamp(36px,6vw,64px)] leading-tight mb-6">
-                                SÉLECTION<br />
-                                <span className="text-[#a855f7] drop-shadow-[0_0_20px_rgba(168,85,247,0.5)]">OFFICIELLE 2026</span>
+                                {t('phase2_official_selection')}<br />
+                                <span className="text-[#a855f7] drop-shadow-[0_0_20px_rgba(168,85,247,0.5)]">{t('phase2_official_selection_year')}</span>
                             </h2>
                             
                             <p className="text-[#a0a0b8] text-lg max-w-3xl mx-auto leading-relaxed">
-                                Découvrez les 50 courts-métrages d'une minute qui ont été sélectionnés<br />
-                                parmi plus de 600 soumissions venues de 120 pays
+                                {t('phase2_selection_description')}<br />
+                                {t('phase2_selection_description_2')}
                             </p>
                         </div>
 
@@ -222,7 +224,7 @@ function HomepagePhase2() {
                                             </div>
                                         </div>
                                         <div className="absolute top-3 left-3 px-3 py-1 bg-[#10b981]/90 backdrop-blur-sm rounded-full text-white text-xs font-inter font-semibold">
-                                            SÉLECTION OFFICIELLE
+                                            {t('phase2_official_badge')}
                                         </div>
                                     </div>
                                     <h3 className="font-orbitron font-bold text-xl leading-tight whitespace-pre-line mb-2">
@@ -235,7 +237,7 @@ function HomepagePhase2() {
 
                         <div className="text-center">
                             <button className="px-10 py-4 bg-gradient-to-r from-[#a855f7] to-[#ec4899] text-white font-inter font-semibold text-sm tracking-wider uppercase rounded-full hover:translate-y-[-3px] hover:shadow-[0_15px_40px_rgba(168,85,247,0.5)] transition-all duration-300">
-                                VOIR LES 50 FILMS →
+                                {t('phase2_view_50_films')}
                             </button>
                         </div>
                     </div>
@@ -246,19 +248,19 @@ function HomepagePhase2() {
                     <div className="max-w-7xl mx-auto px-10">
                         <div className="text-center mb-20">
                             <h2 className="font-orbitron font-black text-[clamp(36px,6vw,64px)] leading-tight mb-6">
-                                PROGRAMME<br />
-                                <span className="text-[#06b6d4] drop-shadow-[0_0_20px_rgba(6,182,212,0.5)]">DES 2 JOURS</span>
+                                {t('phase2_program')}<br />
+                                <span className="text-[#06b6d4] drop-shadow-[0_0_20px_rgba(6,182,212,0.5)]">{t('phase2_two_days')}</span>
                             </h2>
                             <p className="text-[#a0a0b8] text-lg">
-                                Projections, conférences et workshops sur l'IA et les futurs souhaitables
+                                {t('phase2_program_description')}
                             </p>
                         </div>
 
                         {/* Day Selector */}
                         <div className="flex justify-center gap-4 mb-16">
                             {[
-                                { day: 1, date: '12 JUIN', label: 'JOUR 1' },
-                                { day: 2, date: '13 JUIN', label: 'JOUR 2' }
+                                { day: 1, date: t('phase2_june_12'), label: `${t('phase2_day')} 1` },
+                                { day: 2, date: t('phase2_june_13'), label: `${t('phase2_day')} 2` }
                             ].map((dayInfo) => (
                                 <button
                                     key={dayInfo.day}
@@ -277,13 +279,13 @@ function HomepagePhase2() {
                         {/* Schedule Grid */}
                         <div className="space-y-4 max-w-4xl mx-auto">
                             {[
-                                { time: '09:00', title: 'Ouverture des Portes', type: 'Accueil', location: 'Salle Plaza', available: true },
-                                { time: '10:00', title: 'Conférence : L\'Éthique de l\'IA Créative', type: 'Conférence', location: 'Salle des Sucres', available: true, speaker: 'Dr. Marie Laurent' },
-                                { time: '11:30', title: 'Projection Sélection Officielle - Bloc 1', type: 'Projection', location: 'Salle des Sucres', available: true },
-                                { time: '14:00', title: 'Workshop : Créer avec MidJourney', type: 'Workshop', location: 'Salle Plaza', available: false, spots: '0/30' },
-                                { time: '16:00', title: 'Table Ronde : IA et Industries Culturelles', type: 'Conférence', location: 'Salle des Sucres', available: true },
-                                { time: '18:00', title: 'Projection Sélection Officielle - Bloc 2', type: 'Projection', location: 'Salle des Sucres', available: true },
-                                { time: '20:00', title: 'MARS.AI NIGHT - Cérémonie de Clôture', type: 'Événement', location: 'Salle des Sucres', available: true, highlight: true }
+                                { time: '09:00', title: t('phase2_doors_opening'), type: t('phase2_welcome'), location: t('phase2_plaza_hall'), available: true },
+                                { time: '10:00', title: t('phase2_ethics_conference'), type: t('phase2_conference'), location: t('phase2_sugar_hall'), available: true, speaker: 'Dr. Marie Laurent' },
+                                { time: '11:30', title: t('phase2_projection_bloc_1'), type: t('phase2_projection'), location: t('phase2_sugar_hall'), available: true },
+                                { time: '14:00', title: t('phase2_workshop_midjourney'), type: t('phase2_workshop'), location: t('phase2_plaza_hall'), available: false, spots: '0/30' },
+                                { time: '16:00', title: t('phase2_roundtable'), type: t('phase2_conference'), location: t('phase2_sugar_hall'), available: true },
+                                { time: '18:00', title: t('phase2_projection_bloc_2'), type: t('phase2_projection'), location: t('phase2_sugar_hall'), available: true },
+                                { time: '20:00', title: t('phase2_closing_night'), type: t('phase2_event'), location: t('phase2_sugar_hall'), available: true, highlight: true }
                             ].map((event, index) => (
                                 <div
                                     key={index}
@@ -307,7 +309,7 @@ function HomepagePhase2() {
                                                 </h3>
                                                 {event.highlight && (
                                                     <span className="px-3 py-1 bg-[#ec4899] rounded-full text-white text-xs font-inter font-semibold uppercase whitespace-nowrap">
-                                                        ⭐ ÉVÉNEMENT SPÉCIAL
+                                                        {t('phase2_special_event')}
                                                     </span>
                                                 )}
                                             </div>
@@ -315,9 +317,9 @@ function HomepagePhase2() {
                                             <div className="flex flex-wrap items-center gap-4 text-sm text-[#a0a0b8] mb-3">
                                                 <span className="flex items-center gap-2">
                                                     <span className={`w-2 h-2 rounded-full ${
-                                                        event.type === 'Conférence' ? 'bg-[#3b82f6]' :
-                                                        event.type === 'Workshop' ? 'bg-[#10b981]' :
-                                                        event.type === 'Projection' ? 'bg-[#a855f7]' :
+                                                        event.type === t('phase2_conference') ? 'bg-[#3b82f6]' :
+                                                        event.type === t('phase2_workshop') ? 'bg-[#10b981]' :
+                                                        event.type === t('phase2_projection') ? 'bg-[#a855f7]' :
                                                         'bg-[#ec4899]'
                                                     }`}></span>
                                                     {event.type}
@@ -334,11 +336,11 @@ function HomepagePhase2() {
 
                                             {event.available ? (
                                                 <button className="px-6 py-2 bg-[#06b6d4]/20 border border-[#06b6d4]/50 text-[#06b6d4] rounded-full text-sm font-inter font-semibold hover:bg-[#06b6d4] hover:text-white transition-all duration-300">
-                                                    {event.type === 'Workshop' ? 'RÉSERVER' : 'AJOUTER À MON AGENDA'}
+                                                    {event.type === t('phase2_workshop') ? t('phase2_book') : t('phase2_add_agenda')}
                                                 </button>
                                             ) : (
                                                 <span className="inline-block px-6 py-2 bg-white/5 border border-white/10 text-[#6b6b85] rounded-full text-sm font-inter font-semibold">
-                                                    COMPLET {event.spots && `(${event.spots})`}
+                                                    {t('phase2_full')} {event.spots && `(${event.spots})`}
                                                 </span>
                                             )}
                                         </div>
@@ -349,7 +351,7 @@ function HomepagePhase2() {
 
                         <div className="text-center mt-12">
                             <button className="px-10 py-4 bg-transparent border-2 border-[#06b6d4] text-white font-inter font-semibold text-sm tracking-wider uppercase rounded-full hover:bg-[#06b6d4] hover:shadow-[0_15px_40px_rgba(6,182,212,0.4)] transition-all duration-300">
-                                TÉLÉCHARGER LE PROGRAMME COMPLET (PDF)
+                                {t('phase2_download_program')}
                             </button>
                         </div>
                     </div>
@@ -359,8 +361,8 @@ function HomepagePhase2() {
                 <section className="py-32 bg-[#0a0a0f]">
                     <div className="max-w-7xl mx-auto px-10">
                         <h2 className="font-orbitron font-black text-[clamp(36px,6vw,64px)] leading-tight text-center mb-16">
-                            INFORMATIONS<br />
-                            <span className="text-[#3b82f6] drop-shadow-[0_0_20px_rgba(59,130,246,0.5)]">PRATIQUES</span>
+                            {t('phase2_practical_info')}<br />
+                            <span className="text-[#3b82f6] drop-shadow-[0_0_20px_rgba(59,130,246,0.5)]">{t('phase2_practical_info_2')}</span>
                         </h2>
 
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
@@ -368,28 +370,28 @@ function HomepagePhase2() {
                             <div className="bg-[#1a1a24] p-10 rounded-3xl border border-white/5">
                                 <div className="text-4xl mb-4">📍</div>
                                 <h3 className="font-orbitron font-bold text-2xl mb-6 text-[#3b82f6]">
-                                    LA PLATEFORME
+                                    {t('phase2_platform')}
                                 </h3>
                                 <div className="space-y-4 text-[#a0a0b8]">
                                     <p className="flex items-start gap-3">
                                         <span className="text-lg">📍</span>
-                                        <span>12 Rue d'Uzès, 13002 Marseille</span>
+                                        <span>{t('phase2_address')}</span>
                                     </p>
                                     <p className="flex items-start gap-3">
                                         <span className="text-lg">🚊</span>
-                                        <span>Tram T2/T3 - Arrêt Arenc Le Silo</span>
+                                        <span>{t('phase2_tram')}</span>
                                     </p>
                                     <p className="flex items-start gap-3">
                                         <span className="text-lg">🅿️</span>
-                                        <span>Parking disponible à proximité</span>
+                                        <span>{t('phase2_parking')}</span>
                                     </p>
                                     <p className="flex items-start gap-3">
                                         <span className="text-lg">♿</span>
-                                        <span>Accès PMR disponible</span>
+                                        <span>{t('phase2_accessibility')}</span>
                                     </p>
                                 </div>
                                 <button className="mt-6 w-full px-6 py-3 bg-[#3b82f6]/20 border border-[#3b82f6]/50 text-[#3b82f6] rounded-full font-inter font-semibold hover:bg-[#3b82f6] hover:text-white transition-all duration-300">
-                                    VOIR SUR LA CARTE
+                                    {t('phase2_view_map')}
                                 </button>
                             </div>
 
@@ -397,21 +399,21 @@ function HomepagePhase2() {
                             <div className="space-y-6">
                                 <div className="bg-[#1a1a24] p-8 rounded-3xl border border-white/5">
                                     <h4 className="font-orbitron font-bold text-xl mb-3 text-[#10b981]">
-                                        SALLE DES SUCRES
+                                        {t('venue_room_1_title')}
                                     </h4>
                                     <p className="text-sm text-[#a0a0b8] leading-relaxed">
-                                        Projections, conférences et cérémonie de clôture.<br />
-                                        Capacité : 500 personnes
+                                        {t('phase2_sugar_hall_desc')}<br />
+                                        {t('phase2_sugar_hall_capacity')}
                                     </p>
                                 </div>
 
                                 <div className="bg-[#1a1a24] p-8 rounded-3xl border border-white/5">
                                     <h4 className="font-orbitron font-bold text-xl mb-3 text-[#ec4899]">
-                                        SALLE PLAZA
+                                        {t('venue_room_2_title')}
                                     </h4>
                                     <p className="text-sm text-[#a0a0b8] leading-relaxed">
-                                        Accueil, animations, workshops et networking.<br />
-                                        Capacité : 200 personnes
+                                        {t('phase2_plaza_hall_desc')}<br />
+                                        {t('phase2_plaza_hall_capacity')}
                                     </p>
                                 </div>
 
@@ -419,12 +421,12 @@ function HomepagePhase2() {
                                     <div className="flex items-center gap-3 mb-3">
                                         <span className="text-2xl">🎫</span>
                                         <h4 className="font-orbitron font-bold text-xl text-white">
-                                            ENTRÉE GRATUITE
+                                            {t('phase2_free_entry')}
                                         </h4>
                                     </div>
                                     <p className="text-sm text-[#a0a0b8] leading-relaxed">
-                                        Toutes les projections et conférences sont en accès libre.<br />
-                                        Réservation recommandée pour les workshops.
+                                        {t('phase2_free_entry_desc')}<br />
+                                        {t('phase2_free_entry_desc_2')}
                                     </p>
                                 </div>
                             </div>
@@ -437,10 +439,10 @@ function HomepagePhase2() {
                     <div className="max-w-7xl mx-auto px-10">
                         <div className="text-center mb-12">
                             <h2 className="font-orbitron font-black text-4xl mb-4">
-                                SUIVEZ L'ÉVÉNEMENT <span className="text-[#ec4899]">EN DIRECT</span>
+                                {t('phase2_follow_live')} <span className="text-[#ec4899]">{t('phase2_follow_live_2')}</span>
                             </h2>
                             <p className="text-[#a0a0b8]">
-                                Rejoignez la conversation avec #MarsAI2026
+                                {t('phase2_join_conversation')}
                             </p>
                         </div>
 
