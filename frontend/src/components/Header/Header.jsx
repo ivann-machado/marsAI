@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 function Header() {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
+
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
@@ -33,7 +34,7 @@ function Header() {
 
   return (
     <header className="w-screen p-4 bg-gray-900">
-      <nav className="border-2 border-black/25 rounded-full bg-white/30 max-w-1200px mx-auto p-6  flex flex-row justify-between items-center ">
+      <nav className="border-2 border-black/25 rounded-full bg-white/30 max-w-1200px mx-auto p-6 flex flex-row justify-between items-center ">
         <div className="flex flex-row justify-center items-center">
           <p className="text-2xl font-bold text-white hover:cursor-pointer">
             MARS <span className="text-4xl text-indigo-500 font-bold">AI</span>
@@ -103,7 +104,7 @@ function Header() {
           </div>
         ) : (
           <div
-            className="bg-gray-800 overflow-y-hidden fixed z-10 top-0 left-[-150%]
+            className="bg-gray-800 overflow-y-hidden fixed z-15 top-0 left-[-150%]
                             w-screen min-h-screen flex justify-center items-center flex-col gap-10
                             duration-300 ease-in"
           ></div>

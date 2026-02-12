@@ -101,7 +101,7 @@ function App() {
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/participate" element={<UploadPage />} />
           <Route path="/jury" element={<JuryPage />} />
-          <Route path="/sponsors" element={<SponsorsPage />} />
+          <Route path="/partners" element={<SponsorsPage />} />
         </Routes>
       </BrowserRouter>
     );
