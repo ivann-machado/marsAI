@@ -3,9 +3,53 @@ import instaLogo from "../../assets/insta.svg";
 import twitterLogo from "../../assets/twitter.svg";
 import ytLogo from "../../assets/youtube.svg";
 import { useTranslation } from "react-i18next";
+import { useState } from "react";
 
 function Footer() {
   const { t } = useTranslation();
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [newsletterError, setNewsletterError] = useState(null);
+  const [newsletterSuccess, setNewsletterSuccess] = useState(null);
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const newsletterSubmit = async (e) => {
+    e.preventDefault();
+
+    if (validateEmail(newsletterEmail)) {
+      setNewsletterError(null);
+      try {
+        const res = await fetch(
+          "http://localhost:3000/api/newsletter/subscribe",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: newsletterEmail,
+            }),
+          },
+        );
+
+        if (!res.ok) {
+          setNewsletterError(res.message);
+          return;
+        }
+        setNewsletterSuccess(t("footer.subscription_success"));
+        const response = await res.json();
+
+        console.log(response);
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      setNewsletterError(t("footer.email_error"));
+      setNewsletterSuccess(null);
+    }
+  };
+
   return (
     <footer className="bg-gray-900 w-full px-10 py-20">
       <div className="flex flex-col md:col-4 md:flex-row text-gray-600 mb-20">
@@ -61,13 +105,22 @@ function Footer() {
             <input
               type="text"
               className="bg-gray-500 rounded-md h-14 p-2"
+              value={newsletterEmail}
+              onChange={(e) => setNewsletterEmail(e.target.value)}
               placeholder="Email"
             ></input>
             <input
               type="button"
               value="Ok"
+              onClick={(e) => newsletterSubmit(e)}
               className="bg-white rounded-md h-14 w-14 p-2 ml-2 font-bold hover:bg-gray-200"
             ></input>
+            <p className={newsletterError ? "bg-red-500" : "hidden"}>
+              {newsletterError}
+            </p>
+            <p className={newsletterSuccess ? "bg-green-500" : "hidden"}>
+              {newsletterSuccess}
+            </p>
           </form>
         </div>
       </div>
