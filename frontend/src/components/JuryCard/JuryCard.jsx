@@ -10,7 +10,7 @@ function JuryCard({ image_url, name, profession, bio }) {
         className={
           "bg-cover bg-center absolute inset-0 filter grayscale hover:grayscale-0"
         }
-        style={{ backgroundImage: `url(${image_url})` }} // pour fix bg-url qui ne fonctionne pas avec l'url dynamique
+        style={{ backgroundImage: `url(${image_url})` }} // pour fix tailwind bg-url qui ne fonctionne pas avec l'url dynamique
       ></div>
       <div className="absolute inset-left-0 bottom-0 m-2 backdrop-blur-sm w-auto p-2 rounded-4xl">
         <p className="text-pink-600 font-bold text-lg ">{profession}</p>

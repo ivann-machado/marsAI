@@ -29,14 +29,14 @@ function JuryPage() {
   return (
     <>
       <Header />
-      <div className="w-full min-h-screen bg-[url('../src/assets/background.jpg')] bg-cover bg-fixed text-white py-8">
+      <div className="w-full min-h-screen bg-[url('../src/assets/background.jpg')] bg-cover bg-fixed text-white py-8 ">
         <h1 className="text-5xl text-violet-700 font-extrabold text-center mb-8">
           {t("jury_page.title")}
         </h1>
-        <p className="text-lg mx-4 mb-8 text-white">
+        <p className="text-lg mb-8 text-white text-center">
           {t("jury_page.description")}
         </p>
-        <div className="md:flex flex-wrap">
+        <div className="md:flex md:flex-wrap md:max-w-300 md:mx-auto md:gap-8">
           {jury.map((member) => {
             return (
               <JuryCard
