@@ -1,5 +1,6 @@
 import { renderView } from "../utils/view.util.js";
 import { sendEmail } from "../services/brevo.service.js";
+import { CONTACT_MAIL } from "../config/index.js";
 
 
 /**
@@ -17,7 +18,7 @@ export const contact = async (req, res) => {
 		}
 
 		const htmlContent = await renderView('emails/contact.html', { name, email, message });
-		await sendEmail(email, "Contact", htmlContent);
+		await sendEmail(CONTACT_MAIL, "Contact", htmlContent);
 
 		return res.status(200).json({ message: "Message sent successfully" });
 	} catch (error) {
