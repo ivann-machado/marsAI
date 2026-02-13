@@ -19,6 +19,8 @@ function UploadForm() {
   const instagram = useRef(null);
   const linkedin = useRef(null);
   const youtube = useRef(null);
+  const email = useRef(null);
+  const tags = useRef(null);
   //Messages d'erreur
   const [titleError, SetTitleError] = useState();
   const [descError, SetDescError] = useState("");
@@ -32,6 +34,8 @@ function UploadForm() {
   const [instagramError, SetInstagramError] = useState("");
   const [linkedinError, SetLinkedinError] = useState("");
   const [youtubeError, SetYoutubeError] = useState("");
+  const [emailError, SetEmailError] = useState("");
+  const [tagError, SetTagError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -160,6 +164,27 @@ function UploadForm() {
     } else {
       Set("");
       console.log(youtube.current.value);
+    }
+  }
+  function emailCheck() {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (email.current.value.trim() === "") {
+      SetEmailError("Champ vide");
+      console.log("Input is empty");
+    } else if (!regex.test(email.current.value)) {
+      SetEmailError("Format d'email invalide");
+    } else {
+      SetEmailError("");
+      console.log(email.current.value);
+    }
+  }
+  function tagCheck() {
+    if (tags.current.value.trim() === "") {
+      SetTagError("Champ vide");
+      console.log("Input is empty");
+    } else {
+      SetTagError("");
+      console.log(tags.current.value);
     }
   }
   const formSubmit = useState(false);
@@ -386,6 +411,40 @@ function UploadForm() {
                 className="bg-gray-900 text-white border-2 border-[#F2F2F2]/20 rounded-lg w-full h-10 p-1"
               />
               <p className="text-white">{youtubeError}</p>
+            </div>
+          </div>
+          <div className="flex flex-col md:flex-row md:justify-evenly md:p-4 md:gap-10 md:w-full">
+            <div className="flex flex-col md:w-full md:max-w-150">
+              <label htmlFor="email" className="text-white">
+                Email :
+              </label>
+              <input
+                type="text"
+                name="email"
+                id="email"
+                ref={email}
+                onChange={() => {
+                  emailCheck();
+                }}
+                className="bg-gray-900 text-white border-2 border-[#F2F2F2]/20 rounded-lg w-full h-10 p-1"
+              />
+              <p className="text-white">{emailError}</p>
+            </div>
+            <div className="flex flex-col md:w-full md:max-w-150">
+              <label htmlFor="tags" className="text-white">
+                Tags :
+              </label>
+              <input
+                type="text"
+                name="tags"
+                id="tags"
+                ref={tags}
+                onChange={() => {
+                  tagCheck();
+                }}
+                className="bg-gray-900 text-white border-2 border-[#F2F2F2]/20 rounded-lg w-full h-10 p-1"
+              />
+              <p className="text-white">{tagError}</p>
             </div>
           </div>
         </div>
