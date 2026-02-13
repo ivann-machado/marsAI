@@ -164,6 +164,7 @@ export const verifyInvite = async (req, res) => {
 
 export const acceptInvite = async (req, res) => {
 	const token = req.params.token;
+	let conn;
 	try {
 		const { admin } = await validateInviteToken(token);
 
@@ -172,16 +173,30 @@ export const acceptInvite = async (req, res) => {
 				.status(400)
 				.json({ valid: false, message: "Password is required" });
 		}
+
+		conn = await getConnection();
+		await conn.beginTransaction();
+
 		const hashedPassword = await bcrypt.hash(req.body.password, 10);
-		await addPasswordAdmin(admin.id, hashedPassword);
-		await updateTokenStatus(token, "used");
+		await addPasswordAdmin(admin.id, hashedPassword, conn);
+		await updateTokenStatus(token, "used", conn);
+
+		await conn.commit();
+
 		return res
 			.status(200)
 			.json({ valid: true, message: "Token validated and password set" });
 	} catch (error) {
+		if (conn) {
+			await conn.rollback();
+		}
 		console.error("Accept Invite Error:", error);
 		res
 			.status(error.status || 500)
 			.json({ valid: false, message: error.message || "Server error" });
+	} finally {
+		if (conn) {
+			conn.release();
+		}
 	}
 };

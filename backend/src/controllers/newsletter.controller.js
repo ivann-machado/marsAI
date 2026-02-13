@@ -20,16 +20,12 @@ export const subscribeNewsletter = async (req, res) => {
 			return res.status(400).json({ message: "Email is required" });
 		}
 
-		const existing = await findNewsletterByEmail(email);
-		if (existing) {
-			return res
-				.status(409)
-				.json({ message: "Email already subscribed" });
-		}
-
 		await createNewsletter(email);
 		return res.status(201).json({ message: "Subscription successful" });
 	} catch (error) {
+		if (error.errno === 1062 || error.code === 'ER_DUP_ENTRY') {
+			return res.status(409).json({ message: "Email already subscribed" });
+		}
 		console.error("Newsletter Subscribe Error:", error);
 		res.status(500).json({ message: "Server error" });
 	}

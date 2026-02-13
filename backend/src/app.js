@@ -17,9 +17,6 @@ const app = express();
 //  Middleware
 app.use(cors(CORS_OPTIONS));
 app.use(express.json());
-app.use("/api/videos", videoRoutes);
-app.use("/api/newsletter", newsletterRoutes);
-app.use("/api/reservations", reservationRoutes);
 
 // Logging
 app.use(morgan("dev")); // Log requests
@@ -52,6 +49,9 @@ app.get("/", (req, res) => {
 	res.status(200).json({ message: "Welcome to MarsAI API" });
 });
 app.use("/api/auth", authRoutes);
+app.use("/api/videos", videoRoutes);
+app.use("/api/newsletter", newsletterRoutes);
+app.use("/api/reservations", reservationRoutes);
 
 // Protected routes
 app.use("/api/settings", settingRoutes);
