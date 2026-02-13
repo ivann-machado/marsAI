@@ -22,21 +22,3 @@ export const loadSettings = async () => {
 		throw error;
 	}
 };
-
-// TODO: Implement setSetting in controller
-// export const setSetting = async (name, value) => {
-// 	try {
-// 		await updateSetting(name, value);
-// 		if (SETTINGS[name]) {
-// 			SETTINGS[name].value = value;
-// 			SETTINGS[name].updatedAt = new Date();
-// 		} else {
-// 			SETTINGS[name] = { value, updatedAt: new Date() };
-// 		}
-// 		console.log(`Setting '${name}' updated to '${value}'`);
-// 		return SETTINGS[name];
-// 	} catch (error) {
-// 		console.error(`Failed to update setting '${name}':`, error);
-// 		throw error;
-// 	}
-// };

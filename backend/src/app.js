@@ -11,15 +11,13 @@ import newsletterRoutes from "./routes/newsletter.routes.js";
 import settingRoutes from "./routes/setting.routes.js";
 import reservationRoutes from "./routes/reservation.routes.js";
 import contentRoutes from "./routes/content.routes.js";
+import contactRoutes from "./routes/contact.routes.js";
 
 const app = express();
 
 //  Middleware
 app.use(cors(CORS_OPTIONS));
 app.use(express.json());
-app.use("/api/videos", videoRoutes);
-app.use("/api/newsletter", newsletterRoutes);
-app.use("/api/reservations", reservationRoutes);
 
 // Logging
 app.use(morgan("dev")); // Log requests
@@ -52,6 +50,10 @@ app.get("/", (req, res) => {
 	res.status(200).json({ message: "Welcome to MarsAI API" });
 });
 app.use("/api/auth", authRoutes);
+app.use("/api/videos", videoRoutes);
+app.use("/api/newsletter", newsletterRoutes);
+app.use("/api/reservations", reservationRoutes);
+app.use("/api/contact", contactRoutes);
 
 // Protected routes
 app.use("/api/settings", settingRoutes);
