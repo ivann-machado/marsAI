@@ -223,7 +223,7 @@
       "edition_id": 2026,
       "name": "John Doe",
       "bio": "Journaliste",
-      "photo": "/producer_image.png",
+      "photo": "https://img.freepik.com/free-photo/handsome-unshaven-european-man-has-serious-self-confident-expression-wears-glasses_273609-17344.jpg?t=st=1770972736~exp=1770976336~hmac=b1c97c8c5a52ecc00a527d6c7de55d4b505d05c584ac12655acf43fe0d4fc8b0",
       "profession": "Activiste"
     }
   ],
@@ -259,21 +259,21 @@
       }
     ]
   },
-  "mockedFormData" : {
-    "title" : "",
-    "description" : "",
-    "url" : "",
-    "filename" : "",
-    "email" : "",
-    "producer" : "",
-    "producer_image" : "",
-    "linkedin_link" : "",
-    "youtube_link" : "",
-    "scenario_ai" : "",
-    "video_gen_ai" : "",
-    "sound_ai" : "",
-    "postprod_ai" : "",
-    "tags" : ""
+  "mockedFormData": {
+    "title": "",
+    "description": "",
+    "url": "",
+    "filename": "",
+    "email": "",
+    "producer": "",
+    "producer_image": "",
+    "linkedin_link": "",
+    "youtube_link": "",
+    "scenario_ai": "",
+    "video_gen_ai": "",
+    "sound_ai": "",
+    "postprod_ai": "",
+    "tags": ""
   },
 
   "mockedSponsors": [
