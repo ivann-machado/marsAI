@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 function Footer() {
   const { t } = useTranslation();
   return (
-    <footer className="bg-gray-900 w-screen px-10 py-20">
+    <footer className="bg-gray-900 w-full px-10 py-20">
       <div className="flex flex-col md:col-4 md:flex-row text-gray-600 mb-20">
         <div className="md:w-2/6 mb-7">
           <p className="text-4xl font-bold text-white mb-7">
