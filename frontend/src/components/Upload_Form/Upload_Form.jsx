@@ -21,6 +21,8 @@ function UploadForm() {
   const youtube = useRef(null);
   const email = useRef(null);
   const tags = useRef(null);
+  const [majority_certification, SetMajorityCertification] = useState(false);
+  const [right_givaway, SetRightGivaway] = useState(false);
   //Messages d'erreur
   const [titleError, SetTitleError] = useState();
   const [descError, SetDescError] = useState("");
@@ -36,7 +38,10 @@ function UploadForm() {
   const [youtubeError, SetYoutubeError] = useState("");
   const [emailError, SetEmailError] = useState("");
   const [tagError, SetTagError] = useState("");
-
+  const [majorityCertificationError, SetMajorityCertificationError] =
+    useState("");
+  const [rightGivawayError, SetRightGivawayError] = useState("");
+  //Stockage des valeurs des inputs
   const handleSubmit = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -162,7 +167,7 @@ function UploadForm() {
       SetYoutubeError("Champ vide");
       console.log("Input is empty");
     } else {
-      Set("");
+      SetYoutubeError("");
       console.log(youtube.current.value);
     }
   }
@@ -187,6 +192,7 @@ function UploadForm() {
       console.log(tags.current.value);
     }
   }
+  console.log(majority_certification);
   const formSubmit = useState(false);
   return (
     <div className="flex justify-center bg-[#050505] pt-4 pb-4">
@@ -452,11 +458,13 @@ function UploadForm() {
           <div className="flex flex-row md:w-4/10">
             <input
               type="checkbox"
-              name=""
-              id=""
+              name="majority_certification"
+              id="majority_certification"
+              checked={majority_certification}
+              onChange={(e) => SetMajorityCertification(e.target.checked)}
               className="bg-gray-700 border border-gray-500 rounded-lg"
             />
-            <label htmlFor="" className="text-white">
+            <label htmlFor="majority_certification" className="text-white">
               {t("upload_form.majority_certification")}
             </label>
           </div>
@@ -465,6 +473,8 @@ function UploadForm() {
               type="checkbox"
               name="right_givaway"
               id="right_givaway"
+              checked={right_givaway}
+              onChange={(e) => SetRightGivaway(e.target.checked)}
               className="bg-gray-700 border border-gray-500 rounded-lg"
             />
             <label htmlFor="right_givaway" className="text-white w-5/10">
