@@ -11,7 +11,6 @@ function Header() {
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
-
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 768) {
@@ -23,7 +22,6 @@ function Header() {
       window.removeEventListener("resize", handleResize);
     };
   });
-
   useEffect(() => {
     if (isOpen) {
       document.body.classList.add("no-scroll");
