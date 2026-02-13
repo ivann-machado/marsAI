@@ -15,7 +15,9 @@
     "home": "Accueil",
     "participate": "Participer",
     "board": "Jury",
-    "about": "A Propos"
+    "about": "A Propos",
+    "subscription_success": "Souscription à notre Newsletter avec success! Merci!",
+    "email_error": "Email invalide!"
   },
   "header": {
     "home": "Accueil",
