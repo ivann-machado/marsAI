@@ -12,6 +12,8 @@ import settingRoutes from "./routes/setting.routes.js";
 import reservationRoutes from "./routes/reservation.routes.js";
 import contentRoutes from "./routes/content.routes.js";
 import contactRoutes from "./routes/contact.routes.js";
+import swaggerUi from "swagger-ui-express";
+import swaggerSpec from "./config/swagger.config.js";
 
 const app = express();
 
@@ -58,6 +60,9 @@ app.use("/api/contact", contactRoutes);
 // Protected routes
 app.use("/api/settings", settingRoutes);
 app.use("/api/content", contentRoutes);
+
+// API Documentation
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Global Error Handling Middleware
 app.use((err, req, res, next) => {

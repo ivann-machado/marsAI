@@ -8,6 +8,36 @@ import { CONTACT_MAIL } from "../config/index.js";
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  * @returns {Promise<void>}
+ *
+ * @openapi
+ * /contact:
+ *   post:
+ *     summary: Contact the company
+ *     tags: [Contact]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - email
+ *               - message
+ *             properties:
+ *               name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               message:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Message sent successfully
+ *       400:
+ *         description: All fields are required
+ *       500:
+ *         description: Server error
  */
 export const contact = async (req, res) => {
 	try {
