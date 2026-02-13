@@ -10,21 +10,59 @@ function Contact() {
   const email = useRef();
   const message = useRef();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!name || !email || !message) {
+
+    const nameVal = name.current?.value?.trim();
+    const emailVal = email.current?.value?.trim();
+    const messageVal = message.current?.value?.trim();
+
+    if (!nameVal || !emailVal || !messageVal) {
       alert("Veuillez remplir tous les champs.");
       return;
     }
-    if (!/\S+@\S+\.\S+/.test(email)) {
+
+    if (!/\S+@\S+\.\S+/.test(emailVal)) {
       alert("Veuillez entrer une adresse email valide.");
       return;
     }
-    if (message.length < 10) {
+
+    if (messageVal.length < 10) {
       alert("Le message doit contenir au moins 10 caractères.");
       return;
     }
-    console.log({ name, email, message });
+
+    try {
+      console.log("Contact form data:", {
+        name: nameVal,
+        email: emailVal,
+        message: messageVal,
+      });
+
+      const res = await fetch("http://localhost:3000/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: nameVal,
+          email: emailVal,
+          message: messageVal,
+        }),
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (res.ok) {
+        alert(data.message || "Message envoyé avec succès.");
+        name.current.value = "";
+        email.current.value = "";
+        message.current.value = "";
+      } else {
+        alert(data.message || "Erreur lors de l'envoi du message.");
+      }
+    } catch (error) {
+      console.error("Contact submit error:", error);
+      alert("Erreur réseau. Réessayez plus tard.");
+    }
   };
 
   return (
@@ -35,7 +73,7 @@ function Contact() {
           <h1 className="text-3xl font-bold text-center mb-6 bg-gradient-to-r from-pink-500 to-violet-500 bg-clip-text text-transparent">
             {t("page_contact.contact_title")}
           </h1>
-          <form className="space-y-5">
+          <form className="space-y-5" onSubmit={handleSubmit}>
             <div>
               <label className="block text-sm font-medium mb-1 bg-gradient-to-r from-pink-400 to-violet-400 bg-clip-text text-transparent">
                 Nom
@@ -74,7 +112,6 @@ function Contact() {
 
             <button
               type="submit"
-              onClick={handleSubmit}
               className="w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition duration-200"
             >
               Envoyer
