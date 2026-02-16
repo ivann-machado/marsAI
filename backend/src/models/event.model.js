@@ -75,7 +75,7 @@ export const findAllEvents = async (conn = null) => {
  * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
  * @returns {Promise<number>} Number of affected rows.
  */
-export const updateEvent = async (
+export const updateEventById = async (
 	id,
 	{ type, name, url, logo, info, place, duration, cover_image, date },
 	conn = null,
