@@ -10,7 +10,7 @@ import { pool } from "../config/db.js";
  * @param {string} data.date - Event date (YYYY-MM-DD).
  * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
  * @returns {Promise<number>} Inserted event ID.
- */
+ */ 
 export const createEvent = async (
 	{ type, name, url, logo, info, place, duration, cover_image, date },
 	conn = null,
