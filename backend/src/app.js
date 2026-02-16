@@ -57,11 +57,11 @@ app.use("/api/videos", videoRoutes);
 app.use("/api/newsletter", newsletterRoutes);
 app.use("/api/reservations", reservationRoutes);
 app.use("/api/contact", contactRoutes);
+app.use("/api/events", eventRoutes);
 
 // Protected routes
 app.use("/api/settings", settingRoutes);
 app.use("/api/content", contentRoutes);
-app.use("/api/events", eventRoutes);
 // API Documentation
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
