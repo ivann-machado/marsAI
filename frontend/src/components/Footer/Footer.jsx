@@ -3,13 +3,17 @@ import instaLogo from "../../assets/insta.svg";
 import twitterLogo from "../../assets/twitter.svg";
 import ytLogo from "../../assets/youtube.svg";
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { useSettings } from "../../context/SettingsContext";
 
 function Footer() {
   const { t } = useTranslation();
   const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterError, setNewsletterError] = useState(null);
   const [newsletterSuccess, setNewsletterSuccess] = useState(null);
+  const settings = useSettings();
+
+  // console.log("settings in footer ", settings);
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -50,12 +54,32 @@ function Footer() {
     }
   };
 
+  if (!settings) return <p>Loading...</p>;
+
+  console.log(
+    settings.bg_color_primary_alt,
+    (settings.bg_color_primary_alt
+      ? " bg-[" + settings.bg_color_primary_alt + "] "
+      : " bg-gray-900 ") + " w-full px-10 py-20",
+  );
+
+  // Exemple si on veut changer dynamiquement le CSS en utilisant settings, à voir si on trouve une meilleure solution
+  {
+    /* <footer
+      style={{
+        "--bg_color_primary_alt": settings?.bg_color_primary_alt || "#000000",
+      }}
+      className="bg-[color:var(--bg_color_primary_alt)] w-full px-10 py-20"
+    > */
+  }
+
   return (
-    <footer className="bg-gray-900 w-full px-10 py-20">
+    <footer className="bg-gray-900  w-full px-10 py-20">
       <div className="flex flex-col md:col-4 md:flex-row text-gray-600 mb-20">
         <div className="md:w-2/6 mb-7">
           <p className="text-4xl font-bold text-white mb-7">
-            MARS <span className="text-4xl text-indigo-500 font-bold">AI</span>
+            MARS
+            <span className="text-4xl text-indigo-500 font-bold">AI</span>
           </p>
           <p className="text-gray-600 mb-7">{t("footer.footer_message")}</p>
           <div className="flex">
