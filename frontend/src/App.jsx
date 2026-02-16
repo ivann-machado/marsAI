@@ -18,6 +18,7 @@ import AdminJury from "./pages/AdminJury/AdminJury.jsx";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.jsx";
 import JuryPage from "./pages/JuryPage/JuryPage.jsx";
 import SponsorsPage from "./pages/SponsorsPage/SponsorsPage.jsx";
+import { SettingsProvider } from "./context/SettingsContext.jsx";
 
 function App() {
   if (window.location.host.split(".")[0] == "admin")
@@ -97,15 +98,17 @@ function App() {
     /* PAGES PUBLIQUES */
     return (
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<HomepagePhase2 />} />
-          <Route path="/video/:videoId" element={<VideoDetail />} />
-          <Route path="/gallery" element={<Gallery />} />
-          <Route path="/participate" element={<UploadPage />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/jury" element={<JuryPage />} />
-          <Route path="/partners" element={<SponsorsPage />} />
-        </Routes>
+        <SettingsProvider>
+          <Routes>
+            <Route path="/" element={<HomepagePhase2 />} />
+            <Route path="/video/:videoId" element={<VideoDetail />} />
+            <Route path="/gallery" element={<Gallery />} />
+            <Route path="/participate" element={<UploadPage />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/jury" element={<JuryPage />} />
+            <Route path="/partners" element={<SponsorsPage />} />
+          </Routes>
+        </SettingsProvider>
       </BrowserRouter>
     );
 }
