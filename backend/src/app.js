@@ -11,6 +11,7 @@ import newsletterRoutes from "./routes/newsletter.routes.js";
 import settingRoutes from "./routes/setting.routes.js";
 import reservationRoutes from "./routes/reservation.routes.js";
 import contentRoutes from "./routes/content.routes.js";
+import eventRoutes from "./routes/event.routes.js";
 import contactRoutes from "./routes/contact.routes.js";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./config/swagger.config.js";
@@ -60,7 +61,7 @@ app.use("/api/contact", contactRoutes);
 // Protected routes
 app.use("/api/settings", settingRoutes);
 app.use("/api/content", contentRoutes);
-
+app.use("/api/events", eventRoutes);
 // API Documentation
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
