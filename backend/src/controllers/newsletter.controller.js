@@ -1,7 +1,7 @@
 import {
-	createNewsletter,
-	findNewsletterByEmail,
-	findAllNewsletters,
+	insertNewsletter,
+	selectNewsletterByEmail,
+	selectAllNewsletters,
 	deleteNewsletterByEmail,
 } from "../models/newsletter.model.js";
 
@@ -47,7 +47,7 @@ export const subscribeNewsletter = async (req, res) => {
 			return res.status(400).json({ message: "Email is required" });
 		}
 
-		await createNewsletter(email);
+		await insertNewsletter(email);
 		return res.status(201).json({ message: "Subscription successful" });
 	} catch (error) {
 		if (error.errno === 1062 || error.code === 'ER_DUP_ENTRY') {
@@ -85,7 +85,7 @@ export const subscribeNewsletter = async (req, res) => {
  */
 export const getAllNewsletters = async (req, res) => {
 	try {
-		const newsletters = await findAllNewsletters();
+		const newsletters = await selectAllNewsletters();
 		res.status(200).json(newsletters);
 	} catch (error) {
 		console.error("Get Newsletters Error:", error);
@@ -135,3 +135,6 @@ export const deleteNewsletter = async (req, res) => {
 		res.status(500).json({ message: "Server error" });
 	}
 };
+
+
+

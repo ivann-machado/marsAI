@@ -1,8 +1,8 @@
 import {
-	createReservation,
-	findAllReservations,
-	findReservationById,
-	deleteReservationById,
+	insertReservation,
+	selectAllReservations,
+	selectReservationById,
+	deleteReservation,
 } from "../models/reservation.model.js";
 
 export const create = async (req, res) => {
@@ -15,7 +15,7 @@ export const create = async (req, res) => {
 			});
 		}
 
-		const id = await createReservation({
+		const id = await insertReservation({
 			event_id,
 			firstname,
 			lastname,
@@ -24,7 +24,7 @@ export const create = async (req, res) => {
 
 		res.status(201).json({
 			message: "Reservation created",
-			id: Number (id),
+			id: Number(id),
 		});
 	} catch (error) {
 		console.error("Create Reservation Error:", error);
@@ -34,7 +34,7 @@ export const create = async (req, res) => {
 
 export const getAll = async (req, res) => {
 	try {
-		const reservations = await findAllReservations();
+		const reservations = await selectAllReservations();
 		res.status(200).json(reservations);
 	} catch (error) {
 		console.error("Get Reservation Error:", error);
@@ -44,7 +44,7 @@ export const getAll = async (req, res) => {
 
 export const getById = async (req, res) => {
 	try {
-		const reservation = await findReservationById(req.params.id);
+		const reservation = await selectReservationById(req.params.id);
 		if (!reservation) {
 			return res.status(404).json({ message: "Reservation not found" });
 		}
@@ -57,10 +57,13 @@ export const getById = async (req, res) => {
 
 export const remove = async (req, res) => {
 	try {
-		await deleteReservationById(req.params.id);
+		await deleteReservation(req.params.id);
 		res.status(200).json({ message: "Reservation deleted" });
 	} catch (error) {
 		console.error("Delete Reservation Error:", error);
 		res.status(500).json({ message: "Server error" });
 	}
 };
+
+
+

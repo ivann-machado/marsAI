@@ -1,4 +1,10 @@
-import { VideoModel } from "../models/video.model.js";
+import {
+	selectAllVideos,
+	selectVideoById,
+	insertVideo,
+	updateVideo,
+	deleteVideo,
+} from "../models/video.model.js";
 
 /**
  * @openapi
@@ -83,7 +89,7 @@ export const VideoController = {
 	 */
 	async getAll(req, res) {
 		try {
-			const [videos] = await VideoModel.getAll();
+			const [videos] = await selectAllVideos();
 			res.json(videos);
 		} catch (err) {
 			console.error(err);
@@ -122,7 +128,7 @@ export const VideoController = {
 	 */
 	async getById(req, res) {
 		try {
-			const [rows] = await VideoModel.getById(req.params.id);
+			const [rows] = await selectVideoById(req.params.id);
 			if (!rows[0]) {
 				return res.status(404).json({ message: "Video not found" });
 			}
@@ -157,7 +163,7 @@ export const VideoController = {
 	 *         description: Failed to create video
 	 */
 	async create(req, res) {
-		await VideoModel.create(req.body);
+		await insertVideo(req.body);
 		res.status(201).json({ message: "Video created" });
 	},
 
@@ -191,7 +197,7 @@ export const VideoController = {
 	 *         description: Failed to update video
 	 */
 	async update(req, res) {
-		await VideoModel.update(req.params.id, req.body);
+		await updateVideo(req.params.id, req.body);
 		res.json({ message: "Video updated" });
 	},
 
@@ -219,7 +225,10 @@ export const VideoController = {
 	 *         description: Failed to delete video
 	 */
 	async remove(req, res) {
-		await VideoModel.remove(req.params.id);
+		await deleteVideo(req.params.id);
 		res.json({ message: "Video deleted" });
 	},
 };
+
+
+

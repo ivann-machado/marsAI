@@ -1,4 +1,4 @@
-import { getAllContent, updateContent } from "../models/content.model.js";
+import { selectAllContent, updateContent } from "../models/content.model.js";
 
 /**
  * Get all content entries.
@@ -8,7 +8,7 @@ import { getAllContent, updateContent } from "../models/content.model.js";
  */
 export const getContent = async (req, res) => {
 	try {
-		const content = await getAllContent();
+		const content = await selectAllContent();
 		res.status(200).json(content);
 	} catch (error) {
 		console.error("Get Content Error:", error);
@@ -45,3 +45,6 @@ export const setContent = async (req, res) => {
 		res.status(500).json({ message: "Server error" });
 	}
 };
+
+
+
