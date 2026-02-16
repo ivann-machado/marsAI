@@ -27,7 +27,7 @@ import { pool } from "../config/db.js";
 /**
  * Get all videos.
  * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
- * @returns {Promise<any>}
+ * @returns {Promise<any[]>}
  */
 export const selectAllVideos = async (conn = null) => {
 	const query = "SELECT * FROM videos";
