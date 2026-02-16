@@ -15,7 +15,9 @@
     "home": "Home",
     "participate": "Participate",
     "board": "Board",
-    "about": "About"
+    "about": "About",
+    "subscription_success": "Succesfully subscribed to our Newsletter. Thank you!",
+    "email_error": "Invalid email"
   },
   "header": {
     "home": "Home",
