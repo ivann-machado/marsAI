@@ -10,7 +10,7 @@ const router = express.Router();
  * - PUT  `/`  : update a content entry (super admin only).
  */
 
-router.get("/", verifyToken, getContent);
+router.get("/", getContent);
 router.put("/", verifyToken, requireSuperAdmin, setContent);
 
 export default router;
