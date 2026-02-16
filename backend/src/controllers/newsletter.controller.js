@@ -11,7 +11,8 @@ import {
  * @param {import('express').Request} req - Express request object
  * @param {import('express').Response} res - Express response object
  * @returns {Promise<void>}
- *
+ */
+/**
  * @openapi
  * /newsletter:
  *   post:
@@ -63,7 +64,8 @@ export const subscribeNewsletter = async (req, res) => {
  * @param {import('express').Request} req - Express request object
  * @param {import('express').Response} res - Express response object
  * @returns {Promise<void>}
- *
+ */
+/**
  * @openapi
  * /newsletter:
  *   get:
@@ -97,7 +99,8 @@ export const getAllNewsletters = async (req, res) => {
  * @param {import('express').Request} req - Express request object
  * @param {import('express').Response} res - Express response object
  * @returns {Promise<void>}
- *
+ */
+/**
  * @openapi
  * /newsletter/{email}:
  *   delete:

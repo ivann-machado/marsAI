@@ -8,7 +8,9 @@ import { CONTACT_MAIL } from "../config/index.js";
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  * @returns {Promise<void>}
- *
+ */
+
+/**
  * @openapi
  * /contact:
  *   post:
