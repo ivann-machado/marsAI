@@ -5,7 +5,7 @@ import { pool } from '../config/db.js';
  * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
  * @returns {Promise<Array>} Array of content rows.
  */
-export const getAllContent = async (conn = null) => {
+export const selectAllContent = async (conn = null) => {
 	const query = `SELECT name, value, updated_at FROM content`;
 	const db = conn || pool;
 	const rows = await db.query(query);
@@ -25,3 +25,6 @@ export const updateContent = async (name, value, conn = null) => {
 	const result = await db.query(query, [value, name]);
 	return result.affectedRows;
 };
+
+
+

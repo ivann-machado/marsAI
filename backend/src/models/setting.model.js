@@ -5,7 +5,7 @@ import { pool } from '../config/db.js';
  * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
  * @returns {Promise<Array>} Array of setting rows.
  */
-export const getAllSettings = async (conn = null) => {
+export const selectAllSettings = async (conn = null) => {
 	const query = `SELECT name, value, updated_at FROM settings`;
 	const db = conn || pool;
 	const rows = await db.query(query);
@@ -25,3 +25,6 @@ export const updateSetting = async (name, value, conn = null) => {
 	const result = await db.query(query, [value, name]);
 	return result.affectedRows;
 };
+
+
+

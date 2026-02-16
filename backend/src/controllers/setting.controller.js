@@ -1,4 +1,4 @@
-import { getAllSettings, updateSetting } from "../models/setting.model.js";
+import { selectAllSettings, updateSetting } from "../models/setting.model.js";
 
 /**
  * Get all application settings.
@@ -8,7 +8,7 @@ import { getAllSettings, updateSetting } from "../models/setting.model.js";
  */
 export const getSettings = async (req, res) => {
 	try {
-		const settings = await getAllSettings();
+		const settings = await selectAllSettings();
 		res.status(200).json(settings);
 	} catch (error) {
 		console.error("Get Settings Error:", error);
@@ -45,3 +45,6 @@ export const setSetting = async (req, res) => {
 		res.status(500).json({ message: "Server error" });
 	}
 };
+
+
+

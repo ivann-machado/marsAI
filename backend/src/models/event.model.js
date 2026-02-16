@@ -10,20 +10,20 @@ import { pool } from "../config/db.js";
  * @param {string} data.date - Event date (YYYY-MM-DD).
  * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
  * @returns {Promise<number>} Inserted event ID.
- */ 
-export const createEvent = async (
+ */
+export const insertEvent = async (
 	{ type, name, url, logo, info, place, duration, cover_image, date },
 	conn = null,
 ) => {
-	const sql = `
-		INSERT INTO events 
+	const query = `
+		INSERT INTO events
 		(type, name, url, logo, info, place, duration, cover_image, date)
 		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
 	`;
 
 	const db = conn || pool;
 
-	const result = await db.query(sql, [
+	const result = await db.query(query, [
 		type,
 		name,
 		url,
@@ -44,10 +44,10 @@ export const createEvent = async (
  * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
  * @returns {Promise<Object|undefined>} Event row or undefined.
  */
-export const findEventById = async (id, conn = null) => {
-	const sql = "SELECT * FROM events WHERE id = ?";
+export const selectEventById = async (id, conn = null) => {
+	const query = "SELECT * FROM events WHERE id = ?";
 	const db = conn || pool;
-	const rows = await db.query(sql, [id]);
+	const rows = await db.query(query, [id]);
 	return rows[0];
 };
 
@@ -56,10 +56,10 @@ export const findEventById = async (id, conn = null) => {
  * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
  * @returns {Promise<Object[]>} List of events.
  */
-export const findAllEvents = async (conn = null) => {
-	const sql = "SELECT * FROM events ORDER BY date DESC";
+export const selectAllEvents = async (conn = null) => {
+	const query = "SELECT * FROM events ORDER BY date DESC";
 	const db = conn || pool;
-	const rows = await db.query(sql);
+	const rows = await db.query(query);
 	return rows;
 };
 
@@ -75,12 +75,12 @@ export const findAllEvents = async (conn = null) => {
  * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
  * @returns {Promise<number>} Number of affected rows.
  */
-export const updateEventById = async (
+export const updateEvent = async (
 	id,
 	{ type, name, url, logo, info, place, duration, cover_image, date },
 	conn = null,
 ) => {
-	const sql = `
+	const query = `
 		UPDATE events
 		SET type = ?,
 		    name = ?,
@@ -96,7 +96,7 @@ export const updateEventById = async (
 
 	const db = conn || pool;
 
-	const result = await db.query(sql, [
+	const result = await db.query(query, [
 		type,
 		name,
 		url,
@@ -118,9 +118,10 @@ export const updateEventById = async (
  * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
  * @returns {Promise<number>} Number of affected rows.
  */
-export const deleteEventById = async (id, conn = null) => {
-	const sql = "DELETE FROM events WHERE id = ?";
+export const deleteEvent = async (id, conn = null) => {
+	const query = "DELETE FROM events WHERE id = ?";
 	const db = conn || pool;
-	const result = await db.query(sql, [id]);
+	const result = await db.query(query, [id]);
 	return result.affectedRows;
 };
+

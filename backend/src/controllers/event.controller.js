@@ -1,286 +1,149 @@
-import { getConnection } from "../config/db.js";
-
 import {
-	createEvent,
-	findEventById,
-	findAllEvents,
-	updateEventById,
-	deleteEventById,
+	insertEvent,
+	selectEventById,
+	selectAllEvents,
+	updateEvent,
+	deleteEvent,
 } from "../models/event.model.js";
-
 
 /**
  * Create a new event.
- *
- * @param {import("express").Request} req
- * @param {import("express").Response} res
- * @returns {Promise<void>}
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
  */
 export const create = async (req, res) => {
-
-	let conn;
-
 	try {
+		const {
+			type,
+			name,
+			url,
+			logo,
+			info,
+			place,
+			duration,
+			cover_image,
+			date,
+		} = req.body;
 
-		const { type, name, url, logo, date } = req.body;
-
-		if (!type || !name || !logo || !date) {
-			return res.status(400).json({
-				message: "type, name, logo and date are required",
-			});
+		if (!type || !name || !url || !logo || !date) {
+			return res
+				.status(400)
+				.json({ message: "Type, name, url, logo and date are required" });
 		}
 
-		conn = await getConnection();
-		await conn.beginTransaction();
-
-		const eventId = await createEvent(
-			{ type, name, url, logo, date },
-			conn
-		);
-
-		await conn.commit();
-
-		return res.status(201).json({
-			message: "Event created",
-			id: Number(eventId),
+		const eventId = await insertEvent({
+			type,
+			name,
+			url,
+			logo,
+			info,
+			place,
+			duration,
+			cover_image,
+			date,
 		});
 
+		res.status(201).json({
+			message: "Event created successfully",
+			id: eventId.toString(),
+		});
 	} catch (error) {
-
-		if (conn) await conn.rollback();
-
 		console.error("Create Event Error:", error);
-
-		return res.status(500).json({
-			message: "Server error",
-		});
-
-	} finally {
-
-		if (conn) conn.release();
-
+		res.status(500).json({ message: "Server error" });
 	}
 };
-
 
 /**
  * Get all events.
- *
- * @param {import("express").Request} req
- * @param {import("express").Response} res
- * @returns {Promise<void>}
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
  */
 export const getAll = async (req, res) => {
-
-	let conn;
-
 	try {
-
-		conn = await getConnection();
-		await conn.beginTransaction();
-
-		const events = await findAllEvents(conn);
-
-		await conn.commit();
-
-		return res.status(200).json(events);
-
+		const events = await selectAllEvents();
+		res.status(200).json(events);
 	} catch (error) {
-
 		console.error("Get Events Error:", error);
-
-		return res.status(500).json({
-			message: "Server error",
-		});
-
-	} finally {
-
-		if (conn) conn.release();
-
+		res.status(500).json({ message: "Server error" });
 	}
 };
 
-
 /**
- * Get event by ID.
- *
- * @param {import("express").Request} req
- * @param {import("express").Response} res
- * @returns {Promise<void>}
+ * Get an event by ID.
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
  */
 export const getById = async (req, res) => {
-
-	let conn;
-
 	try {
-
-		const { id } = req.params;
-
-		if (!id) {
-			return res.status(400).json({
-				message: "Event id is required",
-			});
-		}
-
-		conn = await getConnection();
-		await conn.beginTransaction();
-
-		const event = await findEventById(id, conn);
-
+		const event = await selectEventById(req.params.id);
 		if (!event) {
-			await conn.commit();
-
-			return res.status(404).json({
-				message: "Event not found",
-			});
+			return res.status(404).json({ message: "Event not found" });
 		}
-
-		await conn.commit();
-
-		return res.status(200).json(event);
-
+		res.status(200).json(event);
 	} catch (error) {
-
-		if (conn) await conn.rollback();
-
 		console.error("Get Event Error:", error);
-
-		return res.status(500).json({
-			message: "Server error",
-		});
-
-	} finally {
-
-		if (conn) conn.release();
-
+		res.status(500).json({ message: "Server error" });
 	}
 };
 
-
 /**
- * Update event by ID.
- *
- * @param {import("express").Request} req
- * @param {import("express").Response} res
- * @returns {Promise<void>}
+ * Update an event by ID.
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
  */
 export const update = async (req, res) => {
-
-	let conn;
-
 	try {
+		const {
+			type,
+			name,
+			url,
+			logo,
+			info,
+			place,
+			duration,
+			cover_image,
+			date,
+		} = req.body;
 
-		const { id } = req.params;
-		const { type, name, url, logo, date } = req.body;
-
-		if (!id) {
-			return res.status(400).json({
-				message: "Event id is required",
-			});
-		}
-
-		conn = await getConnection();
-		await conn.beginTransaction();
-
-		const existingEvent = await findEventById(id, conn);
-
-		if (!existingEvent) {
-
-			await conn.commit();
-
-			return res.status(404).json({
-				message: "Event not found",
-			});
-		}
-
-		const affectedRows = await updateEventById(
-			id,
-			{ type, name, url, logo, date },
-			conn
-		);
-
-		await conn.commit();
-
-		return res.status(200).json({
-			message: "Event updated",
-			affectedRows,
+		const affectedRows = await updateEvent(req.params.id, {
+			type,
+			name,
+			url,
+			logo,
+			info,
+			place,
+			duration,
+			cover_image,
+			date,
 		});
 
+		if (affectedRows === 0) {
+			return res.status(404).json({ message: "Event not found" });
+		}
+
+		res.status(200).json({ message: "Event updated successfully" });
 	} catch (error) {
-
-		if (conn) await conn.rollback();
-
 		console.error("Update Event Error:", error);
-
-		return res.status(500).json({
-			message: "Server error",
-		});
-
-	} finally {
-
-		if (conn) conn.release();
-
+		res.status(500).json({ message: "Server error" });
 	}
 };
 
-
 /**
- * Delete event by ID.
- *
- * @param {import("express").Request} req
- * @param {import("express").Response} res
- * @returns {Promise<void>}
+ * Delete an event by ID.
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
  */
 export const remove = async (req, res) => {
-
-	let conn;
-
 	try {
+		const affectedRows = await deleteEvent(req.params.id);
 
-		const { id } = req.params;
-
-		if (!id) {
-			return res.status(400).json({
-				message: "Event id is required",
-			});
+		if (affectedRows === 0) {
+			return res.status(404).json({ message: "Event not found" });
 		}
 
-		conn = await getConnection();
-		await conn.beginTransaction();
-
-		const existingEvent = await findEventById(id, conn);
-
-		if (!existingEvent) {
-
-			await conn.commit();
-
-			return res.status(404).json({
-				message: "Event not found",
-			});
-		}
-
-		const affectedRows = await deleteEventById(id, conn);
-
-		await conn.commit();
-
-		return res.status(200).json({
-			message: "Event deleted",
-			affectedRows,
-		});
-
+		res.status(200).json({ message: "Event deleted successfully" });
 	} catch (error) {
-
-		if (conn) await conn.rollback();
-
 		console.error("Delete Event Error:", error);
-
-		return res.status(500).json({
-			message: "Server error",
-		});
-
-	} finally {
-
-		if (conn) conn.release();
-
+		res.status(500).json({ message: "Server error" });
 	}
 };
