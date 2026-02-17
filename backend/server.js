@@ -9,9 +9,33 @@ await loadSettings();
 
 const server = createServer(app);
 
-server.listen(PORT, () => {
+server.on('listening', () => {
 	console.log(`Server started on http://localhost:${PORT}`);
 });
+
+const startServer = (port, retries = 20) => {
+	server.removeAllListeners('error');
+	server.on('error', (err) => {
+		if (err.code === 'EADDRINUSE') {
+			if (retries > 0) {
+				console.log(`Port ${port} is in use, retrying in 1 second... (${retries} retries left)`);
+				setTimeout(() => {
+					server.close();
+					startServer(port, retries - 1);
+				}, 1000);
+			} else {
+				console.error(`Port ${port} is still busy after multiple attempts. Exiting.`);
+				process.exit(1);
+			}
+		} else {
+			throw err;
+		}
+	});
+
+	server.listen(port);
+};
+
+startServer(PORT);
 
 const gracefulShutdown = async () => {
 	console.log('Received kill signal, shutting down gracefully');
@@ -39,3 +63,4 @@ const gracefulShutdown = async () => {
 // Listen for termination signals
 process.on('SIGTERM', gracefulShutdown);
 process.on('SIGINT', gracefulShutdown);
+process.on('SIGUSR2', gracefulShutdown);

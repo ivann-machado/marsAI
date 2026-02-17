@@ -11,6 +11,7 @@ import newsletterRoutes from "./routes/newsletter.routes.js";
 import settingRoutes from "./routes/setting.routes.js";
 import reservationRoutes from "./routes/reservation.routes.js";
 import contentRoutes from "./routes/content.routes.js";
+import eventRoutes from "./routes/event.routes.js";
 import contactRoutes from "./routes/contact.routes.js";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./config/swagger.config.js";
@@ -57,11 +58,12 @@ app.use("/api/videos", videoRoutes);
 app.use("/api/newsletter", newsletterRoutes);
 app.use("/api/reservations", reservationRoutes);
 app.use("/api/contact", contactRoutes);
+app.use("/api/events", eventRoutes);
 app.use("/api/jury", juryRoutes);
+
 // Protected routes
 app.use("/api/settings", settingRoutes);
 app.use("/api/content", contentRoutes);
-
 // API Documentation
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 

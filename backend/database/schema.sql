@@ -42,6 +42,10 @@ CREATE TABLE events (
     name VARCHAR(50) NOT NULL,
     url VARCHAR(100) NOT NULL,
     logo VARCHAR(100) NOT NULL,
+	info TEXT NOT NULL,
+	place VARCHAR(100) NOT NULL,
+	duration INT(11) NOT NULL,
+	cover_image VARCHAR(100) NOT NULL,
     date DATE NOT NULL
 ) ENGINE=InnoDB;
 
