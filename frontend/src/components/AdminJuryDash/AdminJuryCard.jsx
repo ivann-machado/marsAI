@@ -13,7 +13,7 @@ function AdminJuryCard({ id, edition_id, name, bio, photo, profession }) {
   const [modified, setModified] = useState(false);
   const authToken = useauth();
 
-  console.log(authToken.token);
+  //console.log(authToken.token);
 
   const updateJury = (key, value) => {
     setJury((prev) => ({
@@ -25,65 +25,85 @@ function AdminJuryCard({ id, edition_id, name, bio, photo, profession }) {
 
   const saveJury = async () => {
     try {
-      const response = await fetch(
-        import.meta.env.VITE_API_URL + "/api/content",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: {},
-        },
-      );
+      const response = await fetch(import.meta.env.VITE_API_URL + "/api/jury", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: {},
+      });
       if (!response.ok) throw new Error("Erreur fetch JSON");
       const json = await response.json();
-      setJury(json.mockedJury);
     } catch (err) {
       console.error(err);
     }
+
+    setModified(false);
   };
 
+  const deleteJury = async (key) => {
+    /* Suppresion dans la DB ici */
+    try {
+      const response = await fetch(import.meta.env.VITE_API_URL + "/api/jury", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: {},
+      });
+      if (!response.ok) throw new Error("Erreur fetch JSON");
+      const json = await response.json();
+    } catch (err) {
+      console.error(err);
+    }
+
+    setJury(null);
+    setModified(false);
+  };
+
+  if (!jury) return <></>;
+
   return (
-    <div key={jury.id} className="grid grid-cols-7 p-2">
-      <div className="col-span-1 p-2">
-        Edition{" "}
-        <input
-          className="inline"
-          value={jury.edition_id}
-          onChange={(e) => updateJury("edition_id", e.target.value)}
-        ></input>
-      </div>
-      <img src={jury.photo} className="col-span-1 p-2"></img>
+    <div
+      key={jury.id}
+      className="grid grid-cols-7 p-2 bg-gray-900 text-gray-100 gap-2"
+    >
+      <input
+        className="bg-gray-700 text-center col-span-1 p-2 rounded-lg hover:bg-gray-500"
+        value={jury.edition_id}
+        onChange={(e) => updateJury("edition_id", e.target.value)}
+      ></input>
+      <img src={jury.photo} className="col-span-1 p-2 max-w-10 max-h-10"></img>
       <input
         value={jury.name}
-        className="col-span-1 p-2"
+        className="col-span-1 p-2 bg-gray-700 text-center rounded-lg hover:bg-gray-500"
         onChange={(e) => updateJury("name", e.target.value)}
       ></input>
       <input
         value={jury.bio}
-        className="col-span-1 p-2 max-h-15 overflow-scroll"
+        className="col-span-1 p-2 max-h-15 overflow-scroll bg-gray-700 text-center rounded-lg hover:bg-gray-500"
         onChange={(e) => updateJury("bio", e.target.value)}
       ></input>
       <input
         value={jury.profession}
-        className="col-span-1 p-2"
+        className="col-span-1 p-2 bg-gray-700 text-center rounded-lg hover:bg-gray-500"
         onChange={(e) => updateJury("profession", e.target.value)}
       ></input>
       {modified ? (
         <input
           type="button"
           value="Sauvegarder"
-          className="col-span-1 p-2 bg-green-700"
+          className="col-span-1 p-2 bg-green-700 text-gray-100 rounded-l-lg -mr-2 hover:bg-green-500"
+          onClick={() => saveJury()}
         ></input>
       ) : (
         <input
           type="button"
           value="Sauvegarder"
-          className="col-span-1 p-2 bg-gray-100"
+          className="col-span-1 p-2 bg-gray-100 text-black rounded-l-lg -mr-2"
         ></input>
       )}
       <input
         type="button"
         value="Supprimer"
-        className="col-span-1 p-2 bg-red-700"
+        className="col-span-1 p-2 bg-red-700 rounded-r-lg hover:bg-red-500"
+        onClick={(e) => deleteJury()}
       ></input>
     </div>
   );
