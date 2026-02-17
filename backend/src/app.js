@@ -15,6 +15,7 @@ import eventRoutes from "./routes/event.routes.js";
 import contactRoutes from "./routes/contact.routes.js";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./config/swagger.config.js";
+import juryRoutes from "./routes/jury.routes.js";
 
 const app = express();
 
@@ -58,6 +59,7 @@ app.use("/api/newsletter", newsletterRoutes);
 app.use("/api/reservations", reservationRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/events", eventRoutes);
+app.use("/api/jury", juryRoutes);
 
 // Protected routes
 app.use("/api/settings", settingRoutes);
