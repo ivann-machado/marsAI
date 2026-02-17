@@ -71,6 +71,8 @@ function AdminJuryCard({ id, edition_id, name, bio, photo, profession }) {
       console.error(err);
       showFlash("error", "Jury could not be deleted");
     }
+
+    setModified(false);
   };
 
   if (!jury) return <></>;
