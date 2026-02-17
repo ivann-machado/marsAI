@@ -7,7 +7,7 @@ import {
 	deleteJuryById,
 } from "../models/jury.model.js";
 
-export const createJuryController = async (req, res) => {
+export const create = async (req, res) => {
 	let conn;
 	try {
 		const { edition_id, name, bio, photo, profession } = req.body;
@@ -59,7 +59,7 @@ export const getAll = async (req, res) => {
 	}
 };
 
-export const getBIyd = async (req, res) => {
+export const getById = async (req, res) => {
 	let conn;
 	try {
 		const { id } = req.params;
