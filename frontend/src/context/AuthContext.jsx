@@ -62,7 +62,7 @@ export const AuthProvider = ({ children }) => {
         storedUser: loggedInUser,
         storedRole: loggedInRole,
         storedExpiration: sessionExpiration,
-        storedToken: token,
+        storedToken: sessionToken,
       }),
     );
 
