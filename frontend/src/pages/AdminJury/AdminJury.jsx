@@ -1,3 +1,7 @@
+import { useState, useEffect } from "react";
+import AdminJuryDash from "../../components/AdminJuryDash/AdminJuryDash.jsx";
+import AdminSidebar from "../../components/AdminSidebar/AdminSidebar.jsx";
+
 function AdminJury() {
   const [jury, setJury] = useState(null);
 
@@ -17,13 +21,10 @@ function AdminJury() {
   }, []);
 
   return (
-    <form>
-      <p>Ajouter membre jury:</p>
-      <label for="jury_name">Nom et prénom</label>
-      <input id="jury_name"></input>
-      <label for="jury_name">Nom et prénom</label>
-      <input id="jury_name"></input>
-    </form>
+    <div className="flex">
+      <AdminSidebar />
+      <AdminJuryDash />
+    </div>
   );
 }
 
