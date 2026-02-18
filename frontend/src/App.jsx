@@ -18,7 +18,7 @@ import AdminJury from "./pages/AdminJury/AdminJury.jsx";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.jsx";
 import JuryPage from "./pages/JuryPage/JuryPage.jsx";
 import SponsorsPage from "./pages/SponsorsPage/SponsorsPage.jsx";
-
+import HomepagePhase3 from "./pages/Homepage-Phase3/Homepage3.jsx";
 function App() {
   if (window.location.host.split(".")[0] == "admin")
     /* PAGES ADMIN */
@@ -98,7 +98,7 @@ function App() {
     return (
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<HomepagePhase2 />} />
+          <Route path="/" element={<HomepagePhase3 />} />
           <Route path="/video/:videoId" element={<VideoDetail />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/participate" element={<UploadPage />} />
