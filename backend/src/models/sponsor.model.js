@@ -18,7 +18,7 @@ export const createSponsor = async (
 	conn = null
 ) => {
 	const sql =
-		"INSERT INTO sponsor (edition_id, type, name, url, logo) VALUES (?, ?, ?, ?, ?)";
+		"INSERT INTO sponsors (edition_id, type, name, url, logo) VALUES (?, ?, ?, ?, ?)";
 
 	const db = conn || pool;
 
@@ -42,7 +42,7 @@ export const createSponsor = async (
  * @returns {Promise<Object|undefined>}
  */
 export const findSponsorById = async (id, conn = null) => {
-	const sql = "SELECT * FROM sponsor WHERE id = ?";
+	const sql = "SELECT * FROM sponsors WHERE id = ?";
 
 	const db = conn || pool;
 
@@ -59,7 +59,7 @@ export const findSponsorById = async (id, conn = null) => {
  * @returns {Promise<Object[]>}
  */
 export const findAllSponsors = async (conn = null) => {
-	const sql = "SELECT * FROM sponsor ORDER BY id DESC";
+	const sql = "SELECT * FROM sponsors ORDER BY id DESC";
 
 	const db = conn || pool;
 
@@ -88,7 +88,7 @@ export const updateSponsorById = async (
 	conn = null
 ) => {
 	const sql =
-		"UPDATE sponsor SET edition_id = ?, type = ?, name = ?, url = ?, logo = ? WHERE id = ?";
+		"UPDATE sponsors SET edition_id = ?, type = ?, name = ?, url = ?, logo = ? WHERE id = ?";
 
 	const db = conn || pool;
 
@@ -113,7 +113,7 @@ export const updateSponsorById = async (
  * @returns {Promise<number>} affected rows
  */
 export const deleteSponsorById = async (id, conn = null) => {
-	const sql = "DELETE FROM sponsor WHERE id = ?";
+	const sql = "DELETE FROM sponsors WHERE id = ?";
 
 	const db = conn || pool;
 
