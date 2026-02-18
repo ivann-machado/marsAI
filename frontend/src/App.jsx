@@ -20,6 +20,7 @@ import AdminSponsors from "./pages/AdminSponsors/AdminSponsors.jsx";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.jsx";
 import JuryPage from "./pages/JuryPage/JuryPage.jsx";
 import SponsorsPage from "./pages/SponsorsPage/SponsorsPage.jsx";
+import Event from "./pages/Event/Event_page.jsx";
 import { SettingsProvider } from "./context/SettingsContext.jsx";
 import { FlashProvider } from "./context/FlashContext.jsx";
 import NotFound from "./components/Utils/NotFound.jsx";
@@ -130,6 +131,7 @@ function App() {
               <Route path="/contact" element={<Contact />} />
               <Route path="/jury" element={<JuryPage />} />
               <Route path="/partners" element={<SponsorsPage />} />
+              <Route path="/Event" element={<Event />} />
               <Route path="*" element={<NotFound />}></Route>
             </Routes>
           </SettingsProvider>

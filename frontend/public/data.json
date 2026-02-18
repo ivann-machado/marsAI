@@ -139,6 +139,18 @@
       "place": "Amphi",
       "duration": 60,
       "cover_image": "/background.jpg"
+    },
+    {
+      "id": 4,
+      "type": "festival",
+      "name": "Festival de Cannes",
+      "url": "/festival/1",
+      "logo": "/vite.svg",
+      "date": "2026/10/10",
+      "info": "fgzgazegz",
+      "place": "Amphi",
+      "duration": 60,
+      "cover_image": "/background.jpg"
     }
   ],
 

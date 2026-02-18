@@ -288,7 +288,8 @@
     "narrative": "Qualité narrative",
     "narrative_detail": "La force de l’histoire racontée en 60 secondes",
     "impact": "Émotion et impact",
-    "impact_detail": "La capacité à toucher les émotions du spectateur"  },
+    "impact_detail": "La capacité à toucher les émotions du spectateur"
+  },
 
   "phase3": {
     "festival_completed": "FESTIVAL TERMINÉ",
@@ -340,5 +341,19 @@
     "country_france": "France",
     "country_usa": "USA",
     "country_germany": "Allemagne",
-    "country_spain": "Espagne"  }
+    "country_spain": "Espagne"
+  },
+  "event_page": {
+    "hero_badge": "NOS ÉVÉNEMENTS",
+    "hero_title": "ÉVÉNEMENTS",
+    "hero_description": "Découvrez nos événements exclusifs et participez à des expériences inoubliables",
+    "loading": "Chargement...",
+    "no_events": "Aucun événement disponible",
+    "list_title": "Événements",
+    "location": "Lieu",
+    "duration": "Durée",
+    "description": "Description",
+    "learn_more": "En savoir plus",
+    "register": "S'inscrire"
+  }
 }
