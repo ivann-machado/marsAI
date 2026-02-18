@@ -46,7 +46,7 @@ function Event() {
               <div className="inline-block px-4 py-2 mb-6 text-sm font-medium bg-white/10 rounded-full border border-white/20">
                 {t("event_page.hero_badge") || "Events"}
               </div>
-              <h1 className="text-6xl md:text-7xl font-black mb-4 tracking-tighter">
+              <h1 className="text-5xl md:text-7xl font-black mb-4 tracking-tighter">
                 {t("event_page.hero_title") || "EVENTS"}
               </h1>
               <p className="text-gray-400 max-w-2xl mx-auto text-lg">
