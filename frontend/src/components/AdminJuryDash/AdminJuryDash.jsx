@@ -5,7 +5,7 @@ import { useFlash } from "../../context/FlashContext";
 function AdminJuryDash() {
   const [jury, setJury] = useState(null);
   const [newJury, setNewJury] = useState({
-    id: "",
+    id: null,
     edition_id: 1,
     name: "",
     profession: "",
@@ -68,17 +68,18 @@ function AdminJuryDash() {
       if (!response.ok) throw new Error("Erreur fetch JSON");
       const res = await response.json();
 
-      setJury((prev) => [...prev, newJury]);
+      setJury((prev) => [...prev, { ...newJury, id: res.id }]);
       setNewJury({
-        id: res.id,
+        id: "",
         edition: 1,
         name: "",
         profession: "",
         bio: "",
         photo: "",
       });
+
       // setJury(res);
-      showFlash("success", "Création jury avec success", 5000);
+      showFlash("success", "Création jury avec success");
     } catch (err) {
       console.error(err);
     }

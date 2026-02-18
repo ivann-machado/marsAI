@@ -43,10 +43,9 @@ function AdminJuryCard({ id, edition_id, name, bio, photo, profession }) {
       );
       if (!response.ok) throw new Error("Erreur fetch JSON");
       const json = await response.json();
-      console.log("reponse save jury", json);
-      showFlash("success", "Jury updated", json);
+      showFlash("success", "Jury updated");
     } catch (err) {
-      showFlash("error", "Jury update failed", json);
+      showFlash("error", "Jury update failed");
       console.error(err);
     }
 
