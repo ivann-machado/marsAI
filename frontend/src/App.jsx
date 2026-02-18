@@ -20,6 +20,7 @@ import JuryPage from "./pages/JuryPage/JuryPage.jsx";
 import SponsorsPage from "./pages/SponsorsPage/SponsorsPage.jsx";
 import { SettingsProvider } from "./context/SettingsContext.jsx";
 
+import HomepagePhase3 from "./pages/Homepage-Phase3/Homepage3.jsx";
 function App() {
   if (window.location.host.split(".")[0] == "admin")
     /* PAGES ADMIN */
