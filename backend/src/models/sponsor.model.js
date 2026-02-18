@@ -13,22 +13,11 @@ import { pool } from "../config/db.js";
  *
  * @returns {Promise<number>} inserted sponsor id
  */
-export const insertSponsor = async (
-	{ edition_id, type, name, url, logo },
-	conn = null
-) => {
-	const query =
-		"INSERT INTO sponsors (edition_id, type, name, url, logo) VALUES (?, ?, ?, ?, ?)";
-
+export const insertSponsor = async ({ edition_id, type, name, url, logo }, conn = null) => {
+	const query = "INSERT INTO sponsors (edition_id, type, name, url, logo) VALUES (?, ?, ?, ?, ?)";
 	const db = conn || pool;
 
-	return db.query(query, [
-		edition_id,
-		type,
-		name,
-		url,
-		logo,
-	]);
+	return db.query(query, [edition_id, type, name, url, logo]);
 };
 
 /**
@@ -76,24 +65,12 @@ export const selectAllSponsors = async (conn = null) => {
  *
  * @returns {Promise<number>} affected rows
  */
-export const updateSponsorById = async (
-	id,
-	{ edition_id, type, name, url, logo },
-	conn = null
-) => {
-	const query =
-		"UPDATE sponsors SET edition_id = ?, type = ?, name = ?, url = ?, logo = ? WHERE id = ?";
+export const updateSponsorById = async (id, { edition_id, type, name, url, logo }, conn = null) => {
+	const query = "UPDATE sponsors SET edition_id = ?, type = ?, name = ?, url = ?, logo = ? WHERE id = ?";
 
 	const db = conn || pool;
 
-	return db.query(query, [
-		edition_id,
-		type,
-		name,
-		url,
-		logo,
-		id,
-	]);
+	return db.query(query, [edition_id, type, name, url, logo, id]);
 };
 
 /**

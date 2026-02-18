@@ -26,7 +26,7 @@ export const createSponsor = async (req, res) => {
 		const result = await insertSponsor({ edition_id, type, name, url, logo });
 		res.status(201).json({
 			message: "Sponsor created",
-			id: result.insertId,
+			id: result.insertId.toString(),
 		});
 	} catch (error) {
 		console.error("Create Sponsor Error:", error);
