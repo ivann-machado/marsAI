@@ -1,6 +1,7 @@
 import AdminJuryList from "./AdminJuryList";
 import { useEffect, useState } from "react";
 import { useFlash } from "../../context/FlashContext";
+import { useauth } from "../../context/AuthContext";
 
 function AdminJuryDash() {
   const [jury, setJury] = useState(null);
@@ -13,6 +14,7 @@ function AdminJuryDash() {
     photo: "",
   });
   const { showFlash } = useFlash();
+  const authToken = useauth();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,7 +58,10 @@ function AdminJuryDash() {
     try {
       const response = await fetch(import.meta.env.VITE_API_URL + "/api/jury", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + authToken.token,
+        },
         body: JSON.stringify({
           edition_id: newJury.edition_id,
           name: newJury.name,

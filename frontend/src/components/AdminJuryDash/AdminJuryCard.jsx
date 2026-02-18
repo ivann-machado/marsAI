@@ -31,7 +31,10 @@ function AdminJuryCard({ id, edition_id, name, bio, photo, profession }) {
         import.meta.env.VITE_API_URL + "/api/jury/" + jury.id,
         {
           method: "PUT",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + authToken.token,
+          },
           body: JSON.stringify({
             edition_id: jury.edition_id,
             name: jury.name,
