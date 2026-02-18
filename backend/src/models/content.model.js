@@ -23,3 +23,6 @@ export const updateContent = async (name, value, conn = null) => {
 	const db = conn || pool;
 	return db.query(query, [value, name]);
 };
+
+
+

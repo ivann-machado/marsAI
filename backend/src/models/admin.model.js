@@ -62,3 +62,6 @@ export const deleteAdmin = async (id, conn = null) => {
 	const db = conn || pool;
 	return db.query(query, [id]);
 };
+
+
+
