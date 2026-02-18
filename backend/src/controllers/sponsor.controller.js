@@ -108,14 +108,6 @@ export const updateSponsor = async (req, res) => {
 			});
 		}
 
-		const resulta = await selectSponsorById(id);
-
-		if (!resulta.length) {
-			return res.status(404).json({
-				message: "Sponsor not found",
-			});
-		}
-
 		const result = await updateSponsorById(
 			id,
 			{ edition_id, type, name, url, logo },
@@ -148,14 +140,6 @@ export const removeSponsor = async (req, res) => {
 		if (!id) {
 			return res.status(400).json({
 				message: "Sponsor id is required",
-			});
-		}
-
-		const existingSponsor = await selectSponsorById(id);
-
-		if (!existingSponsor) {
-			return res.status(404).json({
-				message: "Sponsor not found",
 			});
 		}
 
