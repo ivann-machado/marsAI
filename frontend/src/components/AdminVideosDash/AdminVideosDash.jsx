@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import VideoList from "./VideoList.jsx";
+import Loading from "../Utils/Loading.jsx";
 
 function AdminVideosDash() {
   const [videoQueue, setVideoQueue] = useState(null);
@@ -21,7 +22,7 @@ function AdminVideosDash() {
     fetchData();
   }, []);
 
-  if (!videoQueue || !otherVideo) return <p>Loading...</p>;
+  if (!videoQueue || !otherVideo) return <Loading />;
 
   return (
     <div className="w-4/5 bg-gray-950 px-4">

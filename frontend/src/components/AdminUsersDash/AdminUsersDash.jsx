@@ -1,3 +1,4 @@
+import Loading from "../Utils/Loading";
 import { useState, useEffect } from "react";
 
 function AdminUsersDash() {
@@ -18,7 +19,7 @@ function AdminUsersDash() {
     fetchData();
   }, []);
 
-  if (!users) return <p>Loading...</p>;
+  if (!users) return <Loading />;
 
   return (
     <div className="w-4/5 bg-gray-950">

@@ -6,6 +6,7 @@ import OfficialSponsors from "../../components/SponsorComponents/OfficialSponsor
 import MediaSponsors from "../../components/SponsorComponents/MediaSponsors";
 import TechnicalSponsors from "../../components/SponsorComponents/TechnicalSponsors";
 import OtherSponsors from "../../components/SponsorComponents/OtherSponsors";
+import Loading from "../../components/Utils/Loading";
 
 function SponsorsPage() {
   const [sponsors, setSponsors] = useState(null);
@@ -26,7 +27,7 @@ function SponsorsPage() {
     fetchData();
   }, []);
 
-  if (!sponsors) return <p>Loading..</p>;
+  if (!sponsors) return <Loading />;
 
   return (
     <>

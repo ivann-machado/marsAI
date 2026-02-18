@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import JuryChart from "../../components/JuryChart/JuryChart";
+import Loading from "../../components/Utils/Loading";
 
 function JuryPage() {
   const [jury, setJury] = useState(null);
@@ -24,7 +25,7 @@ function JuryPage() {
     fetchData();
   }, []);
 
-  if (!jury) return <p>Loading..</p>;
+  if (!jury) return <Loading />;
 
   return (
     <>

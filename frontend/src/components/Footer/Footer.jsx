@@ -2,6 +2,7 @@ import fbLogo from "../../assets/fb.svg";
 import instaLogo from "../../assets/insta.svg";
 import twitterLogo from "../../assets/twitter.svg";
 import ytLogo from "../../assets/youtube.svg";
+import Loading from "../Utils/Loading";
 import { useTranslation } from "react-i18next";
 import { useState, useContext } from "react";
 import { useSettings } from "../../context/SettingsContext";
@@ -54,7 +55,7 @@ function Footer() {
     }
   };
 
-  if (!settings) return <p>Loading...</p>;
+  if (!settings) return <Loading />;
 
   console.log(
     settings.bg_color_primary_alt,

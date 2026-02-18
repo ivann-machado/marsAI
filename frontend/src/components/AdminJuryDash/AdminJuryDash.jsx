@@ -1,4 +1,5 @@
 import AdminJuryList from "./AdminJuryList";
+import Loading from "../Utils/Loading";
 import { useEffect, useState } from "react";
 import { useFlash } from "../../context/FlashContext";
 import { useauth } from "../../context/AuthContext";
@@ -90,7 +91,7 @@ function AdminJuryDash() {
     }
   };
 
-  if (!jury) return <p>Loading...</p>;
+  if (!jury) return <Loading />;
 
   return (
     <div className="flex flex-col w-4/5 bg-gray-600 relative">

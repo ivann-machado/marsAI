@@ -22,6 +22,7 @@ import JuryPage from "./pages/JuryPage/JuryPage.jsx";
 import SponsorsPage from "./pages/SponsorsPage/SponsorsPage.jsx";
 import { SettingsProvider } from "./context/SettingsContext.jsx";
 import { FlashProvider } from "./context/FlashContext.jsx";
+import NotFound from "./components/Utils/NotFound.jsx";
 
 function App() {
   if (window.location.host.split(".")[0] == "admin")
@@ -103,6 +104,14 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="*"
+              element={
+                <ProtectedRoute requiredRole={"admin"}>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
           </Routes>
         </FlashProvider>
       </BrowserRouter>
@@ -121,6 +130,7 @@ function App() {
               <Route path="/contact" element={<Contact />} />
               <Route path="/jury" element={<JuryPage />} />
               <Route path="/partners" element={<SponsorsPage />} />
+              <Route path="*" element={<NotFound />}></Route>
             </Routes>
           </SettingsProvider>
         </FlashProvider>

@@ -1,4 +1,5 @@
 import AdminSponsorList from "./AdminSponsorsList";
+import Loading from "../Utils/Loading";
 import { useEffect, useState } from "react";
 import { useFlash } from "../../context/FlashContext";
 import { useauth } from "../../context/AuthContext";
@@ -93,7 +94,7 @@ function AdminSponsorDash() {
     }
   };
 
-  if (!sponsor) return <p>Loading...</p>;
+  if (!sponsor) return <Loading />;
 
   return (
     <div className="flex flex-col w-4/5 bg-gray-600 relative">
