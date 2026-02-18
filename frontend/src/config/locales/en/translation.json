@@ -308,5 +308,18 @@
     "technical_sponsors": "Technical partners",
     "other_sponsors": "Other sponsors",
     "website": "Website"
+  },
+  "event_page": {
+    "hero_badge": "OUR EVENTS",
+    "hero_title": "EVENTS",
+    "hero_description": "Discover our exclusive events and participate in unforgettable experiences",
+    "loading": "Loading...",
+    "no_events": "No events available",
+    "list_title": "Events",
+    "location": "Location",
+    "duration": "Duration",
+    "description": "Description",
+    "learn_more": "Learn more",
+    "register": "Register"
   }
 }

@@ -18,6 +18,7 @@ import AdminJury from "./pages/AdminJury/AdminJury.jsx";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.jsx";
 import JuryPage from "./pages/JuryPage/JuryPage.jsx";
 import SponsorsPage from "./pages/SponsorsPage/SponsorsPage.jsx";
+import Event from "./pages/Event/Event_page.jsx";
 import { SettingsProvider } from "./context/SettingsContext.jsx";
 
 function App() {
@@ -107,6 +108,7 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/jury" element={<JuryPage />} />
             <Route path="/partners" element={<SponsorsPage />} />
+            <Route path="/Event" element={<Event />} />
           </Routes>
         </SettingsProvider>
       </BrowserRouter>
