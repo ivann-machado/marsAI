@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useauth } from "../../context/AuthContext";
+import { useFlash } from "../../context/FlashContext";
 
 function AdminJuryCard({ id, edition_id, name, bio, photo, profession }) {
   const [jury, setJury] = useState({
@@ -11,6 +12,7 @@ function AdminJuryCard({ id, edition_id, name, bio, photo, profession }) {
     profession,
   });
   const [modified, setModified] = useState(false);
+  const { showFlash } = useFlash();
   const authToken = useauth();
 
   //console.log(authToken.token);
@@ -25,14 +27,26 @@ function AdminJuryCard({ id, edition_id, name, bio, photo, profession }) {
 
   const saveJury = async () => {
     try {
-      const response = await fetch(import.meta.env.VITE_API_URL + "/api/jury", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: {},
-      });
+      const response = await fetch(
+        import.meta.env.VITE_API_URL + "/api/jury/" + jury.id,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            edition_id: jury.edition_id,
+            name: jury.name,
+            photo: jury.photo,
+            bio: jury.bio,
+            profession: jury.profession,
+          }),
+        },
+      );
       if (!response.ok) throw new Error("Erreur fetch JSON");
       const json = await response.json();
+      console.log("reponse save jury", json);
+      showFlash("success", "Jury updated", json);
     } catch (err) {
+      showFlash("error", "Jury update failed", json);
       console.error(err);
     }
 
@@ -42,19 +56,22 @@ function AdminJuryCard({ id, edition_id, name, bio, photo, profession }) {
   const deleteJury = async (key) => {
     /* Suppresion dans la DB ici */
     try {
-      const response = await fetch(import.meta.env.VITE_API_URL + "/api/jury", {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: {},
-      });
+      const response = await fetch(
+        import.meta.env.VITE_API_URL + "/api/jury/" + jury.id,
+        {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+        },
+      );
       if (!response.ok) throw new Error("Erreur fetch JSON");
-      const json = await response.json();
+
+      setJury(null);
+      setModified(false);
+      showFlash("success", "Jury deleted");
     } catch (err) {
       console.error(err);
+      showFlash("error", "Jury could not be deleted");
     }
-
-    setJury(null);
-    setModified(false);
   };
 
   if (!jury) return <></>;

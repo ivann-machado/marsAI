@@ -1,24 +1,32 @@
 import AdminJuryList from "./AdminJuryList";
 import { useEffect, useState } from "react";
+import { useFlash } from "../../context/FlashContext";
 
 function AdminJuryDash() {
   const [jury, setJury] = useState(null);
   const [newJury, setNewJury] = useState({
-    edition_id: "2026",
+    id: "",
+    edition_id: 1,
     name: "",
     profession: "",
     bio: "",
     photo: "",
   });
-  const [flashMessage, setFlashMessage] = useState(null);
+  const { showFlash } = useFlash();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/data.json");
+        const response = await fetch(
+          import.meta.env.VITE_API_URL + "/api/jury",
+          {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          },
+        );
         if (!response.ok) throw new Error("Erreur fetch JSON");
-        const json = await response.json();
-        setJury(json.mockedJury);
+        let res = await response.json();
+        setJury(res);
       } catch (err) {
         console.error(err);
       }
@@ -36,7 +44,7 @@ function AdminJuryDash() {
     }));
   };
 
-  const addJury = () => {
+  const addJury = async () => {
     if (
       newJury.name === "" ||
       newJury.photo === "" ||
@@ -45,20 +53,41 @@ function AdminJuryDash() {
     )
       return;
 
-    setJury((prev) => [...prev, newJury]);
-    setNewJury({
-      edition: 1,
-      name: "",
-      profession: "",
-      bio: "",
-      photo: "",
-    });
+    try {
+      const response = await fetch(import.meta.env.VITE_API_URL + "/api/jury", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          edition_id: newJury.edition_id,
+          name: newJury.name,
+          photo: newJury.photo,
+          bio: newJury.bio,
+          profession: newJury.profession,
+        }),
+      });
+      if (!response.ok) throw new Error("Erreur fetch JSON");
+      const res = await response.json();
+
+      setJury((prev) => [...prev, newJury]);
+      setNewJury({
+        id: res.id,
+        edition: 1,
+        name: "",
+        profession: "",
+        bio: "",
+        photo: "",
+      });
+      // setJury(res);
+      showFlash("success", "Création jury avec success", 5000);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   if (!jury) return <p>Loading...</p>;
 
   return (
-    <div className="flex flex-col w-4/5 bg-gray-600">
+    <div className="flex flex-col w-4/5 bg-gray-600 relative">
       <AdminJuryList jury_list={jury} />
       <form className="flex flex-col mx-auto bg-gray-800 text-white p-4">
         <p>Ajouter membre jury:</p>
