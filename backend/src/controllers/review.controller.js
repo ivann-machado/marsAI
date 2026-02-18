@@ -9,6 +9,11 @@ import {
 
 /**
  * Create a new review
+ *
+ * @route POST /reviews
+ * @param {import("express").Request} req - Express request object
+ * @param {import("express").Response} res - Express response object
+ * @returns {Promise<void>}
  */
 export const createReview = async (req, res) => {
 	let conn;
@@ -37,6 +42,11 @@ export const createReview = async (req, res) => {
 
 /**
  * Get all reviews
+ *
+ * @route GET /reviews
+ * @param {import("express").Request} req
+ * @param {import("express").Response} res
+ * @returns {Promise<void>}
  */
 export const getAllReviews = async (req, res) => {
 	let conn;
@@ -53,7 +63,12 @@ export const getAllReviews = async (req, res) => {
 };
 
 /**
- * Get review by ID
+ * Get a single review by ID
+ *
+ * @route GET /reviews/:id
+ * @param {import("express").Request} req
+ * @param {import("express").Response} res
+ * @returns {Promise<void>}
  */
 export const getReviewById = async (req, res) => {
 	let conn;
@@ -76,7 +91,12 @@ export const getReviewById = async (req, res) => {
 };
 
 /**
- * Update review by ID
+ * Update a review by ID
+ *
+ * @route PUT /reviews/:id
+ * @param {import("express").Request} req
+ * @param {import("express").Response} res
+ * @returns {Promise<void>}
  */
 export const updateReview = async (req, res) => {
 	let conn;
@@ -103,7 +123,12 @@ export const updateReview = async (req, res) => {
 };
 
 /**
- * Delete review by ID
+ * Delete a review by ID
+ *
+ * @route DELETE /reviews/:id
+ * @param {import("express").Request} req
+ * @param {import("express").Response} res
+ * @returns {Promise<void>}
  */
 export const removeReview = async (req, res) => {
 	let conn;
