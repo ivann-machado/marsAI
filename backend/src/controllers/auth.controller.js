@@ -34,7 +34,9 @@ export const login = async (req, res) => {
 				.json({ message: "Login and password are required" });
 		}
 
-		const admin = await selectAdminByLogin(login);
+		const admins = await selectAdminByLogin(login);
+		const admin = admins[0];
+
 		if (!admin) {
 			return res.status(401).json({ message: "Invalid credentials" });
 		}
@@ -72,15 +74,16 @@ export const inviteAdmin = async (req, res) => {
 			return res.status(400).json({ message: "Login (email) is required" });
 		}
 
-		const existingAdmin = await selectAdminByLogin(login);
-		if (existingAdmin) {
+		const admins = await selectAdminByLogin(login);
+		if (admins[0]) {
 			return res.status(409).json({ message: "Admin already exists" });
 		}
 
 		conn = await getConnection();
 		await conn.beginTransaction();
 
-		const adminId = await insertAdmin(login, null, "admin", conn);
+		const result = await insertAdmin(login, null, "admin", conn);
+		const adminId = result.insertId;
 
 		const token = crypto.randomUUID();
 		await insertToken(token, adminId, conn);
@@ -128,7 +131,9 @@ const validateInviteToken = async (token) => {
 		throw { status: 400, message: "No token provided" };
 	}
 
-	const existingToken = await selectTokenByValue(token);
+	const tokens = await selectTokenByValue(token);
+	const existingToken = tokens[0];
+
 	if (DEV_MODE) {
 		console.log("ValidateToken found:", existingToken);
 	}
@@ -141,7 +146,9 @@ const validateInviteToken = async (token) => {
 		throw { status: 401, message: "Token already used or expired" };
 	}
 
-	const admin = await selectAdminById(existingToken.admin_id);
+	const admins = await selectAdminById(existingToken.admin_id);
+	const admin = admins[0];
+
 	if (!admin) {
 		throw { status: 401, message: "Admin not found" };
 	}
@@ -200,5 +207,3 @@ export const acceptInvite = async (req, res) => {
 		}
 	}
 };
-
-

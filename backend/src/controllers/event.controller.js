@@ -1,7 +1,7 @@
 import {
 	insertEvent,
-	selectEventById,
 	selectAllEvents,
+	selectEventById,
 	updateEvent,
 	deleteEvent,
 } from "../models/event.model.js";
@@ -11,7 +11,7 @@ import {
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  */
-export const create = async (req, res) => {
+export const createEvent = async (req, res) => {
 	try {
 		const {
 			type,
@@ -31,7 +31,7 @@ export const create = async (req, res) => {
 				.json({ message: "Type, name, url, logo and date are required" });
 		}
 
-		const eventId = await insertEvent({
+		const result = await insertEvent({
 			type,
 			name,
 			url,
@@ -45,7 +45,7 @@ export const create = async (req, res) => {
 
 		res.status(201).json({
 			message: "Event created successfully",
-			id: eventId.toString(),
+			id: result.insertId.toString(),
 		});
 	} catch (error) {
 		console.error("Create Event Error:", error);
@@ -58,12 +58,12 @@ export const create = async (req, res) => {
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  */
-export const getAll = async (req, res) => {
+export const getAllEvents = async (req, res) => {
 	try {
 		const events = await selectAllEvents();
 		res.status(200).json(events);
 	} catch (error) {
-		console.error("Get Events Error:", error);
+		console.error("Get All Events Error:", error);
 		res.status(500).json({ message: "Server error" });
 	}
 };
@@ -73,15 +73,16 @@ export const getAll = async (req, res) => {
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  */
-export const getById = async (req, res) => {
+export const getEventById = async (req, res) => {
 	try {
-		const event = await selectEventById(req.params.id);
+		const rows = await selectEventById(req.params.id);
+		const event = rows[0];
 		if (!event) {
 			return res.status(404).json({ message: "Event not found" });
 		}
 		res.status(200).json(event);
 	} catch (error) {
-		console.error("Get Event Error:", error);
+		console.error("Get Event By ID Error:", error);
 		res.status(500).json({ message: "Server error" });
 	}
 };
@@ -91,7 +92,7 @@ export const getById = async (req, res) => {
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  */
-export const update = async (req, res) => {
+export const setEvent = async (req, res) => {
 	try {
 		const {
 			type,
@@ -105,7 +106,7 @@ export const update = async (req, res) => {
 			date,
 		} = req.body;
 
-		const affectedRows = await updateEvent(req.params.id, {
+		const result = await updateEvent(req.params.id, {
 			type,
 			name,
 			url,
@@ -117,13 +118,13 @@ export const update = async (req, res) => {
 			date,
 		});
 
-		if (affectedRows === 0) {
+		if (result.affectedRows === 0) {
 			return res.status(404).json({ message: "Event not found" });
 		}
 
 		res.status(200).json({ message: "Event updated successfully" });
 	} catch (error) {
-		console.error("Update Event Error:", error);
+		console.error("Set Event Error:", error);
 		res.status(500).json({ message: "Server error" });
 	}
 };
@@ -133,17 +134,17 @@ export const update = async (req, res) => {
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  */
-export const remove = async (req, res) => {
+export const removeEvent = async (req, res) => {
 	try {
-		const affectedRows = await deleteEvent(req.params.id);
+		const result = await deleteEvent(req.params.id);
 
-		if (affectedRows === 0) {
+		if (result.affectedRows === 0) {
 			return res.status(404).json({ message: "Event not found" });
 		}
 
 		res.status(200).json({ message: "Event deleted successfully" });
 	} catch (error) {
-		console.error("Delete Event Error:", error);
+		console.error("Remove Event Error:", error);
 		res.status(500).json({ message: "Server error" });
 	}
 };

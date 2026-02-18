@@ -60,175 +60,89 @@ import {
  */
 
 /**
- * Controller for videos (Express handlers).
- * Each method accepts `req` and `res` from Express.
+ * Return all videos.
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
  */
-export const VideoController = {
-	/**
-	 * Return all videos.
-	 * @param {import('express').Request} req
-	 * @param {import('express').Response} res
-	 */
-	/**
-	 * @openapi
-	 * /videos:
-	 *   get:
-	 *     summary: Return all videos
-	 *     tags: [Videos]
-	 *     responses:
-	 *       200:
-	 *         description: List of videos
-	 *         content:
-	 *           application/json:
-	 *             schema:
-	 *               type: array
-	 *               items:
-	 *                 $ref: '#/components/schemas/Video'
-	 *       500:
-	 *         description: Failed to fetch videos
-	 */
-	async getAll(req, res) {
-		try {
-			const [videos] = await selectAllVideos();
-			res.json(videos);
-		} catch (err) {
-			console.error(err);
-			res.status(500).json({ message: "failed to fetch videos" });
-		}
-	},
-
-	/**
-	 * Return a single video by id.
-	 * @param {import('express').Request} req
-	 * @param {import('express').Response} res
-	 */
-	/**
-	 * @openapi
-	 * /videos/{id}:
-	 *   get:
-	 *     summary: Return a single video by id
-	 *     tags: [Videos]
-	 *     parameters:
-	 *       - in: path
-	 *         name: id
-	 *         required: true
-	 *         schema:
-	 *           type: string
-	 *     responses:
-	 *       200:
-	 *         description: Video found
-	 *         content:
-	 *           application/json:
-	 *             schema:
-	 *               $ref: '#/components/schemas/Video'
-	 *       404:
-	 *         description: Video not found
-	 *       500:
-	 *         description: Error fetching video
-	 */
-	async getById(req, res) {
-		try {
-			const [rows] = await selectVideoById(req.params.id);
-			if (!rows[0]) {
-				return res.status(404).json({ message: "Video not found" });
-			}
-			res.json(rows[0]);
-		} catch (err) {
-			res.status(500).json({ message: "Error fetching video" });
-		}
-	},
-
-	/**
-	 * Create a new video.
-	 * Expects a body matching the `Video` typedef.
-	 * @param {import('express').Request} req
-	 * @param {import('express').Response} res
-	 */
-	/**
-	 * @openapi
-	 * /videos:
-	 *   post:
-	 *     summary: Create a new video
-	 *     tags: [Videos]
-	 *     requestBody:
-	 *       required: true
-	 *       content:
-	 *         application/json:
-	 *           schema:
-	 *             $ref: '#/components/schemas/Video'
-	 *     responses:
-	 *       201:
-	 *         description: Video created
-	 *       500:
-	 *         description: Failed to create video
-	 */
-	async create(req, res) {
-		await insertVideo(req.body);
-		res.status(201).json({ message: "Video created" });
-	},
-
-	/**
-	 * Update a video partially by id.
-	 * @param {import('express').Request} req
-	 * @param {import('express').Response} res
-	 */
-	/**
-	 * @openapi
-	 * /videos/{id}:
-	 *   put:
-	 *     summary: Update a video partially by id
-	 *     tags: [Videos]
-	 *     parameters:
-	 *       - in: path
-	 *         name: id
-	 *         required: true
-	 *         schema:
-	 *           type: string
-	 *     requestBody:
-	 *       required: true
-	 *       content:
-	 *         application/json:
-	 *           schema:
-	 *             $ref: '#/components/schemas/Video'
-	 *     responses:
-	 *       200:
-	 *         description: Video updated
-	 *       500:
-	 *         description: Failed to update video
-	 */
-	async update(req, res) {
-		await updateVideo(req.params.id, req.body);
-		res.json({ message: "Video updated" });
-	},
-
-	/**
-	 * Remove a video by id.
-	 * @param {import('express').Request} req
-	 * @param {import('express').Response} res
-	 */
-	/**
-	 * @openapi
-	 * /videos/{id}:
-	 *   delete:
-	 *     summary: Remove a video by id
-	 *     tags: [Videos]
-	 *     parameters:
-	 *       - in: path
-	 *         name: id
-	 *         required: true
-	 *         schema:
-	 *           type: string
-	 *     responses:
-	 *       200:
-	 *         description: Video deleted
-	 *       500:
-	 *         description: Failed to delete video
-	 */
-	async remove(req, res) {
-		await deleteVideo(req.params.id);
-		res.json({ message: "Video deleted" });
-	},
+export const getAllVideos = async (req, res) => {
+	try {
+		const videos = await selectAllVideos();
+		res.json(videos);
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ message: "failed to fetch videos" });
+	}
 };
 
+/**
+ * Return a single video by id.
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
+export const getVideoById = async (req, res) => {
+	try {
+		const rows = await selectVideoById(req.params.id);
+		const video = rows[0];
+		if (!video) {
+			return res.status(404).json({ message: "Video not found" });
+		}
+		res.json(video);
+	} catch (err) {
+		console.error("Get Video By ID Error:", err);
+		res.status(500).json({ message: "Error fetching video" });
+	}
+};
 
+/**
+ * Create a new video.
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
+export const createVideo = async (req, res) => {
+	try {
+		const result = await insertVideo(req.body);
+		res.status(201).json({
+			message: "Video created",
+			id: result.insertId.toString(),
+		});
+	} catch (err) {
+		console.error("Create Video Error:", err);
+		res.status(500).json({ message: "Error creating video" });
+	}
+};
 
+/**
+ * Update a video partially by id.
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
+export const setVideo = async (req, res) => {
+	try {
+		const result = await updateVideo(req.params.id, req.body);
+		if (result.affectedRows === 0) {
+			return res.status(404).json({ message: "Video not found" });
+		}
+		res.json({ message: "Video updated" });
+	} catch (err) {
+		console.error("Set Video Error:", err);
+		res.status(500).json({ message: "Error updating video" });
+	}
+};
+
+/**
+ * Remove a video by id.
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
+export const removeVideo = async (req, res) => {
+	try {
+		const result = await deleteVideo(req.params.id);
+		if (result.affectedRows === 0) {
+			return res.status(404).json({ message: "Video not found" });
+		}
+		res.json({ message: "Video deleted" });
+	} catch (err) {
+		console.error("Remove Video Error:", err);
+		res.status(500).json({ message: "Error deleting video" });
+	}
+};
