@@ -10,10 +10,10 @@ export const insertJury = async (
 	{ edition_id, name, bio, photo, profession },
 	conn = null,
 ) => {
-	const sql =
+	const query =
 		"INSERT INTO jury (edition_id, name, bio, photo, profession) VALUES (?, ?, ?, ?, ?)";
 	const db = conn || pool;
-	return db.query(sql, [
+	return db.query(query, [
 		edition_id,
 		name,
 		bio,
@@ -29,9 +29,9 @@ export const insertJury = async (
  * @returns {Promise<Object[]>} raw MariaDB result (array of rows)
  */
 export const selectJuryById = async (id, conn = null) => {
-	const sql = "SELECT * FROM jury WHERE id = ?";
+	const query = "SELECT * FROM jury WHERE id = ?";
 	const db = conn || pool;
-	return db.query(sql, [id]);
+	return db.query(query, [id]);
 };
 
 /**
@@ -40,9 +40,9 @@ export const selectJuryById = async (id, conn = null) => {
  * @returns {Promise<Object[]>} raw MariaDB result (array of rows)
  */
 export const selectAllJuries = async (conn = null) => {
-	const sql = "SELECT * FROM jury ORDER BY id DESC";
+	const query = "SELECT * FROM jury ORDER BY id DESC";
 	const db = conn || pool;
-	return db.query(sql);
+	return db.query(query);
 };
 
 /**
@@ -57,10 +57,10 @@ export const updateJury = async (
 	{ edition_id, name, bio, photo, profession },
 	conn = null,
 ) => {
-	const sql =
+	const query =
 		"UPDATE jury SET edition_id = ?, name = ?, bio = ?, photo = ?, profession = ? WHERE id = ?";
 	const db = conn || pool;
-	return db.query(sql, [
+	return db.query(query, [
 		edition_id,
 		name,
 		bio,
@@ -77,7 +77,7 @@ export const updateJury = async (
  * @returns {Promise<Object>} raw MariaDB result
  */
 export const deleteJury = async (id, conn = null) => {
-	const sql = "DELETE FROM jury WHERE id = ?";
+	const query = "DELETE FROM jury WHERE id = ?";
 	const db = conn || pool;
-	return db.query(sql, [id]);
+	return db.query(query, [id]);
 };
