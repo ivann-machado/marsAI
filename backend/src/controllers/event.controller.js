@@ -4,11 +4,6 @@ import {
 	selectAllEvents,
 	updateEvent,
 	deleteEvent,
-	insertEvent,
-	selectAllEvents,
-	selectEventById,
-	updateEvent,
-	deleteEvent,
 } from "../models/event.model.js";
 
 /**
