@@ -1,9 +1,9 @@
 import { getConnection } from "../config/db.js";
 
 import {
-	createSponsor,
-	findSponsorById,
-	findAllSponsors,
+	insertSponsor,
+	selectSponsorById,
+	selectAllSponsors,
 	updateSponsorById,
 	deleteSponsorById,
 } from "../models/sponsor.model.js";
@@ -13,9 +13,7 @@ import {
  * @param {import("express").Request} req
  * @param {import("express").Response} res
  */
-export const create = async (req, res) => {
-	let conn;
-
+export const createSponsor = async (req, res) => {
 	try {
 		const { edition_id, type, name, url, logo } = req.body;
 
@@ -25,31 +23,17 @@ export const create = async (req, res) => {
 			});
 		}
 
-		conn = await getConnection();
-
-		await conn.beginTransaction();
-
-		const sponsorId = await createSponsor(
-			{ edition_id, type, name, url, logo },
-			conn,
-		);
-
-		await conn.commit();
-
+		const result = await insertSponsor({ edition_id, type, name, url, logo });
 		res.status(201).json({
 			message: "Sponsor created",
-			id: Number(sponsorId),
+			id: result.insertId,
 		});
 	} catch (error) {
-		if (conn) await conn.rollback();
-
 		console.error("Create Sponsor Error:", error);
 
 		res.status(500).json({
 			message: "Server error",
 		});
-	} finally {
-		if (conn) conn.release();
 	}
 };
 
@@ -58,29 +42,18 @@ export const create = async (req, res) => {
  * @param {import("express").Request} req
  * @param {import("express").Response} res
  */
-export const getAll = async (req, res) => {
-	let conn;
-
+export const getAllSponsors = async (req, res) => {
 	try {
-		conn = await getConnection();
-
-		await conn.beginTransaction();
-
-		const sponsors = await findAllSponsors(conn);
-
-		await conn.commit();
+		const sponsors = await selectAllSponsors();
 
 		res.status(200).json(sponsors);
 	} catch (error) {
-		if (conn) await conn.rollback();
 
 		console.error("Get Sponsors Error:", error);
 
 		res.status(500).json({
 			message: "Server error",
 		});
-	} finally {
-		if (conn) conn.release();
 	}
 };
 
@@ -89,9 +62,7 @@ export const getAll = async (req, res) => {
  * @param {import("express").Request} req
  * @param {import("express").Response} res
  */
-export const getById = async (req, res) => {
-	let conn;
-
+export const getSponsorById = async (req, res) => {
 	try {
 		const { id } = req.params;
 
@@ -101,33 +72,22 @@ export const getById = async (req, res) => {
 			});
 		}
 
-		conn = await getConnection();
+		const result = await selectSponsorById(id);
 
-		await conn.beginTransaction();
-
-		const sponsor = await findSponsorById(id, conn);
-
-		if (!sponsor) {
-			await conn.commit();
-
+		if (!result.length) {
 			return res.status(404).json({
 				message: "Sponsor not found",
 			});
 		}
 
-		await conn.commit();
-
-		res.status(200).json(sponsor);
+		res.status(200).json(result[0]);
 	} catch (error) {
-		if (conn) await conn.rollback();
 
-		console.error("Get Sponsor Error:", error);
+		console.error("Get Sponsor By Id Error:", error);
 
 		res.status(500).json({
 			message: "Server error",
 		});
-	} finally {
-		if (conn) conn.release();
 	}
 };
 
@@ -136,9 +96,7 @@ export const getById = async (req, res) => {
  * @param {import("express").Request} req
  * @param {import("express").Response} res
  */
-export const update = async (req, res) => {
-	let conn;
-
+export const updateSponsor = async (req, res) => {
 	try {
 		const { id } = req.params;
 
@@ -150,42 +108,31 @@ export const update = async (req, res) => {
 			});
 		}
 
-		conn = await getConnection();
+		const result = await selectSponsorById(id);
 
-		await conn.beginTransaction();
-
-		const existingSponsor = await findSponsorById(id, conn);
-
-		if (!existingSponsor) {
-			await conn.commit();
-
+		if (!result.length) {
 			return res.status(404).json({
 				message: "Sponsor not found",
 			});
 		}
 
-		const affectedRows = await updateSponsorById(
+		const result = await updateSponsorById(
 			id,
 			{ edition_id, type, name, url, logo },
-			conn,
 		);
 
-		await conn.commit();
-
-		res.status(200).json({
-			message: "Sponsor updated",
-			affectedRows,
-		});
+		if (result.affectedRows === 0) {
+			return res.status(404).json({
+				message: "Sponsor not found",
+			});
+		}
+		res.status(200).json({ message: "Sponsor updated" });
 	} catch (error) {
-		if (conn) await conn.rollback();
-
 		console.error("Update Sponsor Error:", error);
 
 		res.status(500).json({
 			message: "Server error",
 		});
-	} finally {
-		if (conn) conn.release();
 	}
 };
 
@@ -194,9 +141,7 @@ export const update = async (req, res) => {
  * @param {import("express").Request} req
  * @param {import("express").Response} res
  */
-export const remove = async (req, res) => {
-	let conn;
-
+export const removeSponsor = async (req, res) => {
 	try {
 		const { id } = req.params;
 
@@ -206,37 +151,27 @@ export const remove = async (req, res) => {
 			});
 		}
 
-		conn = await getConnection();
-
-		await conn.beginTransaction();
-
-		const existingSponsor = await findSponsorById(id, conn);
+		const existingSponsor = await selectSponsorById(id);
 
 		if (!existingSponsor) {
-			await conn.commit();
-
 			return res.status(404).json({
 				message: "Sponsor not found",
 			});
 		}
 
-		const affectedRows = await deleteSponsorById(id, conn);
+		const result = await deleteSponsorById(id);
 
-		await conn.commit();
-
-		res.status(200).json({
-			message: "Sponsor deleted",
-			affectedRows,
-		});
+		if (result.affectedRows === 0) {
+			return res.status(404).json({
+				message: "Sponsor not found",
+			});
+		}
+		res.status(200).json({ message: "Sponsor deleted" });
 	} catch (error) {
-		if (conn) await conn.rollback();
-
 		console.error("Delete Sponsor Error:", error);
 
 		res.status(500).json({
 			message: "Server error",
 		});
-	} finally {
-		if (conn) conn.release();
 	}
 };

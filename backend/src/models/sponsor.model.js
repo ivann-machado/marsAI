@@ -13,24 +13,22 @@ import { pool } from "../config/db.js";
  *
  * @returns {Promise<number>} inserted sponsor id
  */
-export const createSponsor = async (
+export const insertSponsor = async (
 	{ edition_id, type, name, url, logo },
 	conn = null
 ) => {
-	const sql =
+	const query =
 		"INSERT INTO sponsors (edition_id, type, name, url, logo) VALUES (?, ?, ?, ?, ?)";
 
 	const db = conn || pool;
 
-	const result = await db.query(sql, [
+	return db.query(query, [
 		edition_id,
 		type,
 		name,
 		url,
 		logo,
 	]);
-
-	return result.insertId;
 };
 
 /**
@@ -41,14 +39,12 @@ export const createSponsor = async (
  *
  * @returns {Promise<Object|undefined>}
  */
-export const findSponsorById = async (id, conn = null) => {
-	const sql = "SELECT * FROM sponsors WHERE id = ?";
+export const selectSponsorById = async (id, conn = null) => {
+	const query = "SELECT * FROM sponsors WHERE id = ?";
 
 	const db = conn || pool;
 
-	const rows = await db.query(sql, [id]);
-
-	return rows[0];
+	return db.query(query, [id]);
 };
 
 /**
@@ -58,14 +54,12 @@ export const findSponsorById = async (id, conn = null) => {
  *
  * @returns {Promise<Object[]>}
  */
-export const findAllSponsors = async (conn = null) => {
-	const sql = "SELECT * FROM sponsors ORDER BY id DESC";
+export const selectAllSponsors = async (conn = null) => {
+	const query = "SELECT * FROM sponsors ORDER BY id DESC";
 
 	const db = conn || pool;
 
-	const rows = await db.query(sql);
-
-	return rows;
+	return db.query(query);
 };
 
 /**
@@ -87,12 +81,12 @@ export const updateSponsorById = async (
 	{ edition_id, type, name, url, logo },
 	conn = null
 ) => {
-	const sql =
+	const query =
 		"UPDATE sponsors SET edition_id = ?, type = ?, name = ?, url = ?, logo = ? WHERE id = ?";
 
 	const db = conn || pool;
 
-	const result = await db.query(sql, [
+	return db.query(query, [
 		edition_id,
 		type,
 		name,
@@ -100,8 +94,6 @@ export const updateSponsorById = async (
 		logo,
 		id,
 	]);
-
-	return result.affectedRows;
 };
 
 /**
@@ -113,11 +105,9 @@ export const updateSponsorById = async (
  * @returns {Promise<number>} affected rows
  */
 export const deleteSponsorById = async (id, conn = null) => {
-	const sql = "DELETE FROM sponsors WHERE id = ?";
+	const query = "DELETE FROM sponsors WHERE id = ?";
 
 	const db = conn || pool;
 
-	const result = await db.query(sql, [id]);
-
-	return result.affectedRows;
+	return db.query(query, [id]);
 };
