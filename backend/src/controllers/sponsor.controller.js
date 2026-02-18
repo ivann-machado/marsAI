@@ -108,9 +108,9 @@ export const updateSponsor = async (req, res) => {
 			});
 		}
 
-		const result = await selectSponsorById(id);
+		const resulta = await selectSponsorById(id);
 
-		if (!result.length) {
+		if (!resulta.length) {
 			return res.status(404).json({
 				message: "Sponsor not found",
 			});

@@ -1,18 +1,18 @@
 import express from "express";
 import {
-	create,
-	getAll,
-	getById,
-	update,
-	remove,
+	createSponsor,
+	getAllSponsors,
+	getSponsorById,
+	updateSponsor,
+	removeSponsor,
 } from "../controllers/sponsor.controller.js";
 
 const router = express.Router();
 
-router.get("/", getAll);
-router.get("/:id", getById);
-router.post("/", create);
-router.put("/:id", update);
-router.delete("/:id", remove);
+router.get("/", getAllSponsors);
+router.get("/:id", getSponsorById);
+router.post("/", createSponsor);
+router.put("/:id", updateSponsor);
+router.delete("/:id", removeSponsor);
 
 export default router;
