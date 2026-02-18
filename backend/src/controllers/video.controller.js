@@ -13,29 +13,16 @@ import {
  *     Video:
  *       type: object
  *       properties:
- *         id:
- *           type: integer
- *           description: Unique identifier for the video
- *         edition_id:
- *           type: integer
- *           nullable: true
- *         url:
- *           type: string
  *         filename:
  *           type: string
  *         email:
  *           type: string
  *         cover_image:
  *           type: string
- *         verified:
- *           type: boolean
  *         title:
  *           type: string
  *         description:
  *           type: string
- *         status:
- *           type: string
- *           enum: [unverified, verified, selected, grand_prix_1, grand_prix_2, grand_prix_3]
  *         country_id:
  *           type: integer
  *           nullable: true
