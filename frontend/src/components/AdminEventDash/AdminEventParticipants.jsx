@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Loading from "../Utils/Loading";
 
 function AdminEventParticipants({ isOpen, eventId }) {
   const [participants, setParticipants] = useState(null);
@@ -20,7 +21,7 @@ function AdminEventParticipants({ isOpen, eventId }) {
     fetchData();
   }, []);
 
-  if (!participants) return <p className="hidden">Loading...</p>;
+  if (!participants) return <Loading />;
 
   return (
     <div className={isOpen ? "block" : "hidden"}>

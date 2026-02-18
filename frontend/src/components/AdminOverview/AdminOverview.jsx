@@ -1,3 +1,4 @@
+import Loading from "../Utils/Loading";
 import { useState, useEffect } from "react";
 
 function AdminOverview() {
@@ -26,7 +27,7 @@ function AdminOverview() {
     }
   }
 
-  if (!data) return <p>Loading...</p>;
+  if (!data) return <Loading />;
 
   return (
     <>
