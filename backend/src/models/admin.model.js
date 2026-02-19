@@ -8,11 +8,10 @@ import { pool } from "../config/db.js";
  * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
  * @returns {Promise<number>} Inserted admin ID.
  */
-export const createAdmin = async (login, password, role = "admin", conn = null) => {
+export const insertAdmin = async (login, password, role = "admin", conn = null) => {
 	const query = `INSERT INTO admins (login, password, role) VALUES (?, ?, ?)`;
 	const db = conn || pool;
-	const result = await db.query(query, [login, password, role]);
-	return result.insertId;
+	return db.query(query, [login, password, role]);
 };
 
 /**
@@ -21,11 +20,10 @@ export const createAdmin = async (login, password, role = "admin", conn = null) 
  * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
  * @returns {Promise<Object|undefined>} Admin row or undefined if not found.
  */
-export const findAdminByLogin = async (login, conn = null) => {
+export const selectAdminByLogin = async (login, conn = null) => {
 	const query = `SELECT * FROM admins WHERE login = ?`;
 	const db = conn || pool;
-	const rows = await db.query(query, [login]);
-	return rows[0];
+	return db.query(query, [login]);
 };
 
 /**
@@ -34,11 +32,10 @@ export const findAdminByLogin = async (login, conn = null) => {
  * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
  * @returns {Promise<Object|undefined>} Admin row or undefined if not found.
  */
-export const findAdminById = async (id, conn = null) => {
+export const selectAdminById = async (id, conn = null) => {
 	const query = `SELECT * FROM admins WHERE id = ?`;
 	const db = conn || pool;
-	const rows = await db.query(query, [id]);
-	return rows[0];
+	return db.query(query, [id]);
 };
 
 /**
@@ -48,11 +45,10 @@ export const findAdminById = async (id, conn = null) => {
  * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
  * @returns {Promise<number>} Number of affected rows.
  */
-export const addPasswordAdmin = async (id, password, conn = null) => {
+export const updateAdminPassword = async (id, password, conn = null) => {
 	const query = `UPDATE admins SET password = ? WHERE id = ?`;
 	const db = conn || pool;
-	const result = await db.query(query, [password, id]);
-	return result.affectedRows;
+	return db.query(query, [password, id]);
 };
 
 /**
@@ -64,6 +60,8 @@ export const addPasswordAdmin = async (id, password, conn = null) => {
 export const deleteAdmin = async (id, conn = null) => {
 	const query = `DELETE FROM admins WHERE id = ?`;
 	const db = conn || pool;
-	const result = await db.query(query, [id]);
-	return result.affectedRows;
+	return db.query(query, [id]);
 };
+
+
+

@@ -2,14 +2,14 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import {
-	createAdmin,
-	findAdminByLogin,
-	findAdminById,
-	addPasswordAdmin,
+	insertAdmin,
+	selectAdminByLogin,
+	selectAdminById,
+	updateAdminPassword,
 } from "../models/admin.model.js";
 import {
-	createToken,
-	findToken,
+	insertToken,
+	selectTokenByValue,
 	updateTokenStatus,
 } from "../models/token.model.js";
 import { JWT_SECRET, JWT_EXPIRES_IN, DEV_MODE, FRONTEND_URL } from "../config/index.js";
@@ -34,7 +34,9 @@ export const login = async (req, res) => {
 				.json({ message: "Login and password are required" });
 		}
 
-		const admin = await findAdminByLogin(login);
+		const admins = await selectAdminByLogin(login);
+		const admin = admins[0];
+
 		if (!admin) {
 			return res.status(401).json({ message: "Invalid credentials" });
 		}
@@ -72,18 +74,19 @@ export const inviteAdmin = async (req, res) => {
 			return res.status(400).json({ message: "Login (email) is required" });
 		}
 
-		const existingAdmin = await findAdminByLogin(login);
-		if (existingAdmin) {
+		const admins = await selectAdminByLogin(login);
+		if (admins[0]) {
 			return res.status(409).json({ message: "Admin already exists" });
 		}
 
 		conn = await getConnection();
 		await conn.beginTransaction();
 
-		const adminId = await createAdmin(login, null, "admin", conn);
+		const result = await insertAdmin(login, null, "admin", conn);
+		const adminId = result.insertId;
 
 		const token = crypto.randomUUID();
-		await createToken(token, adminId, conn);
+		await insertToken(token, adminId, conn);
 		const inviteLink = `${FRONTEND_URL}/validate/${token}`;
 
 		const htmlContent = await renderView('emails/inviteAdmin.html', { inviteLink });
@@ -128,7 +131,9 @@ const validateInviteToken = async (token) => {
 		throw { status: 400, message: "No token provided" };
 	}
 
-	const existingToken = await findToken(token);
+	const tokens = await selectTokenByValue(token);
+	const existingToken = tokens[0];
+
 	if (DEV_MODE) {
 		console.log("ValidateToken found:", existingToken);
 	}
@@ -141,7 +146,9 @@ const validateInviteToken = async (token) => {
 		throw { status: 401, message: "Token already used or expired" };
 	}
 
-	const admin = await findAdminById(existingToken.admin_id);
+	const admins = await selectAdminById(existingToken.admin_id);
+	const admin = admins[0];
+
 	if (!admin) {
 		throw { status: 401, message: "Admin not found" };
 	}
@@ -178,7 +185,7 @@ export const acceptInvite = async (req, res) => {
 		await conn.beginTransaction();
 
 		const hashedPassword = await bcrypt.hash(req.body.password, 10);
-		await addPasswordAdmin(admin.id, hashedPassword, conn);
+		await updateAdminPassword(admin.id, hashedPassword, conn);
 		await updateTokenStatus(token, "used", conn);
 
 		await conn.commit();

@@ -1,23 +1,18 @@
 import { getConnection } from "../config/db.js";
 import {
-	createJury,
-	findJuryById,
-	findAllJury,
-	updateJuryById,
-	deleteJuryById,
+	insertJury,
+	selectJuryById,
+	selectAllJuries,
+	updateJury,
+	deleteJury,
 } from "../models/jury.model.js";
 
 /**
  * Create a new jury member.
- *
- * HTTP: POST /api/jury
- *
- * @param {import("express").Request} req - Express request object
- * @param {import("express").Response} res - Express response object
- *
- * @returns {Promise<void>}
+ * @param {import("express").Request} req
+ * @param {import("express").Response} res
  */
-export const create = async (req, res) => {
+export const createJury = async (req, res) => {
 	let conn;
 	try {
 		const { edition_id, name, bio, photo, profession } = req.body;
@@ -31,7 +26,7 @@ export const create = async (req, res) => {
 		conn = await getConnection();
 		await conn.beginTransaction();
 
-		const juryId = await createJury(
+		const result = await insertJury(
 			{ edition_id, name, bio, photo, profession },
 			conn
 		);
@@ -40,7 +35,7 @@ export const create = async (req, res) => {
 
 		res.status(201).json({
 			message: "Jury member created",
-			id: Number(juryId),
+			id: result.insertId.toString(),
 		});
 	} catch (error) {
 		if (conn) await conn.rollback();
@@ -53,46 +48,25 @@ export const create = async (req, res) => {
 
 /**
  * Retrieve all jury members.
- *
- * HTTP: GET /api/jury
- *
  * @param {import("express").Request} req
  * @param {import("express").Response} res
- *
- * @returns {Promise<void>}
  */
-export const getAll = async (req, res) => {
-	let conn;
+export const getAllJuries = async (req, res) => {
 	try {
-		conn = await getConnection();
-		await conn.beginTransaction();
-
-		const juries = await findAllJury(conn);
-
-		await conn.commit();
-
+		const juries = await selectAllJuries();
 		res.status(200).json(juries);
 	} catch (error) {
-		if (conn) await conn.rollback();
-		console.error("Get All Jury Error:", error);
+		console.error("Get All Juries Error:", error);
 		res.status(500).json({ message: "Server error" });
-	} finally {
-		if (conn) conn.release();
 	}
 };
 
 /**
  * Retrieve a single jury member by ID.
- *
- * HTTP: GET /api/jury/:id
- *
  * @param {import("express").Request} req
  * @param {import("express").Response} res
- *
- * @returns {Promise<void>}
  */
-export const getById = async (req, res) => {
-	let conn;
+export const getJuryById = async (req, res) => {
 	try {
 		const { id } = req.params;
 
@@ -102,41 +76,28 @@ export const getById = async (req, res) => {
 			});
 		}
 
-		conn = await getConnection();
-		await conn.beginTransaction();
-
-		const jury = await findJuryById(id, conn);
+		const rows = await selectJuryById(id);
+		const jury = rows[0];
 
 		if (!jury) {
-			await conn.commit();
 			return res.status(404).json({
 				message: "Jury not found",
 			});
 		}
 
-		await conn.commit();
-
 		res.status(200).json(jury);
 	} catch (error) {
-		if (conn) await conn.rollback();
 		console.error("Get Jury By Id Error:", error);
 		res.status(500).json({ message: "Server error" });
-	} finally {
-		if (conn) conn.release();
 	}
 };
 
 /**
  * Update a jury member by ID.
- *
- * HTTP: PUT /api/jury/:id
- *
  * @param {import("express").Request} req
  * @param {import("express").Response} res
- *
- * @returns {Promise<void>}
  */
-export const update = async (req, res) => {
+export const setJury = async (req, res) => {
 	let conn;
 	try {
 		const { id } = req.params;
@@ -151,30 +112,27 @@ export const update = async (req, res) => {
 		conn = await getConnection();
 		await conn.beginTransaction();
 
-		const existingjury = await findJuryById(id, conn);
+		const result = await updateJury(
+			id,
+			{ edition_id, name, bio, photo, profession },
+			conn
+		);
 
-		if (!existingjury) {
+		if (result.affectedRows === 0) {
 			await conn.commit();
 			return res.status(404).json({
 				message: "Jury not found",
 			});
 		}
 
-		const affectedRows = await updateJuryById(
-			id,
-			{ edition_id, name, bio, photo, profession },
-			conn
-		);
-
 		await conn.commit();
 
 		res.status(200).json({
 			message: "Jury updated",
-			affectedRows,
 		});
 	} catch (error) {
 		if (conn) await conn.rollback();
-		console.error("Update Jury Error:", error);
+		console.error("Set Jury Error:", error);
 		res.status(500).json({ message: "Server error" });
 	} finally {
 		if (conn) conn.release();
@@ -182,16 +140,11 @@ export const update = async (req, res) => {
 };
 
 /**
- * Delete a jury member by ID.
- *
- * HTTP: DELETE /api/jury/:id
- *
+ * Remove a jury member by ID.
  * @param {import("express").Request} req
  * @param {import("express").Response} res
- *
- * @returns {Promise<void>}
  */
-export const remove = async (req, res) => {
+export const removeJury = async (req, res) => {
 	let conn;
 	try {
 		const { id } = req.params;
@@ -205,26 +158,23 @@ export const remove = async (req, res) => {
 		conn = await getConnection();
 		await conn.beginTransaction();
 
-		const existingjury = await findJuryById(id, conn);
+		const result = await deleteJury(id, conn);
 
-		if (!existingjury) {
+		if (result.affectedRows === 0) {
 			await conn.commit();
 			return res.status(404).json({
 				message: "Jury not found",
 			});
 		}
 
-		const affectedRows = await deleteJuryById(id, conn);
-
 		await conn.commit();
 
 		res.status(200).json({
 			message: "Jury deleted",
-			affectedRows,
 		});
 	} catch (error) {
 		if (conn) await conn.rollback();
-		console.error("Delete Jury Error:", error);
+		console.error("Remove Jury Error:", error);
 		res.status(500).json({ message: "Server error" });
 	} finally {
 		if (conn) conn.release();

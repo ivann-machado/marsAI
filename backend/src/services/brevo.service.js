@@ -6,7 +6,7 @@ import { DEV_MODE } from '../config/index.js';
  * Helper to configure the base SMTP email object
  * @param {string|string[]} to
  * @param {object} config
- * @param {object} [senderOverride]
+ * @param {object | null} [senderOverride]
  * @returns {Brevo.SendSmtpEmail}
  */
 const configureBaseEmail = (to, config, senderOverride = null) => {
@@ -36,7 +36,7 @@ const configureBaseEmail = (to, config, senderOverride = null) => {
  * @param {string} subject - Email subject
  * @param {string} htmlContent - HTML content of the email
  * @param {string} [textContent] - Plain text content (optional, stripped from HTML if not provided)
- * @param {object} [senderOverride] - Optional sender override {name, email}
+ * @param {object | null} [senderOverride] - Optional sender override {name, email}
  * @returns {Promise<object>} - API response
  */
 export const sendEmail = async (to, subject, htmlContent, textContent = '', senderOverride = null) => {
