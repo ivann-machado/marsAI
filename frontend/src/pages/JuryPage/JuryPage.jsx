@@ -13,10 +13,16 @@ function JuryPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/data.json");
+        const response = await fetch(
+          import.meta.env.VITE_API_URL + "/api/jury",
+          {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          },
+        );
         if (!response.ok) throw new Error("Erreur fetch JSON");
-        const json = await response.json();
-        setJury(json.mockedJury);
+        let res = await response.json();
+        setJury(res);
       } catch (err) {
         console.error(err);
       }
@@ -37,7 +43,7 @@ function JuryPage() {
         <p className="text-lg mb-8 text-white text-center">
           {t("jury_page.description")}
         </p>
-        <div className="md:flex md:flex-wrap md:max-w-300 md:mx-auto md:gap-8">
+        <div className="md:flex md:flex-wrap md:max-w-300 md:mx-auto md:gap-8 md:p-8">
           {jury.map((member) => {
             return (
               <JuryCard
