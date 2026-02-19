@@ -10,9 +10,9 @@ function AdminSponsorDash() {
     id: null,
     edition_id: 1,
     name: "",
-    logo: "",
+    logo: null,
     url: "",
-    type: "",
+    type: "other",
   });
   const { showFlash } = useFlash();
   const authToken = useauth();
@@ -21,7 +21,7 @@ function AdminSponsorDash() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          import.meta.env.VITE_API_URL + "/api/sponsor",
+          import.meta.env.VITE_API_URL + "/api/sponsors",
           {
             method: "GET",
             headers: { "Content-Type": "application/json" },
@@ -56,22 +56,23 @@ function AdminSponsorDash() {
     )
       return;
 
+    const formData = new FormData();
+    formData.append("edition_id", newSponsor.edition_id);
+    formData.append("name", newSponsor.name);
+    formData.append("logo", newSponsor.logo);
+    formData.append("type", newSponsor.type);
+    formData.append("url", newSponsor.url);
+
     try {
+      console.log(formData());
       const response = await fetch(
-        import.meta.env.VITE_API_URL + "/api/sponsor",
+        import.meta.env.VITE_API_URL + "/api/sponsors",
         {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
             Authorization: "Bearer " + authToken.token,
           },
-          body: JSON.stringify({
-            edition_id: newSponsor.edition_id,
-            name: newSponsor.name,
-            logo: newSponsor.logo,
-            type: newSponsor.type,
-            url: newSponsor.url,
-          }),
+          body: formData,
         },
       );
       if (!response.ok) throw new Error("Erreur fetch JSON");
@@ -82,7 +83,7 @@ function AdminSponsorDash() {
         id: null,
         edition_id: 1,
         name: "",
-        logo: "",
+        logo: null,
         url: "",
         type: "",
       });
@@ -100,7 +101,7 @@ function AdminSponsorDash() {
     <div className="flex flex-col w-4/5 bg-gray-600 relative">
       <AdminSponsorList sponsor_list={sponsor} />
       <form className="flex flex-col mx-auto bg-gray-800 text-white p-4">
-        <p>Ajouter membre sponsor:</p>
+        <p>Ajouter sponsor:</p>
         <label htmlFor="sponsor_name">Nom et prénom</label>
         <input
           id="sponsor_name"
@@ -111,20 +112,24 @@ function AdminSponsorDash() {
         ></input>
         <label htmlFor="sponsor_photo">Logo</label>
         <input
+          type="file"
           id="sponsor_logo"
-          value={newSponsor.logo}
           name="logo"
           className="bg-white text-black"
           onChange={(e) => handleChange(e)}
         ></input>
         <label htmlFor="sponsor_type">Type</label>
-        <input
+        <select
           id="sponsor_type"
-          value={newSponsor.type}
           name="type"
           className="bg-white text-black"
           onChange={(e) => handleChange(e)}
-        ></input>
+        >
+          <option value="official"></option>
+          <option value="media"></option>
+          <option value="technical"></option>
+          <option value="other"></option>
+        </select>
         <label htmlFor="sponsor_url">Url</label>
         <input
           id="sponsor_url"
