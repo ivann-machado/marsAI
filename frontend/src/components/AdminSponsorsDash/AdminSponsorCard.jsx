@@ -105,11 +105,15 @@ function AdminSponsorCard({ id, edition_id, type, name, url, logo }) {
         className="col-span-1 p-2 bg-gray-700 text-center rounded-lg hover:bg-gray-500"
         onChange={(e) => updateSponsor("name", e.target.value)}
       ></input>
-      <input
-        value={sponsor.type}
+      <select
         className="col-span-1 p-2 max-h-15 overflow-scroll bg-gray-700 text-center rounded-lg hover:bg-gray-500"
         onChange={(e) => updateSponsor("type", e.target.value)}
-      ></input>
+      >
+        <option value="official">Official</option>
+        <option value="media">Media</option>
+        <option value="technical">Technical</option>
+        <option value="other">Other</option>
+      </select>
       <input
         value={sponsor.url}
         className="col-span-1 p-2 bg-gray-700 text-center rounded-lg hover:bg-gray-500"

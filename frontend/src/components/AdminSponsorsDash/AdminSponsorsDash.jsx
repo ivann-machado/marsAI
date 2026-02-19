@@ -64,7 +64,7 @@ function AdminSponsorDash() {
     formData.append("url", newSponsor.url);
 
     try {
-      console.log(formData());
+      console.log(formData);
       const response = await fetch(
         import.meta.env.VITE_API_URL + "/api/sponsors",
         {
@@ -128,10 +128,10 @@ function AdminSponsorDash() {
           className="bg-white text-black"
           onChange={(e) => handleChange(e)}
         >
-          <option name="Official" value="official"></option>
-          <option value="media"></option>
-          <option value="technical"></option>
-          <option value="other"></option>
+          <option value="official">Official</option>
+          <option value="media">Media</option>
+          <option value="technical">Technical</option>
+          <option value="other">Other</option>
         </select>
         <label htmlFor="sponsor_url">Url</label>
         <input
