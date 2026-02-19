@@ -27,7 +27,8 @@
     "partners": "Partners",
     "about": "About",
     "schedule": "Schedule",
-    "contact": "Contact"
+    "contact": "Contact",
+    "event": "Events"
   },
   "upload_form": {
     "upload_message": "Post your movie",
@@ -309,6 +310,22 @@
     "other_sponsors": "Other sponsors",
     "website": "Website"
   },
+  "event_page": {
+    "hero_badge": "OUR EVENTS",
+    "hero_title": "EVENTS",
+    "hero_description": "Discover our exclusive events and participate in unforgettable experiences",
+    "loading": "Loading...",
+    "no_events": "No events available",
+    "list_title": "Events",
+    "location": "Location",
+    "duration": "Duration",
+    "description": "Description",
+    "learn_more": "Learn more",
+    "register": "Register",
+    "event_firstName": "Your first name",
+    "event_lastName": "Your last name",
+    "event_email": "example@email.com"
+  },
 
   "phase3": {
     "festival_completed": "FESTIVAL COMPLETED",
@@ -361,5 +378,21 @@
     "country_usa": "USA",
     "country_germany": "Germany",
     "country_spain": "Spain"
+  },
+  "event_page": {
+    "hero_badge": "OUR EVENTS",
+    "hero_title": "EVENTS",
+    "hero_description": "Discover our exclusive events and participate in unforgettable experiences",
+    "loading": "Loading...",
+    "no_events": "No events available",
+    "list_title": "Events",
+    "location": "Location",
+    "duration": "Duration",
+    "description": "Description",
+    "learn_more": "Learn more",
+    "register": "Register",
+    "event_firstName": "Your first name",
+    "event_lastName": "Your last name",
+    "event_email": "example@email.com"
   }
 }

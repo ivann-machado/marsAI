@@ -1,5 +1,6 @@
 import AdminEventCard from "./AdminEventCard";
 import { useState, useEffect } from "react";
+import Loading from "../Utils/Loading";
 
 function AdminEventDash() {
   const [events, setEvents] = useState(null);
@@ -19,7 +20,7 @@ function AdminEventDash() {
     fetchData();
   }, []);
 
-  if (!events) return <p>Loading...</p>;
+  if (!events) return <Loading />;
 
   return (
     <div className="w-4/5">
