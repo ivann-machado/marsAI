@@ -28,7 +28,7 @@ function AdminSponsorCard({ id, edition_id, type, name, url, logo }) {
   const saveSponsor = async () => {
     try {
       const response = await fetch(
-        import.meta.env.VITE_API_URL + "/api/sponsor/" + sponsor.id,
+        import.meta.env.VITE_API_URL + "/api/sponsors/" + sponsor.id,
         {
           method: "PUT",
           headers: {
@@ -59,7 +59,7 @@ function AdminSponsorCard({ id, edition_id, type, name, url, logo }) {
     /* Suppresion dans la DB ici */
     try {
       const response = await fetch(
-        import.meta.env.VITE_API_URL + "/api/sponsor/" + sponsor.id,
+        import.meta.env.VITE_API_URL + "/api/sponsors/" + sponsor.id,
         {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
