@@ -108,6 +108,7 @@ function AdminSponsorCard({ id, edition_id, type, name, url, logo }) {
       <select
         className="col-span-1 p-2 max-h-15 overflow-scroll bg-gray-700 text-center rounded-lg hover:bg-gray-500"
         onChange={(e) => updateSponsor("type", e.target.value)}
+        value={sponsor.type}
       >
         <option value="official">Official</option>
         <option value="media">Media</option>

@@ -56,6 +56,14 @@ function AdminJuryDash() {
     )
       return;
 
+    const formData = new FormData();
+    formData.append("edition_id", newJury.edition_id);
+    formData.append("name", newJury.name);
+    formData.append("photo", newJury.photo);
+    formData.append("bio", newJury.bio);
+    formData.append("profession", newJury.profession);
+
+
     try {
       const response = await fetch(import.meta.env.VITE_API_URL + "/api/jury", {
         method: "POST",
