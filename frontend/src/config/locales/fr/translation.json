@@ -1,4 +1,13 @@
 {
+  "video_page": {
+    "return_gallery": "Retour à la gallerie",
+    "producer": "Réalisateur",
+    "country_of_origin": "Pays",
+    "media_links": "Liens Media",
+    "synopsis": "Synopsis",
+    "ai_used": "IA utilisées"
+  },
+
   "footer": {
     "footer_message": "\"La plateforme mondiale de la narration generative, ancrée dans la lumiére de Marseille.\"",
     "navigation": "Navigation",
