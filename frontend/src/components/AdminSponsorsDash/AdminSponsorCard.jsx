@@ -26,22 +26,22 @@ function AdminSponsorCard({ id, edition_id, type, name, url, logo }) {
   };
 
   const saveSponsor = async () => {
+    const formData = new FormData();
+    formData.append("edition_id", sponsor.edition_id);
+    formData.append("name", sponsor.name);
+    formData.append("logo", sponsor.logo);
+    formData.append("type", sponsor.type);
+    formData.append("url", sponsor.url);
+
     try {
       const response = await fetch(
         import.meta.env.VITE_API_URL + "/api/sponsors/" + sponsor.id,
         {
           method: "PUT",
           headers: {
-            "Content-Type": "application/json",
             Authorization: "Bearer " + authToken.token,
           },
-          body: JSON.stringify({
-            edition_id: sponsor.edition_id,
-            type: sponsor.type,
-            name: sponsor.name,
-            logo: sponsor.photo,
-            url: sponsor.bio,
-          }),
+          body: formData,
         },
       );
       if (!response.ok) throw new Error("Erreur fetch JSON");
@@ -90,10 +90,16 @@ function AdminSponsorCard({ id, edition_id, type, name, url, logo }) {
         value={sponsor.edition_id}
         onChange={(e) => updateSponsor("edition_id", e.target.value)}
       ></input>
-      <img
-        src={sponsor.logo}
-        className="col-span-1 p-2 max-w-10 max-h-10"
-      ></img>
+      <div className="col-span-1 flex flex-col items-center">
+        <img src={sponsor.logo} className="p-2 max-w-10 max-h-10"></img>
+        <input
+          type="file"
+          id="sponsor_logo"
+          name="logo"
+          className="bg-white text-black w-full"
+          onChange={(e) => updateSponsor("logo", e.target.value)}
+        ></input>
+      </div>
       <input
         value={sponsor.name}
         className="col-span-1 p-2 bg-gray-700 text-center rounded-lg hover:bg-gray-500"
