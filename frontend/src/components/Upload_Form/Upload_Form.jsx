@@ -10,66 +10,143 @@ function UploadForm() {
   const title = useRef(null);
   const description = useRef(null);
   const video = useRef(null);
-  const image = useRef(null);
+  const coverImage = useRef(null);
   const scenario_ai = useRef(null);
   const video_ai = useRef(null);
   const sound_ai = useRef(null);
   const post_prod_ai = useRef(null);
-  const more_info = useRef(null);
+  const producer = useRef(null);
+  const producerImage = useRef(null);
+  const country = useRef(null);
   const instagram = useRef(null);
   const linkedin = useRef(null);
   const youtube = useRef(null);
+  const email = useRef(null);
+  const tags = useRef(null);
+  const [majority_certification, SetMajorityCertification] = useState(false);
+  const [right_givaway, SetRightGivaway] = useState(false);
   //Messages d'erreur
   const [titleError, SetTitleError] = useState();
   const [descError, SetDescError] = useState("");
   const [videoError, SetVideoError] = useState("");
-  const [imageError, SetImageError] = useState("");
+  const [coverImageError, SetCoverImageError] = useState("");
   const [scenarioAiError, SetScenarioAiError] = useState("");
   const [videoAiError, SetVideoAiError] = useState("");
   const [soundAiError, SetSoundAiError] = useState("");
   const [postProdAiError, SetPostProdAiError] = useState("");
-  const [moreInfoError, SetMoreInfoError] = useState("");
+  const [producerError, SetProducerError] = useState("");
+  const [producerImageError, SetProducerImageError] = useState("");
   const [instagramError, SetInstagramError] = useState("");
   const [linkedinError, SetLinkedinError] = useState("");
   const [youtubeError, SetYoutubeError] = useState("");
+  const [emailError, SetEmailError] = useState("");
+  const [tagError, SetTagError] = useState("");
+  const [majorityCertificationError, SetMajorityCertificationError] =
+    useState("");
+  const [rightGivawayError, SetRightGivawayError] = useState("");
+  //Récupération des données envoyées
+  const [videoURL, setVideoURL] = useState(null);
+  //Stockage des valeurs des inputs
+  const handleSubmit = async (e) => {
+    try {
+      e.preventDefault();
+      const form = e.target;
+      const formData = new FormData(form);
+      const uploadData = {
+        title: title.current.value,
+        description: description.current.value,
+        video: video.current.files[0],
+        image: coverImage.current.files[0],
+        scenario_ai: scenario_ai.current.value,
+        video_ai: video_ai.current.value,
+        sound_ai: sound_ai.current.value,
+        post_prod_ai: post_prod_ai.current.value,
+        producer: producer.current.value,
+        email: email.current.value,
+        producerImage: producerImage.current.files[0],
+        country: country.current.value,
+        instagram: instagram.current.value,
+        linkedin: linkedin.current.value,
+        youtube: youtube.current.value,
+        tags: tags.current.value,
+      };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const form = e.target;
-    const formData = new FormData(form);
-    const data = {
-      title: title.current.value,
-      description: description.current.value,
-      video: video.current.value,
-      image: image.current.value,
-      scenario_ai: scenario_ai.current.value,
-      video_ai: video_ai.current.value,
-      sound_ai: sound_ai.current.value,
-      post_prod_ai: post_prod_ai.current.value,
-      more_info: more_info.current.value,
-      instagram: instagram.current.value,
-      linkedin: linkedin.current.value,
-      youtube: youtube.current.value,
-    };
-    console.log(data);
+      console.log(uploadData);
+      const res = await fetch(import.meta.env.VITE_API_URL + "/api/videos", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          edition_id: 1,
+          url: "",
+          verified: 1,
+          filename: uploadData.video,
+          email: uploadData.email,
+          cover_image: uploadData.image,
+          title: uploadData.title,
+          description: uploadData.description,
+          status: "unverified",
+          country_id: 1,
+          producer: uploadData.producer,
+          producer_image: uploadData.producerImage,
+          linkedin_link: uploadData.linkedin,
+          youtube_link: uploadData.youtube,
+          scenario_ai: uploadData.scenario_ai,
+          video_gen_ai: uploadData.video_ai,
+          sound_ai: uploadData.sound_ai,
+          postprod_ai: uploadData.post_prod_ai,
+          tags: uploadData.tags,
+        }),
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (res.ok) {
+        alert("Film envoyé avec succès.");
+        //Création d'un URL pour afficher les files
+        if (uploadData.video) {
+          const url = URL.createObjectURL(uploadData.video);
+          console.log({ url });
+          setVideoURL(url);
+        }
+      } else {
+        alert(data.video || "Erreur lors de l'envoi du film.");
+      }
+    } catch (error) {
+      console.error("Contact submit error:", error);
+      alert("Erreur réseau. Réessayez plus tard.");
+    }
   };
   //Vérification des champs du formulaire
   function titleCheck() {
     if (title.current.value.trim() === "") {
       SetTitleError("Champ vide");
       console.log("Input is empty");
+    } else if (title.current.value.length < 5) {
+      //Taille temporaire (placeholder !!!!!!)
+      SetTitleError("Ce champ doit être plus grand");
+      console.log("Input is too short");
+    } else if (title.current.value.length > 50) {
+      //Taille temporaire (placeholder !!!!!!)
+      SetTitleError("Ce champ doit être plus petit");
+      console.log("Input is too long");
     } else {
       SetTitleError();
-      console.log(title.current.value);
     }
   }
   function descCheck() {
     if (description.current.value.trim() === "") {
       SetDescError("Champ vide");
       console.log("Input is empty");
+    } else if (description.current.value.length < 10) {
+      //Taille temporaire (placeholder !!!!!!)
+      SetDescError("Ce champ doit être plus grand");
+      console.log("Input is too short");
+    } else if (description.current.value.length > 300) {
+      //Taille temporaire (placeholder !!!!!!)
+      SetDescError("Ce champ doit être plus petit");
+      console.log("Input is too long");
     } else {
       SetDescError("");
-      console.log(description.current.value);
     }
   }
   function videoCheck() {
@@ -78,16 +155,14 @@ function UploadForm() {
       console.log("Input is empty");
     } else {
       SetVideoError("");
-      console.log(video.current.value);
     }
   }
-  function imageCheck() {
-    if (image.current.value.trim() === "") {
-      SetImageError("Champ vide");
+  function coverImageCheck() {
+    if (image.current.files[0] === null) {
+      SetCoverImageError("Champ vide");
       console.log("Input is empty");
     } else {
-      SetImageError("");
-      console.log(image.current.value);
+      SetCoverImageError("");
     }
   }
   function scenarioAiCheck() {
@@ -96,7 +171,6 @@ function UploadForm() {
       console.log("Input is empty");
     } else {
       SetScenarioAiError("");
-      console.log(scenario_ai.current.value);
     }
   }
   function videoAiCheck() {
@@ -105,7 +179,6 @@ function UploadForm() {
       console.log("Input is empty");
     } else {
       SetVideoAiError("");
-      console.log(video_ai.current.value);
     }
   }
   function soundAiCheck() {
@@ -114,7 +187,6 @@ function UploadForm() {
       console.log("Input is empty");
     } else {
       SetSoundAiError("");
-      console.log(sound_ai.current.value);
     }
   }
   function postProdAiCheck() {
@@ -123,16 +195,14 @@ function UploadForm() {
       console.log("Input is empty");
     } else {
       SetPostProdAiError("");
-      console.log(post_prod_ai.current.value);
     }
   }
-  function moreInfoCheck() {
-    if (more_info.current.value.trim() === "") {
-      SetMoreInfoError("Champ vide");
+  function producerCheck() {
+    if (producer.current.value.trim() === "") {
+      SetProducerError("Champ vide");
       console.log("Input is empty");
     } else {
-      SetMoreInfoError("");
-      console.log(more_info.current.value);
+      SetProducerError("");
     }
   }
   function instagramCheck() {
@@ -141,7 +211,6 @@ function UploadForm() {
       console.log("Input is empty");
     } else {
       SetInstagramError("");
-      console.log(instagram.current.value);
     }
   }
   function linkedinCheck() {
@@ -150,7 +219,6 @@ function UploadForm() {
       console.log("Input is empty");
     } else {
       SetLinkedinError("");
-      console.log(linkedin.current.value);
     }
   }
   function youtubeCheck() {
@@ -158,13 +226,49 @@ function UploadForm() {
       SetYoutubeError("Champ vide");
       console.log("Input is empty");
     } else {
-      Set("");
-      console.log(youtube.current.value);
+      SetYoutubeError("");
     }
   }
+  function emailCheck() {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (email.current.value.trim() === "") {
+      SetEmailError("Champ vide");
+      console.log("Input is empty");
+    } else if (!regex.test(email.current.value)) {
+      SetEmailError("Format d'email invalide");
+    } else {
+      SetEmailError("");
+    }
+  }
+  function majorityCheck() {
+    if (tags.current.value.trim() === "") {
+      SetMajorityCertificationError("Champ vide");
+      console.log("Input is empty");
+    } else {
+      SetMajorityCertificationError("");
+    }
+  }
+  function tagCheck() {
+    if (tags.current.value.trim() === "") {
+      SetTagError("Champ vide");
+      console.log("Input is empty");
+    } else {
+      SetTagError("");
+    }
+  }
+  function coverImageCheck() {
+    if (tags.current.value.trim() === "") {
+      SetCoverImageError("Champ vide");
+      console.log("Input is empty");
+    } else {
+      SetCoverImageError("");
+    }
+  }
+
+  console.log(majority_certification);
   const formSubmit = useState(false);
   return (
-    <div className="flex justify-center bg-[#050505] pt-4 pb-4">
+    <div className="flex flex-col justify-center items-center bg-[#050505] pt-4 pb-4">
       <form
         onSubmit={handleSubmit}
         className="bg-[#1B1B1B] shadow-[0px_0px_10px_2px] shadow-blue-600/75 w-9/10 rounded-4xl flex flex-col items-center gap-2 pt-4 pb-4"
@@ -231,15 +335,15 @@ function UploadForm() {
               </label>
               <input
                 type="file"
-                name="image"
-                id="image"
-                ref={image}
+                name="cover-image"
+                id="cover-mage"
+                ref={coverImage}
                 onChange={() => {
-                  imageCheck();
+                  coverImageCheck();
                 }}
                 className="bg-gray-900 text-white border-2 border-[#F2F2F2]/20 rounded-lg w-full h-10 p-1"
               />
-              <p className="text-white">{imageError}</p>
+              <p className="text-white">{coverImageError}</p>
             </div>
           </div>
         </div>
@@ -327,15 +431,15 @@ function UploadForm() {
               </label>
               <input
                 type="text"
-                name="more_info"
-                id="more_info"
-                ref={more_info}
+                name="producer"
+                id="producer"
+                ref={producer}
                 onChange={() => {
-                  moreInfoCheck();
+                  producerCheck();
                 }}
                 className="bg-gray-900 text-white border-2 border-[#F2F2F2]/20 rounded-lg w-full h-10 p-1"
               />
-              <p className="text-white">{moreInfoError}</p>
+              <p className="text-white">{producerError}</p>
             </div>
             <div className="flex flex-col md:w-full md:max-w-150">
               <label htmlFor="instagram" className="text-white">
@@ -388,16 +492,85 @@ function UploadForm() {
               <p className="text-white">{youtubeError}</p>
             </div>
           </div>
+          <div className="flex flex-col md:flex-row md:justify-evenly md:p-4 md:gap-10 md:w-full">
+            <div className="flex flex-col md:w-full md:max-w-150">
+              <label htmlFor="email" className="text-white">
+                Email :
+              </label>
+              <input
+                type="text"
+                name="email"
+                id="email"
+                ref={email}
+                onChange={() => {
+                  emailCheck();
+                }}
+                className="bg-gray-900 text-white border-2 border-[#F2F2F2]/20 rounded-lg w-full h-10 p-1"
+              />
+              <p className="text-white">{emailError}</p>
+            </div>
+            <div className="flex flex-col md:w-full md:max-w-150">
+              <label htmlFor="tags" className="text-white">
+                Tags :
+              </label>
+              <input
+                type="text"
+                name="tags"
+                id="tags"
+                ref={tags}
+                onChange={() => {
+                  tagCheck();
+                }}
+                className="bg-gray-900 text-white border-2 border-[#F2F2F2]/20 rounded-lg w-full h-10 p-1"
+              />
+              <p className="text-white">{tagError}</p>
+            </div>
+          </div>
+          <div className="flex flex-col md:flex-row md:justify-evenly md:p-4 md:gap-10 md:w-full">
+            <div className="flex flex-col md:w-full md:max-w-150">
+              <label htmlFor="producerImage" className="text-white">
+                Photo :
+              </label>
+              <input
+                type="file"
+                name="producerImage"
+                id="producerImage"
+                ref={producerImage}
+                onChange={() => {
+                  coverImageCheck();
+                }}
+                className="bg-gray-900 text-white border-2 border-[#F2F2F2]/20 rounded-lg w-full h-10 p-1"
+              />
+              <p className="text-white">{coverImageError}</p>
+            </div>
+            <div className="flex flex-col md:w-full md:max-w-150">
+              <label htmlFor="country" className="text-white">
+                Votre Pays :
+              </label>
+              <select
+                name="country"
+                id="country"
+                ref={country}
+                onChange={() => {
+                  tagCheck();
+                }}
+                className="bg-gray-900 text-white border-2 border-[#F2F2F2]/20 rounded-lg w-full h-10 p-1"
+              ></select>
+              <p className="text-white">{tagError}</p>
+            </div>
+          </div>
         </div>
         <div className=" flex flex-col gap-2 p-2 w-9/10 md:flex-row md:justify-evenly md:p-2">
           <div className="flex flex-row md:w-4/10">
             <input
               type="checkbox"
-              name=""
-              id=""
+              name="majority_certification"
+              id="majority_certification"
+              checked={majority_certification}
+              onChange={(e) => SetMajorityCertification(e.target.checked)}
               className="bg-gray-700 border border-gray-500 rounded-lg"
             />
-            <label htmlFor="" className="text-white">
+            <label htmlFor="majority_certification" className="text-white">
               {t("upload_form.majority_certification")}
             </label>
           </div>
@@ -406,6 +579,8 @@ function UploadForm() {
               type="checkbox"
               name="right_givaway"
               id="right_givaway"
+              checked={right_givaway}
+              onChange={(e) => SetRightGivaway(e.target.checked)}
               className="bg-gray-700 border border-gray-500 rounded-lg"
             />
             <label htmlFor="right_givaway" className="text-white w-5/10">
@@ -423,6 +598,26 @@ function UploadForm() {
           {t("upload_form.submit_btn")} {">>"}{" "}
         </button>
       </form>
+      <div>
+        {videoURL && (
+          <div style={{ marginTop: "20px" }}>
+            <h3 className="text-white">Votre vidéo: </h3>
+
+            {/* For Images */}
+            <img
+              src={videoURL}
+              alt="preview"
+              width="250"
+              style={{ display: "block", marginBottom: "15px", margin: "auto" }}
+            />
+
+            {/* For other file types – add download link */}
+            <a href={videoURL} target="_blank" rel="noopener noreferrer">
+              Open/Download File
+            </a>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
