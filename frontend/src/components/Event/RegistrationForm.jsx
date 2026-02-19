@@ -60,7 +60,7 @@ function RegistrationForm({ selectedEvent, onSuccess }) {
             value={formData.lastName}
             onChange={handleFormChange}
             type="text"
-            placeholder={t("page_contact.contact_lastName_placeholder")}
+            placeholder={t("event_page.event_lastName")}
             className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
           />
         </div>
@@ -74,7 +74,7 @@ function RegistrationForm({ selectedEvent, onSuccess }) {
             value={formData.firstName}
             onChange={handleFormChange}
             type="text"
-            placeholder={t("page_contact.contact_first_name_placeholder")}
+            placeholder={t("event_page.event_firstName")}
             className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
           />
         </div>
@@ -88,7 +88,7 @@ function RegistrationForm({ selectedEvent, onSuccess }) {
             value={formData.email}
             onChange={handleFormChange}
             type="email"
-            placeholder={t("page_contact.contact_email_placeholder")}
+            placeholder={t("event_page.event_email")}
             className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
           />
         </div>

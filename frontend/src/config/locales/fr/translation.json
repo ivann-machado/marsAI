@@ -302,6 +302,9 @@
     "duration": "Durée",
     "description": "Description",
     "learn_more": "En savoir plus",
-    "register": "S'inscrire"
+    "register": "S'inscrire",
+    "event_firstName": "Votre prénom",
+    "event_lastName": "Votre nom",
+    "event_email": "exemple@email.com"
   }
 }
