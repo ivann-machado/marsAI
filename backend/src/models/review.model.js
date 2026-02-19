@@ -40,6 +40,7 @@ export const selectAllReviews = async (conn = null) => {
 	return db.query(query);
 };
 
+
 /**
  * Update a review by ID.
  * @param {number} id
