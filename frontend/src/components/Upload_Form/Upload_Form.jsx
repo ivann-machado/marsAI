@@ -240,6 +240,14 @@ function UploadForm() {
       SetEmailError("");
     }
   }
+  function majorityCheck() {
+    if (tags.current.value.trim() === "") {
+      SetMajorityCertificationError("Champ vide");
+      console.log("Input is empty");
+    } else {
+      SetMajorityCertificationError("");
+    }
+  }
   function tagCheck() {
     if (tags.current.value.trim() === "") {
       SetTagError("Champ vide");
