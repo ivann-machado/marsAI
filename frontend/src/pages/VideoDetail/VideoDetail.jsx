@@ -4,9 +4,12 @@ import AIList from "../../components/AIList/AIList";
 import "flag-icons/css/flag-icons.min.css";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
+import { useState, useEffect } from "react";
+import Loading from "../../components/Utils/Loading";
 
 function VideoDetail(props) {
   const { t } = useTranslation();
+  const [video, setVideo] = useState(null);
   let params = useParams();
 
   let mockedVideo = {
@@ -27,34 +30,64 @@ function VideoDetail(props) {
     postprod_ai: "",
   };
 
+  console.log(params);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          import.meta.env.VITE_API_URL + "/api/videos/" + params.videoId,
+          {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          },
+        );
+        if (!response.ok) throw new Error("Erreur fetch JSON");
+        let res = await response.json();
+        setVideo(res);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (!video) return <Loading />;
+
+  console.log(video);
+
   return (
     <>
       <Header />
-      <section className="w-full min-h-screen bg-[url('../src/assets/background.jpg')] bg-cover bg-fixed text-white py-8">
+      <section
+        className="w-full min-h-screen bg-[url('../src/assets/background.jpg')] bg-cover bg-fixed text-white py-8
+      md:px-[10%]"
+      >
         <div className="m-4 mb-8">
           <a className="text-white hover:text-blue-900 visited:text-white">
-            {t("return_gallery")}
+            {t("video_page.return_gallery")}
           </a>
         </div>
         <iframe
-          className="w-screen aspect-video"
-          src="https://www.youtube.com/embed/_cPdvX-0kRA?si=MP3jAxInyj04TUlx"
+          className="w-full aspect-video"
+          src={video.url}
           title="YouTube video player"
         ></iframe>
         <h2 className="text-white font-bold text-4xl text-center mb-4 mt-4 md:mx-8">
-          {mockedVideo.title}
+          {video.title}
         </h2>
         <div className="md:flex md:items-center md:space-between">
           <div className="flex md:mx-16">
             <img
               className="w-32 h-32 object-cover rounded-full m-4"
-              src={mockedVideo.producer_image}
+              src={video.producer_image}
             ></img>
             <div className="my-auto">
-              <p className="text-2xl text-white ml-2">{t("producer")}</p>
-              <p className="text-xl text-gray-100 ml-2">
-                {mockedVideo.producer}
+              <p className="text-2xl text-white ml-2">
+                {t("video_page.producer")}
               </p>
+              <p className="text-xl text-gray-100 ml-2">{video.producer}</p>
             </div>
           </div>
           <div className="flex mb-4 ml-8">
@@ -62,13 +95,15 @@ function VideoDetail(props) {
               className={`fi fi-2x fi-${mockedVideo.country_iso.toLowerCase()} scale-200`}
             ></span>
             <div className="ml-4">
-              <p className="text-white">{t("country_of_origin")}</p>
+              <p className="text-white">{t("video_page.country_of_origin")}</p>
               <p className="">{mockedVideo.country_name}</p>
             </div>
           </div>
         </div>
         <div className="mb-4">
-          <h4 className="text-3xl font-bold m-4">{t("media_links")}</h4>
+          <h4 className="text-3xl font-bold m-4">
+            {t("video_page.media_links")}
+          </h4>
           <div className="flex flex-wrap justify-around w-100%">
             <div className="w-1/3 md:w-1/6">
               <img
@@ -109,15 +144,15 @@ function VideoDetail(props) {
         </div>
         <div className="mb-4">
           <h3 className="text-3xl mb-4 text-center font-bold">
-            {t("synopsis")}
+            {t("video_page.synopsis")}
           </h3>
-          <p className="m-4 indent-4">{mockedVideo.description}</p>
-          <h4 className="m-4 text-2xl">{t("ai_used")}</h4>
+          <p className="m-4 indent-4">{video.description}</p>
+          <h4 className="m-4 text-2xl">{t("video_page.ai_used")}</h4>
           <div>
-            <AIList type="Scénario" data={mockedVideo.scenario_ai} />
-            <AIList type="Video" data={mockedVideo.video_gen_ai} />
-            <AIList type="Son" data={mockedVideo.sound_ai} />
-            <AIList type="Postprod" data={mockedVideo.postprod_ai} />
+            <AIList type="Scénario" data={video.scenario_ai} />
+            <AIList type="Video" data={video.video_gen_ai} />
+            <AIList type="Son" data={video.sound_ai} />
+            <AIList type="Postprod" data={video.postprod_ai} />
           </div>
         </div>
       </section>
