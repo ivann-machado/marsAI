@@ -60,6 +60,8 @@ export const updateReviewById = async (
 	const db = conn || pool;
 	const result = await db.query(query, [note, grade, status || null, id]);
 	return result.affectedRows;
+};
+
 /**
  * Update a review by ID.
  * @param {number} id
