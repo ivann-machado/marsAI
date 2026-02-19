@@ -2,67 +2,48 @@ import { pool } from "../config/db.js";
 
 /**
  * Create a new reservation.
- *
- * @param {Object} reservationData - Object containing event_id, firstname, lastname, email
- * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions
- * @returns {Promise<number>} Inserted reservation ID
+ * @param {Object} reservation
+ * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
+ * @returns {Promise<any>} Result.
  */
-export const createReservation = async ({
-	event_id,
-	firstname,
-	lastname,
-	email,
-}, conn = null) => {
-	const sql =
-		"INSERT INTO reservations (event_id, firstname, lastname, email) VALUES (?, ?, ?, ?)";
+export const insertReservation = async (reservation, conn = null) => {
+	const { event_id, firstname, lastname, email } = reservation;
+	const query = `INSERT INTO reservations (event_id, firstname, lastname, email) VALUES (?, ?, ?, ?)`;
 	const db = conn || pool;
-	const result = await db.query(sql, [
-		event_id,
-		firstname,
-		lastname,
-		email,
-	]);
-
-	return result.insertId;
+	return db.query(query, [event_id, firstname, lastname, email]);
 };
 
 /**
  * Find a reservation by ID.
- *
- * @param {number|string} id - Reservation ID
- * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions
- * @returns {Promise<Object|null>} Reservation row or null
+ * @param {number|string} id
+ * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
+ * @returns {Promise<any>}
  */
-export const findReservationById = async (id, conn = null) => {
-	const sql = "SELECT * FROM reservations WHERE id = ?";
+export const selectReservationById = async (id, conn = null) => {
+	const query = "SELECT * FROM reservations WHERE id = ?";
 	const db = conn || pool;
-	const rows = await db.query(sql, [id]);
-	return rows[0] || null;
+	return db.query(query, [id]);
 };
 
 /**
  * Get all reservations.
- *
- * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions
- * @returns {Promise<Array>} List of reservations
+ * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
+ * @returns {Promise<any[]>}
  */
-export const findAllReservations = async (conn = null) => {
-	const sql = "SELECT * FROM reservations ORDER BY id DESC";
+export const selectAllReservations = async (conn = null) => {
+	const query = "SELECT * FROM reservations ORDER BY id DESC";
 	const db = conn || pool;
-	const rows = await db.query(sql);
-	return rows;
+	return db.query(query);
 };
 
 /**
  * Delete a reservation by ID.
- *
- * @param {number|string} id - Reservation ID
- * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions
- * @returns {Promise<any>}
+ * @param {number|string} id
+ * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
+ * @returns {Promise<any>} Result.
  */
-export const deleteReservationById = async (id, conn = null) => {
-	const sql = "DELETE FROM reservations WHERE id = ?";
+export const deleteReservation = async (id, conn = null) => {
+	const query = "DELETE FROM reservations WHERE id = ?";
 	const db = conn || pool;
-	return db.query(sql, [id]);
+	return db.query(query, [id]);
 };
-

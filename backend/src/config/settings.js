@@ -1,11 +1,11 @@
-import { getAllSettings, updateSetting } from '../models/setting.model.js';
+import { selectAllSettings } from '../models/setting.model.js';
 
 export let SETTINGS = {};
 
 export const loadSettings = async () => {
 	try {
 		console.log("Loading settings from database...");
-		const settingsList = await getAllSettings();
+		const settingsList = await selectAllSettings();
 
 		SETTINGS = settingsList.reduce((acc, setting) => {
 			acc[setting.name] = {

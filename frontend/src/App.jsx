@@ -20,97 +20,103 @@ import JuryPage from "./pages/JuryPage/JuryPage.jsx";
 import SponsorsPage from "./pages/SponsorsPage/SponsorsPage.jsx";
 import Event from "./pages/Event/Event_page.jsx";
 import { SettingsProvider } from "./context/SettingsContext.jsx";
+import { FlashProvider } from "./context/FlashContext.jsx";
 
+import HomepagePhase3 from "./pages/Homepage-Phase3/Homepage3.jsx";
 function App() {
   if (window.location.host.split(".")[0] == "admin")
     /* PAGES ADMIN */
     return (
       <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={<AdminLogin />} />
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute requiredRole={"admin"}>
-                <AdminDashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/videos"
-            element={
-              <ProtectedRoute requiredRole={"admin"}>
-                <AdminVideos />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/video/:id"
-            element={
-              <ProtectedRoute requiredRole={"admin"}>
-                <AdminVideo />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/users"
-            element={
-              <ProtectedRoute requiredRole={"superadmin"}>
-                <AdminUsers />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/events"
-            element={
-              <ProtectedRoute requiredRole={"superadmin"}>
-                <AdminEvents />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/settings"
-            element={
-              <ProtectedRoute requiredRole={"superadmin"}>
-                <AdminSettings />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/content"
-            element={
-              <ProtectedRoute requiredRole={"superadmin"}>
-                <AdminContent />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/jury"
-            element={
-              <ProtectedRoute requiredRole={"superadmin"}>
-                <AdminJury />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
+        <FlashProvider>
+          <Routes>
+            <Route path="/login" element={<AdminLogin />} />
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute requiredRole={"admin"}>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/videos"
+              element={
+                <ProtectedRoute requiredRole={"admin"}>
+                  <AdminVideos />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/video/:id"
+              element={
+                <ProtectedRoute requiredRole={"admin"}>
+                  <AdminVideo />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/users"
+              element={
+                <ProtectedRoute requiredRole={"superadmin"}>
+                  <AdminUsers />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/events"
+              element={
+                <ProtectedRoute requiredRole={"superadmin"}>
+                  <AdminEvents />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/settings"
+              element={
+                <ProtectedRoute requiredRole={"superadmin"}>
+                  <AdminSettings />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/content"
+              element={
+                <ProtectedRoute requiredRole={"superadmin"}>
+                  <AdminContent />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/jury"
+              element={
+                <ProtectedRoute requiredRole={"superadmin"}>
+                  <AdminJury />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </FlashProvider>
       </BrowserRouter>
     );
   else
     /* PAGES PUBLIQUES */
     return (
       <BrowserRouter>
-        <SettingsProvider>
-          <Routes>
-            <Route path="/" element={<HomepagePhase2 />} />
-            <Route path="/video/:videoId" element={<VideoDetail />} />
-            <Route path="/gallery" element={<Gallery />} />
-            <Route path="/participate" element={<UploadPage />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/jury" element={<JuryPage />} />
-            <Route path="/partners" element={<SponsorsPage />} />
-            <Route path="/Event" element={<Event />} />
-          </Routes>
-        </SettingsProvider>
+        <FlashProvider>
+          <SettingsProvider>
+            <Routes>
+              <Route path="/" element={<HomepagePhase2 />} />
+              <Route path="/video/:videoId" element={<VideoDetail />} />
+              <Route path="/gallery" element={<Gallery />} />
+              <Route path="/participate" element={<UploadPage />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/jury" element={<JuryPage />} />
+              <Route path="/partners" element={<SponsorsPage />} />
+              <Route path="/Event" element={<Event />} />
+            </Routes>
+          </SettingsProvider>
+        </FlashProvider>
       </BrowserRouter>
     );
 }
