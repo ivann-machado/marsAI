@@ -78,7 +78,10 @@ function AdminSponsorDash() {
       if (!response.ok) throw new Error("Erreur fetch JSON");
       const res = await response.json();
 
-      setSponsor((prev) => [...prev, { ...newSponsor, id: res.id }]);
+      setSponsor((prev) => [
+        ...prev,
+        { ...newSponsor, id: res.id /* , logo: res.logo */ },
+      ]);
       setNewSponsor({
         id: null,
         edition_id: 1,
@@ -125,7 +128,7 @@ function AdminSponsorDash() {
           className="bg-white text-black"
           onChange={(e) => handleChange(e)}
         >
-          <option value="official"></option>
+          <option name="Official" value="official"></option>
           <option value="media"></option>
           <option value="technical"></option>
           <option value="other"></option>
