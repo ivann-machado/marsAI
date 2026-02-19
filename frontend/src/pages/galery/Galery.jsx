@@ -18,7 +18,7 @@ const SkeletonCard = () => (
 );
 
 
-const FILMS = [
+/* const FILMS = [
   { id: 1, title: "PROTOCOL ALPHA", director: "Jean Dupont", duration: "00:58", category: "selection", thumbnail: "/src/assets/robot.png", year: 2026, country: "France", description: "Une exploration visuelle des protocoles d'intelligence artificielle dans un futur dystopique." },
   { id: 2, title: "NEURAL DREAM", director: "Marie Laurent", duration: "00:45", category: "selection", thumbnail: "/src/assets/neural.png", year: 2026, country: "Belgique", description: "Un voyage onirique à travers les réseaux neuronaux d'une IA consciente." },
   { id: 3, title: "CYBER MARSEILLE", director: "Ahmed Karim", duration: "00:52", category: "hors-competition", thumbnail: "/src/assets/cyber.png", year: 2026, country: "France", description: "Marseille reimaginée dans un futur où l'IA transforme la ville portuaire." },
@@ -29,7 +29,7 @@ const FILMS = [
   { id: 8, title: "CODE POETRY", director: "Lars Schmidt", duration: "00:43", category: "hors-competition", thumbnail: "/src/assets/temple.png", year: 2026, country: "Allemagne", description: "Le code informatique devient poésie visuelle dans cette expérience unique." },
   { id: 9, title: "FUTURE MEMORIES", director: "Isabella Rodriguez", duration: "00:59", category: "hors-competition", thumbnail: "/src/assets/astro.png", year: 2026, country: "Espagne", description: "Des souvenirs du futur générés par une IA nostalgique." },
 ];
-
+ */
 function Gallery() {
   const { t } = useTranslation();
   const [category, setCategory] = useState("all");
@@ -40,11 +40,32 @@ function Gallery() {
   const [visibleCount, setVisibleCount] = useState(6);
   const sliderRef = useRef(null);
   const loaderRef = useRef(null);
+  const [FILMS, setFilms] = useState([]);
+useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          import.meta.env.VITE_API_URL + "/api/videos",
+          {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          },
+        );
+        if (!response.ok) throw new Error("Erreur fetch JSON");
+        let res = await response.json();
+        setFilms(res);
+      } catch (err) {
+        console.error(err);
+      }
+    };
 
+    fetchData();
+  }, []);
   const categories = [
     { id: "all", name: t("gallery.gallery_filter_all") },
     { id: "selection", name: t("gallery.gallery_filter_selection") },
     { id: "hors-competition", name: t("gallery.gallery_filter_hors") },
+    
   ];
 
   const sortOptions = [
@@ -171,7 +192,7 @@ function Gallery() {
               <div className="flex flex-col lg:flex-row gap-8 items-center mb-12">
                 <Link to={`/video/${film.id}`} className="w-full lg:w-2/3 group">
                   <div className="relative aspect-video rounded-3xl overflow-hidden bg-[#1a1a24] shadow-[0_20px_60px_rgba(168,85,247,0.3)]">
-                    <img src={film.thumbnail} alt={film.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                    <img src={film.cover_image} alt={film.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-center justify-center">
                       <div className="w-24 h-24 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border-2 border-white/40 group-hover:scale-110 group-hover:bg-[#a855f7]/50 transition-all">
                         <PlayIcon size={10} className="ml-1" />
@@ -220,7 +241,7 @@ function Gallery() {
                   visibleFilms.map((f, i) => (
                     <div key={f.id} onClick={() => setFilmIndex(i)} className={`flex-shrink-0 w-64 cursor-pointer transition-all ${filmIndex === i ? 'scale-105 opacity-100' : 'opacity-60 hover:opacity-100'}`}>
                       <div className={`relative aspect-video rounded-2xl overflow-hidden mb-3 ${filmIndex === i ? 'ring-4 ring-[#a855f7] shadow-[0_0_30px_rgba(168,85,247,0.5)]' : 'hover:ring-2 hover:ring-white/30'}`}>
-                        <img src={f.thumbnail} alt={f.title} className="w-full h-full object-cover" />
+                        <img src={f.cover_image} alt={f.title} className="w-full h-full object-cover" />
                         {filmIndex === i && (
                           <div className="absolute inset-0 bg-[#a855f7]/20 flex items-center justify-center">
                             <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center"><PlayIcon className="text-[#a855f7] ml-0.5" /></div>
