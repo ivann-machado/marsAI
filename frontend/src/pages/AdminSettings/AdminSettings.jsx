@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import AdminSidebar from "../../components/AdminSidebar/AdminSidebar.jsx";
+import Loading from "../../components/Utils/Loading.jsx";
 
 function AdminSettings() {
   const [settings, setSettings] = useState(null);
@@ -47,7 +48,7 @@ function AdminSettings() {
     return (
       <>
         <AdminSidebar />
-        <p>Loading...</p>
+        <Loading />
       </>
     );
 

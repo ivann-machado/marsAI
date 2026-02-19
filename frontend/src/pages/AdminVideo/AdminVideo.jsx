@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import AIList from "../../components/AIList/AIList";
+import Loading from "../../components/Utils/Loading";
 import "flag-icons/css/flag-icons.min.css";
 import { useState, useEffect } from "react";
 
@@ -50,7 +51,7 @@ function AdminVideo(props) {
     fetchData();
   }, []);
 
-  if (!video || !review) return <p>Loading...</p>;
+  if (!video || !review) return <Loading />;
   else
     return (
       <>

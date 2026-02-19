@@ -1,7 +1,6 @@
 import {
-	createNewsletter,
-	findNewsletterByEmail,
-	findAllNewsletters,
+	insertNewsletter,
+	selectAllNewsletters,
 	deleteNewsletterByEmail,
 } from "../models/newsletter.model.js";
 
@@ -39,7 +38,7 @@ import {
  *       500:
  *         description: Server error
  */
-export const subscribeNewsletter = async (req, res) => {
+export const createNewsletter = async (req, res) => {
 	try {
 		const { email } = req.body;
 
@@ -47,13 +46,13 @@ export const subscribeNewsletter = async (req, res) => {
 			return res.status(400).json({ message: "Email is required" });
 		}
 
-		await createNewsletter(email);
+		await insertNewsletter(email);
 		return res.status(201).json({ message: "Subscription successful" });
 	} catch (error) {
 		if (error.errno === 1062 || error.code === 'ER_DUP_ENTRY') {
 			return res.status(409).json({ message: "Email already subscribed" });
 		}
-		console.error("Newsletter Subscribe Error:", error);
+		console.error("Create Newsletter Error:", error);
 		res.status(500).json({ message: "Server error" });
 	}
 };
@@ -85,10 +84,10 @@ export const subscribeNewsletter = async (req, res) => {
  */
 export const getAllNewsletters = async (req, res) => {
 	try {
-		const newsletters = await findAllNewsletters();
+		const newsletters = await selectAllNewsletters();
 		res.status(200).json(newsletters);
 	} catch (error) {
-		console.error("Get Newsletters Error:", error);
+		console.error("Get All Newsletters Error:", error);
 		res.status(500).json({ message: "Server error" });
 	}
 };
@@ -120,7 +119,7 @@ export const getAllNewsletters = async (req, res) => {
  *       500:
  *         description: Server error
  */
-export const deleteNewsletter = async (req, res) => {
+export const removeNewsletter = async (req, res) => {
 	try {
 		const { email } = req.params;
 
@@ -129,9 +128,17 @@ export const deleteNewsletter = async (req, res) => {
 		}
 
 		await deleteNewsletterByEmail(email);
-		res.status(200).json({ message: "Subscription deleted" });
+
+		/**
+		 * We won't notify the user if the email is not found
+		 */
+		// const result = await deleteNewsletterByEmail(email);
+		// if (result.affectedRows === 0) {
+		// 	return res.status(404).json({ message: "Subscription not found" });
+		// }
+		res.status(200).json({ message: "Subscription deleted successfully" });
 	} catch (error) {
-		console.error("Delete Newsletter Error:", error);
+		console.error("Remove Newsletter Error:", error);
 		res.status(500).json({ message: "Server error" });
 	}
 };

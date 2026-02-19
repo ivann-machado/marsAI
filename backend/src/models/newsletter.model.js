@@ -1,56 +1,48 @@
 import { pool } from "../config/db.js";
 
 /**
- * Create a newsletter subscription.
- *
- * @param {string} email - Email address to subscribe
+ * Add a new email to the newsletter list.
+ * @param {string} email
  * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
- * @returns {Promise<number>} Inserted newsletter ID
+ * @returns {Promise<any>} Result.
  */
-export const createNewsletter = async (email, conn = null) => {
-	const sql = "INSERT INTO newsletters (email) VALUES (?)";
+export const insertNewsletter = async (email, conn = null) => {
+	const query = "INSERT INTO newsletters (email) VALUES (?)";
 	const db = conn || pool;
-	const result = await db.query(sql, [email]);
-	return result.insertId;
+	return db.query(query, [email]);
 };
 
 /**
  * Find a newsletter subscription by email.
- *
- * @param {string} email - Email address to search
+ * @param {string} email
  * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
- * @returns {Promise<Object|null>} Newsletter row or null if not found
+ * @returns {Promise<any>}
  */
-export const findNewsletterByEmail = async (email, conn = null) => {
-	const sql = "SELECT id FROM newsletters WHERE email = ?";
+export const selectNewsletterByEmail = async (email, conn = null) => {
+	const query = "SELECT * FROM newsletters WHERE email = ?";
 	const db = conn || pool;
-	const rows = await db.query(sql, [email]);
-	return rows[0] || null;
+	return db.query(query, [email]);
 };
 
 /**
- * Retrieve all newsletter subscriptions.
- *
+ * Get all newsletter subscriptions.
  * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
- * @returns {Promise<Array>} List of all newsletter subscriptions
+ * @returns {Promise<any[]>}
  */
-export const findAllNewsletters = async (conn = null) => {
-	const sql = "SELECT * FROM newsletters ORDER BY id DESC";
+export const selectAllNewsletters = async (conn = null) => {
+	const query = "SELECT * FROM newsletters ORDER BY created_at DESC";
 	const db = conn || pool;
-	const rows = await db.query(sql);
-	return rows;
+	return db.query(query);
 };
 
 /**
- * Delete a newsletter subscription by email.
- *
- * @param {string} email - Email address to delete
+ * Delete a newsletter entry by email.
+ * @param {string} email
  * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
- * @returns {Promise<any>} Database delete result
+ * @returns {Promise<any>} Result.
  */
 export const deleteNewsletterByEmail = async (email, conn = null) => {
-	const sql = "DELETE FROM newsletters WHERE email = ?";
+	const query = "DELETE FROM newsletters WHERE email = ?";
 	const db = conn || pool;
-	return db.query(sql, [email]);
+	return db.query(query, [email]);
 };
-

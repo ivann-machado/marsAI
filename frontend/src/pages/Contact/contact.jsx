@@ -64,7 +64,7 @@ function Contact() {
       <Header />
       <div className="min-h-screen flex items-center justify-center bg-gray-800 px-4 w-full">
         <div className="w-full max-w-lg bg-gray-900 rounded-2xl shadow-lg p-8">
-          <h1 className="text-3xl font-bold text-center mb-6 bg-gradient-to-r from-pink-500 to-violet-500 bg-clip-text text-transparent">
+          <h1 className="text-3xl font-bold text-center mb-6 bg-gradient-to-rp from-pink-500 to-violet-500 bg-clip-text text-transparent">
             {t("page_contact.contact_title")}
           </h1>
           <form className="space-y-5" onSubmit={handleSubmit}>

@@ -2,41 +2,25 @@ import { pool } from "../config/db.js";
 
 /**
  * Create a new invite token linked to an admin.
- * @param {string} token - Random token value.
+ * @param {string} tokenValue - Random token value.
  * @param {number} admin_id - Related admin ID.
  * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
  * @returns {Promise<number>} Inserted token ID.
  */
-export const createToken = async (token, admin_id, conn = null) => {
+export const insertToken = async (tokenValue, admin_id, conn = null) => {
 	const query = `INSERT INTO tokens (value, admin_id) VALUES (?, ?)`;
 	const db = conn || pool;
-	const result = await db.query(query, [token, admin_id]);
-	return result.insertId;
+	return db.query(query, [tokenValue, admin_id]);
 };
 
-/**
- * Find a token row by its value.
- * @param {string} token
- * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
- * @returns {Promise<Object|undefined>} Token row or undefined if not found.
- */
-export const findToken = async (token, conn = null) => {
+export const selectTokenByValue = async (tokenValue, conn = null) => {
 	const query = `SELECT * FROM tokens WHERE value = ?`;
 	const db = conn || pool;
-	const rows = await db.query(query, [token]);
-	return rows[0];
+	return db.query(query, [tokenValue]);
 };
 
-/**
- * Update the token status (eg. 'pending', 'used', 'revoked').
- * @param {string} token
- * @param {string} status
- * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
- * @returns {Promise<Object>} Result row from the update query.
- */
-export const updateTokenStatus = async (token, status, conn = null) => {
+export const updateTokenStatus = async (tokenValue, status, conn = null) => {
 	const query = `UPDATE tokens set status = ? WHERE value = ?`;
 	const db = conn || pool;
-	const rows = await db.query(query, [status, token]);
-	return rows[0];
+	return db.query(query, [status, tokenValue]);
 };

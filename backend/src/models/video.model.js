@@ -25,127 +25,125 @@ import { pool } from "../config/db.js";
  */
 
 /**
- * Data access layer for videos table.
+ * Get all videos.
+ * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
+ * @returns {Promise<any[]>}
  */
-export const VideoModel = {
-	/**
-	 * Get all videos.
-	 * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
-	 * @returns {Promise<any>}
-	 */
-	getAll(conn = null) {
-		const db = conn || pool;
-		return db.query("SELECT * FROM videos");
-	},
+export const selectAllVideos = async (conn = null) => {
+	const query = "SELECT * FROM videos";
+	const db = conn || pool;
+	return db.query(query);
+};
 
-	/**
-	 * Get one video by ID.
-	 * @param {number|string} id
-	 * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
-	 * @returns {Promise<any>}
-	 */
-	getById(id, conn = null) {
-		const db = conn || pool;
-		return db.query("SELECT * FROM videos WHERE id = ?", [id]);
-	},
+/**
+ * Get one video by ID.
+ * @param {number|string} id
+ * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
+ * @returns {Promise<any>}
+ */
+export const selectVideoById = async (id, conn = null) => {
+	const query = "SELECT * FROM videos WHERE id = ?";
+	const db = conn || pool;
+	return db.query(query, [id]);
+};
 
-	/**
-	 * Create a new video.
-	 * @param {Video} video
-	 * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
-	 * @returns {Promise<any>}
-	 */
-	create(video, conn = null) {
-		const sql = `
-			INSERT INTO videos (
-				edition_id,
-				url,
-				filename,
-				email,
-				cover_image,
-				verified,
-				title,
-				description,
-				status,
-				country_id,
-				producer,
-				producer_image,
-				linkedin_link,
-				youtube_link,
-				scenario_ai,
-				video_gen_ai,
-				sound_ai,
-				postprod_ai,
-				tags
-			)
-			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-		`;
+/**
+ * Create a new video.
+ * @param {Video} video
+ * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
+ * @returns {Promise<any>}
+ */
+export const insertVideo = async (video, conn = null) => {
+	const query = `
+		INSERT INTO videos (
+			edition_id,
+			url,
+			filename,
+			email,
+			cover_image,
+			verified,
+			title,
+			description,
+			status,
+			country_id,
+			producer,
+			producer_image,
+			linkedin_link,
+			youtube_link,
+			scenario_ai,
+			video_gen_ai,
+			sound_ai,
+			postprod_ai,
+			tags
+		)
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+	`;
 
-		const values = [
-			video.edition_id ?? null,
-			video.url,
-			video.filename,
-			video.email,
-			video.cover_image,
-			video.verified,
-			video.title,
-			video.description,
-			video.status,
-			video.country_id ?? null,
-			video.producer,
-			video.producer_image,
-			video.linkedin_link,
-			video.youtube_link,
-			video.scenario_ai,
-			video.video_gen_ai,
-			video.sound_ai,
-			video.postprod_ai,
-			video.tags,
-		];
+	const values = [
+		video.edition_id ?? null,
+		video.url,
+		video.filename,
+		video.email,
+		video.cover_image,
+		video.verified,
+		video.title,
+		video.description,
+		video.status,
+		video.country_id ?? null,
+		video.producer,
+		video.producer_image,
+		video.linkedin_link,
+		video.youtube_link,
+		video.scenario_ai,
+		video.video_gen_ai,
+		video.sound_ai,
+		video.postprod_ai,
+		video.tags,
+	];
 
-		const db = conn || pool;
-		return db.query(sql, values);
-	},
+	const db = conn || pool;
+	return db.query(query, values);
+};
 
-	/**
-	 * Update a video.
-	 * @param {number|string} id
-	 * @param {Partial<Video>} video
-	 * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
-	 * @returns {Promise<any>}
-	 */
-	update(id, video, conn = null) {
-		const sql = `
-			UPDATE videos SET
-				title = ?,
-				description = ?,
-				status = ?,
-				verified = ?,
-				tags = ?
-			WHERE id = ?
-		`;
+/**
+ * Update a video.
+ * @param {number|string} id
+ * @param {Partial<Video>} video
+ * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
+ * @returns {Promise<any>}
+ */
+export const updateVideo = async (id, video, conn = null) => {
+	const query = `
+		UPDATE videos SET
+			title = ?,
+			description = ?,
+			status = ?,
+			verified = ?,
+			tags = ?
+		WHERE id = ?
+	`;
 
-		const values = [
-			video.title,
-			video.description,
-			video.status,
-			video.verified,
-			video.tags,
-			id,
-		];
+	const values = [
+		video.title,
+		video.description,
+		video.status,
+		video.verified,
+		video.tags,
+		id,
+	];
 
-		const db = conn || pool;
-		return db.query(sql, values);
-	},
+	const db = conn || pool;
+	return db.query(query, values);
+};
 
-	/**
-	 * Delete a video by ID.
-	 * @param {number|string} id
-	 * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
-	 * @returns {Promise<any>}
-	 */
-	remove(id, conn = null) {
-		const db = conn || pool;
-		return db.query("DELETE FROM videos WHERE id = ?", [id]);
-	},
+/**
+ * Delete a video by ID.
+ * @param {number|string} id
+ * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
+ * @returns {Promise<any>}
+ */
+export const deleteVideo = async (id, conn = null) => {
+	const query = "DELETE FROM videos WHERE id = ?";
+	const db = conn || pool;
+	return db.query(query, [id]);
 };

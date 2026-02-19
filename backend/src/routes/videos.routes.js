@@ -1,5 +1,11 @@
 import express from "express";
-import { VideoController } from "../controllers/video.controller.js";
+import {
+	getAllVideos,
+	getVideoById,
+	createVideo,
+	setVideo,
+	removeVideo,
+} from "../controllers/video.controller.js";
 
 const router = express.Router();
 
@@ -11,10 +17,10 @@ const router = express.Router();
  * - PUT `/:id` : update a video.
  * - DELETE `/:id` : delete a video.
  */
-router.get("/", VideoController.getAll);
-router.get("/:id", VideoController.getById);
-router.post("/", VideoController.create);
-router.put("/:id", VideoController.update);
-router.delete("/:id", VideoController.remove);
+router.get("/", getAllVideos);
+router.get("/:id", getVideoById);
+router.post("/", createVideo);
+router.put("/:id", setVideo);
+router.delete("/:id", removeVideo);
 
 export default router;
