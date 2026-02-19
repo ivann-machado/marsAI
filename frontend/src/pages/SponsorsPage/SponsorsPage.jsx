@@ -1,4 +1,3 @@
-import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
@@ -10,15 +9,20 @@ import Loading from "../../components/Utils/Loading";
 
 function SponsorsPage() {
   const [sponsors, setSponsors] = useState(null);
-  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/data.json");
+        const response = await fetch(
+          import.meta.env.VITE_API_URL + "/api/sponsors",
+          {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          },
+        );
         if (!response.ok) throw new Error("Erreur fetch JSON");
-        const json = await response.json();
-        setSponsors(json.mockedSponsors);
+        let res = await response.json();
+        setSponsors(res);
       } catch (err) {
         console.error(err);
       }
