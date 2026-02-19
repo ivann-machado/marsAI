@@ -43,7 +43,7 @@ function JuryPage() {
         <p className="text-lg mb-8 text-white text-center">
           {t("jury_page.description")}
         </p>
-        <div className="md:flex md:flex-wrap md:max-w-300 md:mx-auto md:gap-8">
+        <div className="md:flex md:flex-wrap md:max-w-300 md:mx-auto md:gap-8 md:p-8">
           {jury.map((member) => {
             return (
               <JuryCard
