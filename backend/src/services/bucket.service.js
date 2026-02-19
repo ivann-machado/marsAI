@@ -23,10 +23,11 @@ const buildKey = (filename) => {
  * Upload a file to the S3 bucket
  * @param {string} filename - Name / path of the object in the bucket
  * @param {Buffer|ReadableStream|string} body - File content
+ * @param {string} acl - ACL of the object : public-read or private.
  * @param {string} [contentType='application/octet-stream'] - MIME type
  * @returns {Promise<object>} - S3 response
  */
-export const uploadFile = async (filename, body, contentType = 'application/octet-stream') => {
+export const uploadFile = async (filename, body, acl, contentType = 'application/octet-stream') => {
 	try {
 		const { client, bucketName } = getBucketClient();
 		const key = buildKey(filename);
@@ -34,11 +35,11 @@ export const uploadFile = async (filename, body, contentType = 'application/octe
 		if (DEV_MODE) {
 			console.log(`Uploading file to bucket: ${bucketName}, key: ${key}`);
 		}
-
 		const command = new PutObjectCommand({
 			Bucket: bucketName,
 			Key: key,
 			Body: body,
+			ACL: acl,
 			ContentType: contentType
 		});
 
