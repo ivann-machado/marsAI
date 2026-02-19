@@ -13,10 +13,16 @@ function JuryPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/data.json");
+        const response = await fetch(
+          import.meta.env.VITE_API_URL + "/api/jury",
+          {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          },
+        );
         if (!response.ok) throw new Error("Erreur fetch JSON");
-        const json = await response.json();
-        setJury(json.mockedJury);
+        let res = await response.json();
+        setJury(res);
       } catch (err) {
         console.error(err);
       }
