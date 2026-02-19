@@ -9,11 +9,6 @@ import {
 
 /**
  * Create a new review
- * 
- * @route POST /reviews
- * @param {import("express").Request} req - Express request object
- * @param {import("express").Response} res - Express response object
- * @returns {Promise<void>}
  */
 export const createReview = async (req, res) => {
   let conn;
@@ -27,10 +22,7 @@ export const createReview = async (req, res) => {
     conn = await getConnection();
     await conn.beginTransaction();
 
-    const reviewId = await insertReview(
-      { admin_id, video_id, note, grade, status },
-      conn
-    );
+    const reviewId = await insertReview({ admin_id, video_id, note, grade, status }, conn);
 
     await conn.commit();
     res.status(201).json({ message: "Review created", id: reviewId });
@@ -45,11 +37,6 @@ export const createReview = async (req, res) => {
 
 /**
  * Get all reviews
- * 
- * @route GET /reviews
- * @param {import("express").Request} req
- * @param {import("express").Response} res
- * @returns {Promise<void>}
  */
 export const getAllReviews = async (req, res) => {
   let conn;
@@ -66,28 +53,18 @@ export const getAllReviews = async (req, res) => {
 };
 
 /**
- * Get a single review by ID
- * 
- * @route GET /reviews/:id
- * @param {import("express").Request} req
- * @param {import("express").Response} res
- * @returns {Promise<void>}
+ * Get review by ID
  */
 export const getReviewById = async (req, res) => {
   let conn;
   try {
     const { id } = req.params;
-
-    if (!id) {
-      return res.status(400).json({ message: "Review id is required" });
-    }
+    if (!id) return res.status(400).json({ message: "Review id is required" });
 
     conn = await getConnection();
     const review = await selectReviewById(id, conn);
 
-    if (!review) {
-      return res.status(404).json({ message: "Review not found" });
-    }
+    if (!review) return res.status(404).json({ message: "Review not found" });
 
     res.status(200).json(review);
   } catch (error) {
@@ -99,12 +76,7 @@ export const getReviewById = async (req, res) => {
 };
 
 /**
- * Update a review by ID
- * 
- * @route PUT /reviews/:id
- * @param {import("express").Request} req
- * @param {import("express").Response} res
- * @returns {Promise<void>}
+ * Update review by ID
  */
 export const updateReview = async (req, res) => {
   let conn;
@@ -112,18 +84,12 @@ export const updateReview = async (req, res) => {
     const { id } = req.params;
     const { note, grade, status } = req.body;
 
-    if (!id) {
-      return res.status(400).json({ message: "Review id is required" });
-    }
+    if (!id) return res.status(400).json({ message: "Review id is required" });
 
     conn = await getConnection();
     await conn.beginTransaction();
 
-    const affectedRows = await updateReviewById(
-      id,
-      { note, grade, status },
-      conn
-    );
+    const affectedRows = await updateReviewById(id, { note, grade, status }, conn);
 
     await conn.commit();
     res.status(200).json({ message: "Review updated", affectedRows });
@@ -137,21 +103,13 @@ export const updateReview = async (req, res) => {
 };
 
 /**
- * Delete a review by ID
- * 
- * @route DELETE /reviews/:id
- * @param {import("express").Request} req
- * @param {import("express").Response} res
- * @returns {Promise<void>}
+ * Delete review by ID
  */
 export const removeReview = async (req, res) => {
   let conn;
   try {
     const { id } = req.params;
-
-    if (!id) {
-      return res.status(400).json({ message: "Review id is required" });
-    }
+    if (!id) return res.status(400).json({ message: "Review id is required" });
 
     conn = await getConnection();
     await conn.beginTransaction();
