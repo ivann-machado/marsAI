@@ -27,7 +27,8 @@
     "partners": "Partners",
     "about": "About",
     "schedule": "Schedule",
-    "contact": "Contact"
+    "contact": "Contact",
+    "event": "Events"
   },
   "upload_form": {
     "upload_message": "Post your movie",

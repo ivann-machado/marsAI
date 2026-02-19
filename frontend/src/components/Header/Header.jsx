@@ -93,6 +93,11 @@ function Header() {
                   {t("header.contact")}
                 </Link>
               </li>
+              <li className="text-xl font-extrabold min-h-30 min-w-9/10 flex justify-center items-center">
+                <Link to="/event" onClick={toggleMenu}>
+                  {t("header.event")}
+                </Link>
+              </li>
               {/*  <li className="hover:underline">
                 <Link to="/schedule" onClick={toggleMenu}>
                   {t("header.schedule")}
@@ -125,6 +130,9 @@ function Header() {
           </li>
           <li className="hover:underline hover:cursor-pointer">
             <Link to="/contact">{t("header.contact")}</Link>
+          </li>
+          <li className="hover:underline hover:cursor-pointer">
+            <Link to="/event">{t("header.event")}</Link>
           </li>
           {/*
           <li className="hover:underline hover:cursor-pointer">
