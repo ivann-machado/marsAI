@@ -20,6 +20,7 @@ function AdminJuryList({ jury_list }) {
             edition_id={jury.edition_id}
             name={jury.name}
             bio={jury.bio}
+            photo={jury.photo}
             profession={jury.profession}
           />
         );

@@ -26,22 +26,22 @@ function AdminJuryCard({ id, edition_id, name, bio, photo, profession }) {
   };
 
   const saveJury = async () => {
+    const formData = new FormData();
+    formData.append("edition_id", jury.edition_id);
+    formData.append("name", jury.name);
+    formData.append("photo", jury.photo);
+    formData.append("bio", jury.bio);
+    formData.append("profession", jury.profession);
+
     try {
       const response = await fetch(
         import.meta.env.VITE_API_URL + "/api/jury/" + jury.id,
         {
           method: "PUT",
           headers: {
-            "Content-Type": "application/json",
             Authorization: "Bearer " + authToken.token,
           },
-          body: JSON.stringify({
-            edition_id: jury.edition_id,
-            name: jury.name,
-            photo: jury.photo,
-            bio: jury.bio,
-            profession: jury.profession,
-          }),
+          body: formData,
         },
       );
       if (!response.ok) throw new Error("Erreur fetch JSON");
@@ -90,7 +90,15 @@ function AdminJuryCard({ id, edition_id, name, bio, photo, profession }) {
         value={jury.edition_id}
         onChange={(e) => updateJury("edition_id", e.target.value)}
       ></input>
-      <img src={jury.photo} className="col-span-1 p-2 max-w-10 max-h-10"></img>
+      <div className="col-span-1 flex flex-col items-center">
+        <img src={jury.photo} className="p-2 max-w-10 max-h-10"></img>
+        <input
+          type="file"
+          name="photo"
+          className="bg-white text-black w-full"
+          onChange={(e) => updateJury("photo", e.target.value)}
+        ></input>
+      </div>
       <input
         value={jury.name}
         className="col-span-1 p-2 bg-gray-700 text-center rounded-lg hover:bg-gray-500"
