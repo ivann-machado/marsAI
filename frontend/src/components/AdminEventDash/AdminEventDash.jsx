@@ -8,15 +8,22 @@ function AdminEventDash() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/data.json");
+        const response = await fetch(
+          import.meta.env.VITE_API_URL + "/api/events/",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          },
+        );
         if (!response.ok) throw new Error("Erreur fetch JSON");
         const json = await response.json();
-        setEvents(json.mockedEvents);
+        setEvents(json);
       } catch (err) {
         console.error(err);
       }
     };
-
     fetchData();
   }, []);
 

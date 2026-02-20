@@ -7,17 +7,22 @@ function AdminEventParticipants({ isOpen, eventId }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/data.json");
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL + "/api/reservations/?event_id=${eventId}"}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          },
+        );
         if (!response.ok) throw new Error("Erreur fetch JSON");
         const json = await response.json();
-        eventId === 1
-          ? setParticipants(json.event_participants)
-          : setParticipants([]);
+        setParticipants(json);
       } catch (err) {
         console.error(err);
       }
     };
-
     fetchData();
   }, []);
 
