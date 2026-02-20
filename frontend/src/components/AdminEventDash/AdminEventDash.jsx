@@ -1,4 +1,5 @@
 import AdminEventCard from "./AdminEventCard";
+import AdminEventForm from "./AdminEventForm";
 import { useState, useEffect } from "react";
 import Loading from "../Utils/Loading";
 
@@ -34,6 +35,7 @@ function AdminEventDash() {
       {events.map((event) => (
         <AdminEventCard event={event} key={event.id} />
       ))}
+      <AdminEventForm />
     </div>
   );
 }
