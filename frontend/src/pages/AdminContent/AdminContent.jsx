@@ -1,20 +1,27 @@
 import { useState, useEffect } from "react";
 import AdminSidebar from "../../components/AdminSidebar/AdminSidebar.jsx";
 import Loading from "../../components/Utils/Loading.jsx";
+import AdminContentCard from "../../components/AdminContentDash/AdminContentCard.jsx";
 
 function AdminContent() {
   const [content, setContent] = useState(null);
-  const [modifiedContent, setModifiedContent] = useState({});
+  const [modified, setModified] = useState(false);
   const [newName, setNewName] = useState("");
   const [newValue, setNewValue] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/data.json");
+        const response = await fetch(
+          import.meta.env.VITE_API_URL + "/api/content",
+          {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          },
+        );
         if (!response.ok) throw new Error("Erreur fetch JSON");
         const json = await response.json();
-        setContent(json.mockedContent);
+        setContent(json);
       } catch (err) {
         console.error(err);
       }
@@ -23,8 +30,13 @@ function AdminContent() {
   }, []);
 
   function changeContent(name, value) {
-    setContent((prev) => ({ ...prev, [name]: value }));
-    setModifiedContent((prev) => ({ ...prev, [name]: value }));
+    setContent((prev) =>
+      prev.map((item) =>
+        item.name === name ? { ...item, value: value } : item,
+      ),
+    );
+    //setContent((prev) => ({ ...prev, [name]: value }));
+    setModified(true);
   }
 
   function addNewValue(name, value) {
@@ -38,10 +50,7 @@ function AdminContent() {
       const { [name]: _, ...rest } = prev;
       return rest;
     });
-    setModifiedContent((prev) => {
-      const { [name]: _, ...rest } = prev;
-      return rest;
-    });
+    setModified(false);
   }
 
   if (!content)
@@ -52,59 +61,45 @@ function AdminContent() {
       </>
     );
 
+  console.log(content);
+
   return (
     <div className="flex">
       <AdminSidebar />
-      <div className="w-4/5 text-white bg-gray-950">
-        <div>
-          <div className="grid grid-cols-3 text-center border border-gray-400 mb-4">
-            <div className="col-span-1 border border-gray-400 text-xl font-bold">
-              Content
-            </div>
-            <div className="col-span-1 border border-gray-400 text-xl font-bold">
-              Value
-            </div>
-            <div className="col-span-1 border border-gray-400 text-xl font-bold">
-              Supprimer
-            </div>
+      <div className="flex flex-col w-4/5 bg-gray-600 relative">
+        <div className="flex flex-col mx-2 mb-8">
+          <h2 className="text-4xl font-extrabold m-8">Content Items</h2>
+          <div className="grid grid-cols-4 p-2 bg-gray-900 text-gray-100 gap-2 px-6">
+            <p className="text-center text-xl font-bold">Content</p>
+            <p className="text-center text-xl font-bold">Value</p>
           </div>
-          {Object.entries(content).map(([name, value]) => (
-            <div key={name} className="grid grid-cols-3 text-center">
-              <div className="col-span-1 border border-gray-400">{name}</div>
-              <input
-                value={value}
-                onChange={(e) => changeContent(name, e.target.value)}
-                className="col-span-1 border border-gray-400 bg-gray-100 text-black p-1 hover:bg-white hover:border-blue-500"
-              ></input>
-              <input
-                type="button"
-                value="X"
-                onClick={(e) => deleteContent(name, e.target.value)}
-                className="col-span-1 border border-gray-400 bg-red-800 text-white hover:bg-red-600"
-              ></input>
-            </div>
+          {content.map((content_item) => (
+            <AdminContentCard
+              name={content_item.name}
+              value={content_item.value}
+            />
           ))}
-          <h3 className="text-lg font-bold mb-4">Créer nouveau content:</h3>
-          <div className="grid grid-cols-3 text-center">
+          <form className="flex flex-col mx-auto bg-gray-800 text-white p-4">
+            <p>Créer nouveau content:</p>
             <input
               value={newName}
               placeholder="name"
               onChange={(e) => setNewName(e.target.value)}
-              className="col-span-1 border border-gray-400 bg-gray-300 text-black"
+              className="bg-white text-black"
             ></input>
             <input
               value={newValue}
               placeholder="value"
               onChange={(e) => setNewValue(e.target.value)}
-              className="col-span-1 border border-gray-400 bg-gray-300 text-black"
+              className="bg-white text-black"
             ></input>
             <button
-              className="col-span-1 border border-gray-400 bg-gray-300 text-black hover:bg-gray-500"
+              className="bg-white text-black mt-4"
               onClick={() => addNewValue(newName, newValue)}
             >
               Enregistrer
             </button>
-          </div>
+          </form>
         </div>
       </div>
     </div>
