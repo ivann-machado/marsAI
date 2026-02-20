@@ -6,7 +6,15 @@ import "../Upload_Form/upload.css";
 
 function UploadForm() {
   const { t } = useTranslation();
-  //variables des inputs
+  const [countryId, SetCountryId] = useState(null);
+  const countryOptions = [
+    { label: "-- Sélectionnez un pays --", value: "" },
+    { label: "France", value: 1 },
+  ];
+  function handleSelect(event) {
+    SetCountryId(event.target.value);
+  }
+  //Stockage des valeurs de chaques input dans leurs variables respectives
   const title = useRef(null);
   const description = useRef(null);
   const video = useRef(null);
@@ -17,7 +25,6 @@ function UploadForm() {
   const post_prod_ai = useRef(null);
   const producer = useRef(null);
   const producerImage = useRef(null);
-  const country = useRef(null);
   const instagram = useRef(null);
   const linkedin = useRef(null);
   const youtube = useRef(null);
@@ -64,7 +71,7 @@ function UploadForm() {
         producer: producer.current.value,
         email: email.current.value,
         producerImage: producerImage.current.files[0],
-        country: country.current.value,
+        country: countryId,
         instagram: instagram.current.value,
         linkedin: linkedin.current.value,
         youtube: youtube.current.value,
@@ -85,7 +92,7 @@ function UploadForm() {
           title: uploadData.title,
           description: uploadData.description,
           status: "unverified",
-          country_id: 1,
+          country_id: countryId,
           producer: uploadData.producer,
           producer_image: uploadData.producerImage,
           linkedin_link: uploadData.linkedin,
@@ -241,7 +248,7 @@ function UploadForm() {
     }
   }
   function majorityCheck() {
-    if (tags.current.value.trim() === "") {
+    if (SetMajorityCertification(e.target.checked)) {
       SetMajorityCertificationError("Champ vide");
       console.log("Input is empty");
     } else {
@@ -265,7 +272,7 @@ function UploadForm() {
     }
   }
 
-  console.log(majority_certification);
+  console.log(countryId);
   const formSubmit = useState(false);
   return (
     <div className="flex flex-col justify-center items-center bg-[#050505] pt-4 pb-4">
@@ -544,18 +551,20 @@ function UploadForm() {
               <p className="text-white">{coverImageError}</p>
             </div>
             <div className="flex flex-col md:w-full md:max-w-150">
-              <label htmlFor="country" className="text-white">
+              <label htmlFor="countrySelect" className="text-white">
                 Votre Pays :
               </label>
               <select
-                name="country"
-                id="country"
-                ref={country}
-                onChange={() => {
-                  tagCheck();
-                }}
+                name="countrySelect"
+                id="countrySelect"
+                onChange={handleSelect}
                 className="bg-gray-900 text-white border-2 border-[#F2F2F2]/20 rounded-lg w-full h-10 p-1"
-              ></select>
+              >
+                {countryOptions.map((option) => (
+                  <option value={option.value}>{option.label}</option>
+                ))}
+              </select>
+              <p className="text-white">{countryId}</p>
               <p className="text-white">{tagError}</p>
             </div>
           </div>
