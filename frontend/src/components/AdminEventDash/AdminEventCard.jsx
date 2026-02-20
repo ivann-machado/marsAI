@@ -17,7 +17,7 @@ function AdminEventCard(props) {
       <p>Location: {event.place}</p>
       <p>Details: {event.info}</p>
       <p>
-        Lien de l'evenement:{" "}
+        Lien de l'evenement:
         <a href={event.url} className="hover:text-blue-600">
           Lien
         </a>

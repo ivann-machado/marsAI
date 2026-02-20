@@ -62,122 +62,129 @@ function AdminEventForm() {
   };
 
   return (
-    <form className="flex flex-col bg-gray-800 items-center text-white gap-4 p-8">
-      <div>
-        <label htmlFor="type">Type</label>
-        <select
-          id="type"
-          value={type}
-          onChange={(e) => {
-            setType(e.target.value);
-          }}
-          className="bg-white text-black"
-        >
-          <option value="atelier">Atelier</option>
-        </select>
-      </div>
-      <div>
-        <label htmlFor="name">Name</label>
-        <input
-          id="name"
-          value={name}
-          onChange={(e) => {
-            setName(e.target.value);
-          }}
-          className="bg-white text-black"
-        ></input>
-      </div>
-      <div>
-        <label htmlFor="url">URL</label>
-        <input
-          id="url"
-          type="url"
-          value={url}
-          onChange={(e) => {
-            setUrl(e.target.value);
-          }}
-          className="bg-white text-black"
-        ></input>
-      </div>
-      <div>
-        <label htmlFor="logo">Logo</label>
-        <input
-          id="logo"
-          type="file"
-          value={logo}
-          onChange={(e) => {
-            setLogo(e.target.value);
-          }}
-          className="bg-white text-black"
-        ></input>
-      </div>
-      <div>
-        <label htmlFor="info">Info</label>
-        <input
-          id="info"
-          value={info}
-          onChange={(e) => {
-            setInfo(e.target.value);
-          }}
-          className="bg-white text-black"
-        ></input>
-      </div>
-      <div>
-        <label htmlFor="place">Place</label>
-        <input
-          id="place"
-          value={place}
-          onChange={(e) => {
-            setPlace(e.target.value);
-          }}
-          className="bg-white text-black"
-        ></input>
-      </div>
-      <div>
-        <label htmlFor="duration">Duration</label>
-        <input
-          id="duration"
-          type="number"
-          value={duration}
-          onChange={(e) => {
-            setDuration(e.target.value);
-          }}
-          className="bg-white text-black"
-        ></input>
-      </div>
-      <div>
-        <label htmlFor="cover_image">Cover Image</label>
-        <input
-          id="cover_image"
-          type="file"
-          value={coverImage}
-          onChange={(e) => {
-            setCoverImage(e.target.value);
-          }}
-          className="bg-white text-black"
-        ></input>
-      </div>
-      <div>
-        <label htmlFor="date">Date</label>
-        <input
-          id="date"
-          type="datetime-local"
-          value={date}
-          onChange={(e) => {
-            setDate(e.target.value);
-          }}
-          className="bg-white text-black"
-        ></input>
-      </div>
-      <div>
-        <input
-          type="submit"
-          value="Submit"
-          className="bg-white text-black p-2 hover:bg-gray-300"
-          onClick={(e) => submitForm(e)}
-        ></input>
-      </div>
-    </form>
+    <div className="mt-8 bg-gray-800 text-white">
+      <p className="text-4xl font-extrabold text-center ">
+        Ajouter un evenment
+      </p>
+      <form className="flex flex-wrap  items-center  gap-4 p-8">
+        <div className="w-1/2">
+          <label htmlFor="type" className="w-1/3 m-4 text-lg font-bold">
+            Type
+          </label>
+          <select
+            id="type"
+            value={type}
+            onChange={(e) => {
+              setType(e.target.value);
+            }}
+            className="bg-white text-black w-2/3 p-2 rounded-md"
+          >
+            <option value="atelier">Atelier</option>
+          </select>
+        </div>
+        <div>
+          <label htmlFor="name">Name</label>
+          <input
+            id="name"
+            value={name}
+            onChange={(e) => {
+              setName(e.target.value);
+            }}
+            className="bg-white text-black"
+          ></input>
+        </div>
+        <div>
+          <label htmlFor="url">URL</label>
+          <input
+            id="url"
+            type="url"
+            value={url}
+            onChange={(e) => {
+              setUrl(e.target.value);
+            }}
+            className="bg-white text-black"
+          ></input>
+        </div>
+        <div>
+          <label htmlFor="logo">Logo</label>
+          <input
+            id="logo"
+            type="file"
+            value={logo}
+            onChange={(e) => {
+              setLogo(e.target.value);
+            }}
+            className="bg-white text-black"
+          ></input>
+        </div>
+        <div>
+          <label htmlFor="info">Info</label>
+          <input
+            id="info"
+            value={info}
+            onChange={(e) => {
+              setInfo(e.target.value);
+            }}
+            className="bg-white text-black"
+          ></input>
+        </div>
+        <div>
+          <label htmlFor="place">Place</label>
+          <input
+            id="place"
+            value={place}
+            onChange={(e) => {
+              setPlace(e.target.value);
+            }}
+            className="bg-white text-black"
+          ></input>
+        </div>
+        <div>
+          <label htmlFor="duration">Duration</label>
+          <input
+            id="duration"
+            type="number"
+            value={duration}
+            onChange={(e) => {
+              setDuration(e.target.value);
+            }}
+            className="bg-white text-black"
+          ></input>
+        </div>
+        <div>
+          <label htmlFor="cover_image">Cover Image</label>
+          <input
+            id="cover_image"
+            type="file"
+            value={coverImage}
+            onChange={(e) => {
+              setCoverImage(e.target.value);
+            }}
+            className="bg-white text-black"
+          ></input>
+        </div>
+        <div>
+          <label htmlFor="date">Date</label>
+          <input
+            id="date"
+            type="datetime-local"
+            value={date}
+            onChange={(e) => {
+              setDate(e.target.value);
+            }}
+            className="bg-white text-black"
+          ></input>
+        </div>
+        <div>
+          <input
+            type="submit"
+            value="Submit"
+            className="bg-white text-black p-2 hover:bg-gray-300"
+            onClick={(e) => submitForm(e)}
+          ></input>
+        </div>
+      </form>
+    </div>
   );
 }
 
