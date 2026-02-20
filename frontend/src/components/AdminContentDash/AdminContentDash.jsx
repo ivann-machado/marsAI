@@ -2,7 +2,7 @@ import AdminContentCard from "./AdminContentCard";
 import { useState, useEffect } from "react";
 import Loading from "../../components/Utils/Loading.jsx";
 
-function AdminContentDash() {
+function AdminSettingsDash() {
   const [content, setContent] = useState(null);
 
   useEffect(() => {
@@ -67,4 +67,4 @@ function AdminContentDash() {
   );
 }
 
-export default AdminContentDash;
+export default AdminSettingsDash;
