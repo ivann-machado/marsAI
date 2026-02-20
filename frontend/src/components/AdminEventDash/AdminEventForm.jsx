@@ -18,7 +18,7 @@ function AdminEventForm() {
   const submitForm = async (e) => {
     e.preventDefault();
 
-    console.log(date);
+    // console.log(date);
 
     const formData = new FormData();
     formData.append("type", type);
@@ -62,12 +62,12 @@ function AdminEventForm() {
   };
 
   return (
-    <div className="mt-8 bg-gray-800 text-white">
-      <p className="text-4xl font-extrabold text-center ">
+    <div className="mt-8 bg-gray-950 text-white border-t pt-4">
+      <p className="text-4xl font-extrabold text-center my-8">
         Ajouter un evenment
       </p>
-      <form className="flex flex-wrap  items-center  gap-4 p-8">
-        <div className="w-1/2">
+      <form className="flex flex-wrap  items-center gap-4 p-8">
+        <div className="w-2/5 flex justify-between">
           <label htmlFor="type" className="w-1/3 m-4 text-lg font-bold">
             Type
           </label>
@@ -82,19 +82,19 @@ function AdminEventForm() {
             <option value="atelier">Atelier</option>
           </select>
         </div>
-        <div>
-          <label htmlFor="name">Name</label>
+        <div className="w-2/5 flex justify-between">
+          <label htmlFor="name"  className="w-1/3 m-4 text-lg font-bold">Name</label>
           <input
             id="name"
             value={name}
             onChange={(e) => {
               setName(e.target.value);
             }}
-            className="bg-white text-black"
+           className="bg-white text-black w-2/3 p-2 rounded-md"
           ></input>
         </div>
-        <div>
-          <label htmlFor="url">URL</label>
+        <div className="w-2/5 flex justify-between">
+          <label htmlFor="url"  className="w-1/3 m-4 text-lg font-bold">URL</label>
           <input
             id="url"
             type="url"
@@ -102,11 +102,11 @@ function AdminEventForm() {
             onChange={(e) => {
               setUrl(e.target.value);
             }}
-            className="bg-white text-black"
+            className="bg-white text-black w-2/3 p-2 rounded-md"
           ></input>
         </div>
-        <div>
-          <label htmlFor="logo">Logo</label>
+        <div className="w-2/5 flex justify-between">
+          <label htmlFor="logo"  className="w-1/3 m-4 text-lg font-bold">Logo</label>
           <input
             id="logo"
             type="file"
@@ -114,33 +114,33 @@ function AdminEventForm() {
             onChange={(e) => {
               setLogo(e.target.value);
             }}
-            className="bg-white text-black"
+            className="bg-white text-black w-2/3 p-2 rounded-md"
           ></input>
         </div>
-        <div>
-          <label htmlFor="info">Info</label>
+        <div className="w-2/5 flex justify-between">
+          <label htmlFor="info"  className="w-1/3 m-4 text-lg font-bold">Info</label>
           <input
             id="info"
             value={info}
             onChange={(e) => {
               setInfo(e.target.value);
             }}
-            className="bg-white text-black"
+            className="bg-white text-black w-2/3 p-2 rounded-md"
           ></input>
         </div>
-        <div>
-          <label htmlFor="place">Place</label>
+        <div className="w-2/5 flex justify-between">
+          <label htmlFor="place"  className="w-1/3 m-4 text-lg font-bold">Place</label>
           <input
             id="place"
             value={place}
             onChange={(e) => {
               setPlace(e.target.value);
             }}
-            className="bg-white text-black"
+            className="bg-white text-black w-2/3 p-2 rounded-md"
           ></input>
         </div>
-        <div>
-          <label htmlFor="duration">Duration</label>
+        <div className="w-2/5 flex justify-between">
+          <label htmlFor="duration"  className="w-1/3 m-4 text-lg font-bold">Duration</label>
           <input
             id="duration"
             type="number"
@@ -148,11 +148,11 @@ function AdminEventForm() {
             onChange={(e) => {
               setDuration(e.target.value);
             }}
-            className="bg-white text-black"
+            className="bg-white text-black w-2/3 p-2 rounded-md"
           ></input>
         </div>
-        <div>
-          <label htmlFor="cover_image">Cover Image</label>
+        <div className="w-2/5 flex justify-between">
+          <label htmlFor="cover_image"  className="w-1/3 m-4 text-lg font-bold">Cover Image</label>
           <input
             id="cover_image"
             type="file"
@@ -160,11 +160,11 @@ function AdminEventForm() {
             onChange={(e) => {
               setCoverImage(e.target.value);
             }}
-            className="bg-white text-black"
+            className="bg-white text-black w-2/3 p-2 rounded-md"
           ></input>
         </div>
-        <div>
-          <label htmlFor="date">Date</label>
+        <div className="w-2/5 flex justify-between">
+          <label htmlFor="date"  className="w-1/3 m-4 text-lg font-bold">Date</label>
           <input
             id="date"
             type="datetime-local"
@@ -172,14 +172,14 @@ function AdminEventForm() {
             onChange={(e) => {
               setDate(e.target.value);
             }}
-            className="bg-white text-black"
+            className="bg-white text-black w-2/3 p-2 rounded-md"
           ></input>
         </div>
-        <div>
+        <div className="w-2/5 flex justify-center">
           <input
             type="submit"
             value="Submit"
-            className="bg-white text-black p-2 hover:bg-gray-300"
+            className="bg-white text-black p-2 hover:bg-gray-300 w-1/5 font-bold"
             onClick={(e) => submitForm(e)}
           ></input>
         </div>
