@@ -79,7 +79,7 @@ function AdminContent() {
               value={content_item.value}
             />
           ))}
-          <form className="flex flex-col mx-auto bg-gray-800 text-white p-4">
+          {/* <form className="flex flex-col mx-auto bg-gray-800 text-white p-4">
             <p>Créer nouveau content:</p>
             <input
               value={newName}
@@ -99,7 +99,7 @@ function AdminContent() {
             >
               Enregistrer
             </button>
-          </form>
+          </form> */}
         </div>
       </div>
     </div>
