@@ -27,7 +27,7 @@ const router = Router();
  */
 
 // Subscribe (public)
-router.post("/", createNewsletter);
+router.post("/subscribe", createNewsletter);
 
 // Admin routes
 router.get("/", verifyToken, requireSuperAdmin, getAllNewsletters);
