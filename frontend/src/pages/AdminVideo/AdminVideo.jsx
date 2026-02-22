@@ -5,7 +5,7 @@ import Loading from "../../components/Utils/Loading";
 import "flag-icons/css/flag-icons.min.css";
 import { useState, useEffect } from "react";
 
-function AdminVideo(props) {
+function AdminVideo() {
   const { t } = useTranslation();
   let params = useParams();
 
@@ -51,18 +51,54 @@ function AdminVideo(props) {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          import.meta.env.VITE_API_URL + "/api/videos/" + params.videoId,
+          {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          },
+        );
+        if (!response.ok) throw new Error("Erreur fetch JSON");
+        let res = await response.json();
+        setVideo(res);
+
+        // TODO REVIEW
+        /* response = await fetch(
+          import.meta.env.VITE_API_URL + "/api/review/" + params.videoId,
+          {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          },
+        );
+        if (!response.ok) throw new Error("Erreur fetch JSON");
+        res = await response.json();
+        setReview(res); */
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   if (!video || !review) return <Loading />;
   else
     return (
       <>
-        <section className="w-full min-h-screen bg-[url('../src/assets/background.jpg')] bg-cover bg-fixed text-white py-8">
+        <section
+          className="w-full min-h-screen bg-[url('../src/assets/background.jpg')] bg-cover bg-fixed text-white py-8
+      md:px-[10%]"
+        >
           <div className="m-4 mb-8">
             <a className="text-white hover:text-blue-900 visited:text-white">
-              {t("return_gallery")}
+              {t("video_page.return_gallery")}
             </a>
           </div>
           <iframe
-            className="w-screen aspect-video"
+            className="w-full aspect-video"
             src="https://www.youtube.com/embed/_cPdvX-0kRA?si=MP3jAxInyj04TUlx"
             title="YouTube video player"
             loading="lazy"
@@ -118,7 +154,9 @@ function AdminVideo(props) {
                 src={video.producer_image}
               ></img>
               <div className="my-auto">
-                <p className="text-2xl text-white ml-2">{t("producer")}</p>
+                <p className="text-2xl text-white ml-2">
+                  {t("video_page.producer")}
+                </p>
                 <p className="text-xl text-gray-100 ml-2">{video.producer}</p>
               </div>
             </div>
@@ -127,13 +165,17 @@ function AdminVideo(props) {
                 className={`fi fi-2x fi-${video.country_iso.toLowerCase()} scale-200`}
               ></span>
               <div className="ml-4">
-                <p className="text-white">{t("country_of_origin")}</p>
+                <p className="text-white">
+                  ²{t("video_page.country_of_origin")}
+                </p>
                 <p className="">{video.country_name}</p>
               </div>
             </div>
           </div>
           <div className="mb-4">
-            <h4 className="text-3xl font-bold m-4">{t("media_links")}</h4>
+            <h4 className="text-3xl font-bold m-4">
+              {t("video_page.media_links")}
+            </h4>
             <div className="flex flex-wrap justify-around w-100%">
               <div className="w-1/3 md:w-1/6">
                 <img
@@ -174,10 +216,10 @@ function AdminVideo(props) {
           </div>
           <div className="mb-4">
             <h3 className="text-3xl mb-4 text-center font-bold">
-              {t("synopsis")}
+              {t("video_page.synopsis")}
             </h3>
             <p className="m-4 indent-4">{video.description}</p>
-            <h4 className="m-4 text-2xl">{t("ai_used")}</h4>
+            <h4 className="m-4 text-2xl">{t("video_page.ai_used")}</h4>
             <div>
               <AIList type="Scénario" data={video.scenario_ai} />
               <AIList type="Video" data={video.video_gen_ai} />

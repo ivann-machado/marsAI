@@ -1,5 +1,6 @@
 import Loading from "../Utils/Loading";
 import { useState, useEffect } from "react";
+import AdminUserCard from "./AdminUserCard.jsx";
 
 function AdminUsersDash() {
   const [users, setUsers] = useState(null);
@@ -36,19 +37,7 @@ function AdminUsersDash() {
           <p>Supprimer</p>
         </div>
         {users.map((user) => (
-          <div
-            key={user.id}
-            className="grid grid-cols-6 w-full mx-4 my-2 text-center border-t p-1"
-          >
-            <p>{user.id}</p>
-            <p>{user.login}</p>
-            <p
-              className={user.role === "Admin" ? "bg-amber-500" : "bg-red-700"}
-            >
-              {user.role}
-            </p>
-            <div className={"w-8 h-4 bg-red-700 m-auto"}></div>
-          </div>
+          <AdminUserCard userData={user} />
         ))}
       </div>
     </div>
