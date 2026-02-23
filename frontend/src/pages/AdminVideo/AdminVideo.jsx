@@ -4,58 +4,18 @@ import AIList from "../../components/AIList/AIList";
 import Loading from "../../components/Utils/Loading";
 import "flag-icons/css/flag-icons.min.css";
 import { useState, useEffect } from "react";
+import AdminVideoPanel from "../../components/AdminVideosDash/AdminVideoPanel";
 
 function AdminVideo() {
   const { t } = useTranslation();
   let params = useParams();
-
-  const [review, setReview] = useState(null);
   const [video, setVideo] = useState(null);
-
-  const handleGrade = (value) => {
-    setReview((prev) => ({ ...prev, grade: value }));
-  };
-
-  const handleSave = async () => {
-    try {
-      const response = await fetch("/api/reviews/" + review.id, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(review),
-      });
-
-      if (!response.ok) throw new Error("Erreur lors de la sauvegarde");
-
-      const updatedReview = await response.json();
-      setReview(updatedReview);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("/data.json");
-        if (!response.ok) throw new Error("Erreur fetch JSON");
-        const json = await response.json();
-        setReview(json.mockedReview);
-        setVideo(json.mockedVideo);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          import.meta.env.VITE_API_URL + "/api/videos/" + params.videoId,
+          import.meta.env.VITE_API_URL + "/api/videos/" + params.id,
           {
             method: "GET",
             headers: { "Content-Type": "application/json" },
@@ -66,7 +26,7 @@ function AdminVideo() {
         setVideo(res);
 
         // TODO REVIEW
-        /* response = await fetch(
+        /*  response = await fetch(
           import.meta.env.VITE_API_URL + "/api/review/" + params.videoId,
           {
             method: "GET",
@@ -84,7 +44,7 @@ function AdminVideo() {
     fetchData();
   }, []);
 
-  if (!video || !review) return <Loading />;
+  if (!video) return <Loading />;
   else
     return (
       <>
@@ -105,43 +65,7 @@ function AdminVideo() {
           ></iframe>
 
           {/* ADMIN PANEL TO VOTE */}
-          <div className="bg-gray-400 min-h-20 items-center p-4">
-            <h3>Menu notation:</h3>
-            <div className="mx-8 flex gap-8 mb-4">
-              <div>
-                {[1, 2, 3, 4, 5].map((value) => (
-                  <button
-                    key={value}
-                    onClick={() => handleGrade(value)}
-                    className={
-                      "w-4 h-4 rounded-full transition text-4xl mr-2 " +
-                      (review.grade >= value
-                        ? "text-amber-300"
-                        : "text-amber-50")
-                    }
-                  >
-                    ★
-                  </button>
-                ))}
-                <p>Note: {review.grade}/5</p>
-              </div>
-              <input
-                className="bg-white text-gray-700 p-2"
-                placeholder="commentaire..."
-                type="text"
-                value={review.note}
-                onChange={(e) =>
-                  setReview((prev) => ({ ...prev, note: e.target.value }))
-                }
-              ></input>
-              <input
-                className="bg-white p-2 text-black hover:bg-gray-600"
-                type="button"
-                value="Sauvegarder"
-                onClick={handleSave}
-              ></input>
-            </div>
-          </div>
+          <AdminVideoPanel video_data={video} />
 
           {/* INFOS VIDEOS */}
           <h2 className="text-white font-bold text-4xl text-center mb-4 mt-4 md:mx-8">
@@ -161,14 +85,14 @@ function AdminVideo() {
               </div>
             </div>
             <div className="flex mb-4 ml-8">
-              <span
+              {/* <span
                 className={`fi fi-2x fi-${video.country_iso.toLowerCase()} scale-200`}
-              ></span>
+              ></span> */}
               <div className="ml-4">
                 <p className="text-white">
-                  ²{t("video_page.country_of_origin")}
+                  {t("video_page.country_of_origin")}
                 </p>
-                <p className="">{video.country_name}</p>
+                {/*  <p className="">{video.country_name}</p> */}
               </div>
             </div>
           </div>

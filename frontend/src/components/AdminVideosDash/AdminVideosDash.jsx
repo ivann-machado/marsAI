@@ -9,11 +9,26 @@ function AdminVideosDash() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/data.json");
+        /* Recuperation videos à review */
+        let response = await fetch(
+          import.meta.env.VITE_API_URL + "/api/videos",
+          {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          },
+        );
         if (!response.ok) throw new Error("Erreur fetch JSON");
-        const json = await response.json();
-        setVideoQueue(json.mockedVideosQueue);
-        setOtherVideo(json.mockedVideosQueue);
+        let res = await response.json();
+        setVideoQueue(res);
+
+        /* Recuperation des autres videos */
+        response = await fetch(import.meta.env.VITE_API_URL + "/api/videos", {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+        if (!response.ok) throw new Error("Erreur fetch JSON");
+        res = await response.json();
+        setOtherVideo(res);
       } catch (err) {
         console.error(err);
       }
@@ -32,7 +47,7 @@ function AdminVideosDash() {
 
       {/* MOVIE QUEUE */}
       <h2 className="text-2xl font-bold ml-8 text-white">Films attribuées:</h2>
-      <VideoList videoList={videoQueue} />
+      <VideoList videoList={videoQueue} type="queue" />
 
       {/* SEARCH BAR */}
       <div className="w-full bg-gray-500 grid grid-cols-6">
