@@ -23,7 +23,7 @@ const app = express();
 //  Middleware
 app.use(cors(CORS_OPTIONS));
 app.use(express.json());
-
+app.use(express.urlencoded({ extended: true }));
 // Logging
 app.use(morgan("dev")); // Log requests
 
