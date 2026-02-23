@@ -19,7 +19,7 @@ export const insertNewsletter = async (email, conn = null) => {
  * @returns {Promise<any>}
  */
 export const selectNewsletterByEmail = async (email, conn = null) => {
-	const query = "SELECT id FROM newsletters WHERE email = ?";
+	const query = "SELECT * FROM newsletters WHERE email = ?";
 	const db = conn || pool;
 	return db.query(query, [email]);
 };
