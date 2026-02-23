@@ -1,6 +1,7 @@
 import Loading from "../Utils/Loading";
 import { useState, useEffect } from "react";
 import AdminUserCard from "./AdminUserCard.jsx";
+import AdminUserInviteForm from "./AdminUserInviteForm.jsx";
 
 function AdminUsersDash() {
   const [users, setUsers] = useState(null);
@@ -23,7 +24,7 @@ function AdminUsersDash() {
   if (!users) return <Loading />;
 
   return (
-    <div className="w-4/5 bg-gray-950">
+    <div className="w-4/5 bg-gray-950 flex flex-col items-center">
       <h1 className="py-2 font-bold text-3xl text-white text-center">
         Gestion Utilisateurs
       </h1>
@@ -40,6 +41,7 @@ function AdminUsersDash() {
           <AdminUserCard userData={user} />
         ))}
       </div>
+      <AdminUserInviteForm />
     </div>
   );
 }
