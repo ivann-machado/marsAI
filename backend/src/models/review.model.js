@@ -51,25 +51,6 @@ export const selectAllReviews = async (conn = null) => {
  * @param {import('mariadb').PoolConnection} [conn]
  * @returns {Promise<number>} Number of affected rows
  */
-export const updateReviewById = async (
-	id,
-	{ note, grade, status },
-	conn = null,
-) => {
-	const query =
-		"UPDATE reviews SET note = ?, grade = ?, status = ? WHERE id = ?";
-	const db = conn || pool;
-	const result = await db.query(query, [note, grade, status || null, id]);
-	return result.affectedRows;
-};
-
-/**
- * Update a review by ID.
- * @param {number} id
- * @param {Object} data - Review data
- * @param {import("mariadb").PoolConnection|null} [conn=null] - Optional transaction connection
- * @returns {Promise<Object>}
- */
 export const updateReview = async (
 	id,
 	{ admin_id, video_id, note, grade, status },
