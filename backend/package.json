@@ -20,7 +20,7 @@
 	},
 	"dependencies": {
 		"@aws-sdk/client-s3": "^3.993.0",
-		"@getbrevo/brevo": "^3.0.1",
+		"@getbrevo/brevo": "^4.0.1",
 		"bcryptjs": "^3.0.3",
 		"cors": "^2.8.6",
 		"dotenv": "^17.3.1",

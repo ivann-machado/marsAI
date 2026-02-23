@@ -10,7 +10,7 @@ import { DEV_MODE } from '../config/index.js';
  * @returns {Brevo.SendSmtpEmail}
  */
 const configureBaseEmail = (to, config, senderOverride = null) => {
-	const sendSmtpEmail = new Brevo.SendSmtpEmail();
+	const sendSmtpEmail = {};
 
 	sendSmtpEmail.sender = {
 		name: senderOverride?.name || config.senderName,
