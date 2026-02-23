@@ -6,6 +6,7 @@ import {
 	updateJury,
 	deleteJury,
 } from "../models/jury.model.js";
+import { deleteFile } from "../services/bucket.service.js";
 
 /**
  * Create a new jury member.
@@ -15,34 +16,28 @@ import {
 export const createJury = async (req, res) => {
 	let conn;
 	try {
-		const { edition_id, name, bio, photo, profession } = req.body;
+		const { edition_id, name, bio, profession } = req.body;
 
-		if (!edition_id || !name) {
+		if (!edition_id || !name || !req.file) {
 			return res.status(400).json({
-				message: "edition_id and name are required",
+				message: "edition_id, name and photo are required",
 			});
 		}
 
-		conn = await getConnection();
-		await conn.beginTransaction();
+		const finalPhoto = req.file ? req.file.location : null;
 
 		const result = await insertJury(
-			{ edition_id, name, bio, photo, profession },
+			{ edition_id, name, bio, photo: finalPhoto, profession },
 			conn
 		);
-
-		await conn.commit();
 
 		res.status(201).json({
 			message: "Jury member created",
 			id: result.insertId.toString(),
 		});
 	} catch (error) {
-		if (conn) await conn.rollback();
 		console.error("Create Jury Error:", error);
 		res.status(500).json({ message: "Server error" });
-	} finally {
-		if (conn) conn.release();
 	}
 };
 
@@ -101,7 +96,7 @@ export const setJury = async (req, res) => {
 	let conn;
 	try {
 		const { id } = req.params;
-		const { edition_id, name, bio, photo, profession } = req.body;
+		const { edition_id, name, bio, photo, profession, oldPhoto } = req.body;
 
 		if (!id) {
 			return res.status(400).json({
@@ -109,12 +104,14 @@ export const setJury = async (req, res) => {
 			});
 		}
 
+		const finalPhoto = req.file ? req.file.location : photo;
+
 		conn = await getConnection();
 		await conn.beginTransaction();
 
 		const result = await updateJury(
 			id,
-			{ edition_id, name, bio, photo, profession },
+			{ edition_id, name, bio, photo: finalPhoto, profession },
 			conn
 		);
 
@@ -126,6 +123,10 @@ export const setJury = async (req, res) => {
 		}
 
 		await conn.commit();
+
+		if (oldPhoto && finalPhoto && oldPhoto !== finalPhoto) {
+			deleteFile(oldPhoto).catch(err => console.error("Failed to delete old jury photo:", err));
+		}
 
 		res.status(200).json({
 			message: "Jury updated",
