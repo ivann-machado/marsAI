@@ -189,6 +189,19 @@ CREATE TABLE tokens (
     FOREIGN KEY (admin_id) REFERENCES admins(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+-- --------------------------------------------------------
+-- Table: process_queue
+-- --------------------------------------------------------
+CREATE TABLE process_queue (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    video_id VARCHAR(100) NOT NULL,
+    status ENUM('pending','done','failed','timeout') DEFAULT 'pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	filename VARCHAR(100) NOT NULL,
+    type ENUM('yt_upload','yt_status_check') NOT NULL,
+    FOREIGN KEY (video_id) REFERENCES videos(id) ON DELETE NO ACTION
+) ENGINE=InnoDB;
+
 -- Indexes for performance
 CREATE INDEX idx_videos_status ON videos(status);
 CREATE INDEX idx_admins_login ON admins(login);
