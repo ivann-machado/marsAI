@@ -3,8 +3,8 @@ import {
 	insertReview,
 	selectReviewById,
 	selectAllReviews,
-	updateReviewById,
-	deleteReviewById,
+	updateReview,
+	deleteReview,
 } from "../models/review.model.js";
 
 /**
@@ -98,7 +98,7 @@ export const getReviewById = async (req, res) => {
  * @param {import("express").Response} res
  * @returns {Promise<void>}
  */
-export const updateReview = async (req, res) => {
+export const setReview = async (req, res) => {
 	let conn;
 	try {
 		const { id } = req.params;
@@ -109,7 +109,7 @@ export const updateReview = async (req, res) => {
 		conn = await getConnection();
 		await conn.beginTransaction();
 
-		const affectedRows = await updateReviewById(id, { note, grade, status }, conn);
+		const affectedRows = await updateReview(id, { note, grade, status }, conn);
 
 		await conn.commit();
 		res.status(200).json({ message: "Review updated", affectedRows });
@@ -139,7 +139,7 @@ export const removeReview = async (req, res) => {
 		conn = await getConnection();
 		await conn.beginTransaction();
 
-		const affectedRows = await deleteReviewById(id, conn);
+		const affectedRows = await deleteReview(id, conn);
 
 		await conn.commit();
 		res.status(200).json({ message: "Review deleted", affectedRows });
