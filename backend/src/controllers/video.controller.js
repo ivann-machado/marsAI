@@ -5,6 +5,7 @@ import {
 	updateVideo,
 	deleteVideo,
 } from "../models/video.model.js";
+import { deleteFile } from "../services/bucket.service.js";
 
 /**
  * @openapi
@@ -87,6 +88,20 @@ export const getVideoById = async (req, res) => {
  */
 export const createVideo = async (req, res) => {
 	try {
+		if (req.files) {
+			const videoFile = req.files.find(f => f.fieldname === 'video' || f.mimetype.startsWith('video/'));
+			const coverFile = req.files.find(f => f.fieldname === 'cover_image' || (f.mimetype.startsWith('image/') && f.fieldname !== 'video'));
+			const subtitleFile = req.files.find(f => f.fieldname === 'subtitles' || f.mimetype === 'application/x-subrip' || f.mimetype === 'text/srt');
+
+			if (videoFile) req.body.filename = videoFile.location;
+			if (coverFile) req.body.cover_image = coverFile.location;
+			if (subtitleFile) req.body.subtitles = subtitleFile.location;
+		}
+
+		if (!req.body.filename) {
+			return res.status(400).json({ message: "Video file is required" });
+		}
+
 		const result = await insertVideo(req.body);
 		res.status(201).json({
 			message: "Video created",
@@ -105,6 +120,16 @@ export const createVideo = async (req, res) => {
  */
 export const setVideo = async (req, res) => {
 	try {
+		if (req.files) {
+			const videoFile = req.files.find(f => f.fieldname === 'video' || f.mimetype.startsWith('video/'));
+			const coverFile = req.files.find(f => f.fieldname === 'cover_image' || (f.mimetype.startsWith('image/') && f.fieldname !== 'video'));
+			const subtitleFile = req.files.find(f => f.fieldname === 'subtitles' || f.mimetype === 'application/x-subrip' || f.mimetype === 'text/srt');
+
+			if (videoFile) req.body.filename = videoFile.location;
+			if (coverFile) req.body.cover_image = coverFile.location;
+			if (subtitleFile) req.body.subtitles = subtitleFile.location;
+		}
+
 		const result = await updateVideo(req.params.id, req.body);
 		if (result.affectedRows === 0) {
 			return res.status(404).json({ message: "Video not found" });

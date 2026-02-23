@@ -1,4 +1,5 @@
 import express from "express";
+import { processAndUpload } from "../middlewares/upload.middleware.js";
 
 import {
 	createJury,
@@ -21,8 +22,8 @@ const router = express.Router();
  */
 router.get("/", getAllJuries);
 router.get("/:id", getJuryById);
-router.post("/", verifyToken, requireSuperAdmin, createJury);
-router.put("/:id", verifyToken, requireSuperAdmin, setJury);
+router.post("/", verifyToken, requireSuperAdmin, processAndUpload(), createJury);
+router.put("/:id", verifyToken, requireSuperAdmin, processAndUpload(), setJury);
 router.delete("/:id", verifyToken, requireSuperAdmin, removeJury);
 
 export default router;

@@ -5,6 +5,7 @@ import {
 	updateEvent,
 	deleteEvent,
 } from "../models/event.model.js";
+import { deleteFile } from "../services/bucket.service.js";
 
 /**
  * Create a new event.
@@ -25,17 +26,19 @@ export const createEvent = async (req, res) => {
 			date,
 		} = req.body;
 
-		if (!type || !name || !url || !logo || !date) {
+		if (!type || !name || !url || (!logo && !req.file) || !date) {
 			return res
 				.status(400)
 				.json({ message: "Type, name, url, logo and date are required" });
 		}
 
+		const finalLogo = req.file ? req.file.location : logo;
+
 		const result = await insertEvent({
 			type,
 			name,
 			url,
-			logo,
+			logo: finalLogo,
 			info,
 			place,
 			duration,
@@ -104,13 +107,17 @@ export const setEvent = async (req, res) => {
 			duration,
 			cover_image,
 			date,
+			oldLogo,
+			oldCover_image
 		} = req.body;
+
+		const finalLogo = req.file ? req.file.location : logo;
 
 		const result = await updateEvent(req.params.id, {
 			type,
 			name,
 			url,
-			logo,
+			logo: finalLogo,
 			info,
 			place,
 			duration,
@@ -120,6 +127,13 @@ export const setEvent = async (req, res) => {
 
 		if (result.affectedRows === 0) {
 			return res.status(404).json({ message: "Event not found" });
+		}
+
+		if (oldLogo && finalLogo && oldLogo !== finalLogo) {
+			deleteFile(oldLogo).catch(err => console.error("Failed to delete old event logo:", err));
+		}
+		if (oldCover_image && cover_image && oldCover_image !== cover_image) {
+			deleteFile(oldCover_image).catch(err => console.error("Failed to delete old event cover:", err));
 		}
 
 		res.status(200).json({ message: "Event updated successfully" });
