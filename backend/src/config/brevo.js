@@ -25,12 +25,12 @@ export const getBrevoConfig = () => {
 export const getBrevoClient = () => {
 	const config = getBrevoConfig();
 
-	const apiInstance = new Brevo.TransactionalEmailsApi();
-
-	apiInstance.setApiKey(Brevo.TransactionalEmailsApiApiKeys.apiKey, config.apiKey);
+	const client = new Brevo.BrevoClient({
+		apiKey: config.apiKey
+	});
 
 	return {
-		api: apiInstance,
+		api: client.transactionalEmails,
 		config
 	};
 };

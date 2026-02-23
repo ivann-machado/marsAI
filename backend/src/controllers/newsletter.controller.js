@@ -3,6 +3,50 @@ import {
 	selectAllNewsletters,
 	deleteNewsletterByEmail,
 } from "../models/newsletter.model.js";
+import { sendEmail } from "../services/brevo.service.js";
+
+
+/**
+ * Send newsletter to all subscribers
+ * @param {import('express').Request} req - Express request object
+ * @param {import('express').Response} res - Express response object
+ * @returns {Promise<void>}
+ */
+export const sendNewsletter = async (req, res) => {
+	try {
+		const { subject, htmlContent } = req.body;
+
+		if (!subject || !htmlContent) {
+			return res.status(400).json({
+				message: "subject and htmlContent are required",
+			});
+		}
+
+		const subscribed = await selectAllNewsletters();
+
+		if (!subscribed || subscribed.length === 0) {
+			return res.status(404).json({
+				message: "No subscribers found",
+			});
+		}
+
+		const emails = subscribed.map((sub) => sub.email);
+
+		await sendEmail(emails, subject, htmlContent);
+
+		res.status(200).json({
+			message: "Newsletter sent successfully",
+			total: emails.length,
+		});
+	} catch (error) {
+		console.error("Send Newsletter Error:", error);
+
+		res.status(500).json({
+			message: "Server error",
+		});
+	}
+};
+
 
 /**
  * Subscribe an email address to the newsletter.
@@ -11,9 +55,10 @@ import {
  * @param {import('express').Response} res - Express response object
  * @returns {Promise<void>}
  */
+
 /**
  * @openapi
- * /newsletter:
+ * /newsletter/subscribe:
  *   post:
  *     summary: Subscribe to the newsletter
  *     tags: [Newsletter]
@@ -46,8 +91,24 @@ export const createNewsletter = async (req, res) => {
 			return res.status(400).json({ message: "Email is required" });
 		}
 
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+		if (!emailRegex.test(email)) {
+			return res.status(400).json({
+				message: "Invalid email format",
+			});
+		}
+
 		await insertNewsletter(email);
+		// email de bienvenue
+		await sendEmail(
+			[email],
+			"Welcome to MarsAI Newsletter",
+			"<h2>Welcome to MarsAI</h2><p>Thank you for subscribing.</p>"
+		);
 		return res.status(201).json({ message: "Subscription successful" });
+
+
 	} catch (error) {
 		if (error.errno === 1062 || error.code === 'ER_DUP_ENTRY') {
 			return res.status(409).json({ message: "Email already subscribed" });
@@ -56,6 +117,7 @@ export const createNewsletter = async (req, res) => {
 		res.status(500).json({ message: "Server error" });
 	}
 };
+
 
 /**
  * Retrieve all newsletter subscriptions.
@@ -91,6 +153,7 @@ export const getAllNewsletters = async (req, res) => {
 		res.status(500).json({ message: "Server error" });
 	}
 };
+
 
 /**
  * Delete a newsletter subscription by email.
@@ -130,8 +193,8 @@ export const removeNewsletter = async (req, res) => {
 		await deleteNewsletterByEmail(email);
 
 		/**
-		 * We won't notify the user if the email is not found
-		 */
+		* We won't notify the user if the email is not found
+		*/
 		// const result = await deleteNewsletterByEmail(email);
 		// if (result.affectedRows === 0) {
 		// 	return res.status(404).json({ message: "Subscription not found" });
