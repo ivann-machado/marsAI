@@ -25,16 +25,9 @@ const router = Router();
  * DELETE /:email           → remove subscriber
  * POST   /send             → send newsletter to all subscribers
  */
-
-// Subscribe (public)
 router.post("/subscribe", createNewsletter);
-
-// Admin routes
 router.get("/", verifyToken, requireSuperAdmin, getAllNewsletters);
-
 router.delete("/:email", verifyToken, requireSuperAdmin, removeNewsletter);
-
-// Send newsletter (ADMIN ONLY)
 router.post("/send", verifyToken, requireSuperAdmin, sendNewsletter);
 
 export default router;
