@@ -49,6 +49,7 @@ function AdminVideosDash() {
   };
 
   const updateAppliedFilters = () => {
+    console.log("updates");
     setAppliedFilters(filters);
   };
 

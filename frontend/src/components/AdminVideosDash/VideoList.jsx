@@ -36,6 +36,7 @@ function VideoCard({ video, type }) {
 
 function VideoList(props) {
   const filters = props.filters;
+  console.log(filters);
 
   return (
     <div className="bg-gray-900 text-white">
@@ -47,9 +48,16 @@ function VideoList(props) {
         <p></p>
         <p>Selection</p>
       </div>
+
       {props.videoList.map((video) =>
         filters ? (
-          <VideoCard video={video} type={props.type} />
+          filters.title && video.title.includes(filters.title) ? (
+            filters.producer &&
+            filters.producer != "" &&
+            video.producer.includes(filters.producer) ? (
+              <VideoCard video={video} type={props.type} />
+            ) : null
+          ) : null
         ) : (
           <VideoCard video={video} type={props.type} />
         ),
