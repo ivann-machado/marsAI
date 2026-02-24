@@ -63,7 +63,6 @@ function UploadForm() {
       e.preventDefault();
       majorityCheck();
       const form = e.target;
-      const formData = new FormData(form);
       const uploadData = {
         title: title.current.value,
         description: description.current.value,
@@ -82,31 +81,32 @@ function UploadForm() {
         youtube: youtube.current.value,
         tags: tags.current.value,
       };
+      const formData = new FormData();
+      formData.append("edition_id", 1);
+      formData.append("url", "");
+      formData.append("verified", 1);
+      formData.append("filename", uploadData.video);
+      formData.append("email", uploadData.email);
+      formData.append("cover_image", uploadData.image);
+      formData.append("title", uploadData.title);
+      formData.append("description", uploadData.description);
+      formData.append("status", "unverified");
+      formData.append("country_id", uploadData.country);
+      formData.append("producer", uploadData.producer);
+      formData.append("producer_image", uploadData.producerImage);
+      formData.append("linkedin_link", uploadData.linkedin);
+      formData.append("youtube_link", uploadData.youtube);
+      formData.append("scenario_ai", uploadData.scenario_ai);
+      formData.append("video_gen_ai", uploadData.video_ai);
+      formData.append("sound_ai", uploadData.sound_ai);
+      formData.append("postprod_ai", uploadData.post_prod_ai);
+      formData.append("tags", uploadData.tags);
+
       console.log(uploadData);
       const res = await fetch(import.meta.env.VITE_API_URL + "/api/videos", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          edition_id: 1,
-          url: "",
-          verified: 1,
-          filename: uploadData.video,
-          email: uploadData.email,
-          cover_image: uploadData.image,
-          title: uploadData.title,
-          description: uploadData.description,
-          status: "unverified",
-          country_id: countryId,
-          producer: uploadData.producer,
-          producer_image: uploadData.producerImage,
-          linkedin_link: uploadData.linkedin,
-          youtube_link: uploadData.youtube,
-          scenario_ai: uploadData.scenario_ai,
-          video_gen_ai: uploadData.video_ai,
-          sound_ai: uploadData.sound_ai,
-          postprod_ai: uploadData.post_prod_ai,
-          tags: uploadData.tags,
-        }),
+        body: formData,
       });
 
       const data = await res.json().catch(() => ({}));
@@ -622,7 +622,7 @@ function UploadForm() {
             <h3 className="text-white">Votre vidéo: </h3>
 
             {/* For Images */}
-            <img
+            <video
               src={videoURL}
               alt="preview"
               width="250"
