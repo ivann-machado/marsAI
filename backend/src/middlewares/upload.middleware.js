@@ -129,7 +129,13 @@ export const processAndUpload = (options = {}) => {
 			);
 
 			await Promise.all(processingTasks);
-
+			req.files.forEach(file => {
+				if (file.fieldname === 'video') {
+					req.body.filename = file.location;
+				} else {
+					req.body[file.fieldname] = file.location;
+				}
+			});
 			req.file = req.files[0];
 
 			next();
