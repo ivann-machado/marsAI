@@ -172,7 +172,7 @@ CREATE TABLE reviews (
     video_id INT NOT NULL,
     note TEXT NOT NULL,
     grade INT NOT NULL,
-    status ENUM('assigned','done') NOT NULL,
+    status ENUM('assigned','done') DEFAULT 'assigned',
     FOREIGN KEY (video_id) REFERENCES videos(id) ON DELETE CASCADE,
     FOREIGN KEY (admin_id) REFERENCES admins(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
