@@ -20,7 +20,7 @@
 		"test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles"
 	},
 	"dependencies": {
-		"@aws-sdk/client-s3": "^3.995.0",
+		"@aws-sdk/client-s3": "^3.996.0",
 		"@getbrevo/brevo": "^4.0.1",
 		"bcryptjs": "^3.0.3",
 		"cors": "^2.8.6",
