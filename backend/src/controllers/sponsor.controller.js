@@ -1,4 +1,5 @@
 import { getConnection } from "../config/db.js";
+import { deleteFile } from "../services/bucket.service.js";
 
 import {
 	insertSponsor,
@@ -17,13 +18,15 @@ export const createSponsor = async (req, res) => {
 	try {
 		const { edition_id, type, name, url, logo } = req.body;
 
-		if (!edition_id || !name) {
+		if (!edition_id || !name || (!logo && !req.file)) {
 			return res.status(400).json({
-				message: "edition_id and name are required",
+				message: "edition_id, name and logo are required",
 			});
 		}
 
-		const result = await insertSponsor({ edition_id, type, name, url, logo });
+		const finalLogo = req.file ? req.file.location : logo;
+
+		const result = await insertSponsor({ edition_id, type, name, url, logo: finalLogo });
 		res.status(201).json({
 			message: "Sponsor created",
 			id: result.insertId.toString(),
@@ -100,7 +103,7 @@ export const updateSponsor = async (req, res) => {
 	try {
 		const { id } = req.params;
 
-		const { edition_id, type, name, url, logo } = req.body;
+		const { edition_id, type, name, url, logo, oldLogo } = req.body;
 
 		if (!id) {
 			return res.status(400).json({
@@ -108,9 +111,11 @@ export const updateSponsor = async (req, res) => {
 			});
 		}
 
+		const finalLogo = req.file ? req.file.location : logo;
+
 		const result = await updateSponsorById(
 			id,
-			{ edition_id, type, name, url, logo },
+			{ edition_id, type, name, url, logo: finalLogo },
 		);
 
 		if (result.affectedRows === 0) {
@@ -118,6 +123,11 @@ export const updateSponsor = async (req, res) => {
 				message: "Sponsor not found",
 			});
 		}
+
+		if (oldLogo && finalLogo && oldLogo !== finalLogo) {
+			deleteFile(oldLogo).catch(err => console.error("Failed to delete old sponsor logo:", err));
+		}
+
 		res.status(200).json({ message: "Sponsor updated" });
 	} catch (error) {
 		console.error("Update Sponsor Error:", error);

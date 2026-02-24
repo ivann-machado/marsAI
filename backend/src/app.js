@@ -17,13 +17,14 @@ import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./config/swagger.config.js";
 import juryRoutes from "./routes/jury.routes.js";
 import sponsorRoutes from "./routes/sponsor.routes.js";
+import reviewRoutes from "./routes/review.routes.js";
 
 const app = express();
 
 //  Middleware
 app.use(cors(CORS_OPTIONS));
 app.use(express.json());
-
+app.use(express.urlencoded({ extended: true }));
 // Logging
 app.use(morgan("dev")); // Log requests
 
@@ -62,6 +63,7 @@ app.use("/api/contact", contactRoutes);
 app.use("/api/events", eventRoutes);
 app.use("/api/jury", juryRoutes);
 app.use("/api/sponsors", sponsorRoutes);
+app.use("/api/reviews", reviewRoutes);
 // Protected routes
 app.use("/api/settings", settingRoutes);
 app.use("/api/content", contentRoutes);

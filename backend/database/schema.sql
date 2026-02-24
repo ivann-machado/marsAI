@@ -172,7 +172,7 @@ CREATE TABLE reviews (
     video_id INT NOT NULL,
     note TEXT NOT NULL,
     grade INT NOT NULL,
-    status ENUM('assigned','done') NOT NULL,
+    status ENUM('assigned','done') DEFAULT 'assigned',
     FOREIGN KEY (video_id) REFERENCES videos(id) ON DELETE CASCADE,
     FOREIGN KEY (admin_id) REFERENCES admins(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
@@ -187,6 +187,19 @@ CREATE TABLE tokens (
     status ENUM('pending','used','revoked') DEFAULT 'pending',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (admin_id) REFERENCES admins(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- --------------------------------------------------------
+-- Table: process_queue
+-- --------------------------------------------------------
+CREATE TABLE process_queue (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    video_id VARCHAR(100) NOT NULL,
+    status ENUM('pending','done','failed','timeout') DEFAULT 'pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	filename VARCHAR(100) NOT NULL,
+    type ENUM('yt_upload','yt_status_check') NOT NULL,
+    FOREIGN KEY (video_id) REFERENCES videos(id) ON DELETE NO ACTION
 ) ENGINE=InnoDB;
 
 -- Indexes for performance
