@@ -7,7 +7,7 @@ import Footer from "../../components/Footer/Footer";
 import { useState, useEffect } from "react";
 import Loading from "../../components/Utils/Loading";
 
-function VideoDetail(props) {
+function VideoDetail() {
   const { t } = useTranslation();
   const [video, setVideo] = useState(null);
   let params = useParams();
@@ -30,7 +30,7 @@ function VideoDetail(props) {
     postprod_ai: "",
   };
 
-  console.log(params);
+  //console.log(params);
 
   useEffect(() => {
     const fetchData = async () => {
