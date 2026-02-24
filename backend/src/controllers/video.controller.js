@@ -5,7 +5,7 @@ import {
 	updateVideo,
 	deleteVideo,
 } from "../models/video.model.js";
-import { deleteFile } from "../services/bucket.service.js";
+import { deleteFile, getFileUrl } from "../services/bucket.service.js";
 
 /**
  * @openapi
@@ -55,7 +55,15 @@ import { deleteFile } from "../services/bucket.service.js";
 export const getAllVideos = async (req, res) => {
 	try {
 		const videos = await selectAllVideos();
-		res.json(videos);
+		const videosWithUrls = videos.map(video => {
+			return {
+				...video,
+				filename: getFileUrl(video.filename),
+				cover_image: getFileUrl(video.cover_image),
+				subtitles: getFileUrl(video.subtitles)
+			};
+		});
+		res.status(200).json(videosWithUrls);
 	} catch (err) {
 		console.error(err);
 		res.status(500).json({ message: "failed to fetch videos" });
@@ -74,7 +82,12 @@ export const getVideoById = async (req, res) => {
 		if (!video) {
 			return res.status(404).json({ message: "Video not found" });
 		}
-		res.json(video);
+		res.status(200).json({
+			...video,
+			filename: getFileUrl(video.filename),
+			cover_image: getFileUrl(video.cover_image),
+			subtitles: getFileUrl(video.subtitles)
+		});
 	} catch (err) {
 		console.error("Get Video By ID Error:", err);
 		res.status(500).json({ message: "Error fetching video" });
@@ -88,16 +101,6 @@ export const getVideoById = async (req, res) => {
  */
 export const createVideo = async (req, res) => {
 	try {
-		if (req.files) {
-			const videoFile = req.files.find(f => f.fieldname === 'video' || f.mimetype.startsWith('video/'));
-			const coverFile = req.files.find(f => f.fieldname === 'cover_image' || (f.mimetype.startsWith('image/') && f.fieldname !== 'video'));
-			const subtitleFile = req.files.find(f => f.fieldname === 'subtitles' || f.mimetype === 'application/x-subrip' || f.mimetype === 'text/srt');
-
-			if (videoFile) req.body.filename = videoFile.location;
-			if (coverFile) req.body.cover_image = coverFile.location;
-			if (subtitleFile) req.body.subtitles = subtitleFile.location;
-		}
-
 		if (!req.body.filename) {
 			return res.status(400).json({ message: "Video file is required" });
 		}
@@ -120,16 +123,6 @@ export const createVideo = async (req, res) => {
  */
 export const setVideo = async (req, res) => {
 	try {
-		if (req.files) {
-			const videoFile = req.files.find(f => f.fieldname === 'video' || f.mimetype.startsWith('video/'));
-			const coverFile = req.files.find(f => f.fieldname === 'cover_image' || (f.mimetype.startsWith('image/') && f.fieldname !== 'video'));
-			const subtitleFile = req.files.find(f => f.fieldname === 'subtitles' || f.mimetype === 'application/x-subrip' || f.mimetype === 'text/srt');
-
-			if (videoFile) req.body.filename = videoFile.location;
-			if (coverFile) req.body.cover_image = coverFile.location;
-			if (subtitleFile) req.body.subtitles = subtitleFile.location;
-		}
-
 		const result = await updateVideo(req.params.id, req.body);
 		if (result.affectedRows === 0) {
 			return res.status(404).json({ message: "Video not found" });
@@ -150,6 +143,7 @@ export const removeVideo = async (req, res) => {
 	try {
 		const result = await deleteVideo(req.params.id);
 		if (result.affectedRows === 0) {
+
 			return res.status(404).json({ message: "Video not found" });
 		}
 		res.json({ message: "Video deleted" });

@@ -1,5 +1,6 @@
-import { getConnection } from "../config/db.js";
-import { deleteFile } from "../services/bucket.service.js";
+// import { getConnection } from "../config/db.js";
+import { deleteFile, getFileUrl } from "../services/bucket.service.js";
+
 
 import {
 	insertSponsor,
@@ -24,9 +25,7 @@ export const createSponsor = async (req, res) => {
 			});
 		}
 
-		const finalLogo = req.file ? req.file.location : logo;
-
-		const result = await insertSponsor({ edition_id, type, name, url, logo: finalLogo });
+		const result = await insertSponsor({ edition_id, type, name, url, logo });
 		res.status(201).json({
 			message: "Sponsor created",
 			id: result.insertId.toString(),
@@ -48,8 +47,13 @@ export const createSponsor = async (req, res) => {
 export const getAllSponsors = async (req, res) => {
 	try {
 		const sponsors = await selectAllSponsors();
-
-		res.status(200).json(sponsors);
+		const sponsorsWithUrls = sponsors.map(sponsor => {
+			return {
+				...sponsor,
+				logo: getFileUrl(sponsor.logo)
+			};
+		});
+		res.status(200).json(sponsorsWithUrls);
 	} catch (error) {
 
 		console.error("Get Sponsors Error:", error);
@@ -82,8 +86,11 @@ export const getSponsorById = async (req, res) => {
 				message: "Sponsor not found",
 			});
 		}
-
-		res.status(200).json(result[0]);
+		const sponsor = result[0];
+		res.status(200).json({
+			...sponsor,
+			logo: getFileUrl(sponsor.logo)
+		});
 	} catch (error) {
 
 		console.error("Get Sponsor By Id Error:", error);
@@ -111,11 +118,9 @@ export const updateSponsor = async (req, res) => {
 			});
 		}
 
-		const finalLogo = req.file ? req.file.location : logo;
-
 		const result = await updateSponsorById(
 			id,
-			{ edition_id, type, name, url, logo: finalLogo },
+			{ edition_id, type, name, url, logo },
 		);
 
 		if (result.affectedRows === 0) {
@@ -124,7 +129,7 @@ export const updateSponsor = async (req, res) => {
 			});
 		}
 
-		if (oldLogo && finalLogo && oldLogo !== finalLogo) {
+		if (oldLogo && logo && oldLogo !== logo) {
 			deleteFile(oldLogo).catch(err => console.error("Failed to delete old sponsor logo:", err));
 		}
 

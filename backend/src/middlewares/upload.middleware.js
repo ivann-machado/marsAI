@@ -1,7 +1,7 @@
 import multer from 'multer';
 import { getBucketClient } from '../config/bucket.js';
-import { convertToWebp, toWebpFilename, generateFilename } from '../utils/file.util.js';
-import { uploadFile } from '../services/bucket.service.js';
+import { convertToWebp, toWebpFilename, generateFilename, getMp4Duration } from '../utils/file.util.js';
+import { uploadFile, getFileUrl } from '../services/bucket.service.js';
 
 // Configuration Limits
 const LIMITS = {
@@ -62,20 +62,12 @@ const handleProcessedFileUpload = async (file, { acl, quality }) => {
 	const filename = generateFilename(file, outputBuffer);
 	const finalName = (isImage && wasConverted) ? toWebpFilename(filename) : filename;
 
-	const { folder, bucketName, endpoint } = getBucketClient();
-	// const key = subfolder ? `${subfolder}/${finalName}` : finalName;
-	const key = folder ? `${folder}/${finalName}` : finalName;
-	// const key = `${finalName}`;
-
-
-	await uploadFile(key, outputBuffer, acl, contentType);
+	await uploadFile(finalName, outputBuffer, acl, contentType);
 
 	file.buffer = outputBuffer;
-	file.key = key;
-	file.bucket = bucketName;
 	file.mimetype = contentType;
 	file.size = outputBuffer.length;
-	file.location = `${endpoint}/${bucketName}/${key}`;
+	file.location = finalName;
 
 	return file;
 };
