@@ -16,7 +16,8 @@
 	"main": "server.js",
 	"scripts": {
 		"start": "nodemon server.js",
-		"dev": "nodemon server.js"
+		"dev": "nodemon server.js",
+		"test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles"
 	},
 	"dependencies": {
 		"@aws-sdk/client-s3": "^3.995.0",
@@ -39,8 +40,10 @@
 		"swagger-ui-express": "^5.0.1"
 	},
 	"devDependencies": {
+		"jest": "^30.2.0",
 		"jsdoc": "^4.0.5",
 		"jsdoc-to-markdown": "^9.1.3",
-		"nodemon": "^3.1.14"
+		"nodemon": "^3.1.14",
+		"supertest": "^7.2.2"
 	}
 }
