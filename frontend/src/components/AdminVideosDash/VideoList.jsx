@@ -36,7 +36,6 @@ function VideoCard({ video, type }) {
 
 function checkFilter(filter, video) {
   if (!filter) return true;
-  console.log(filter.selected, video.status, !(video.status === filter.status));
   if (filter.title && filter.title != "")
     if (!video.title.includes(filter.title)) return false;
   if (filter.producer && filter.producer != "")
@@ -50,7 +49,6 @@ function checkFilter(filter, video) {
 
 function VideoList(props) {
   const filters = props.filters;
-  console.log(filters);
 
   return (
     <div className="bg-gray-900 text-white">
