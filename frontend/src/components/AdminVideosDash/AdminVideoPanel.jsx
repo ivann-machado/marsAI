@@ -84,7 +84,7 @@ function AdminVideoPanel({ video_data }) {
   return (
     <div className="bg-gray-600 min-h-20 items-center p-4 rounded-b-xl">
       <h3 className="text-lg font-bold">Menu notation:</h3>
-      <div className="mx-8 flex gap-8 mb-4">
+      <div className="mx-8 flex gap-8 mb-4 justify-around">
         <div>
           {[1, 2, 3, 4, 5].map((value) => (
             <button
@@ -100,24 +100,25 @@ function AdminVideoPanel({ video_data }) {
           ))}
           <p>Note: {review.grade}/5</p>
         </div>
-        <input
-          className="bg-white text-gray-700 p-2 rounded-l-xl"
-          placeholder="commentaire..."
-          type="text"
-          value={review.note}
-          onChange={(e) =>
-            setReview((prev) => ({ ...prev, note: e.target.value }))
-          }
-        ></input>
+        <div>
+          <input
+            className="bg-white text-gray-700 p-2 rounded-l-xl border-r min-h-20"
+            placeholder="commentaire..."
+            type="text"
+            value={review.note}
+            onChange={(e) =>
+              setReview((prev) => ({ ...prev, note: e.target.value }))
+            }
+          ></input>
 
-        <input
-          className="bg-white p-2 text-black hover:bg-green-300 rounded-r-xl"
-          type="button"
-          value="Sauvegarder"
-          onClick={handleSave}
-        ></input>
+          <input
+            className="bg-white p-2 text-black hover:bg-green-300 rounded-r-xl min-h-20"
+            type="button"
+            value="Sauvegarder"
+            onClick={handleSave}
+          ></input>
+        </div>
       </div>
-
       <select
         value={video.status}
         className={

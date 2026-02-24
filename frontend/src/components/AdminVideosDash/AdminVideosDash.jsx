@@ -5,6 +5,13 @@ import Loading from "../Utils/Loading.jsx";
 function AdminVideosDash() {
   const [videoQueue, setVideoQueue] = useState(null);
   const [otherVideo, setOtherVideo] = useState(null);
+  const [filters, setFilters] = useState({
+    title: "",
+    producer: "",
+    state: "",
+    selected: "",
+  });
+  const [appliedFilters, setAppliedFilters] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,6 +44,14 @@ function AdminVideosDash() {
     fetchData();
   }, []);
 
+  const updateFilters = (key, value) => {
+    setFilters((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const updateAppliedFilters = () => {
+    setAppliedFilters(filters);
+  };
+
   if (!videoQueue || !otherVideo) return <Loading />;
 
   return (
@@ -55,19 +70,29 @@ function AdminVideosDash() {
           type="text"
           placeholder="titre..."
           className="bg-gray-200 p-1 col-span-2 mr-1"
+          value={filters.title}
+          onChange={(e) => updateFilters("title", e.target.value)}
         ></input>
         <input
           type="text"
           placeholder="realisateur..."
           className="bg-gray-200 p-1 mr-1"
+          value={filters.producer}
+          onChange={(e) => updateFilters("producer", e.target.value)}
         ></input>
-        <select>
+        <select
+          value={filters.state}
+          onChange={(e) => updateFilters("state", e.target.value)}
+        >
           <option>Unverified</option>
           <option>Verified</option>
           <option>Selected</option>
           <option>Denied</option>
         </select>
-        <select>
+        <select
+          value={filters.selecetd}
+          onChange={(e) => updateFilters("selected", e.target.value)}
+        >
           <option>Selection</option>
           <option>Pas en selection</option>
         </select>
@@ -75,11 +100,12 @@ function AdminVideosDash() {
           type="button"
           value="Filtrer"
           className="ml-5 bg-gray-300 text-black p-1"
+          onClick={() => updateAppliedFilters()}
         ></input>
       </div>
 
       {/* OTHER MOVIES */}
-      <VideoList videoList={otherVideo} />
+      <VideoList videoList={otherVideo} filters={appliedFilters} />
     </div>
   );
 }

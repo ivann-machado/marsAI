@@ -53,7 +53,10 @@ function AdminVideo() {
       md:px-[10%]"
         >
           <div className="m-4 mb-8">
-            <a className="text-white hover:text-blue-900 visited:text-white">
+            <a
+              className="text-white hover:text-blue-900 visited:text-white"
+              href="/videos"
+            >
               {t("video_page.return_gallery")}
             </a>
           </div>
