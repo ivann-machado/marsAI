@@ -636,6 +636,10 @@ px-6 md:px-12 py-10
 overflow-hidden
 "
       >
+        <div
+          className="absolute -top-40 -left-40 w-96 h-96 
+bg-purple-600/20 rounded-full blur-3xl"
+        />
         {/* Progress Bar */}
         <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
           <div
@@ -785,7 +789,16 @@ outline-none
               <button
                 type="button"
                 onClick={nextStep}
-                className="bg-[#C27AFF] px-6 py-2 rounded-lg"
+                className="
+px-8 py-3
+rounded-xl
+font-medium
+bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400
+hover:scale-105
+hover:shadow-[0_0_25px_rgba(236,72,153,0.6)]
+transition-all duration-300
+text-white
+"
               >
                 Next →
               </button>
@@ -946,7 +959,14 @@ outline-none
               <button
                 type="button"
                 onClick={prevStep}
-                className="bg-gray-600 px-6 py-2 rounded-lg"
+                className="
+px-6 py-3
+rounded-xl
+bg-white/10
+hover:bg-white/20
+transition-all duration-300
+text-white
+"
               >
                 ← Back
               </button>
@@ -954,7 +974,16 @@ outline-none
               <button
                 type="button"
                 onClick={nextStep}
-                className="bg-[#C27AFF] px-6 py-2 rounded-lg"
+                className="
+px-8 py-3
+rounded-xl
+font-medium
+bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400
+hover:scale-105
+hover:shadow-[0_0_25px_rgba(236,72,153,0.6)]
+transition-all duration-300
+text-white
+"
               >
                 Next →
               </button>
@@ -1246,16 +1275,30 @@ outline-none
               <button
                 type="button"
                 onClick={prevStep}
-                className="bg-gray-600 px-6 py-2 rounded-lg"
+                className="
+px-6 py-3
+rounded-xl
+bg-white/10
+hover:bg-white/20
+transition-all duration-300
+text-white
+"
               >
                 ← Back
               </button>
 
               <button
                 type="submit"
-                className="bg-gradient-to-b from-[#fbc700] 
-                     via-[#f0b100] to-[#d08700] 
-                     px-6 py-2 rounded-lg"
+                className="
+px-10 py-3
+rounded-xl
+font-semibold
+text-white
+bg-gradient-to-r from-yellow-400 via-orange-500 to-pink-500
+hover:scale-105
+hover:shadow-[0_0_10px_rgba(251,191,36,0.7)]
+transition-all duration-300
+"
               >
                 {t("upload_form.submit_btn")} →
               </button>
