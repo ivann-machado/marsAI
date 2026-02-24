@@ -40,6 +40,8 @@ function checkFilter(filter, video) {
     if (!video.title.includes(filter.title)) return false;
   if (filter.producer && filter.producer != "")
     if (!video.producer.includes(filter.producer)) return false;
+  if (filter.state && filter.producer != "")
+    if (!video.producer.includes(filter.producer)) return false;
   return true;
 }
 
