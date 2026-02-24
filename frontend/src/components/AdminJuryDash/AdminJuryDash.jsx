@@ -39,11 +39,11 @@ function AdminJuryDash() {
   }, []);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, files, type } = e.target;
 
     setNewJury((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: type === "file" ? files[0] : value,
     }));
   };
 
