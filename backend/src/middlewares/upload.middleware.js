@@ -62,8 +62,10 @@ const handleProcessedFileUpload = async (file, { acl, quality }) => {
 	const filename = generateFilename(file, outputBuffer);
 	const finalName = (isImage && wasConverted) ? toWebpFilename(filename) : filename;
 
-	const { folder, bucketName, endpoint } = getBucketClient();
-	const key = folder ? `${folder}/${finalName}` : finalName;
+	const { bucketName, endpoint } = getBucketClient();
+	// const key = subfolder ? `${subfolder}/${finalName}` : finalName;
+	const key = `${finalName}`;
+
 
 	await uploadFile(key, outputBuffer, acl, contentType);
 
