@@ -30,8 +30,12 @@ function UploadForm() {
   const youtube = useRef(null);
   const email = useRef(null);
   const tags = useRef(null);
-  const [majority_certification, SetMajorityCertification] = useState(false);
-  const [right_givaway, SetRightGivaway] = useState(false);
+  const [majorityCertification, SetMajorityCertification] = useState(false);
+  console.log({ majorityCertification });
+  const onCheckHandler = () => {
+    SetMajorityCertification(!majorityCertification);
+  };
+  const [rightGivaway, SetRightGivaway] = useState(false);
   //Messages d'erreur
   const [titleError, SetTitleError] = useState();
   const [descError, SetDescError] = useState("");
@@ -57,6 +61,7 @@ function UploadForm() {
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
+      majorityCheck();
       const form = e.target;
       const formData = new FormData(form);
       const uploadData = {
@@ -77,7 +82,6 @@ function UploadForm() {
         youtube: youtube.current.value,
         tags: tags.current.value,
       };
-
       console.log(uploadData);
       const res = await fetch(import.meta.env.VITE_API_URL + "/api/videos", {
         method: "POST",
@@ -248,9 +252,9 @@ function UploadForm() {
     }
   }
   function majorityCheck() {
-    if (SetMajorityCertification(e.target.checked)) {
-      SetMajorityCertificationError("Champ vide");
-      console.log("Input is empty");
+    if (majorityCertification === false) {
+      SetMajorityCertificationError("Vous devez être agé de 18 ans ou plus");
+      console.log("Vous devez être agé de 18 ans ou plus");
     } else {
       SetMajorityCertificationError("");
     }
@@ -272,7 +276,6 @@ function UploadForm() {
     }
   }
 
-  console.log(countryId);
   const formSubmit = useState(false);
   return (
     <div className="flex flex-col justify-center items-center bg-[#050505] pt-4 pb-4">
@@ -561,7 +564,9 @@ function UploadForm() {
                 className="bg-gray-900 text-white border-2 border-[#F2F2F2]/20 rounded-lg w-full h-10 p-1"
               >
                 {countryOptions.map((option) => (
-                  <option value={option.value}>{option.label}</option>
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
                 ))}
               </select>
               <p className="text-white">{countryId}</p>
@@ -569,26 +574,30 @@ function UploadForm() {
             </div>
           </div>
         </div>
-        <div className=" flex flex-col gap-2 p-2 w-9/10 md:flex-row md:justify-evenly md:p-2">
-          <div className="flex flex-row md:w-4/10">
-            <input
-              type="checkbox"
-              name="majority_certification"
-              id="majority_certification"
-              checked={majority_certification}
-              onChange={(e) => SetMajorityCertification(e.target.checked)}
-              className="bg-gray-700 border border-gray-500 rounded-lg"
-            />
-            <label htmlFor="majority_certification" className="text-white">
-              {t("upload_form.majority_certification")}
-            </label>
+        <div className="flex flex-col gap-2 p-2 w-9/10 md:flex-row md:justify-evenly md:p-2">
+          <div className="flex flex-col md:w-4/10">
+            <div className="flex flex-row gap-4">
+              <input
+                type="checkbox"
+                name="majority_certification"
+                id="majority_certification"
+                checked={majorityCertification}
+                onChange={onCheckHandler}
+                className="bg-gray-700 border border-gray-500 rounded-lg"
+              />
+              <label htmlFor="majority_certification" className="text-white">
+                {t("upload_form.majority_certification")}
+              </label>
+            </div>
+            <p className="text-white">{majorityCertificationError}</p>
           </div>
+
           <div className="flex flex-row justify-evenly md:w-4/10">
             <input
               type="checkbox"
               name="right_givaway"
               id="right_givaway"
-              checked={right_givaway}
+              checked={rightGivaway}
               onChange={(e) => SetRightGivaway(e.target.checked)}
               className="bg-gray-700 border border-gray-500 rounded-lg"
             />
