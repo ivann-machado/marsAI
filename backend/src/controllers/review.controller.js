@@ -16,27 +16,19 @@ import {
  * @returns {Promise<void>}
  */
 export const createReview = async (req, res) => {
-	let conn;
 	try {
-		const { admin_id, video_id, note, grade, status } = req.body;
+		const { admin_id, video_id } = req.body;
 
-		if (!admin_id || !video_id || !note || !grade) {
-			return res.status(400).json({ message: "admin_id, video_id, note and grade are required" });
+		if (!admin_id || !video_id) {
+			return res.status(400).json({ message: "admin_id and video_id are required" });
 		}
 
-		conn = await getConnection();
-		await conn.beginTransaction();
+		const result = await insertReview({ admin_id, video_id });
 
-		const reviewId = await insertReview({ admin_id, video_id, note, grade, status }, conn);
-
-		await conn.commit();
-		res.status(201).json({ message: "Review created", id: reviewId });
+		res.status(201).json({ message: "Review created", id: result.insertId });
 	} catch (error) {
-		if (conn) await conn.rollback();
 		console.error("Create Review Error:", error);
 		res.status(500).json({ message: "Server error" });
-	} finally {
-		if (conn) conn.release();
 	}
 };
 
@@ -49,16 +41,12 @@ export const createReview = async (req, res) => {
  * @returns {Promise<void>}
  */
 export const getAllReviews = async (req, res) => {
-	let conn;
 	try {
-		conn = await getConnection();
-		const reviews = await selectAllReviews(conn);
+		const reviews = await selectAllReviews();
 		res.status(200).json(reviews);
 	} catch (error) {
 		console.error("Get All Reviews Error:", error);
 		res.status(500).json({ message: "Server error" });
-	} finally {
-		if (conn) conn.release();
 	}
 };
 
@@ -71,13 +59,11 @@ export const getAllReviews = async (req, res) => {
  * @returns {Promise<void>}
  */
 export const getReviewById = async (req, res) => {
-	let conn;
 	try {
 		const { id } = req.params;
 		if (!id) return res.status(400).json({ message: "Review id is required" });
 
-		conn = await getConnection();
-		const review = await selectReviewById(id, conn);
+		const review = await selectReviewById(id);
 
 		if (!review) return res.status(404).json({ message: "Review not found" });
 
@@ -85,8 +71,6 @@ export const getReviewById = async (req, res) => {
 	} catch (error) {
 		console.error("Get Review By Id Error:", error);
 		res.status(500).json({ message: "Server error" });
-	} finally {
-		if (conn) conn.release();
 	}
 };
 
@@ -99,26 +83,19 @@ export const getReviewById = async (req, res) => {
  * @returns {Promise<void>}
  */
 export const setReview = async (req, res) => {
-	let conn;
 	try {
 		const { id } = req.params;
 		const { note, grade, status } = req.body;
 
 		if (!id) return res.status(400).json({ message: "Review id is required" });
 
-		conn = await getConnection();
-		await conn.beginTransaction();
+		const result = await updateReview(id, { note, grade, status });
+		const affectedRows = result.affectedRows;
 
-		const affectedRows = await updateReview(id, { note, grade, status }, conn);
-
-		await conn.commit();
 		res.status(200).json({ message: "Review updated", affectedRows });
 	} catch (error) {
-		if (conn) await conn.rollback();
 		console.error("Update Review Error:", error);
 		res.status(500).json({ message: "Server error" });
-	} finally {
-		if (conn) conn.release();
 	}
 };
 
@@ -131,23 +108,15 @@ export const setReview = async (req, res) => {
  * @returns {Promise<void>}
  */
 export const removeReview = async (req, res) => {
-	let conn;
 	try {
 		const { id } = req.params;
 		if (!id) return res.status(400).json({ message: "Review id is required" });
 
-		conn = await getConnection();
-		await conn.beginTransaction();
+		const affectedRows = await deleteReview(id);
 
-		const affectedRows = await deleteReview(id, conn);
-
-		await conn.commit();
 		res.status(200).json({ message: "Review deleted", affectedRows });
 	} catch (error) {
-		if (conn) await conn.rollback();
 		console.error("Delete Review Error:", error);
 		res.status(500).json({ message: "Server error" });
-	} finally {
-		if (conn) conn.release();
 	}
 };

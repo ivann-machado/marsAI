@@ -2,18 +2,18 @@ import { pool } from "../config/db.js";
 
 /**
  * Insert a new review.
- * @param {Object} data - Review data (admin_id, video_id, note, grade, status)
+ * @param {Object} data - Review data (admin_id, video_id)
  * @param {import("mariadb").PoolConnection|null} [conn=null] - Optional transaction connection
  * @returns {Promise<Object>} raw MariaDB result
  */
 export const insertReview = async (
-	{ admin_id, video_id, note, grade, status },
+	{ admin_id, video_id },
 	conn = null,
 ) => {
 	const query =
-		"INSERT INTO reviews (admin_id, video_id, note, grade, status) VALUES (?, ?, ?, ?, ?)";
+		"INSERT INTO reviews (admin_id, video_id) VALUES (?, ?)";
 	const db = conn || pool;
-	return db.query(query, [admin_id, video_id, note, grade, status]);
+	return db.query(query, [admin_id, video_id]);
 };
 
 /**
@@ -53,13 +53,13 @@ export const selectAllReviews = async (conn = null) => {
  */
 export const updateReview = async (
 	id,
-	{ admin_id, video_id, note, grade, status },
+	{ note, grade, status },
 	conn = null,
 ) => {
 	const query =
-		"UPDATE reviews SET admin_id = ?, video_id = ?, note = ?, grade = ?, status = ? WHERE id = ?";
+		"UPDATE reviews SET note = ?, grade = ?, status = ? WHERE id = ?";
 	const db = conn || pool;
-	return db.query(query, [admin_id, video_id, note, grade, status, id]);
+	return db.query(query, [note, grade, status, id]);
 };
 
 /**
