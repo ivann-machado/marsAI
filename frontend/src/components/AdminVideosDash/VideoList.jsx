@@ -34,6 +34,15 @@ function VideoCard({ video, type }) {
   );
 }
 
+function checkFilter(filter, video) {
+  if (!filter) return true;
+  if (filter.title && filter.title != "")
+    if (!video.title.includes(filter.title)) return false;
+  if (filter.producer && filter.producer != "")
+    if (!video.producer.includes(filter.producer)) return false;
+  return true;
+}
+
 function VideoList(props) {
   const filters = props.filters;
   console.log(filters);
@@ -50,17 +59,9 @@ function VideoList(props) {
       </div>
 
       {props.videoList.map((video) =>
-        filters ? (
-          filters.title && video.title.includes(filters.title) ? (
-            filters.producer &&
-            filters.producer != "" &&
-            video.producer.includes(filters.producer) ? (
-              <VideoCard video={video} type={props.type} />
-            ) : null
-          ) : null
-        ) : (
+        checkFilter(filters, video) ? (
           <VideoCard video={video} type={props.type} />
-        ),
+        ) : null,
       )}
     </div>
   );
