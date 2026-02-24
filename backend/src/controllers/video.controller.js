@@ -5,6 +5,7 @@ import {
 	updateVideo,
 	deleteVideo,
 } from "../models/video.model.js";
+import { deleteFile, getFileUrl } from "../services/bucket.service.js";
 
 /**
  * @openapi
@@ -54,7 +55,15 @@ import {
 export const getAllVideos = async (req, res) => {
 	try {
 		const videos = await selectAllVideos();
-		res.json(videos);
+		const videosWithUrls = videos.map(video => {
+			return {
+				...video,
+				filename: getFileUrl(video.filename),
+				cover_image: getFileUrl(video.cover_image),
+				subtitles: getFileUrl(video.subtitles)
+			};
+		});
+		res.status(200).json(videosWithUrls);
 	} catch (err) {
 		console.error(err);
 		res.status(500).json({ message: "failed to fetch videos" });
@@ -73,7 +82,12 @@ export const getVideoById = async (req, res) => {
 		if (!video) {
 			return res.status(404).json({ message: "Video not found" });
 		}
-		res.json(video);
+		res.status(200).json({
+			...video,
+			filename: getFileUrl(video.filename),
+			cover_image: getFileUrl(video.cover_image),
+			subtitles: getFileUrl(video.subtitles)
+		});
 	} catch (err) {
 		console.error("Get Video By ID Error:", err);
 		res.status(500).json({ message: "Error fetching video" });
@@ -87,6 +101,10 @@ export const getVideoById = async (req, res) => {
  */
 export const createVideo = async (req, res) => {
 	try {
+		if (!req.body.filename) {
+			return res.status(400).json({ message: "Video file is required" });
+		}
+
 		const result = await insertVideo(req.body);
 		res.status(201).json({
 			message: "Video created",
@@ -125,6 +143,7 @@ export const removeVideo = async (req, res) => {
 	try {
 		const result = await deleteVideo(req.params.id);
 		if (result.affectedRows === 0) {
+
 			return res.status(404).json({ message: "Video not found" });
 		}
 		res.json({ message: "Video deleted" });

@@ -5,6 +5,7 @@ import {
 	updateEvent,
 	deleteEvent,
 } from "../models/event.model.js";
+import { deleteFile, getFileUrl } from "../services/bucket.service.js";
 
 /**
  * Create a new event.
@@ -25,7 +26,7 @@ export const createEvent = async (req, res) => {
 			date,
 		} = req.body;
 
-		if (!type || !name || !url || !logo || !date) {
+		if (!type || !name || !url || (!logo && !req.file) || !date) {
 			return res
 				.status(400)
 				.json({ message: "Type, name, url, logo and date are required" });
@@ -61,7 +62,14 @@ export const createEvent = async (req, res) => {
 export const getAllEvents = async (req, res) => {
 	try {
 		const events = await selectAllEvents();
-		res.status(200).json(events);
+		const eventsWithUrls = events.map(event => {
+			return {
+				...event,
+				logo: getFileUrl(event.logo),
+				cover_image: getFileUrl(event.cover_image)
+			};
+		});
+		res.status(200).json(eventsWithUrls);
 	} catch (error) {
 		console.error("Get All Events Error:", error);
 		res.status(500).json({ message: "Server error" });
@@ -80,7 +88,11 @@ export const getEventById = async (req, res) => {
 		if (!event) {
 			return res.status(404).json({ message: "Event not found" });
 		}
-		res.status(200).json(event);
+		res.status(200).json({
+			...event,
+			logo: getFileUrl(event.logo),
+			cover_image: getFileUrl(event.cover_image)
+		});
 	} catch (error) {
 		console.error("Get Event By ID Error:", error);
 		res.status(500).json({ message: "Server error" });
@@ -104,6 +116,8 @@ export const setEvent = async (req, res) => {
 			duration,
 			cover_image,
 			date,
+			oldLogo,
+			oldCover_image
 		} = req.body;
 
 		const result = await updateEvent(req.params.id, {
@@ -120,6 +134,13 @@ export const setEvent = async (req, res) => {
 
 		if (result.affectedRows === 0) {
 			return res.status(404).json({ message: "Event not found" });
+		}
+
+		if (oldLogo && logo && oldLogo !== logo) {
+			deleteFile(oldLogo).catch(err => console.error("Failed to delete old event logo:", err));
+		}
+		if (oldCover_image && cover_image && oldCover_image !== cover_image) {
+			deleteFile(oldCover_image).catch(err => console.error("Failed to delete old event cover:", err));
 		}
 
 		res.status(200).json({ message: "Event updated successfully" });

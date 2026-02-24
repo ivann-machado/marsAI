@@ -6,6 +6,7 @@ import {
 	updateJury,
 	deleteJury,
 } from "../models/jury.model.js";
+import { deleteFile, getFileUrl } from "../services/bucket.service.js";
 
 /**
  * Create a new jury member.
@@ -15,34 +16,28 @@ import {
 export const createJury = async (req, res) => {
 	let conn;
 	try {
-		const { edition_id, name, bio, photo, profession } = req.body;
+		const { edition_id, name, bio, profession } = req.body;
 
-		if (!edition_id || !name) {
+		if (!edition_id || !name || !req.file) {
 			return res.status(400).json({
-				message: "edition_id and name are required",
+				message: "edition_id, name and photo are required",
 			});
 		}
 
-		conn = await getConnection();
-		await conn.beginTransaction();
+		const finalPhoto = req.file ? req.file.location : null;
 
 		const result = await insertJury(
-			{ edition_id, name, bio, photo, profession },
+			{ edition_id, name, bio, photo: finalPhoto, profession },
 			conn
 		);
-
-		await conn.commit();
 
 		res.status(201).json({
 			message: "Jury member created",
 			id: result.insertId.toString(),
 		});
 	} catch (error) {
-		if (conn) await conn.rollback();
 		console.error("Create Jury Error:", error);
 		res.status(500).json({ message: "Server error" });
-	} finally {
-		if (conn) conn.release();
 	}
 };
 
@@ -54,7 +49,13 @@ export const createJury = async (req, res) => {
 export const getAllJuries = async (req, res) => {
 	try {
 		const juries = await selectAllJuries();
-		res.status(200).json(juries);
+		const juriesWithUrls = juries.map(jury => {
+			return {
+				...jury,
+				photo: getFileUrl(jury.photo)
+			};
+		});
+		res.status(200).json(juriesWithUrls);
 	} catch (error) {
 		console.error("Get All Juries Error:", error);
 		res.status(500).json({ message: "Server error" });
@@ -76,8 +77,8 @@ export const getJuryById = async (req, res) => {
 			});
 		}
 
-		const rows = await selectJuryById(id);
-		const jury = rows[0];
+		const result = await selectJuryById(id);
+		const jury = result[0];
 
 		if (!jury) {
 			return res.status(404).json({
@@ -85,7 +86,10 @@ export const getJuryById = async (req, res) => {
 			});
 		}
 
-		res.status(200).json(jury);
+		res.status(200).json({
+			...jury,
+			photo: getFileUrl(jury.photo)
+		});
 	} catch (error) {
 		console.error("Get Jury By Id Error:", error);
 		res.status(500).json({ message: "Server error" });
@@ -98,10 +102,9 @@ export const getJuryById = async (req, res) => {
  * @param {import("express").Response} res
  */
 export const setJury = async (req, res) => {
-	let conn;
 	try {
 		const { id } = req.params;
-		const { edition_id, name, bio, photo, profession } = req.body;
+		const { edition_id, name, bio, photo, profession, oldPhoto } = req.body;
 
 		if (!id) {
 			return res.status(400).json({
@@ -109,33 +112,27 @@ export const setJury = async (req, res) => {
 			});
 		}
 
-		conn = await getConnection();
-		await conn.beginTransaction();
-
 		const result = await updateJury(
 			id,
 			{ edition_id, name, bio, photo, profession },
-			conn
 		);
 
 		if (result.affectedRows === 0) {
-			await conn.commit();
 			return res.status(404).json({
 				message: "Jury not found",
 			});
 		}
 
-		await conn.commit();
+		if (oldPhoto && photo && oldPhoto !== photo) {
+			deleteFile(oldPhoto).catch(err => console.error("Failed to delete old jury photo:", err));
+		}
 
 		res.status(200).json({
 			message: "Jury updated",
 		});
 	} catch (error) {
-		if (conn) await conn.rollback();
 		console.error("Set Jury Error:", error);
 		res.status(500).json({ message: "Server error" });
-	} finally {
-		if (conn) conn.release();
 	}
 };
 
@@ -145,7 +142,6 @@ export const setJury = async (req, res) => {
  * @param {import("express").Response} res
  */
 export const removeJury = async (req, res) => {
-	let conn;
 	try {
 		const { id } = req.params;
 
@@ -155,28 +151,19 @@ export const removeJury = async (req, res) => {
 			});
 		}
 
-		conn = await getConnection();
-		await conn.beginTransaction();
-
-		const result = await deleteJury(id, conn);
+		const result = await deleteJury(id);
 
 		if (result.affectedRows === 0) {
-			await conn.commit();
 			return res.status(404).json({
 				message: "Jury not found",
 			});
 		}
 
-		await conn.commit();
-
 		res.status(200).json({
 			message: "Jury deleted",
 		});
 	} catch (error) {
-		if (conn) await conn.rollback();
 		console.error("Remove Jury Error:", error);
 		res.status(500).json({ message: "Server error" });
-	} finally {
-		if (conn) conn.release();
 	}
 };

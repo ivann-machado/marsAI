@@ -1,5 +1,5 @@
 import express from "express";
-
+import { processAndUpload } from "../middlewares/upload.middleware.js";
 import {
 	createEvent,
 	getAllEvents,
@@ -19,10 +19,10 @@ const router = express.Router();
  * - PUT  `/:id` : update an event (super admin only).
  * - DELETE `/:id` : delete an event (super admin only).
  */
-router.post("/", verifyToken, requireSuperAdmin, createEvent);
+router.post("/", verifyToken, requireSuperAdmin, processAndUpload(), createEvent);
 router.get("/", getAllEvents);
 router.get("/:id", getEventById);
-router.put("/:id", verifyToken, requireSuperAdmin, setEvent);
+router.put("/:id", verifyToken, requireSuperAdmin, processAndUpload(), setEvent);
 router.delete("/:id", verifyToken, requireSuperAdmin, removeEvent);
 
 export default router;

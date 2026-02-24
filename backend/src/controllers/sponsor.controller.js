@@ -1,4 +1,6 @@
-import { getConnection } from "../config/db.js";
+// import { getConnection } from "../config/db.js";
+import { deleteFile, getFileUrl } from "../services/bucket.service.js";
+
 
 import {
 	insertSponsor,
@@ -17,9 +19,9 @@ export const createSponsor = async (req, res) => {
 	try {
 		const { edition_id, type, name, url, logo } = req.body;
 
-		if (!edition_id || !name) {
+		if (!edition_id || !name || (!logo && !req.file)) {
 			return res.status(400).json({
-				message: "edition_id and name are required",
+				message: "edition_id, name and logo are required",
 			});
 		}
 
@@ -45,8 +47,13 @@ export const createSponsor = async (req, res) => {
 export const getAllSponsors = async (req, res) => {
 	try {
 		const sponsors = await selectAllSponsors();
-
-		res.status(200).json(sponsors);
+		const sponsorsWithUrls = sponsors.map(sponsor => {
+			return {
+				...sponsor,
+				logo: getFileUrl(sponsor.logo)
+			};
+		});
+		res.status(200).json(sponsorsWithUrls);
 	} catch (error) {
 
 		console.error("Get Sponsors Error:", error);
@@ -79,8 +86,11 @@ export const getSponsorById = async (req, res) => {
 				message: "Sponsor not found",
 			});
 		}
-
-		res.status(200).json(result[0]);
+		const sponsor = result[0];
+		res.status(200).json({
+			...sponsor,
+			logo: getFileUrl(sponsor.logo)
+		});
 	} catch (error) {
 
 		console.error("Get Sponsor By Id Error:", error);
@@ -100,7 +110,7 @@ export const updateSponsor = async (req, res) => {
 	try {
 		const { id } = req.params;
 
-		const { edition_id, type, name, url, logo } = req.body;
+		const { edition_id, type, name, url, logo, oldLogo } = req.body;
 
 		if (!id) {
 			return res.status(400).json({
@@ -118,6 +128,11 @@ export const updateSponsor = async (req, res) => {
 				message: "Sponsor not found",
 			});
 		}
+
+		if (oldLogo && logo && oldLogo !== logo) {
+			deleteFile(oldLogo).catch(err => console.error("Failed to delete old sponsor logo:", err));
+		}
+
 		res.status(200).json({ message: "Sponsor updated" });
 	} catch (error) {
 		console.error("Update Sponsor Error:", error);
