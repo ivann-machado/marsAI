@@ -5,15 +5,37 @@ import Loading from "../Utils/Loading.jsx";
 function AdminVideosDash() {
   const [videoQueue, setVideoQueue] = useState(null);
   const [otherVideo, setOtherVideo] = useState(null);
+  const [filters, setFilters] = useState({
+    title: "",
+    producer: "",
+    status: "",
+    selected: "",
+  });
+  const [appliedFilters, setAppliedFilters] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/data.json");
+        /* Recuperation videos à review */
+        let response = await fetch(
+          import.meta.env.VITE_API_URL + "/api/videos",
+          {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          },
+        );
         if (!response.ok) throw new Error("Erreur fetch JSON");
-        const json = await response.json();
-        setVideoQueue(json.mockedVideosQueue);
-        setOtherVideo(json.mockedVideosQueue);
+        let res = await response.json();
+        setVideoQueue(res);
+
+        /* Recuperation des autres videos */
+        response = await fetch(import.meta.env.VITE_API_URL + "/api/videos", {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+        if (!response.ok) throw new Error("Erreur fetch JSON");
+        res = await response.json();
+        setOtherVideo(res);
       } catch (err) {
         console.error(err);
       }
@@ -21,6 +43,15 @@ function AdminVideosDash() {
 
     fetchData();
   }, []);
+
+  const updateFilters = (key, value) => {
+    setFilters((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const updateAppliedFilters = () => {
+    console.log("updates");
+    setAppliedFilters(filters);
+  };
 
   if (!videoQueue || !otherVideo) return <Loading />;
 
@@ -32,7 +63,7 @@ function AdminVideosDash() {
 
       {/* MOVIE QUEUE */}
       <h2 className="text-2xl font-bold ml-8 text-white">Films attribuées:</h2>
-      <VideoList videoList={videoQueue} />
+      <VideoList videoList={videoQueue} type="queue" />
 
       {/* SEARCH BAR */}
       <div className="w-full bg-gray-500 grid grid-cols-6">
@@ -40,31 +71,44 @@ function AdminVideosDash() {
           type="text"
           placeholder="titre..."
           className="bg-gray-200 p-1 col-span-2 mr-1"
+          value={filters.title}
+          onChange={(e) => updateFilters("title", e.target.value)}
         ></input>
         <input
           type="text"
           placeholder="realisateur..."
           className="bg-gray-200 p-1 mr-1"
+          value={filters.producer}
+          onChange={(e) => updateFilters("producer", e.target.value)}
         ></input>
-        <select>
-          <option>Unverified</option>
-          <option>Verified</option>
-          <option>Selected</option>
-          <option>Denied</option>
+        <select
+          value={filters.state}
+          onChange={(e) => updateFilters("status", e.target.value)}
+        >
+          <option value="">-- STATUS --</option>
+          <option value="unverified">Unverified</option>
+          <option value="verified">Verified</option>
+          <option value="selected">Selected</option>
+          <option value="denied">Denied</option>
         </select>
-        <select>
-          <option>Selection</option>
-          <option>Pas en selection</option>
+        <select
+          value={filters.selecetd}
+          onChange={(e) => updateFilters("selected", e.target.value)}
+        >
+          <option value="">-- STATUS SELECTION--</option>
+          <option value="selected">Selection</option>
+          <option value="">Pas en selection</option>
         </select>
         <input
           type="button"
           value="Filtrer"
           className="ml-5 bg-gray-300 text-black p-1"
+          onClick={() => updateAppliedFilters()}
         ></input>
       </div>
 
       {/* OTHER MOVIES */}
-      <VideoList videoList={otherVideo} />
+      <VideoList videoList={otherVideo} filters={appliedFilters} />
     </div>
   );
 }

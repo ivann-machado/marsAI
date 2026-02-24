@@ -4,45 +4,38 @@ import AIList from "../../components/AIList/AIList";
 import Loading from "../../components/Utils/Loading";
 import "flag-icons/css/flag-icons.min.css";
 import { useState, useEffect } from "react";
+import AdminVideoPanel from "../../components/AdminVideosDash/AdminVideoPanel";
 
-function AdminVideo(props) {
+function AdminVideo() {
   const { t } = useTranslation();
   let params = useParams();
-
-  const [review, setReview] = useState(null);
   const [video, setVideo] = useState(null);
-
-  const handleGrade = (value) => {
-    setReview((prev) => ({ ...prev, grade: value }));
-  };
-
-  const handleSave = async () => {
-    try {
-      const response = await fetch("/api/reviews/" + review.id, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(review),
-      });
-
-      if (!response.ok) throw new Error("Erreur lors de la sauvegarde");
-
-      const updatedReview = await response.json();
-      setReview(updatedReview);
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/data.json");
+        const response = await fetch(
+          import.meta.env.VITE_API_URL + "/api/videos/" + params.id,
+          {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          },
+        );
         if (!response.ok) throw new Error("Erreur fetch JSON");
-        const json = await response.json();
-        setReview(json.mockedReview);
-        setVideo(json.mockedVideo);
+        let res = await response.json();
+        setVideo(res);
+
+        // TODO REVIEW
+        /*  response = await fetch(
+          import.meta.env.VITE_API_URL + "/api/review/" + params.videoId,
+          {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          },
+        );
+        if (!response.ok) throw new Error("Erreur fetch JSON");
+        res = await response.json();
+        setReview(res); */
       } catch (err) {
         console.error(err);
       }
@@ -51,61 +44,31 @@ function AdminVideo(props) {
     fetchData();
   }, []);
 
-  if (!video || !review) return <Loading />;
+  if (!video) return <Loading />;
   else
     return (
       <>
-        <section className="w-full min-h-screen bg-[url('../src/assets/background.jpg')] bg-cover bg-fixed text-white py-8">
+        <section
+          className="w-full min-h-screen bg-[url('../src/assets/background.jpg')] bg-cover bg-fixed text-white py-8
+      md:px-[10%]"
+        >
           <div className="m-4 mb-8">
-            <a className="text-white hover:text-blue-900 visited:text-white">
-              {t("return_gallery")}
+            <a
+              className="text-white hover:text-blue-900 visited:text-white"
+              href="/videos"
+            >
+              {t("video_page.return_gallery")}
             </a>
           </div>
           <iframe
-            className="w-screen aspect-video"
+            className="w-full aspect-video"
             src="https://www.youtube.com/embed/_cPdvX-0kRA?si=MP3jAxInyj04TUlx"
             title="YouTube video player"
             loading="lazy"
           ></iframe>
 
           {/* ADMIN PANEL TO VOTE */}
-          <div className="bg-gray-400 min-h-20 items-center p-4">
-            <h3>Menu notation:</h3>
-            <div className="mx-8 flex gap-8 mb-4">
-              <div>
-                {[1, 2, 3, 4, 5].map((value) => (
-                  <button
-                    key={value}
-                    onClick={() => handleGrade(value)}
-                    className={
-                      "w-4 h-4 rounded-full transition text-4xl mr-2 " +
-                      (review.grade >= value
-                        ? "text-amber-300"
-                        : "text-amber-50")
-                    }
-                  >
-                    ★
-                  </button>
-                ))}
-                <p>Note: {review.grade}/5</p>
-              </div>
-              <input
-                className="bg-white text-gray-700 p-2"
-                placeholder="commentaire..."
-                type="text"
-                value={review.note}
-                onChange={(e) =>
-                  setReview((prev) => ({ ...prev, note: e.target.value }))
-                }
-              ></input>
-              <input
-                className="bg-white p-2 text-black hover:bg-gray-600"
-                type="button"
-                value="Sauvegarder"
-                onClick={handleSave}
-              ></input>
-            </div>
-          </div>
+          <AdminVideoPanel video_data={video} />
 
           {/* INFOS VIDEOS */}
           <h2 className="text-white font-bold text-4xl text-center mb-4 mt-4 md:mx-8">
@@ -118,22 +81,28 @@ function AdminVideo(props) {
                 src={video.producer_image}
               ></img>
               <div className="my-auto">
-                <p className="text-2xl text-white ml-2">{t("producer")}</p>
+                <p className="text-2xl text-white ml-2">
+                  {t("video_page.producer")}
+                </p>
                 <p className="text-xl text-gray-100 ml-2">{video.producer}</p>
               </div>
             </div>
             <div className="flex mb-4 ml-8">
-              <span
+              {/* <span
                 className={`fi fi-2x fi-${video.country_iso.toLowerCase()} scale-200`}
-              ></span>
+              ></span> */}
               <div className="ml-4">
-                <p className="text-white">{t("country_of_origin")}</p>
-                <p className="">{video.country_name}</p>
+                <p className="text-white">
+                  {t("video_page.country_of_origin")}
+                </p>
+                {/*  <p className="">{video.country_name}</p> */}
               </div>
             </div>
           </div>
           <div className="mb-4">
-            <h4 className="text-3xl font-bold m-4">{t("media_links")}</h4>
+            <h4 className="text-3xl font-bold m-4">
+              {t("video_page.media_links")}
+            </h4>
             <div className="flex flex-wrap justify-around w-100%">
               <div className="w-1/3 md:w-1/6">
                 <img
@@ -174,10 +143,10 @@ function AdminVideo(props) {
           </div>
           <div className="mb-4">
             <h3 className="text-3xl mb-4 text-center font-bold">
-              {t("synopsis")}
+              {t("video_page.synopsis")}
             </h3>
             <p className="m-4 indent-4">{video.description}</p>
-            <h4 className="m-4 text-2xl">{t("ai_used")}</h4>
+            <h4 className="m-4 text-2xl">{t("video_page.ai_used")}</h4>
             <div>
               <AIList type="Scénario" data={video.scenario_ai} />
               <AIList type="Video" data={video.video_gen_ai} />

@@ -1,4 +1,55 @@
+function VideoCard({ video, type }) {
+  return (
+    <div
+      key={video.id}
+      className="grid grid-cols-6 w-full mx-4 my-2 text-center border-t p-1"
+    >
+      <img src={video.cover_image} className="m-auto"></img>
+      <p className="flex justify-center items-center">{video.title}</p>
+      <p className="flex justify-center items-center">{video.producer}</p>
+      <p
+        className={
+          (video.status === "unverified"
+            ? "bg-amber-500"
+            : video.status === "verified" || video.status === "selected"
+              ? "bg-green-600"
+              : "bg-red-700") + " flex justify-center items-center"
+        }
+      >
+        {video.status}
+      </p>
+      <a
+        href={"/video/" + video.id}
+        className="flex justify-center items-center"
+      >
+        {type === "queue" ? "Noter Film" : "Details"}
+      </a>
+      <div
+        className={
+          "w-8 h-4 bg-gray-600 m-auto " +
+          (video.status === "selected" ? " bg-green-600 " : " bg-red-700 ")
+        }
+      ></div>
+    </div>
+  );
+}
+
+function checkFilter(filter, video) {
+  if (!filter) return true;
+  if (filter.title && filter.title != "")
+    if (!video.title.includes(filter.title)) return false;
+  if (filter.producer && filter.producer != "")
+    if (!video.producer.includes(filter.producer)) return false;
+  if (filter.status && filter.status != "")
+    if (!(video.status === filter.status)) return false;
+  if (filter.selected && filter.selected === "selected")
+    if (!(video.status === filter.selected)) return false;
+  return true;
+}
+
 function VideoList(props) {
+  const filters = props.filters;
+
   return (
     <div className="bg-gray-900 text-white">
       <div className="grid grid-cols-6 w-full mx-4 my-2 text-center">
@@ -9,36 +60,16 @@ function VideoList(props) {
         <p></p>
         <p>Selection</p>
       </div>
-      {props.videoList.map((video) => (
-        <div
-          key={video.id}
-          className="grid grid-cols-6 w-full mx-4 my-2 text-center border-t p-1"
-        >
-          <img src={video.cover_image} className="m-auto"></img>
-          <p>{video.title}</p>
-          <p>{video.producer}</p>
-          <p
-            className={
-              video.status === "unverified"
-                ? "bg-amber-500"
-                : video.status === "verified" || video.status === "selected"
-                  ? "bg-green-600"
-                  : "bg-red-700"
-            }
-          >
-            {video.status}
-          </p>
-          <a href={"/video/" + video.id}>Details</a>
-          <div
-            className={
-              "w-8 h-4 bg-gray-600 m-auto " +
-              (video.status === "selected" ? " bg-green-600 " : " bg-red-700 ")
-            }
-          ></div>
-        </div>
-      ))}
+
+      {props.videoList.map((video) =>
+        checkFilter(filters, video) ? (
+          <VideoCard video={video} type={props.type} />
+        ) : null,
+      )}
     </div>
   );
 }
 
 export default VideoList;
+
+// && video.title.includes(filters.title)

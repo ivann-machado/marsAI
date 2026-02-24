@@ -39,11 +39,11 @@ function AdminJuryDash() {
   }, []);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, files, type } = e.target;
 
     setNewJury((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: type === "file" ? files[0] : value,
     }));
   };
 
@@ -56,20 +56,20 @@ function AdminJuryDash() {
     )
       return;
 
+    const formData = new FormData();
+    formData.append("edition_id", newJury.edition_id);
+    formData.append("name", newJury.name);
+    formData.append("photo", newJury.photo);
+    formData.append("bio", newJury.bio);
+    formData.append("profession", newJury.profession);
+
     try {
       const response = await fetch(import.meta.env.VITE_API_URL + "/api/jury", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
           Authorization: "Bearer " + authToken.token,
         },
-        body: JSON.stringify({
-          edition_id: newJury.edition_id,
-          name: newJury.name,
-          photo: newJury.photo,
-          bio: newJury.bio,
-          profession: newJury.profession,
-        }),
+        body: formData,
       });
       if (!response.ok) throw new Error("Erreur fetch JSON");
       const res = await response.json();
@@ -108,8 +108,8 @@ function AdminJuryDash() {
         ></input>
         <label htmlFor="jury_photo">Photo</label>
         <input
+          type="file"
           id="jury_photo"
-          value={newJury.photo}
           name="photo"
           className="bg-white text-black"
           onChange={(e) => handleChange(e)}
