@@ -32,13 +32,11 @@ export const createEvent = async (req, res) => {
 				.json({ message: "Type, name, url, logo and date are required" });
 		}
 
-		const finalLogo = req.file ? req.file.location : logo;
-
 		const result = await insertEvent({
 			type,
 			name,
 			url,
-			logo: finalLogo,
+			logo,
 			info,
 			place,
 			duration,
@@ -111,13 +109,11 @@ export const setEvent = async (req, res) => {
 			oldCover_image
 		} = req.body;
 
-		const finalLogo = req.file ? req.file.location : logo;
-
 		const result = await updateEvent(req.params.id, {
 			type,
 			name,
 			url,
-			logo: finalLogo,
+			logo,
 			info,
 			place,
 			duration,
@@ -129,7 +125,7 @@ export const setEvent = async (req, res) => {
 			return res.status(404).json({ message: "Event not found" });
 		}
 
-		if (oldLogo && finalLogo && oldLogo !== finalLogo) {
+		if (oldLogo && logo && oldLogo !== logo) {
 			deleteFile(oldLogo).catch(err => console.error("Failed to delete old event logo:", err));
 		}
 		if (oldCover_image && cover_image && oldCover_image !== cover_image) {
