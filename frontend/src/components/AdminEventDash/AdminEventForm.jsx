@@ -4,7 +4,7 @@ import { useFlash } from "../../context/FlashContext";
 
 function AdminEventForm() {
   const authToken = useauth();
-  const [type, setType] = useState("");
+  const [type, setType] = useState("atelier");
   const [name, setName] = useState("");
   const [url, setUrl] = useState("");
   const [logo, setLogo] = useState("");
@@ -83,18 +83,22 @@ function AdminEventForm() {
           </select>
         </div>
         <div className="w-2/5 flex justify-between">
-          <label htmlFor="name"  className="w-1/3 m-4 text-lg font-bold">Name</label>
+          <label htmlFor="name" className="w-1/3 m-4 text-lg font-bold">
+            Name
+          </label>
           <input
             id="name"
             value={name}
             onChange={(e) => {
               setName(e.target.value);
             }}
-           className="bg-white text-black w-2/3 p-2 rounded-md"
+            className="bg-white text-black w-2/3 p-2 rounded-md"
           ></input>
         </div>
         <div className="w-2/5 flex justify-between">
-          <label htmlFor="url"  className="w-1/3 m-4 text-lg font-bold">URL</label>
+          <label htmlFor="url" className="w-1/3 m-4 text-lg font-bold">
+            URL
+          </label>
           <input
             id="url"
             type="url"
@@ -106,19 +110,23 @@ function AdminEventForm() {
           ></input>
         </div>
         <div className="w-2/5 flex justify-between">
-          <label htmlFor="logo"  className="w-1/3 m-4 text-lg font-bold">Logo</label>
+          <label htmlFor="logo" className="w-1/3 m-4 text-lg font-bold">
+            Logo
+          </label>
           <input
             id="logo"
             type="file"
-            value={logo}
+            // value={logo}
             onChange={(e) => {
-              setLogo(e.target.value);
+              setLogo(e.target.files[0]);
             }}
             className="bg-white text-black w-2/3 p-2 rounded-md"
           ></input>
         </div>
         <div className="w-2/5 flex justify-between">
-          <label htmlFor="info"  className="w-1/3 m-4 text-lg font-bold">Info</label>
+          <label htmlFor="info" className="w-1/3 m-4 text-lg font-bold">
+            Info
+          </label>
           <input
             id="info"
             value={info}
@@ -129,7 +137,9 @@ function AdminEventForm() {
           ></input>
         </div>
         <div className="w-2/5 flex justify-between">
-          <label htmlFor="place"  className="w-1/3 m-4 text-lg font-bold">Place</label>
+          <label htmlFor="place" className="w-1/3 m-4 text-lg font-bold">
+            Place
+          </label>
           <input
             id="place"
             value={place}
@@ -140,7 +150,9 @@ function AdminEventForm() {
           ></input>
         </div>
         <div className="w-2/5 flex justify-between">
-          <label htmlFor="duration"  className="w-1/3 m-4 text-lg font-bold">Duration</label>
+          <label htmlFor="duration" className="w-1/3 m-4 text-lg font-bold">
+            Duration
+          </label>
           <input
             id="duration"
             type="number"
@@ -152,19 +164,23 @@ function AdminEventForm() {
           ></input>
         </div>
         <div className="w-2/5 flex justify-between">
-          <label htmlFor="cover_image"  className="w-1/3 m-4 text-lg font-bold">Cover Image</label>
+          <label htmlFor="cover_image" className="w-1/3 m-4 text-lg font-bold">
+            Cover Image
+          </label>
           <input
             id="cover_image"
             type="file"
-            value={coverImage}
+            // value={coverImage}
             onChange={(e) => {
-              setCoverImage(e.target.value);
+              setCoverImage(e.target.files[0]);
             }}
             className="bg-white text-black w-2/3 p-2 rounded-md"
           ></input>
         </div>
         <div className="w-2/5 flex justify-between">
-          <label htmlFor="date"  className="w-1/3 m-4 text-lg font-bold">Date</label>
+          <label htmlFor="date" className="w-1/3 m-4 text-lg font-bold">
+            Date
+          </label>
           <input
             id="date"
             type="datetime-local"

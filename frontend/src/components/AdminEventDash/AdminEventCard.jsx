@@ -11,11 +11,18 @@ function AdminEventCard(props) {
   const authToken = useauth();
   const eventTypes = props.eventTypes ?? ["atelier"]; // à recuperer dans la DB
 
-  const updateEvent = (key, value) => {
+  const updateEvent = (key, e) => {
+    const { name, value, files, type } = e.target;
+
     setEvent((prev) => ({
       ...prev,
-      [key]: value,
+      [key]: type === "file" ? files[0] : value,
     }));
+
+    // setEvent((prev) => ({
+    //   ...prev,
+    //   [key]: value,
+    // }));
     setModified(true);
   };
 
@@ -102,13 +109,13 @@ function AdminEventCard(props) {
         Nom:
         <input
           value={event.name}
-          onChange={(e) => updateEvent("name", e.target.value)}
+          onChange={(e) => updateEvent("name", e)}
           className="bg-gray-700 text-center"
         ></input>
         Type:
         <select
           value={event.type}
-          onChange={(e) => updateEvent("type", e.target.value)}
+          onChange={(e) => updateEvent("type", e)}
           className="bg-gray-700 text-center"
         >
           {eventTypes.map((eventType) => (
@@ -123,7 +130,7 @@ function AdminEventCard(props) {
         <input
           type="file"
           id=""
-          onChange={(e) => updateEvent("cover_image", e.target.value)}
+          onChange={(e) => updateEvent("cover_image", e)}
           className="bg-gray-700"
         ></input>
       </div>
@@ -138,7 +145,7 @@ function AdminEventCard(props) {
         - Duration:
         <input
           value={event.duration}
-          onChange={(e) => updateEvent("duration", e.target.value)}
+          onChange={(e) => updateEvent("duration", e)}
           className="bg-gray-700 text-center"
         ></input>
         minutes
@@ -147,7 +154,7 @@ function AdminEventCard(props) {
         Location:
         <input
           value={event.place}
-          onChange={(e) => updateEvent("place", e.target.value)}
+          onChange={(e) => updateEvent("place", e)}
           className="bg-gray-700 text-center"
         ></input>
       </p>
@@ -155,7 +162,7 @@ function AdminEventCard(props) {
         Details:
         <input
           value={event.info}
-          onChange={(e) => updateEvent("info", e.target.value)}
+          onChange={(e) => updateEvent("info", e)}
           className="bg-gray-700 text-center"
         ></input>
       </p>
@@ -164,7 +171,7 @@ function AdminEventCard(props) {
         <input
           type="url"
           value={event.url}
-          onChange={(e) => updateEvent("url", e.target.value)}
+          onChange={(e) => updateEvent("url", e)}
           className="bg-gray-700 text-center"
         ></input>
       </p>
