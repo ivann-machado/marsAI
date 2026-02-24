@@ -62,7 +62,10 @@ function AdminJuryCard({ id, edition_id, name, bio, photo, profession }) {
         import.meta.env.VITE_API_URL + "/api/jury/" + jury.id,
         {
           method: "DELETE",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + authToken.token,
+          },
         },
       );
       if (!response.ok) throw new Error("Erreur fetch JSON");

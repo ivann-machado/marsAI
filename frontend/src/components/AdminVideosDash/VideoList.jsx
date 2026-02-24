@@ -36,12 +36,15 @@ function VideoCard({ video, type }) {
 
 function checkFilter(filter, video) {
   if (!filter) return true;
+  console.log(filter.selected, video.status, !(video.status === filter.status));
   if (filter.title && filter.title != "")
     if (!video.title.includes(filter.title)) return false;
   if (filter.producer && filter.producer != "")
     if (!video.producer.includes(filter.producer)) return false;
-  if (filter.state && filter.producer != "")
-    if (!video.producer.includes(filter.producer)) return false;
+  if (filter.status && filter.status != "")
+    if (!(video.status === filter.status)) return false;
+  if (filter.selected && filter.selected === "selected")
+    if (!(video.status === filter.selected)) return false;
   return true;
 }
 

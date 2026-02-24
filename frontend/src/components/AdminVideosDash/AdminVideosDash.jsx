@@ -8,7 +8,7 @@ function AdminVideosDash() {
   const [filters, setFilters] = useState({
     title: "",
     producer: "",
-    state: "",
+    status: "",
     selected: "",
   });
   const [appliedFilters, setAppliedFilters] = useState(null);
@@ -83,19 +83,21 @@ function AdminVideosDash() {
         ></input>
         <select
           value={filters.state}
-          onChange={(e) => updateFilters("state", e.target.value)}
+          onChange={(e) => updateFilters("status", e.target.value)}
         >
-          <option>Unverified</option>
-          <option>Verified</option>
-          <option>Selected</option>
-          <option>Denied</option>
+          <option value="">-- STATUS --</option>
+          <option value="unverified">Unverified</option>
+          <option value="verified">Verified</option>
+          <option value="selected">Selected</option>
+          <option value="denied">Denied</option>
         </select>
         <select
           value={filters.selecetd}
           onChange={(e) => updateFilters("selected", e.target.value)}
         >
-          <option>Selection</option>
-          <option>Pas en selection</option>
+          <option value="">-- STATUS SELECTION--</option>
+          <option value="selected">Selection</option>
+          <option value="">Pas en selection</option>
         </select>
         <input
           type="button"
