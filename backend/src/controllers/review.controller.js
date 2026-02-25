@@ -2,6 +2,7 @@ import { getConnection } from "../config/db.js";
 import {
 	insertReview,
 	selectReviewById,
+	selectReviewByAdminAndVideo,
 	selectAllReviews,
 	updateReview,
 	deleteReview,
@@ -20,12 +21,17 @@ export const createReview = async (req, res) => {
 		const { admin_id, video_id } = req.body;
 
 		if (!admin_id || !video_id) {
-			return res.status(400).json({ message: "admin_id and video_id are required" });
+			return res
+				.status(400)
+				.json({ message: "admin_id and video_id are required" });
 		}
 
 		const result = await insertReview({ admin_id, video_id });
 
-		res.status(201).json({ message: "Review created", id: result.insertId });
+		res.status(201).json({
+			message: "Review created",
+			id: result.insertId,
+		});
 	} catch (error) {
 		console.error("Create Review Error:", error);
 		res.status(500).json({ message: "Server error" });
@@ -42,10 +48,24 @@ export const createReview = async (req, res) => {
  */
 export const getAllReviews = async (req, res) => {
 	try {
+		const { admin_id, video_id } = req.query;
+		if (admin_id && video_id) {
+			const review = await selectReviewByAdminAndVideo(
+				parseInt(admin_id, 10),
+				parseInt(video_id, 10),
+			);
+
+			if (!review) {
+				return res.status(200).json(null);
+			}
+
+			return res.status(200).json(review);
+		}
+
 		const reviews = await selectAllReviews();
 		res.status(200).json(reviews);
 	} catch (error) {
-		console.error("Get All Reviews Error:", error);
+		console.error("Get Reviews Error:", error);
 		res.status(500).json({ message: "Server error" });
 	}
 };
@@ -61,11 +81,13 @@ export const getAllReviews = async (req, res) => {
 export const getReviewById = async (req, res) => {
 	try {
 		const { id } = req.params;
-		if (!id) return res.status(400).json({ message: "Review id is required" });
+		if (!id)
+			return res.status(400).json({ message: "Review id is required" });
 
 		const review = await selectReviewById(id);
 
-		if (!review) return res.status(404).json({ message: "Review not found" });
+		if (!review)
+			return res.status(404).json({ message: "Review not found" });
 
 		res.status(200).json(review);
 	} catch (error) {
@@ -87,7 +109,8 @@ export const setReview = async (req, res) => {
 		const { id } = req.params;
 		const { note, grade, status } = req.body;
 
-		if (!id) return res.status(400).json({ message: "Review id is required" });
+		if (!id)
+			return res.status(400).json({ message: "Review id is required" });
 
 		const result = await updateReview(id, { note, grade, status });
 		const affectedRows = result.affectedRows;
@@ -110,7 +133,8 @@ export const setReview = async (req, res) => {
 export const removeReview = async (req, res) => {
 	try {
 		const { id } = req.params;
-		if (!id) return res.status(400).json({ message: "Review id is required" });
+		if (!id)
+			return res.status(400).json({ message: "Review id is required" });
 
 		const affectedRows = await deleteReview(id);
 
