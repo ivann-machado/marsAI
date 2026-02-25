@@ -839,6 +839,46 @@ text-center mb-8
               {t("upload_form.production")}
             </p>
 
+            <div className="flex flex-col md:flex-row md:justify-evenly md:p-4 md:gap-10 md:w-full">
+              <div className="flex flex-col md:w-full md:max-w-150">
+                <label
+                  htmlFor="more_info"
+                  className="text-sm text-white/70 mb-2 tracking-wide"
+                >
+                  {t("upload_form.producer")} :
+                </label>
+                <input
+                  type="text"
+                  name="producer"
+                  id="producer"
+                  ref={producer}
+                  onChange={() => {
+                    producerCheck();
+                  }}
+                  className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
+                />
+                <p className="text-white">{producerError}</p>
+              </div>
+              <div className="flex flex-col md:w-full md:max-w-150">
+                <label
+                  htmlFor="producerImage"
+                  className="text-sm text-white/70 mb-2 tracking-wide"
+                >
+                  Photo du producteur :
+                </label>
+                <input
+                  type="file"
+                  name="producerImage"
+                  id="producerImage"
+                  ref={producerImage}
+                  onChange={() => {
+                    coverImageCheck();
+                  }}
+                  className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none pt-3 pb-2"
+                />
+                <p className="text-white">{coverImageError}</p>
+              </div>
+            </div>
             <div className=" flex flex-col md:flex-row md:justify-evenly md:p-4 md:gap-10 md:w-full">
               <div className="flex flex-col md:w-full md:max-w-150">
                 <label
@@ -855,9 +895,7 @@ text-center mb-8
                   onChange={() => {
                     scenarioAiCheck();
                   }}
-                  className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40transition-all duration-300
-outline-none
-"
+                  className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{scenarioAiError}</p>
               </div>
@@ -1012,58 +1050,6 @@ text-center mb-8
               {t("upload_form.more_info")}
             </p>
 
-            <div className="flex flex-col md:flex-row md:justify-evenly md:p-4 md:gap-10 md:w-full">
-              <div className="flex flex-col md:w-full md:max-w-150">
-                <label
-                  htmlFor="more_info"
-                  className="text-sm text-white/70 mb-2 tracking-wide"
-                >
-                  {t("upload_form.producer")} :
-                </label>
-                <input
-                  type="text"
-                  name="producer"
-                  id="producer"
-                  ref={producer}
-                  onChange={() => {
-                    producerCheck();
-                  }}
-                  className="
-bg-white/5
-border border-white/20
-focus:border-purple-400
-focus:ring-2 focus:ring-purple-500/40
-rounded-xl
-h-12
-px-4
-text-white
-placeholder-white/40
-transition-all duration-300
-outline-none
-"
-                />
-                <p className="text-white">{producerError}</p>
-              </div>
-              <div className="flex flex-col md:w-full md:max-w-150">
-                <label
-                  htmlFor="producerImage"
-                  className="text-sm text-white/70 mb-2 tracking-wide"
-                >
-                  Photo du producteur :
-                </label>
-                <input
-                  type="file"
-                  name="producerImage"
-                  id="producerImage"
-                  ref={producerImage}
-                  onChange={() => {
-                    coverImageCheck();
-                  }}
-                  className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none pt-3 pb-2"
-                />
-                <p className="text-white">{coverImageError}</p>
-              </div>
-            </div>
             <div className="flex flex-col md:flex-row md:justify-evenly md:p-4 md:gap-10 md:w-full">
               <div className="flex flex-col md:w-full md:max-w-150">
                 <label
@@ -1304,26 +1290,26 @@ transition-all duration-300
           </div>
         </div>
       </form>
-      <div>
+      {/* <div>
         {videoURL && (
           <div style={{ marginTop: "20px" }}>
             <h3 className="text-white">Votre vidéo: </h3>
 
             {/* For Images */}
-            <video
+      {/* <video
               src={videoURL}
               alt="preview"
               width="250"
               style={{ display: "block", marginBottom: "15px", margin: "auto" }}
-            />
+            /> */}
 
-            {/* For other file types – add download link */}
+      {/* For other file types – add download link
             <a href={videoURL} target="_blank" rel="noopener noreferrer">
               Open/Download File
             </a>
-          </div>
-        )}
-      </div>
+          </div> */}
+      {/* //   )}
+      // </div> */}
     </div>
   );
 }
