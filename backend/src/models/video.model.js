@@ -119,7 +119,8 @@ export const updateVideo = async (id, video, conn = null) => {
 			description = ?,
 			status = ?,
 			verified = ?,
-			tags = ?
+			tags = ?,
+			youtube_link = ?
 		WHERE id = ?
 	`;
 
@@ -129,6 +130,7 @@ export const updateVideo = async (id, video, conn = null) => {
 		video.status,
 		video.verified,
 		video.tags,
+		video.youtube_link,
 		id,
 	];
 

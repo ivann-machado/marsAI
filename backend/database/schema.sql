@@ -197,6 +197,7 @@ CREATE TABLE process_queue (
     video_id VARCHAR(100) NOT NULL,
     status ENUM('pending','done','failed','timeout') DEFAULT 'pending',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	filename VARCHAR(100) NOT NULL,
     type ENUM('yt_upload','yt_status_check') NOT NULL,
     FOREIGN KEY (video_id) REFERENCES videos(id) ON DELETE NO ACTION

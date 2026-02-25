@@ -5,7 +5,9 @@ import {
 	updateVideo,
 	deleteVideo,
 } from "../models/video.model.js";
+import { insertProcessQueue } from "../models/process_queue.model.js";
 import { deleteFile, getFileUrl } from "../services/bucket.service.js";
+import { uploadVideo } from "../services/youtube.service.js";
 
 /**
  * @openapi
@@ -106,9 +108,35 @@ export const createVideo = async (req, res) => {
 		}
 
 		const result = await insertVideo(req.body);
+
+		const videoId = result.insertId.toString();
+		const videoBuffer = req.file?.buffer;
+
+		let youtubeId = null;
+
+		if (videoBuffer) {
+			try {
+				const uploadResult = await uploadVideo(videoBuffer, req.body);
+				youtubeId = uploadResult.videoId;
+				await updateVideo(videoId, { url: youtubeId });
+			} catch (youtubeErr) {
+				console.error("YouTube upload failed:", youtubeErr);
+				// Let the item be created even if YouTube fails initially until we handle it properly.
+				// Probably refact this funct with transaction
+			}
+		}
+
+		if (youtubeId) {
+			await insertProcessQueue({
+				video_id: videoId,
+				filename: req.body.filename,
+				type: 'yt_status_check'
+			});
+		}
+
 		res.status(201).json({
 			message: "Video created",
-			id: result.insertId.toString(),
+			id: videoId,
 		});
 	} catch (err) {
 		console.error("Create Video Error:", err);
