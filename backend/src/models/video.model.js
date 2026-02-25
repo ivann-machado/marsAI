@@ -54,7 +54,6 @@ export const selectVideoById = async (id, conn = null) => {
  * @returns {Promise<any>}
  */
 export const insertVideo = async (video, conn = null) => {
-	console.log(video);
 	const query = `
 		INSERT INTO videos (
 			edition_id,
