@@ -1,7 +1,6 @@
 import multer from 'multer';
-import { getBucketClient } from '../config/bucket.js';
 import { convertToWebp, toWebpFilename, generateFilename, getMp4Duration } from '../utils/file.util.js';
-import { uploadFile, getFileUrl } from '../services/bucket.service.js';
+import { uploadFile } from '../services/bucket.service.js';
 
 // Configuration Limits
 const LIMITS = {
