@@ -9,7 +9,7 @@ function EventButton({ event, onClick, selected }) {
           : "bg-zinc-900/50 border border-zinc-800 hover:border-zinc-700 hover:bg-zinc-900"
       }`}
     >
-      <h3 className="font-bold text-white mb-1">{event.name}</h3>
+      <h3 className="font-bold text-white mb-1 font-orbitron">{event.name}</h3>
       <p className="text-xs font-semibold text-pink-400 uppercase">
         {event.type}
       </p>

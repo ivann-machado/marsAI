@@ -62,9 +62,17 @@ function Contact() {
   return (
     <>
       <Header />
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage: `linear-gradient(135deg, rgba(168,85,247,0.4) 0%, transparent 50%), linear-gradient(225deg, rgba(236,72,153,0.3) 0%, transparent 50%)`,
+          backgroundSize: "cover",
+          transform: `translateY(${scrollY * 0.3}px)`,
+        }}
+      />
       <div className="min-h-screen flex items-center justify-center bg-gray-800 px-4 w-full">
         <div className="w-full max-w-lg bg-gray-900 rounded-2xl shadow-lg p-8">
-          <h1 className="text-3xl font-bold text-center mb-6 bg-gradient-to-rp from-pink-500 to-violet-500 bg-clip-text text-transparent">
+          <h1 className="text-3xl font-bold text-center mb-6 bg-gradient-to-rp from-pink-500 to-violet-500 bg-clip-text text-transparent text-white">
             {t("page_contact.contact_title")}
           </h1>
           <form className="space-y-5" onSubmit={handleSubmit}>
