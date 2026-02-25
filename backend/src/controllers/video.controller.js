@@ -5,7 +5,9 @@ import {
 	updateVideo,
 	deleteVideo,
 } from "../models/video.model.js";
+import { insertProcessQueue, updateProcessQueueStatus } from "../models/process_queue.model.js";
 import { deleteFile, getFileUrl } from "../services/bucket.service.js";
+import { uploadAndScheduleCheck } from "../services/youtube.service.js";
 
 /**
  * @openapi
@@ -106,9 +108,23 @@ export const createVideo = async (req, res) => {
 		}
 
 		const result = await insertVideo(req.body);
+		//upload into youtube
+		const videoId = result.insertId.toString()
+		const processQueueId = await insertProcessQueue({
+			video_id: videoId,
+			filename: req.body.filename,
+			type: 'youtube'
+		});
+		const videoBuffer = req.files.filename[0].buffer;
+		const uploadResult = await uploadAndScheduleCheck(videoBuffer, (status, videoId) => {
+			if (status === 'done') {
+				updateVideo(videoId, { youtube_id: videoId });
+			}
+			updateProcessQueueStatus(processQueueId, status);
+		});
 		res.status(201).json({
 			message: "Video created",
-			id: result.insertId.toString(),
+			id: videoId,
 		});
 	} catch (err) {
 		console.error("Create Video Error:", err);
