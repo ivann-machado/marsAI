@@ -162,25 +162,32 @@ function Header() {
         </button>
       </nav>
 
-      {/* Mobile Menu */}
       <div
         className={`lg:hidden fixed inset-0 z-40 transition-all duration-500 ${
           isOpen ? "opacity-100 visible" : "opacity-0 invisible"
         }`}
       >
-        {/* Backdrop */}
         <div
           className="absolute inset-0 bg-[#050508]/95 backdrop-blur-xl"
           onClick={toggleMenu}
         />
 
-        {/* Menu Content */}
         <div
           className={`relative h-full flex flex-col items-center justify-center transition-all duration-500 ${
             isOpen ? "translate-y-0 opacity-100" : "-translate-y-10 opacity-0"
           }`}
         >
-          {/* Decorative Elements */}
+          {isOpen && (
+            <button
+              onClick={toggleMenu}
+              className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors lg:hidden"
+              aria-label="Close menu"
+            >
+              <span className="text-white text-xl font-bold leading-none">
+                ×
+              </span>
+            </button>
+          )}
           <div className="absolute top-1/4 left-10 w-32 h-32 bg-[#a855f7]/20 rounded-full blur-3xl" />
           <div className="absolute bottom-1/4 right-10 w-40 h-40 bg-[#ec4899]/20 rounded-full blur-3xl" />
 
@@ -210,7 +217,6 @@ function Header() {
             ))}
           </ul>
 
-          {/* Mobile Language Switcher */}
           <button
             onClick={toggleLanguage}
             className={`mt-8 flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 transition-all duration-500 ${
