@@ -86,8 +86,6 @@ function AdminJuryDash() {
 
       // setJury(res);
       showFlash("success", "Création jury avec success");
-      showFlash("error", "Création jury avec success");
-      showFlash("info", "Création jury avec success");
     } catch (err) {
       console.error(err);
     }
