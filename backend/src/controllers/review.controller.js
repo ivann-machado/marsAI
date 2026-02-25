@@ -49,8 +49,6 @@ export const createReview = async (req, res) => {
 export const getAllReviews = async (req, res) => {
 	try {
 		const { admin_id, video_id } = req.query;
-
-		// CAS 1 : Recherche spécifique par admin et vidéo
 		if (admin_id && video_id) {
 			const review = await selectReviewByAdminAndVideo(
 				parseInt(admin_id, 10),
