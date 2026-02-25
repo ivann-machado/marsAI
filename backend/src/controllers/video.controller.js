@@ -118,7 +118,7 @@ export const createVideo = async (req, res) => {
 			try {
 				const uploadResult = await uploadVideo(videoBuffer, req.body);
 				youtubeId = uploadResult.videoId;
-				await updateVideo(videoId, { youtube_link: youtubeId });
+				await updateVideo(videoId, { url: youtubeId });
 			} catch (youtubeErr) {
 				console.error("YouTube upload failed:", youtubeErr);
 				// Let the item be created even if YouTube fails initially until we handle it properly.
