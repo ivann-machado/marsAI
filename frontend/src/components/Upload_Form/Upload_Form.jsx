@@ -297,7 +297,7 @@ function UploadForm() {
   return (
     <div
       className="min-h-screen flex items-center justify-center 
-bg-gradient-to-br from-[#0f0f1a] via-[#1a1026] to-[#0f0f1a] p-6"
+bg-gradient-to-br from-[#0f0f1a] via-[#1a1026] to-[#0f0f1a] p-6 font-inter"
     >
       {/*  <form
         onSubmit={handleSubmit}
@@ -761,7 +761,7 @@ px-4
 text-white
 placeholder-white/40
 transition-all duration-300
-outline-none pb-2 pt-2
+outline-none pt-3 pb-2
 "
               />
               <p className="text-white">{videoError}</p>
@@ -792,7 +792,7 @@ px-4
 text-white
 placeholder-white/40
 transition-all duration-300
-outline-none pb-2 pt-2
+outline-none pt-3 pb-2
 "
               />
               <p className="text-white">{coverImageError}</p>
@@ -1046,34 +1046,22 @@ outline-none
               </div>
               <div className="flex flex-col md:w-full md:max-w-150">
                 <label
-                  htmlFor="instagram"
+                  htmlFor="producerImage"
                   className="text-sm text-white/70 mb-2 tracking-wide"
                 >
-                  Instagram :
+                  Photo du producteur :
                 </label>
                 <input
-                  type="text"
-                  name="instagram"
-                  id="instagram"
-                  ref={instagram}
+                  type="file"
+                  name="producerImage"
+                  id="producerImage"
+                  ref={producerImage}
                   onChange={() => {
-                    instagramCheck();
+                    coverImageCheck();
                   }}
-                  className="
-bg-white/5
-border border-white/20
-focus:border-purple-400
-focus:ring-2 focus:ring-purple-500/40
-rounded-xl
-h-12
-px-4
-text-white
-placeholder-white/40
-transition-all duration-300
-outline-none
-"
+                  className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none pt-3 pb-2"
                 />
-                <p className="text-white">{instagramError}</p>
+                <p className="text-white">{coverImageError}</p>
               </div>
             </div>
             <div className="flex flex-col md:flex-row md:justify-evenly md:p-4 md:gap-10 md:w-full">
@@ -1092,19 +1080,7 @@ outline-none
                   onChange={() => {
                     linkedinCheck();
                   }}
-                  className="
-bg-white/5
-border border-white/20
-focus:border-purple-400
-focus:ring-2 focus:ring-purple-500/40
-rounded-xl
-h-12
-px-4
-text-white
-placeholder-white/40
-transition-all duration-300
-outline-none
-"
+                  className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{linkedinError}</p>
               </div>
@@ -1207,34 +1183,22 @@ outline-none
             <div className="flex flex-col md:flex-row md:justify-evenly md:p-4 md:gap-10 md:w-full">
               <div className="flex flex-col md:w-full md:max-w-150">
                 <label
-                  htmlFor="producerImage"
+                  htmlFor="instagram"
                   className="text-sm text-white/70 mb-2 tracking-wide"
                 >
-                  Photo :
+                  Instagram :
                 </label>
                 <input
-                  type="file"
-                  name="producerImage"
-                  id="producerImage"
-                  ref={producerImage}
+                  type="text"
+                  name="instagram"
+                  id="instagram"
+                  ref={instagram}
                   onChange={() => {
-                    coverImageCheck();
+                    instagramCheck();
                   }}
-                  className="
-bg-white/5
-border border-white/20
-focus:border-purple-400
-focus:ring-2 focus:ring-purple-500/40
-rounded-xl
-h-12
-px-4
-text-white
-placeholder-white/40
-transition-all duration-300
-outline-none pb-2 pt-2
-"
+                  className=" bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 />
-                <p className="text-white">{coverImageError}</p>
+                <p className="text-white">{instagramError}</p>
               </div>
               <div className="flex flex-col md:w-full md:max-w-150">
                 <label
