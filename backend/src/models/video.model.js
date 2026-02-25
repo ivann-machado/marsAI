@@ -57,14 +57,11 @@ export const insertVideo = async (video, conn = null) => {
 	const query = `
 		INSERT INTO videos (
 			edition_id,
-			url,
 			filename,
 			email,
 			cover_image,
-			verified,
 			title,
 			description,
-			status,
 			country_id,
 			producer,
 			producer_image,
@@ -76,19 +73,16 @@ export const insertVideo = async (video, conn = null) => {
 			postprod_ai,
 			tags
 		)
-		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 	`;
 
 	const values = [
 		video.edition_id ?? null,
-		video.url,
 		video.filename,
 		video.email,
 		video.cover_image,
-		video.verified,
 		video.title,
 		video.description,
-		video.status,
 		video.country_id ?? null,
 		video.producer,
 		video.producer_image,
