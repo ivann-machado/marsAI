@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import viteLogo from "/vite.svg";
-import reactLogo from "../../assets/react.svg";
 import { useTranslation } from "react-i18next";
 import "../Upload_Form/upload.css";
+import { useFlash } from "../../context/FlashContext";
 
 function UploadForm() {
+  const { showFlash } = useFlash();
   const { t } = useTranslation();
   const [countryId, SetCountryId] = useState(null);
   const [step, setStep] = useState(0);
@@ -13,6 +13,7 @@ function UploadForm() {
   const countryOptions = [
     { label: "-- Sélectionnez un pays --", value: "" },
     { label: "France", value: 1 },
+    { label: "Espagne", value: 2 },
   ];
   function handleSelect(event) {
     SetCountryId(event.target.value);
@@ -35,10 +36,14 @@ function UploadForm() {
   const tags = useRef(null);
   const [majorityCertification, SetMajorityCertification] = useState(false);
   console.log({ majorityCertification });
-  const onCheckHandler = () => {
+  const certficitationHandler = () => {
     SetMajorityCertification(!majorityCertification);
   };
+
   const [rightGivaway, SetRightGivaway] = useState(false);
+  const rightGiveAwayHandler = () => {
+    SetRightGivaway(!rightGivaway);
+  };
   //Messages d'erreur
   const [titleError, SetTitleError] = useState();
   const [descError, SetDescError] = useState("");
@@ -65,6 +70,7 @@ function UploadForm() {
     try {
       e.preventDefault();
       majorityCheck();
+      rightGiveAwayCheck();
       const form = e.target;
       const uploadData = {
         title: title.current.value,
@@ -255,10 +261,18 @@ function UploadForm() {
   }
   function majorityCheck() {
     if (majorityCertification === false) {
-      SetMajorityCertificationError("Vous devez être agé de 18 ans ou plus");
+      showFlash("error", "Vous devez être agé de 18 ans ou plus");
       console.log("Vous devez être agé de 18 ans ou plus");
     } else {
       SetMajorityCertificationError("");
+    }
+  }
+  function rightGiveAwayCheck() {
+    if (rightGivaway === false) {
+      showFlash("error", "Vous devez donner vos droits");
+      console.log("Vous devez être agé de 18 ans ou plus");
+    } else {
+      SetRightGivawayError("");
     }
   }
   function tagCheck() {
@@ -663,7 +677,7 @@ bg-purple-600/20 rounded-full blur-3xl"
 text-3xl md:text-4xl font-semibold
 text-transparent bg-clip-text
 bg-gradient-to-r from-purple-400 via-pink-400 to-orange-300
-text-center mb-8
+text-center mb-8  pb-2 pt-2
 "
             >
               {t("upload_form.global_infos")}
@@ -747,7 +761,7 @@ px-4
 text-white
 placeholder-white/40
 transition-all duration-300
-outline-none
+outline-none pb-2 pt-2
 "
               />
               <p className="text-white">{videoError}</p>
@@ -755,7 +769,7 @@ outline-none
             <div className="flex flex-col p-4">
               <label
                 htmlFor="image"
-                className="text-sm text-white/70 mb-2 tracking-wide"
+                className="text-sm text-white/70 mb-2 tracking-wide "
               >
                 {t("upload_form.image")} :
               </label>
@@ -778,7 +792,7 @@ px-4
 text-white
 placeholder-white/40
 transition-all duration-300
-outline-none
+outline-none pb-2 pt-2
 "
               />
               <p className="text-white">{coverImageError}</p>
@@ -841,17 +855,7 @@ text-center mb-8
                   onChange={() => {
                     scenarioAiCheck();
                   }}
-                  className="
-bg-white/5
-border border-white/20
-focus:border-purple-400
-focus:ring-2 focus:ring-purple-500/40
-rounded-xl
-h-12
-px-4
-text-white
-placeholder-white/40
-transition-all duration-300
+                  className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40transition-all duration-300
 outline-none
 "
                 />
@@ -1227,7 +1231,7 @@ px-4
 text-white
 placeholder-white/40
 transition-all duration-300
-outline-none
+outline-none pb-2 pt-2
 "
                 />
                 <p className="text-white">{coverImageError}</p>
@@ -1251,7 +1255,7 @@ focus:ring-2 focus:ring-purple-500/40
 rounded-xl
 h-12
 px-4
-text-white
+text-black
 placeholder-white/40
 transition-all duration-300
 outline-none
@@ -1269,36 +1273,31 @@ outline-none
             </div>
 
             <div className="flex flex-col md:flex-row md:justify-evenly md:p-4 md:gap-10 md:w-full">
-              <div className="flex flex-col md:w-4/10">
-                <div className="flex flex-row gap-4">
-                  <input
-                    type="checkbox"
-                    name="majority_certification"
-                    id="majority_certification"
-                    checked={majorityCertification}
-                    onChange={onCheckHandler}
-                    className="bg-gray-700 border border-gray-500 rounded-lg"
-                  />
-                  <label
-                    htmlFor="majority_certification"
-                    className="text-white"
-                  >
-                    {t("upload_form.majority_certification")}
-                  </label>
-                </div>
-                <p className="text-white">{majorityCertificationError}</p>
+              <div className="flex flex-row gap-4 md:w-4/10 items-center">
+                <input
+                  type="checkbox"
+                  name="majority_certification"
+                  id="majority_certification"
+                  checked={majorityCertification}
+                  onChange={certficitationHandler}
+                  className="bg-gray-700 border border-gray-500 rounded-lg"
+                />
+                <label htmlFor="majority_certification" className="text-white">
+                  {t("upload_form.majority_certification")}
+                </label>
               </div>
+              {/* <p className="text-white">{majorityCertificationError}</p> */}
 
-              <div className="flex flex-row justify-evenly md:w-4/10">
+              <div className="flex flex-row gap-4 md:w-4/10">
                 <input
                   type="checkbox"
                   name="right_givaway"
                   id="right_givaway"
                   checked={rightGivaway}
-                  onChange={(e) => SetRightGivaway(e.target.checked)}
+                  onChange={rightGiveAwayHandler}
                   className="bg-gray-700 border border-gray-500 rounded-lg"
                 />
-                <label htmlFor="right_givaway" className="text-white w-5/10">
+                <label htmlFor="right_givaway" className="text-white">
                   {t("upload_form.right_givaway")}
                 </label>
               </div>

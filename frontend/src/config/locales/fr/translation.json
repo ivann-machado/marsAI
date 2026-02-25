@@ -45,7 +45,7 @@
     "title": "Titre",
     "desc": "Description",
     "video": "Vidéo",
-    "image": "Image",
+    "image": "Miniature de votre film",
     "production": "Réalisation",
     "scenario_ai": "IA scénario",
     "video_ai": "IA générative vidéo",
