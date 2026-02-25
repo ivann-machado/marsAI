@@ -1,14 +1,40 @@
 import { useState, useEffect } from "react";
 import { useFlash } from "../../context/FlashContext";
 import Loading from "../Utils/Loading";
+import { useauth } from "../../context/AuthContext";
 
 function AdminVideoPanel({ video_data }) {
   const [review, setReview] = useState(null);
   const [video, setVideo] = useState(video_data);
   const { showFlash } = useFlash();
+  const { id } = useauth();
 
   const handleGrade = (value) => {
     setReview((prev) => ({ ...prev, grade: value }));
+  };
+
+  const createReview = async () => {
+    console.log("CREATE REVIEW");
+    try {
+      const response = await fetch(
+        import.meta.env.VITE_API_URL + "/api/reviews/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ admin_id: id, video_id: video_data.id }),
+        },
+      );
+
+      if (!response.ok) throw new Error("Erreur lors de la création review");
+      const newReview = await response.json();
+      setReview(newReview);
+      showFlash("success", "Review enregistrée.");
+    } catch (err) {
+      showFlash("error", "Erreur lors de l'enregistrement du review");
+      console.error(err);
+    }
   };
 
   const handleSave = async () => {
@@ -61,16 +87,24 @@ function AdminVideoPanel({ video_data }) {
     const fetchData = async () => {
       try {
         // const response = await fetch("/data.json"); // il faut recuperer le vrai review
+        console.log("ICI");
         const response = await fetch(
-          import.meta.env.VITE_API_URL + "/api/reviews/" + review.id,
+          import.meta.env.VITE_API_URL +
+            "/api/reviews?admin_id=" +
+            id +
+            "&video_id=" +
+            video_data.id,
           {
             method: "GET",
             headers: { "Content-Type": "application/json" },
           },
         );
+        console.log(response);
         if (!response.ok) throw new Error("Erreur fetch JSON");
         const json = await response.json();
-        setReview(json);
+        console.log(json);
+        if (!json) createReview();
+        else setReview(json);
       } catch (err) {
         console.error(err);
       }
@@ -80,6 +114,8 @@ function AdminVideoPanel({ video_data }) {
   }, []);
 
   if (!review) return <Loading />;
+
+  console.log("REview" + review);
 
   return (
     <div className="bg-gray-600 min-h-20 items-center p-4 rounded-b-xl">
