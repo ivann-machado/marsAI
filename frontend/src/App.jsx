@@ -124,7 +124,7 @@ function App() {
         <FlashProvider>
           <SettingsProvider>
             <Routes>
-              <Route path="/" element={<HomepagePhase2 />} />
+              <Route path="/" element={<Homepage />} />
               <Route path="/video/:videoId" element={<VideoDetail />} />
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/participate" element={<UploadPage />} />
