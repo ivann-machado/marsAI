@@ -30,7 +30,7 @@ export const createReview = async (req, res) => {
 
 		res.status(201).json({
 			message: "Review created",
-			id: result.insertId,
+			id: result.insertId.toString(),
 		});
 	} catch (error) {
 		console.error("Create Review Error:", error);
