@@ -6,7 +6,18 @@ import "../Upload_Form/upload.css";
 
 function UploadForm() {
   const { t } = useTranslation();
-  //variables des inputs
+  const [countryId, SetCountryId] = useState(null);
+  const [step, setStep] = useState(0);
+  const nextStep = () => setStep((prev) => prev + 1);
+  const prevStep = () => setStep((prev) => prev - 1);
+  const countryOptions = [
+    { label: "-- Sélectionnez un pays --", value: "" },
+    { label: "France", value: 1 },
+  ];
+  function handleSelect(event) {
+    SetCountryId(event.target.value);
+  }
+  //Stockage des valeurs de chaques input dans leurs variables respectives
   const title = useRef(null);
   const description = useRef(null);
   const video = useRef(null);
@@ -17,14 +28,17 @@ function UploadForm() {
   const post_prod_ai = useRef(null);
   const producer = useRef(null);
   const producerImage = useRef(null);
-  const country = useRef(null);
   const instagram = useRef(null);
   const linkedin = useRef(null);
   const youtube = useRef(null);
   const email = useRef(null);
   const tags = useRef(null);
-  const [majority_certification, SetMajorityCertification] = useState(false);
-  const [right_givaway, SetRightGivaway] = useState(false);
+  const [majorityCertification, SetMajorityCertification] = useState(false);
+  console.log({ majorityCertification });
+  const onCheckHandler = () => {
+    SetMajorityCertification(!majorityCertification);
+  };
+  const [rightGivaway, SetRightGivaway] = useState(false);
   //Messages d'erreur
   const [titleError, SetTitleError] = useState();
   const [descError, SetDescError] = useState("");
@@ -50,8 +64,8 @@ function UploadForm() {
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
+      majorityCheck();
       const form = e.target;
-      const formData = new FormData(form);
       const uploadData = {
         title: title.current.value,
         description: description.current.value,
@@ -64,38 +78,37 @@ function UploadForm() {
         producer: producer.current.value,
         email: email.current.value,
         producerImage: producerImage.current.files[0],
-        country: country.current.value,
+        country: countryId,
         instagram: instagram.current.value,
         linkedin: linkedin.current.value,
         youtube: youtube.current.value,
         tags: tags.current.value,
       };
+      const formData = new FormData();
+      formData.append("edition_id", 1);
+      formData.append("url", "");
+      formData.append("verified", 1);
+      formData.append("filename", uploadData.video);
+      formData.append("email", uploadData.email);
+      formData.append("cover_image", uploadData.image);
+      formData.append("title", uploadData.title);
+      formData.append("description", uploadData.description);
+      formData.append("status", "unverified");
+      formData.append("country_id", uploadData.country);
+      formData.append("producer", uploadData.producer);
+      formData.append("producer_image", uploadData.producerImage);
+      formData.append("linkedin_link", uploadData.linkedin);
+      formData.append("youtube_link", uploadData.youtube);
+      formData.append("scenario_ai", uploadData.scenario_ai);
+      formData.append("video_gen_ai", uploadData.video_ai);
+      formData.append("sound_ai", uploadData.sound_ai);
+      formData.append("postprod_ai", uploadData.post_prod_ai);
+      formData.append("tags", uploadData.tags);
 
       console.log(uploadData);
       const res = await fetch(import.meta.env.VITE_API_URL + "/api/videos", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          edition_id: 1,
-          url: "",
-          verified: 1,
-          filename: uploadData.video,
-          email: uploadData.email,
-          cover_image: uploadData.image,
-          title: uploadData.title,
-          description: uploadData.description,
-          status: "unverified",
-          country_id: 1,
-          producer: uploadData.producer,
-          producer_image: uploadData.producerImage,
-          linkedin_link: uploadData.linkedin,
-          youtube_link: uploadData.youtube,
-          scenario_ai: uploadData.scenario_ai,
-          video_gen_ai: uploadData.video_ai,
-          sound_ai: uploadData.sound_ai,
-          postprod_ai: uploadData.post_prod_ai,
-          tags: uploadData.tags,
-        }),
+        body: formData,
       });
 
       const data = await res.json().catch(() => ({}));
@@ -241,9 +254,9 @@ function UploadForm() {
     }
   }
   function majorityCheck() {
-    if (tags.current.value.trim() === "") {
-      SetMajorityCertificationError("Champ vide");
-      console.log("Input is empty");
+    if (majorityCertification === false) {
+      SetMajorityCertificationError("Vous devez être agé de 18 ans ou plus");
+      console.log("Vous devez être agé de 18 ans ou plus");
     } else {
       SetMajorityCertificationError("");
     }
@@ -256,6 +269,7 @@ function UploadForm() {
       SetTagError("");
     }
   }
+
   function coverImageCheck() {
     if (tags.current.value.trim() === "") {
       SetCoverImageError("Champ vide");
@@ -265,11 +279,13 @@ function UploadForm() {
     }
   }
 
-  console.log(majority_certification);
   const formSubmit = useState(false);
   return (
-    <div className="flex flex-col justify-center items-center bg-[#050505] pt-4 pb-4">
-      <form
+    <div
+      className="min-h-screen flex items-center justify-center 
+bg-gradient-to-br from-[#0f0f1a] via-[#1a1026] to-[#0f0f1a] p-6"
+    >
+      {/*  <form
         onSubmit={handleSubmit}
         className="bg-[#1B1B1B] shadow-[0px_0px_10px_2px] shadow-blue-600/75 w-9/10 rounded-4xl flex flex-col items-center gap-2 pt-4 pb-4"
       >
@@ -544,42 +560,50 @@ function UploadForm() {
               <p className="text-white">{coverImageError}</p>
             </div>
             <div className="flex flex-col md:w-full md:max-w-150">
-              <label htmlFor="country" className="text-white">
+              <label htmlFor="countrySelect" className="text-white">
                 Votre Pays :
               </label>
               <select
-                name="country"
-                id="country"
-                ref={country}
-                onChange={() => {
-                  tagCheck();
-                }}
+                name="countrySelect"
+                id="countrySelect"
+                onChange={handleSelect}
                 className="bg-gray-900 text-white border-2 border-[#F2F2F2]/20 rounded-lg w-full h-10 p-1"
-              ></select>
+              >
+                {countryOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              <p className="text-white">{countryId}</p>
               <p className="text-white">{tagError}</p>
             </div>
           </div>
         </div>
-        <div className=" flex flex-col gap-2 p-2 w-9/10 md:flex-row md:justify-evenly md:p-2">
-          <div className="flex flex-row md:w-4/10">
-            <input
-              type="checkbox"
-              name="majority_certification"
-              id="majority_certification"
-              checked={majority_certification}
-              onChange={(e) => SetMajorityCertification(e.target.checked)}
-              className="bg-gray-700 border border-gray-500 rounded-lg"
-            />
-            <label htmlFor="majority_certification" className="text-white">
-              {t("upload_form.majority_certification")}
-            </label>
+        <div className="flex flex-col gap-2 p-2 w-9/10 md:flex-row md:justify-evenly md:p-2">
+          <div className="flex flex-col md:w-4/10">
+            <div className="flex flex-row gap-4">
+              <input
+                type="checkbox"
+                name="majority_certification"
+                id="majority_certification"
+                checked={majorityCertification}
+                onChange={onCheckHandler}
+                className="bg-gray-700 border border-gray-500 rounded-lg"
+              />
+              <label htmlFor="majority_certification" className="text-white">
+                {t("upload_form.majority_certification")}
+              </label>
+            </div>
+            <p className="text-white">{majorityCertificationError}</p>
           </div>
+
           <div className="flex flex-row justify-evenly md:w-4/10">
             <input
               type="checkbox"
               name="right_givaway"
               id="right_givaway"
-              checked={right_givaway}
+              checked={rightGivaway}
               onChange={(e) => SetRightGivaway(e.target.checked)}
               className="bg-gray-700 border border-gray-500 rounded-lg"
             />
@@ -597,6 +621,725 @@ function UploadForm() {
         >
           {t("upload_form.submit_btn")} {">>"}{" "}
         </button>
+      </form> */}
+      <form
+        onSubmit={handleSubmit}
+        className="
+relative w-[95%] max-w-4xl
+bg-white/5 backdrop-blur-xl
+border border-white/10
+rounded-3xl
+shadow-[0_0_40px_rgba(194,122,255,0.25)]
+flex flex-col items-center gap-10
+px-6 md:px-12 py-10
+overflow-hidden
+"
+      >
+        <div
+          className="absolute -top-40 -left-40 w-96 h-96 
+bg-purple-600/20 rounded-full blur-3xl"
+        />
+        {/* Progress Bar */}
+        <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+          <div
+            className="h-full bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400
+               transition-all duration-700 ease-out"
+            style={{ width: `${((step + 1) / 3) * 100}%` }}
+          />
+        </div>
+
+        {/* Animated Container */}
+        <div className="relative w-full overflow-hidden">
+          {/* ================= STEP 1 ================= */}
+          <div
+            className={`transition-all duration-500 w-full ${
+              step === 0
+                ? "opacity-100 translate-x-0"
+                : "opacity-0 -translate-x-full absolute"
+            }`}
+          >
+            <p
+              className="
+text-3xl md:text-4xl font-semibold
+text-transparent bg-clip-text
+bg-gradient-to-r from-purple-400 via-pink-400 to-orange-300
+text-center mb-8
+"
+            >
+              {t("upload_form.global_infos")}
+            </p>
+
+            {/* TITLE */}
+            <div className="flex flex-col p-4">
+              <label className="text-sm text-white/70 mb-2 tracking-wide">
+                {t("upload_form.title")} :
+              </label>
+              <input
+                type="text"
+                ref={title}
+                onChange={titleCheck}
+                className="
+bg-white/5
+border border-white/20
+focus:border-purple-400
+focus:ring-2 focus:ring-purple-500/40
+rounded-xl
+h-12
+px-4
+text-white
+placeholder-white/40
+transition-all duration-300
+outline-none
+"
+              />
+              <p className="text-red-400">{titleError}</p>
+            </div>
+
+            {/* DESCRIPTION */}
+            <div className="flex flex-col p-4">
+              <label className="text-sm text-white/70 mb-2 tracking-wide">
+                {t("upload_form.desc")} :
+              </label>
+              <input
+                type="text"
+                ref={description}
+                onChange={descCheck}
+                className="
+bg-white/5
+border border-white/20
+focus:border-purple-400
+focus:ring-2 focus:ring-purple-500/40
+rounded-xl
+h-12
+px-4
+text-white
+placeholder-white/40
+transition-all duration-300
+outline-none
+"
+              />
+              <p className="text-red-400">{descError}</p>
+            </div>
+
+            <div className="flex flex-col p-4">
+              <label
+                htmlFor="video"
+                className="text-sm text-white/70 mb-2 tracking-wide"
+              >
+                {t("upload_form.video")} :
+              </label>
+              <input
+                type="file"
+                name="video"
+                id="video"
+                ref={video}
+                onChange={() => {
+                  videoCheck();
+                }}
+                className="
+bg-white/5
+border border-white/20
+focus:border-purple-400
+focus:ring-2 focus:ring-purple-500/40
+rounded-xl
+h-12
+px-4
+text-white
+placeholder-white/40
+transition-all duration-300
+outline-none
+"
+              />
+              <p className="text-white">{videoError}</p>
+            </div>
+            <div className="flex flex-col p-4">
+              <label
+                htmlFor="image"
+                className="text-sm text-white/70 mb-2 tracking-wide"
+              >
+                {t("upload_form.image")} :
+              </label>
+              <input
+                type="file"
+                name="cover-image"
+                id="cover-mage"
+                ref={coverImage}
+                onChange={() => {
+                  coverImageCheck();
+                }}
+                className="
+bg-white/5
+border border-white/20
+focus:border-purple-400
+focus:ring-2 focus:ring-purple-500/40
+rounded-xl
+h-12
+px-4
+text-white
+placeholder-white/40
+transition-all duration-300
+outline-none
+"
+              />
+              <p className="text-white">{coverImageError}</p>
+            </div>
+
+            <div className="flex justify-end p-4">
+              <button
+                type="button"
+                onClick={nextStep}
+                className="
+px-8 py-3
+rounded-xl
+font-medium
+bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400
+hover:scale-105
+hover:shadow-[0_0_25px_rgba(236,72,153,0.6)]
+transition-all duration-300
+text-white
+"
+              >
+                Next →
+              </button>
+            </div>
+          </div>
+
+          {/* ================= STEP 2 ================= */}
+          <div
+            className={`transition-all duration-500 w-full ${
+              step === 1
+                ? "opacity-100 translate-x-0"
+                : step < 1
+                  ? "opacity-0 translate-x-full absolute"
+                  : "opacity-0 -translate-x-full absolute"
+            }`}
+          >
+            <p
+              className="
+text-3xl md:text-4xl font-semibold
+text-transparent bg-clip-text
+bg-gradient-to-r from-purple-400 via-pink-400 to-orange-300
+text-center mb-8
+"
+            >
+              {t("upload_form.production")}
+            </p>
+
+            <div className=" flex flex-col md:flex-row md:justify-evenly md:p-4 md:gap-10 md:w-full">
+              <div className="flex flex-col md:w-full md:max-w-150">
+                <label
+                  htmlFor="scenario_ai"
+                  className="text-sm text-white/70 mb-2 tracking-wide"
+                >
+                  {t("upload_form.scenario_ai")} :
+                </label>
+                <input
+                  type="text"
+                  name="scenario_ai"
+                  id="scenario_ai"
+                  ref={scenario_ai}
+                  onChange={() => {
+                    scenarioAiCheck();
+                  }}
+                  className="
+bg-white/5
+border border-white/20
+focus:border-purple-400
+focus:ring-2 focus:ring-purple-500/40
+rounded-xl
+h-12
+px-4
+text-white
+placeholder-white/40
+transition-all duration-300
+outline-none
+"
+                />
+                <p className="text-white">{scenarioAiError}</p>
+              </div>
+              <div className="flex flex-col md:w-full md:max-w-150">
+                <label
+                  htmlFor="video_ai"
+                  className="text-sm text-white/70 mb-2 tracking-wide"
+                >
+                  {t("upload_form.video_ai")} :
+                </label>
+                <input
+                  type="text"
+                  name="video_ai"
+                  id="video_ai"
+                  ref={video_ai}
+                  onChange={() => {
+                    videoAiCheck();
+                  }}
+                  className="
+bg-white/5
+border border-white/20
+focus:border-purple-400
+focus:ring-2 focus:ring-purple-500/40
+rounded-xl
+h-12
+px-4
+text-white
+placeholder-white/40
+transition-all duration-300
+outline-none
+"
+                />
+                <p className="text-white">{videoAiError}</p>
+              </div>
+            </div>
+            <div className="flex flex-col md:flex-row md:justify-evenly md:p-4 md:gap-10 md:w-full">
+              <div className="flex flex-col md:w-full md:max-w-150">
+                <label
+                  htmlFor="sound_ai"
+                  className="text-sm text-white/70 mb-2 tracking-wide"
+                >
+                  {t("upload_form.sound_ai")} :
+                </label>
+                <input
+                  type="text"
+                  name="sound_ai"
+                  id="sound_ai"
+                  ref={sound_ai}
+                  onChange={() => {
+                    soundAiCheck();
+                  }}
+                  className="
+bg-white/5
+border border-white/20
+focus:border-purple-400
+focus:ring-2 focus:ring-purple-500/40
+rounded-xl
+h-12
+px-4
+text-white
+placeholder-white/40
+transition-all duration-300
+outline-none
+"
+                />
+                <p className="text-white">{soundAiError}</p>
+              </div>
+              <div className="flex flex-col md:w-full md:max-w-150">
+                <label
+                  htmlFor="post_prod_ai"
+                  className="text-sm text-white/70 mb-2 tracking-wide"
+                >
+                  {t("upload_form.post_prod_ai")} :
+                </label>
+                <input
+                  type="text"
+                  name="post_prod_ai"
+                  id="post_prod_ai"
+                  ref={post_prod_ai}
+                  onChange={() => {
+                    postProdAiCheck();
+                  }}
+                  className="
+bg-white/5
+border border-white/20
+focus:border-purple-400
+focus:ring-2 focus:ring-purple-500/40
+rounded-xl
+h-12
+px-4
+text-white
+placeholder-white/40
+transition-all duration-300
+outline-none
+"
+                />
+                <p className="text-white">{postProdAiError}</p>
+              </div>
+            </div>
+
+            <div className="flex justify-between p-4">
+              <button
+                type="button"
+                onClick={prevStep}
+                className="
+px-6 py-3
+rounded-xl
+bg-white/10
+hover:bg-white/20
+transition-all duration-300
+text-white
+"
+              >
+                ← Back
+              </button>
+
+              <button
+                type="button"
+                onClick={nextStep}
+                className="
+px-8 py-3
+rounded-xl
+font-medium
+bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400
+hover:scale-105
+hover:shadow-[0_0_25px_rgba(236,72,153,0.6)]
+transition-all duration-300
+text-white
+"
+              >
+                Next →
+              </button>
+            </div>
+          </div>
+
+          {/* ================= STEP 3 ================= */}
+          <div
+            className={`transition-all duration-500 w-full ${
+              step === 2
+                ? "opacity-100 translate-x-0"
+                : "opacity-0 translate-x-full absolute"
+            }`}
+          >
+            <p
+              className="
+text-3xl md:text-4xl font-semibold
+text-transparent bg-clip-text
+bg-gradient-to-r from-purple-400 via-pink-400 to-orange-300
+text-center mb-8
+"
+            >
+              {t("upload_form.more_info")}
+            </p>
+
+            <div className="flex flex-col md:flex-row md:justify-evenly md:p-4 md:gap-10 md:w-full">
+              <div className="flex flex-col md:w-full md:max-w-150">
+                <label
+                  htmlFor="more_info"
+                  className="text-sm text-white/70 mb-2 tracking-wide"
+                >
+                  {t("upload_form.producer")} :
+                </label>
+                <input
+                  type="text"
+                  name="producer"
+                  id="producer"
+                  ref={producer}
+                  onChange={() => {
+                    producerCheck();
+                  }}
+                  className="
+bg-white/5
+border border-white/20
+focus:border-purple-400
+focus:ring-2 focus:ring-purple-500/40
+rounded-xl
+h-12
+px-4
+text-white
+placeholder-white/40
+transition-all duration-300
+outline-none
+"
+                />
+                <p className="text-white">{producerError}</p>
+              </div>
+              <div className="flex flex-col md:w-full md:max-w-150">
+                <label
+                  htmlFor="instagram"
+                  className="text-sm text-white/70 mb-2 tracking-wide"
+                >
+                  Instagram :
+                </label>
+                <input
+                  type="text"
+                  name="instagram"
+                  id="instagram"
+                  ref={instagram}
+                  onChange={() => {
+                    instagramCheck();
+                  }}
+                  className="
+bg-white/5
+border border-white/20
+focus:border-purple-400
+focus:ring-2 focus:ring-purple-500/40
+rounded-xl
+h-12
+px-4
+text-white
+placeholder-white/40
+transition-all duration-300
+outline-none
+"
+                />
+                <p className="text-white">{instagramError}</p>
+              </div>
+            </div>
+            <div className="flex flex-col md:flex-row md:justify-evenly md:p-4 md:gap-10 md:w-full">
+              <div className="flex flex-col md:w-full md:max-w-150">
+                <label
+                  htmlFor="linkedin"
+                  className="text-sm text-white/70 mb-2 tracking-wide"
+                >
+                  Linkedin :
+                </label>
+                <input
+                  type="text"
+                  name="linkedin"
+                  id="linkedin"
+                  ref={linkedin}
+                  onChange={() => {
+                    linkedinCheck();
+                  }}
+                  className="
+bg-white/5
+border border-white/20
+focus:border-purple-400
+focus:ring-2 focus:ring-purple-500/40
+rounded-xl
+h-12
+px-4
+text-white
+placeholder-white/40
+transition-all duration-300
+outline-none
+"
+                />
+                <p className="text-white">{linkedinError}</p>
+              </div>
+              <div className="flex flex-col md:w-full md:max-w-150">
+                <label
+                  htmlFor="youtube"
+                  className="text-sm text-white/70 mb-2 tracking-wide"
+                >
+                  Youtube :
+                </label>
+                <input
+                  type="text"
+                  name="youtube"
+                  id="youtube"
+                  ref={youtube}
+                  onChange={() => {
+                    youtubeCheck();
+                  }}
+                  className="
+bg-white/5
+border border-white/20
+focus:border-purple-400
+focus:ring-2 focus:ring-purple-500/40
+rounded-xl
+h-12
+px-4
+text-white
+placeholder-white/40
+transition-all duration-300
+outline-none
+"
+                />
+                <p className="text-white">{youtubeError}</p>
+              </div>
+            </div>
+            <div className="flex flex-col md:flex-row md:justify-evenly md:p-4 md:gap-10 md:w-full">
+              <div className="flex flex-col md:w-full md:max-w-150">
+                <label
+                  htmlFor="email"
+                  className="text-sm text-white/70 mb-2 tracking-wide"
+                >
+                  Email :
+                </label>
+                <input
+                  type="text"
+                  name="email"
+                  id="email"
+                  ref={email}
+                  onChange={() => {
+                    emailCheck();
+                  }}
+                  className="
+bg-white/5
+border border-white/20
+focus:border-purple-400
+focus:ring-2 focus:ring-purple-500/40
+rounded-xl
+h-12
+px-4
+text-white
+placeholder-white/40
+transition-all duration-300
+outline-none
+"
+                />
+                <p className="text-white">{emailError}</p>
+              </div>
+              <div className="flex flex-col md:w-full md:max-w-150">
+                <label
+                  htmlFor="tags"
+                  className="text-sm text-white/70 mb-2 tracking-wide"
+                >
+                  Tags :
+                </label>
+                <input
+                  type="text"
+                  name="tags"
+                  id="tags"
+                  ref={tags}
+                  onChange={() => {
+                    tagCheck();
+                  }}
+                  className="
+bg-white/5
+border border-white/20
+focus:border-purple-400
+focus:ring-2 focus:ring-purple-500/40
+rounded-xl
+h-12
+px-4
+text-white
+placeholder-white/40
+transition-all duration-300
+outline-none
+"
+                />
+                <p className="text-white">{tagError}</p>
+              </div>
+            </div>
+            <div className="flex flex-col md:flex-row md:justify-evenly md:p-4 md:gap-10 md:w-full">
+              <div className="flex flex-col md:w-full md:max-w-150">
+                <label
+                  htmlFor="producerImage"
+                  className="text-sm text-white/70 mb-2 tracking-wide"
+                >
+                  Photo :
+                </label>
+                <input
+                  type="file"
+                  name="producerImage"
+                  id="producerImage"
+                  ref={producerImage}
+                  onChange={() => {
+                    coverImageCheck();
+                  }}
+                  className="
+bg-white/5
+border border-white/20
+focus:border-purple-400
+focus:ring-2 focus:ring-purple-500/40
+rounded-xl
+h-12
+px-4
+text-white
+placeholder-white/40
+transition-all duration-300
+outline-none
+"
+                />
+                <p className="text-white">{coverImageError}</p>
+              </div>
+              <div className="flex flex-col md:w-full md:max-w-150">
+                <label
+                  htmlFor="countrySelect"
+                  className="text-sm text-white/70 mb-2 tracking-wide"
+                >
+                  Votre Pays :
+                </label>
+                <select
+                  name="countrySelect"
+                  id="countrySelect"
+                  onChange={handleSelect}
+                  className="
+bg-white/5
+border border-white/20
+focus:border-purple-400
+focus:ring-2 focus:ring-purple-500/40
+rounded-xl
+h-12
+px-4
+text-white
+placeholder-white/40
+transition-all duration-300
+outline-none
+"
+                >
+                  {countryOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+                <p className="text-white">{countryId}</p>
+                <p className="text-white">{tagError}</p>
+              </div>
+            </div>
+
+            <div className="flex flex-col md:flex-row md:justify-evenly md:p-4 md:gap-10 md:w-full">
+              <div className="flex flex-col md:w-4/10">
+                <div className="flex flex-row gap-4">
+                  <input
+                    type="checkbox"
+                    name="majority_certification"
+                    id="majority_certification"
+                    checked={majorityCertification}
+                    onChange={onCheckHandler}
+                    className="bg-gray-700 border border-gray-500 rounded-lg"
+                  />
+                  <label
+                    htmlFor="majority_certification"
+                    className="text-white"
+                  >
+                    {t("upload_form.majority_certification")}
+                  </label>
+                </div>
+                <p className="text-white">{majorityCertificationError}</p>
+              </div>
+
+              <div className="flex flex-row justify-evenly md:w-4/10">
+                <input
+                  type="checkbox"
+                  name="right_givaway"
+                  id="right_givaway"
+                  checked={rightGivaway}
+                  onChange={(e) => SetRightGivaway(e.target.checked)}
+                  className="bg-gray-700 border border-gray-500 rounded-lg"
+                />
+                <label htmlFor="right_givaway" className="text-white w-5/10">
+                  {t("upload_form.right_givaway")}
+                </label>
+              </div>
+            </div>
+
+            {/* <p className="text-red-400">{majorityCertificationError}</p> */}
+
+            <div className="flex justify-between p-4">
+              <button
+                type="button"
+                onClick={prevStep}
+                className="
+px-6 py-3
+rounded-xl
+bg-white/10
+hover:bg-white/20
+transition-all duration-300
+text-white
+"
+              >
+                ← Back
+              </button>
+
+              <button
+                type="submit"
+                className="
+px-10 py-3
+rounded-xl
+font-semibold
+text-white
+bg-gradient-to-r from-yellow-400 via-orange-500 to-pink-500
+hover:scale-105
+hover:shadow-[0_0_10px_rgba(251,191,36,0.7)]
+transition-all duration-300
+"
+              >
+                {t("upload_form.submit_btn")} →
+              </button>
+            </div>
+          </div>
+        </div>
       </form>
       <div>
         {videoURL && (
@@ -604,7 +1347,7 @@ function UploadForm() {
             <h3 className="text-white">Votre vidéo: </h3>
 
             {/* For Images */}
-            <img
+            <video
               src={videoURL}
               alt="preview"
               width="250"
