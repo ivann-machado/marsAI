@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import "../Upload_Form/upload.css";
 import { useFlash } from "../../context/FlashContext";
+import LoadingButton from "../Loading/LoadingButton";
 
 function UploadForm() {
   const { showFlash } = useFlash();
@@ -15,6 +16,7 @@ function UploadForm() {
     { label: "France", value: 1 },
     { label: "Espagne", value: 2 },
   ];
+  const [loading, SetLoading] = useState(false);
   function handleSelect(event) {
     SetCountryId(event.target.value);
   }
@@ -112,6 +114,7 @@ function UploadForm() {
       formData.append("tags", uploadData.tags);
 
       console.log(uploadData);
+      SetLoading(true);
       const res = await fetch(import.meta.env.VITE_API_URL + "/api/videos", {
         method: "POST",
         body: formData,
@@ -120,6 +123,7 @@ function UploadForm() {
       const data = await res.json().catch(() => ({}));
 
       if (res.ok) {
+        SetLoading(false);
         alert("Film envoyé avec succès.");
         //Création d'un URL pour afficher les files
         if (uploadData.video) {
@@ -129,6 +133,7 @@ function UploadForm() {
         }
       } else {
         alert(data.video || "Erreur lors de l'envoi du film.");
+        SetLoading(false);
       }
     } catch (error) {
       console.error("Contact submit error:", error);
@@ -177,7 +182,7 @@ function UploadForm() {
     }
   }
   function coverImageCheck() {
-    if (image.current.files[0] === null) {
+    if (image.current.files[0] === "") {
       SetCoverImageError("Champ vide");
       console.log("Input is empty");
     } else {
@@ -781,19 +786,7 @@ outline-none pt-3 pb-2
                 onChange={() => {
                   coverImageCheck();
                 }}
-                className="
-bg-white/5
-border border-white/20
-focus:border-purple-400
-focus:ring-2 focus:ring-purple-500/40
-rounded-xl
-h-12
-px-4
-text-white
-placeholder-white/40
-transition-all duration-300
-outline-none pt-3 pb-2
-"
+                className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none pt-3 pb-2"
               />
               <p className="text-white">{coverImageError}</p>
             </div>
@@ -1197,19 +1190,7 @@ outline-none
                   name="countrySelect"
                   id="countrySelect"
                   onChange={handleSelect}
-                  className="
-bg-white/5
-border border-white/20
-focus:border-purple-400
-focus:ring-2 focus:ring-purple-500/40
-rounded-xl
-h-12
-px-4
-text-black
-placeholder-white/40
-transition-all duration-300
-outline-none
-"
+                  className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-black placeholder-white/40 transition-all duration-300 outline-none"
                 >
                   {countryOptions.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -1259,33 +1240,14 @@ outline-none
               <button
                 type="button"
                 onClick={prevStep}
-                className="
-px-6 py-3
-rounded-xl
-bg-white/10
-hover:bg-white/20
-transition-all duration-300
-text-white
-"
+                className="px-6 py-3 rounded-xl bg-white/10 hover:bg-white/20 transition-all duration-300 text-white"
               >
                 ← Back
               </button>
 
-              <button
-                type="submit"
-                className="
-px-10 py-3
-rounded-xl
-font-semibold
-text-white
-bg-gradient-to-r from-yellow-400 via-orange-500 to-pink-500
-hover:scale-105
-hover:shadow-[0_0_10px_rgba(251,191,36,0.7)]
-transition-all duration-300
-"
-              >
+              <LoadingButton type="submit" loading={loading}>
                 {t("upload_form.submit_btn")} →
-              </button>
+              </LoadingButton>
             </div>
           </div>
         </div>
