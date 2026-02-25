@@ -217,11 +217,6 @@ function HomepagePhase2() {
               ))}
             </div>
 
-            <button
-              className={`px-12 py-4 bg-gradient-to-r from-[#ec4899] to-[#a855f7] text-white ${btn} text-base ${btnHover} hover:shadow-[0_20px_50px_rgba(236,72,153,0.6)]`}
-            >
-              {t("homepage.phase2_book_seat")}
-            </button>
           </div>
         </section>
 
