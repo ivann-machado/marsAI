@@ -60,17 +60,17 @@ function AdminVideoPanel({ video_data }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/data.json"); // il faut recuperer le vrai review
-        /*  const response = await fetch(
+        // const response = await fetch("/data.json"); // il faut recuperer le vrai review
+        const response = await fetch(
           import.meta.env.VITE_API_URL + "/api/reviews/" + review.id,
           {
             method: "GET",
             headers: { "Content-Type": "application/json" },
           },
-        ); */
+        );
         if (!response.ok) throw new Error("Erreur fetch JSON");
         const json = await response.json();
-        setReview(json.mockedReview);
+        setReview(json);
       } catch (err) {
         console.error(err);
       }
