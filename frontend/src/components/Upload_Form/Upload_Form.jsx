@@ -1269,7 +1269,43 @@ outline-none
               </div>
             </div>
 
-            <p className="text-red-400">{majorityCertificationError}</p>
+            <div className="flex flex-col md:flex-row md:justify-evenly md:p-4 md:gap-10 md:w-full">
+              <div className="flex flex-col md:w-4/10">
+                <div className="flex flex-row gap-4">
+                  <input
+                    type="checkbox"
+                    name="majority_certification"
+                    id="majority_certification"
+                    checked={majorityCertification}
+                    onChange={onCheckHandler}
+                    className="bg-gray-700 border border-gray-500 rounded-lg"
+                  />
+                  <label
+                    htmlFor="majority_certification"
+                    className="text-white"
+                  >
+                    {t("upload_form.majority_certification")}
+                  </label>
+                </div>
+                <p className="text-white">{majorityCertificationError}</p>
+              </div>
+
+              <div className="flex flex-row justify-evenly md:w-4/10">
+                <input
+                  type="checkbox"
+                  name="right_givaway"
+                  id="right_givaway"
+                  checked={rightGivaway}
+                  onChange={(e) => SetRightGivaway(e.target.checked)}
+                  className="bg-gray-700 border border-gray-500 rounded-lg"
+                />
+                <label htmlFor="right_givaway" className="text-white w-5/10">
+                  {t("upload_form.right_givaway")}
+                </label>
+              </div>
+            </div>
+
+            {/* <p className="text-red-400">{majorityCertificationError}</p> */}
 
             <div className="flex justify-between p-4">
               <button
