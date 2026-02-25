@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { getYouTubeClient, getOAuth2Client } from '../config/youtube.js';
+import { getYouTubeClient } from '../config/youtube.js';
 
 /**
  * Upload a video to YouTube
@@ -7,12 +7,12 @@ import { getYouTubeClient, getOAuth2Client } from '../config/youtube.js';
  * @param {object} metadata - Video metadata (title, description, tags, etc.)
  * @returns {Promise<{videoId: string, title: string}>}
  */
-export const uploadVideo = async (filePath, metadata = {}, privacyStatus = 'private') => {
+export const uploadVideo = async (videoBuffer, metadata = {}, privacyStatus = 'unlisted') => {
 	try {
 		console.log('Starting YouTube video upload...');
 
-		if (!fs.existsSync(filePath)) {
-			throw new Error(`Video file not found: ${filePath}`);
+		if (!videoBuffer) {
+			throw new Error(`Video buffer is required`);
 		}
 
 		const youtube = getYouTubeClient();
@@ -38,7 +38,7 @@ export const uploadVideo = async (filePath, metadata = {}, privacyStatus = 'priv
 		};
 
 		const mediaBody = {
-			body: fs.createReadStream(filePath)
+			body: videoBuffer
 		};
 
 		console.log(`Uploading video: ${title}`);
