@@ -5,7 +5,7 @@ function OtherSponsors({ sponsors }) {
 
   return (
     <div className="bg-gray-800 md:mx-auto pt-6">
-      <h1 className="text-center text-3xl font-extrabold text-white my-6">
+      <h1 className="text-center text-3xl font-extrabold text-white my-6 font-orbitron">
         {t("sponsors_page.other_sponsors")}
       </h1>
       <div className="p-4 flex flex-wrap gap-8 justify-around md:max-w-300 md:mx-auto">

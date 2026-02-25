@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap");
 @import "tailwindcss";
 
 .no-scroll {
@@ -6,11 +6,11 @@
 }
 
 .font-orbitron {
-  font-family: 'Orbitron', sans-serif;
+  font-family: "Orbitron", sans-serif;
 }
 
 .font-inter {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 @keyframes fadeInUp {
@@ -47,6 +47,6 @@
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .scrollbar-hide {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }

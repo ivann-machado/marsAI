@@ -8,7 +8,7 @@ function FlashMsg({ type, message, onClose }) {
 
   return (
     <div
-      className={`fixed bottom-6 right-6 px-6 py-4 rounded-lg text-white ${bgColor}`}
+      className={`relative bottom-6 right-6 px-6 py-4 rounded-lg text-white ${bgColor}`}
     >
       <button
         onClick={onClose}

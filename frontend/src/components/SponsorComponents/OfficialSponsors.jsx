@@ -5,7 +5,15 @@ function OfficialSponsors({ sponsors }) {
 
   return (
     <div className="pt-10">
-      <h1 className="text-center text-6xl font-extrabold text-white my-10">
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage: `linear-gradient(135deg, rgba(168,85,247,0.4) 0%, transparent 50%), linear-gradient(225deg, rgba(236,72,153,0.3) 0%, transparent 50%)`,
+          backgroundSize: "cover",
+          transform: `translateY(${scrollY * 0.3}px)`,
+        }}
+      />
+      <h1 className="text-center text-6xl font-extrabold text-white my-10 font-orbitron">
         {t("sponsors_page.official_sponsors")}
       </h1>
       <div className="p-4 md:flex md:flex-wrap md:gap-20 md:justify-around md:max-w-300 md:mx-auto">

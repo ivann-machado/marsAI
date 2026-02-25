@@ -16,7 +16,7 @@ function SelectedEvent({ selectedEvent }) {
     selectedEvent && (
       <div className="lg:col-span-2">
         <div className="bg-gray-800 border rounded-xl p-6 text-white">
-          <h1 className="font-bold text-2xl text-center mb-4">
+          <h1 className="font-bold text-2xl text-center mb-4 font-orbitron">
             {selectedEvent.name} - {selectedEvent.type}
           </h1>
 
