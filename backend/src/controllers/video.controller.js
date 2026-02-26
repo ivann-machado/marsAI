@@ -58,12 +58,12 @@ import { uploadVideo } from "../services/youtube.service.js";
 export const getAllVideos = async (req, res) => {
 	try {
 		const videos = await selectAllVideos();
-		const videosWithUrls = videos.map((video) => {
+		const videosWithUrls = videos.map(video => {
 			return {
 				...video,
 				filename: getFileUrl(video.filename),
 				cover_image: getFileUrl(video.cover_image),
-				subtitles: getFileUrl(video.subtitles),
+				subtitles: getFileUrl(video.subtitles)
 			};
 		});
 		res.status(200).json(videosWithUrls);
