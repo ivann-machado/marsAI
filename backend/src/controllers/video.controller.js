@@ -89,7 +89,7 @@ export const getVideoById = async (req, res) => {
 			...video,
 			filename: getFileUrl(video.filename),
 			cover_image: getFileUrl(video.cover_image),
-			subtitles: getFileUrl(video.subtitles),
+			subtitles: getFileUrl(video.subtitles)
 		});
 	} catch (err) {
 		console.error("Get Video By ID Error:", err);
@@ -129,14 +129,15 @@ export const createVideo = async (req, res) => {
 						insertProcessQueue({
 							video_id: videoId,
 							filename: body.filename,
-							type: "yt_status_check",
+							type: 'yt_status_check'
 						});
 					} catch (error) {
 						console.error("Error in callback:", error);
 					}
-				},
+				}
 			});
 		}
+
 	} catch (err) {
 		console.error("Create Video Error:", err);
 		res.status(500).json({ message: "Error creating video" });
@@ -170,6 +171,7 @@ export const removeVideo = async (req, res) => {
 	try {
 		const result = await deleteVideo(req.params.id);
 		if (result.affectedRows === 0) {
+
 			return res.status(404).json({ message: "Video not found" });
 		}
 		res.json({ message: "Video deleted" });
