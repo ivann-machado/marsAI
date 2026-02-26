@@ -3,6 +3,7 @@ import {
 	selectVideoById,
 	insertVideo,
 	updateVideoUrl,
+	updateVideo,
 	deleteVideo,
 } from "../models/video.model.js";
 import { insertProcessQueue } from "../models/process_queue.model.js";
