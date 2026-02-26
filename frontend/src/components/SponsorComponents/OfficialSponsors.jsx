@@ -10,7 +10,6 @@ function OfficialSponsors({ sponsors }) {
         style={{
           backgroundImage: `linear-gradient(135deg, rgba(168,85,247,0.4) 0%, transparent 50%), linear-gradient(225deg, rgba(236,72,153,0.3) 0%, transparent 50%)`,
           backgroundSize: "cover",
-          transform: `translateY(${scrollY * 0.3}px)`,
         }}
       />
       <h1 className="text-center text-6xl font-extrabold text-white my-10 font-orbitron">
@@ -23,9 +22,9 @@ function OfficialSponsors({ sponsors }) {
               key={sponsor.id}
               className="relative group border-b py-4 md:border-none"
             >
-              <div className="relative inset-0 group-hover:opacity-100 md:opacity-0 md:absolute md:bg-white md:w-50 md:h-50 md:inset-15 md:bottom-15 md:group-hover:opacity-70  md:text-black md:flex md:justify-center md:items-center md:flex-col md:rounded-full transition delay-200 duration-500 ">
+              <div className="relative p-2 inset-0 group-hover:opacity-100 md:opacity-0 md:absolute md:bg-white md:min-w-30 md:min-h-30 md:inset-15 md:bottom-15 md:group-hover:opacity-70  md:text-black md:flex md:justify-center md:items-center md:flex-col md:rounded-2xl transition delay-200 duration-500 ">
                 <h4 className="font-bold">{sponsor.name}</h4>
-                <a href={sponsor.url}>
+                <a href={sponsor.url} className="break-all">
                   {t("sponsors_page.website")}:{" "}
                   <span className="text-blue-700 md:text-black md:hover:text-blue-700">
                     {sponsor.url}
