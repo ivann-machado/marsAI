@@ -316,7 +316,16 @@
     "gallery_empty_desc": "Essayez de sélectionner une autre catégorie",
     "gallery_load_more": "CHARGER PLUS DE FILMS",
     "gallery_watch": "REGARDER LE FILM",
-    "gallery_share": "PARTAGER"
+    "gallery_share": "PARTAGER",
+    "gallery_search_placeholder": "Rechercher un film, un réalisateur...",
+    "gallery_filter_title": "Titre A-Z",
+    "gallery_filter_title_desc": "Titre Z-A",
+    "gallery_filter_duration_asc": "Durée ↑",
+    "gallery_filter_duration_desc": "Durée ↓",
+    "gallery_filter_year": "Année",
+    "gallery_filter_country": "Pays",
+    "gallery_watch_film": "REGARDER",
+    "gallery_all_movie": "TOUS LES FILMS"
   },
 
   "page_contact": {

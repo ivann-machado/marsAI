@@ -327,7 +327,15 @@
     "gallery_empty_desc": "Try selecting another category",
     "gallery_load_more": "LOAD MORE FILMS",
     "gallery_watch": "WATCH FILM",
-    "gallery_share": "SHARE"
+    "gallery_share": "SHARE",
+    "gallery_filter_title": "Title A-Z",
+    "gallery_filter_title_desc": "Title Z-A",
+    "gallery_filter_duration_asc": "Duration ↑",
+    "gallery_filter_duration_desc": "Duration ↓",
+    "gallery_filter_year": "Year",
+    "gallery_filter_country": "Country",
+    "gallery_watch_film": "WATCH",
+    "gallery_all_movie": "ALL FILMS"
   },
   "page_contact": {
     "contact_badge": "GET IN TOUCH",
