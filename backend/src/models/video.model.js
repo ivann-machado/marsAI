@@ -146,6 +146,12 @@ export const updateVideoUrl = async (id, url, conn = null) => {
 	return db.query(query, [url, id]);
 };
 
+export const updateVideoStatus = async (id, status, conn = null) => {
+	const query = "UPDATE videos SET status = ? WHERE id = ?";
+	const db = conn || pool;
+	return db.query(query, [url, id]);
+};
+
 /**
  * Delete a video by ID.
  * @param {number|string} id
