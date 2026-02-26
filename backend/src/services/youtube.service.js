@@ -8,7 +8,7 @@ import { DEV_MODE } from '../config/index.js';
  * @param {object} metadata - Video metadata (title, description, tags, etc.)
  * @returns {Promise<{videoId: string, title: string}>}
  */
-export const uploadVideo = async (videoBuffer, metadata = {}, privacy = 'unlisted') => {
+export const uploadVideo = async ({ videoBuffer, metadata = {}, privacy = 'unlisted', callback }) => {
 	try {
 		if (DEV_MODE) {
 			console.log('Starting YouTube video upload...');
@@ -57,15 +57,13 @@ export const uploadVideo = async (videoBuffer, metadata = {}, privacy = 'unliste
 			console.log(`Video uploaded successfully! Video ID: ${videoId}`);
 			console.log(`View at: https://www.youtube.com/watch?v=${videoId}`);
 		}
-
-		return {
+		callback({
 			videoId,
 			title: response.data.snippet.title,
 			uploadTime: new Date().toISOString()
-		};
+		});
 	} catch (error) {
 		console.error('Error uploading video to YouTube:', error.message);
-		throw new Error(`YouTube upload failed: ${error.message}`);
 	}
 };
 
