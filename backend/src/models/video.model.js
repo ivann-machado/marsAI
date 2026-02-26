@@ -132,6 +132,20 @@ export const updateVideo = async (id, video, conn = null) => {
 	return db.query(query, values);
 };
 
+
+/**
+ * Update a video url.
+ * @param {number|string} id
+ * @param {string} url
+ * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
+ * @returns {Promise<any>}
+ */
+export const updateVideoUrl = async (id, url, conn = null) => {
+	const query = "UPDATE videos SET url = ? WHERE id = ?";
+	const db = conn || pool;
+	return db.query(query, [url, id]);
+};
+
 /**
  * Delete a video by ID.
  * @param {number|string} id

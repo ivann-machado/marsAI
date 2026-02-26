@@ -2,7 +2,7 @@ import {
 	selectAllVideos,
 	selectVideoById,
 	insertVideo,
-	updateVideo,
+	updateVideoUrl,
 	deleteVideo,
 } from "../models/video.model.js";
 import { insertProcessQueue } from "../models/process_queue.model.js";
@@ -102,42 +102,41 @@ export const getVideoById = async (req, res) => {
  * @param {import('express').Response} res
  */
 export const createVideo = async (req, res) => {
+	const body = req.body;
 	try {
-		if (!req.body.filename) {
+		if (!body.filename) {
 			return res.status(400).json({ message: "Video file is required" });
 		}
 
-		const result = await insertVideo(req.body);
+		const result = await insertVideo(body);
 
 		const videoId = result.insertId.toString();
 		const videoBuffer = req.file?.buffer;
-
-		let youtubeId = null;
-
-		if (videoBuffer) {
-			try {
-				const uploadResult = await uploadVideo(videoBuffer, req.body);
-				youtubeId = uploadResult.videoId;
-				await updateVideo(videoId, { url: youtubeId });
-			} catch (youtubeErr) {
-				console.error("YouTube upload failed:", youtubeErr);
-				// Let the item be created even if YouTube fails initially until we handle it properly.
-				// Probably refact this funct with transaction
-			}
-		}
-
-		if (youtubeId) {
-			await insertProcessQueue({
-				video_id: videoId,
-				filename: req.body.filename,
-				type: 'yt_status_check'
-			});
-		}
-
 		res.status(201).json({
 			message: "Video created",
 			id: videoId,
 		});
+
+		if (videoBuffer) {
+			uploadVideo({
+				videoBuffer,
+				metadata: body,
+				callback: (result) => {
+					try {
+						const youtubeId = result.videoId;
+						updateVideoUrl(videoId, youtubeId);
+						insertProcessQueue({
+							video_id: videoId,
+							filename: body.filename,
+							type: 'yt_status_check'
+						});
+					} catch (error) {
+						console.error("Error in callback:", error);
+					}
+				}
+			});
+		}
+
 	} catch (err) {
 		console.error("Create Video Error:", err);
 		res.status(500).json({ message: "Error creating video" });
