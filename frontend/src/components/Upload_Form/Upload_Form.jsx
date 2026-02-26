@@ -71,6 +71,7 @@ function UploadForm() {
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
+      coverImageCheck();
       majorityCheck();
       rightGiveAwayCheck();
       const form = e.target;
@@ -124,7 +125,7 @@ function UploadForm() {
 
       if (res.ok) {
         SetLoading(false);
-        alert("Film envoyé avec succès.");
+        showFlash("success", "Film envoyé avec succès.");
         //Création d'un URL pour afficher les files
         if (uploadData.video) {
           const url = URL.createObjectURL(uploadData.video);
@@ -137,7 +138,7 @@ function UploadForm() {
       }
     } catch (error) {
       console.error("Contact submit error:", error);
-      alert("Erreur réseau. Réessayez plus tard.");
+      showFlash("error", "Erreur réseau. Réessayez plus tard.");
     }
   };
   //Vérification des champs du formulaire
@@ -182,8 +183,8 @@ function UploadForm() {
     }
   }
   function coverImageCheck() {
-    if (image.current.files[0] === "") {
-      SetCoverImageError("Champ vide");
+    if (image.current.files[0] === null) {
+      showFlash("error", "Vous devez sélectionner une image de couverture");
       console.log("Input is empty");
     } else {
       SetCoverImageError("");
@@ -266,7 +267,7 @@ function UploadForm() {
   }
   function majorityCheck() {
     if (majorityCertification === false) {
-      showFlash("error", "Vous devez être agé de 18 ans ou plus");
+      showFlash("error", t("upload_form.majority_certification_flash"));
       console.log("Vous devez être agé de 18 ans ou plus");
     } else {
       SetMajorityCertificationError("");
@@ -783,9 +784,6 @@ outline-none pt-3 pb-2
                 name="cover-image"
                 id="cover-mage"
                 ref={coverImage}
-                onChange={() => {
-                  coverImageCheck();
-                }}
                 className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none pt-3 pb-2"
               />
               <p className="text-white">{coverImageError}</p>
@@ -857,16 +855,13 @@ text-center mb-8
                   htmlFor="producerImage"
                   className="text-sm text-white/70 mb-2 tracking-wide"
                 >
-                  Photo du producteur :
+                  {t("upload_form.producer_cover")} :
                 </label>
                 <input
                   type="file"
                   name="producerImage"
                   id="producerImage"
                   ref={producerImage}
-                  onChange={() => {
-                    coverImageCheck();
-                  }}
                   className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none pt-3 pb-2"
                 />
                 <p className="text-white">{coverImageError}</p>
@@ -1184,13 +1179,13 @@ outline-none
                   htmlFor="countrySelect"
                   className="text-sm text-white/70 mb-2 tracking-wide"
                 >
-                  Votre Pays :
+                  {t("upload_form.country")} :
                 </label>
                 <select
                   name="countrySelect"
                   id="countrySelect"
                   onChange={handleSelect}
-                  className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-black placeholder-white/40 transition-all duration-300 outline-none"
+                  className="bg-[#2D2738] border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 >
                   {countryOptions.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -1198,7 +1193,6 @@ outline-none
                     </option>
                   ))}
                 </select>
-                <p className="text-white">{countryId}</p>
                 <p className="text-white">{tagError}</p>
               </div>
             </div>

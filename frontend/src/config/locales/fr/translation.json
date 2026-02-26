@@ -46,6 +46,7 @@
     "desc": "Description",
     "video": "Vidéo",
     "image": "Miniature de votre film",
+    "producer_cover": "Photo du producteur",
     "production": "Réalisation",
     "scenario_ai": "IA scénario",
     "video_ai": "IA générative vidéo",
@@ -53,9 +54,11 @@
     "post_prod_ai": "IA post-production",
     "more_info": "Informations complémentaires",
     "producer": "Producteur",
+    "country": "Pays",
     "majority_certification": "En cliquant ici, je certifie être agé de 18 ans ou plus",
     "right_givaway": "En cliquant ici, j’accepte de céder mes droits de propriété aux organisateurs du festival et je renonce ainsi à mes droits d'auteur et de propriété de la vidéo que je m'apprête à publier.",
-    "submit_btn": "Finaliser ma soumission"
+    "submit_btn": "Finaliser ma soumission",
+    "majority_certification_flash": "Vous devez être agé de 18 ans ou plus"
   },
 
   "homepage": {
