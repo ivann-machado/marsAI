@@ -7,6 +7,7 @@ export function useauth() {
 }
 
 export const AuthProvider = ({ children }) => {
+  const [id, setId] = useState(null);
   const [user, setUser] = useState(null);
   const [userRole, setUserRole] = useState(null);
   const [sessionExpiration, setSessionExpiration] = useState(null);
@@ -18,10 +19,16 @@ export const AuthProvider = ({ children }) => {
     const stored = localStorage.getItem("auth");
 
     if (stored) {
-      const { storedUser, storedRole, storedExpiration, storedToken } =
-        JSON.parse(stored);
+      const {
+        storedId,
+        storedUser,
+        storedRole,
+        storedExpiration,
+        storedToken,
+      } = JSON.parse(stored);
 
       if (Date.now() < storedExpiration * 1000) {
+        setId(storedId);
         setUser(storedUser);
         setUserRole(storedRole);
         setSessionExpiration(storedExpiration);
@@ -46,11 +53,13 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = (
+    loggedInId,
     loggedInUser,
     loggedInRole,
     sessionExpiration,
     sessionToken,
   ) => {
+    setId(loggedInId);
     setUser(loggedInUser);
     setUserRole(loggedInRole);
     setSessionExpiration(sessionExpiration);
@@ -59,6 +68,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem(
       "auth",
       JSON.stringify({
+        storedId: loggedInId,
         storedUser: loggedInUser,
         storedRole: loggedInRole,
         storedExpiration: sessionExpiration,
@@ -70,6 +80,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
+    setId(null);
     setUser(null);
     setUserRole(null);
     setSessionExpiration(null);
@@ -79,7 +90,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, userRole, token }}>
+    <AuthContext.Provider value={{ id, user, login, logout, userRole, token }}>
       {!loading && children}
     </AuthContext.Provider>
   );

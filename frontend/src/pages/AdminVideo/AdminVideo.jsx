@@ -5,6 +5,7 @@ import Loading from "../../components/Utils/Loading";
 import "flag-icons/css/flag-icons.min.css";
 import { useState, useEffect } from "react";
 import AdminVideoPanel from "../../components/AdminVideosDash/AdminVideoPanel";
+import AdminSidebar from "../../components/AdminSidebar/AdminSidebar.jsx";
 
 function AdminVideo() {
   const { t } = useTranslation();
@@ -24,18 +25,6 @@ function AdminVideo() {
         if (!response.ok) throw new Error("Erreur fetch JSON");
         let res = await response.json();
         setVideo(res);
-
-        // TODO REVIEW
-        /*  response = await fetch(
-          import.meta.env.VITE_API_URL + "/api/review/" + params.videoId,
-          {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-          },
-        );
-        if (!response.ok) throw new Error("Erreur fetch JSON");
-        res = await response.json();
-        setReview(res); */
       } catch (err) {
         console.error(err);
       }
@@ -47,19 +36,9 @@ function AdminVideo() {
   if (!video) return <Loading />;
   else
     return (
-      <>
-        <section
-          className="w-full min-h-screen bg-[url('../src/assets/background.jpg')] bg-cover bg-fixed text-white py-8
-      md:px-[10%]"
-        >
-          <div className="m-4 mb-8">
-            <a
-              className="text-white hover:text-blue-900 visited:text-white"
-              href="/videos"
-            >
-              {t("video_page.return_gallery")}
-            </a>
-          </div>
+      <div className="flex">
+        <AdminSidebar />
+        <section className="w-4/5 min-h-screen text-white py-8 bg-[#050508] ">
           <iframe
             className="w-full aspect-video"
             src="https://www.youtube.com/embed/_cPdvX-0kRA?si=MP3jAxInyj04TUlx"
@@ -155,7 +134,7 @@ function AdminVideo() {
             </div>
           </div>
         </section>
-      </>
+      </div>
     );
 }
 

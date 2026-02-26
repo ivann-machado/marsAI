@@ -29,6 +29,7 @@ function AdminLogin() {
         //console.log("text", login_info.exp);
         //console.log(loginResponse.token);
         login(
+          login_info.id,
           login_info.login,
           login_info.role,
           login_info.exp,
