@@ -12,6 +12,9 @@ function UploadForm() {
   const nextStep = () => setStep((prev) => prev + 1);
   const prevStep = () => setStep((prev) => prev - 1);
   const [loading, SetLoading] = useState(false);
+
+  //Status
+
   const countryOptions = [
     { label: "--Sélectionnez un pays--", value: -1 },
     { label: "Afghanistan", value: 1 },
@@ -259,76 +262,76 @@ function UploadForm() {
   const [videoURL, setVideoURL] = useState(null);
   //Stockage des valeurs des inputs
   const handleSubmit = async (e) => {
-    try {
-      e.preventDefault();
-      const form = e.target;
-      const uploadData = {
-        title: title.current.value,
-        description: description.current.value,
-        video: video.current.files[0],
-        image: coverImage.current.files[0],
-        scenario_ai: scenario_ai.current.value,
-        video_ai: video_ai.current.value,
-        sound_ai: sound_ai.current.value,
-        post_prod_ai: post_prod_ai.current.value,
-        producer: producer.current.value,
-        email: email.current.value,
-        producerImage: producerImage.current.files[0],
-        country: countryId,
-        instagram: instagram.current.value,
-        linkedin: linkedin.current.value,
-        youtube: youtube.current.value,
-        tags: tags.current.value,
-      };
-      coverImageCheck();
-      majorityCheck();
-      rightGiveAwayCheck();
-      const formData = new FormData();
-      formData.append("edition_id", 1);
-      formData.append("url", "");
-      formData.append("verified", 1);
-      formData.append("filename", uploadData.video);
-      formData.append("email", uploadData.email);
-      formData.append("cover_image", uploadData.image);
-      formData.append("title", uploadData.title);
-      formData.append("description", uploadData.description);
-      formData.append("status", "unverified");
-      formData.append("country_id", uploadData.country);
-      formData.append("producer", uploadData.producer);
-      formData.append("producer_image", uploadData.producerImage);
-      formData.append("linkedin_link", uploadData.linkedin);
-      formData.append("youtube_link", uploadData.youtube);
-      formData.append("scenario_ai", uploadData.scenario_ai);
-      formData.append("video_gen_ai", uploadData.video_ai);
-      formData.append("sound_ai", uploadData.sound_ai);
-      formData.append("postprod_ai", uploadData.post_prod_ai);
-      formData.append("tags", uploadData.tags);
+    e.preventDefault();
+    const form = e.target;
+    const uploadData = {
+      title: title.current.value,
+      description: description.current.value,
+      video: video.current.files[0],
+      image: coverImage.current.files[0],
+      scenario_ai: scenario_ai.current.value,
+      video_ai: video_ai.current.value,
+      sound_ai: sound_ai.current.value,
+      post_prod_ai: post_prod_ai.current.value,
+      producer: producer.current.value,
+      email: email.current.value,
+      producerImage: producerImage.current.files[0],
+      country: countryId,
+      instagram: instagram.current.value,
+      linkedin: linkedin.current.value,
+      youtube: youtube.current.value,
+      tags: tags.current.value,
+    };
+    coverImageCheck();
+    majorityCheck();
+    rightGiveAwayCheck();
+    const formData = new FormData();
+    formData.append("edition_id", 1);
+    formData.append("url", "");
+    formData.append("verified", 1);
+    formData.append("filename", uploadData.video);
+    formData.append("email", uploadData.email);
+    formData.append("cover_image", uploadData.image);
+    formData.append("title", uploadData.title);
+    formData.append("description", uploadData.description);
+    formData.append("status", "unverified");
+    formData.append("country_id", uploadData.country);
+    formData.append("producer", uploadData.producer);
+    formData.append("producer_image", uploadData.producerImage);
+    formData.append("linkedin_link", uploadData.linkedin);
+    formData.append("youtube_link", uploadData.youtube);
+    formData.append("scenario_ai", uploadData.scenario_ai);
+    formData.append("video_gen_ai", uploadData.video_ai);
+    formData.append("sound_ai", uploadData.sound_ai);
+    formData.append("postprod_ai", uploadData.post_prod_ai);
+    formData.append("tags", uploadData.tags);
 
-      console.log(uploadData);
-      SetLoading(true);
-      const res = await fetch(import.meta.env.VITE_API_URL + "/api/videos", {
-        method: "POST",
-        body: formData,
-      });
+    console.log(uploadData);
+    SetLoading(true);
+    if (majorityCertification === false) {
+      showFlash("error", "Erreururrureuueueuerueruerueur");
+      SetLoading(false);
+      return;
+    }
+    const res = await fetch(import.meta.env.VITE_API_URL + "/api/videos", {
+      method: "POST",
+      body: formData,
+    });
 
-      const data = await res.json().catch(() => ({}));
+    const data = await res.json().catch(() => ({}));
 
-      if (res.ok) {
-        SetLoading(false);
-        showFlash("success", "Film envoyé avec succès.");
-        //Création d'un URL pour afficher les files
-        if (uploadData.video) {
-          const url = URL.createObjectURL(uploadData.video);
-          console.log({ url });
-          setVideoURL(url);
-        }
-      } else {
-        alert(data.video || "Erreur lors de l'envoi du film.");
-        SetLoading(false);
+    if (res.ok) {
+      SetLoading(false);
+      showFlash("success", "Film envoyé avec succès.");
+      //Création d'un URL pour afficher les files
+      if (uploadData.video) {
+        const url = URL.createObjectURL(uploadData.video);
+        console.log({ url });
+        setVideoURL(url);
       }
-    } catch (error) {
-      console.error("Contact submit error:", error);
-      showFlash("error", "Erreur réseau. Réessayez plus tard.");
+    } else {
+      showFlash("error", "Erreur lors de l'envoi du film.");
+      SetLoading(false);
     }
   };
   //Vérification des champs du formulaire
@@ -459,6 +462,8 @@ function UploadForm() {
     if (majorityCertification === false) {
       showFlash("error", t("upload_form.majority_certification_flash"));
       console.log("Vous devez être agé de 18 ans ou plus");
+    } else {
+      SetMajorityCertification(true);
     }
   }
   function rightGiveAwayCheck() {
