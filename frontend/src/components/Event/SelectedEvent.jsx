@@ -1,22 +1,41 @@
 import { useTranslation } from "react-i18next";
 import RegistrationForm from "./RegistrationForm.jsx";
-import { useState } from "react";
+import { useState, useEffec } from "react";
 
 function SelectedEvent({ selectedEvent }) {
   const { t } = useTranslation();
   const [registration, setRegistration] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleRegistrationSuccess = (msg) => {
     setRegistration(false);
     setSuccessMessage(msg);
+    setErrorMessage("");
   };
+
+  const handleRegistrationError = (msg) => {
+    setErrorMessage(msg);
+    setSuccessMessage("");
+  };
+
+  // clear messages after 3 seconds
+  useEffect(() => {
+    let timer;
+    if (successMessage || errorMessage) {
+      timer = setTimeout(() => {
+        setSuccessMessage("");
+        setErrorMessage("");
+      }, 3000);
+    }
+    return () => clearTimeout(timer);
+  }, [successMessage, errorMessage]);
 
   return (
     selectedEvent && (
       <div className="lg:col-span-2">
         <div className="bg-gray-800 border rounded-xl p-6 text-white">
-          <h1 className="font-bold text-2xl text-center mb-4 font-orbitron">
+          <h1 className="font-bold text-2xl text-center mb-4">
             {selectedEvent.name} - {selectedEvent.type}
           </h1>
 
@@ -69,26 +88,35 @@ function SelectedEvent({ selectedEvent }) {
             </div>
           )}
 
+          {/* messages displayed above the register button */}
+          {successMessage && (
+            <p className="text-green-400 text-center text-2xl font-bold mb-4">
+              {successMessage}
+            </p>
+          )}
+          {errorMessage && (
+            <p className="text-red-400 text-center text-2xl font-bold mb-4">
+              {errorMessage}
+            </p>
+          )}
           <div className="flex justify-center">
             <button
               className="bg-pink-500 hover:bg-pink-600 text-white font-bold px-8 py-3 rounded-lg transition-all duration-300"
               onClick={() => {
                 setRegistration(true);
                 setSuccessMessage("");
+                setErrorMessage("");
               }}
             >
               {t("event_page.register") || "S'inscrire"}
             </button>
           </div>
 
-          {successMessage && (
-            <p className="text-green-400 text-center mt-4">{successMessage}</p>
-          )}
-
           {registration && (
             <RegistrationForm
               selectedEvent={selectedEvent}
               onSuccess={handleRegistrationSuccess}
+              onError={handleRegistrationError}
             />
           )}
         </div>
