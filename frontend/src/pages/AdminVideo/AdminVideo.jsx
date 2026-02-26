@@ -25,6 +25,10 @@ function AdminVideo() {
         if (!response.ok) throw new Error("Erreur fetch JSON");
         let res = await response.json();
         setVideo(res);
+        setVideo((prev) => ({
+          ...prev,
+          url: prev.url.replace("watch?v=", "embed/"),
+        }));
       } catch (err) {
         console.error(err);
       }
@@ -41,7 +45,8 @@ function AdminVideo() {
         <section className="w-4/5 min-h-screen text-white py-8 bg-[#050508] ">
           <iframe
             className="w-full aspect-video"
-            src="https://www.youtube.com/embed/_cPdvX-0kRA?si=MP3jAxInyj04TUlx"
+            // src="https://www.youtube.com/embed/_cPdvX-0kRA?si=MP3jAxInyj04TUlx"
+            src={video.url}
             title="YouTube video player"
             loading="lazy"
           ></iframe>

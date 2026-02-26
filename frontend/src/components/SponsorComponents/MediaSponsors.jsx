@@ -12,9 +12,9 @@ function MediaSponsors({ sponsors }) {
         {sponsors.map((sponsor) => {
           return sponsor.type === "media" ? (
             <div key={sponsor.id} className="relative group py-4">
-              <div className="relative inset-0 group-hover:opacity-100 md:opacity-0 md:absolute md:bg-white md:w-50 md:h-50 md:group-hover:opacity-70 md:text-black md:flex md:justify-center md:items-center md:flex-col md:rounded-full transition delay-200 duration-500">
+              <div className="relative inset-0 group-hover:opacity-100 md:opacity-0 md:absolute md:bg-white md:min-w-30 md:min-h-30 md:group-hover:opacity-70 md:text-black md:flex md:justify-center md:items-center md:flex-col md:rounded-2xl transition delay-200 duration-500">
                 <h4 className="font-bold">{sponsor.name}</h4>
-                <a href={sponsor.url}>
+                <a href={sponsor.url} className="break-all">
                   {t("sponsors_page.website")}:{" "}
                   <span className="text-blue-700 md:text-black md:hover:text-blue-700">
                     {sponsor.url}

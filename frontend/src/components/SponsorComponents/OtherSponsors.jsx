@@ -14,7 +14,7 @@ function OtherSponsors({ sponsors }) {
             <div key={sponsor.id} className="relative group py-4">
               <div className="relative inset-0 group-hover:opacity-100 ">
                 <h4 className="font-bold">{sponsor.name}</h4>
-                <a href={sponsor.url}>
+                <a href={sponsor.url} className="break-all">
                   {t("sponsors_page.website")}:{" "}
                   <span className="text-blue-700">{sponsor.url}</span>
                 </a>

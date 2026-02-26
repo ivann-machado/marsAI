@@ -45,6 +45,10 @@ function VideoDetail() {
         if (!response.ok) throw new Error("Erreur fetch JSON");
         let res = await response.json();
         setVideo(res);
+        setVideo((prev) => ({
+          ...prev,
+          url: prev.url.replace("watch?v=", "embed/"),
+        }));
       } catch (err) {
         console.error(err);
       }
@@ -61,7 +65,7 @@ function VideoDetail() {
     <>
       <Header />
       <section
-        className="w-full min-h-screen bg-[url('../src/assets/background.jpg')] bg-cover bg-fixed text-white py-8
+        className="w-full min-h-screen bg-[#050508] text-white py-8
       md:px-[10%]"
       >
         <div className="m-4 mb-8">
