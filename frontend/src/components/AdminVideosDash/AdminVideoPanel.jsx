@@ -54,8 +54,9 @@ function AdminVideoPanel({ video_data }) {
 
       if (!response.ok) throw new Error("Erreur lors de la sauvegarde");
 
-      const updatedReview = await response.json();
-      setReview(updatedReview);
+      /*const updatedReview = await response.json();
+      console.log("updated review", updatedReview);
+      setReview(updatedReview); */
       showFlash("success", "Review enregistrée.");
     } catch (err) {
       showFlash("error", "Erreur lors de l'enregistrement du review");
@@ -107,7 +108,10 @@ function AdminVideoPanel({ video_data }) {
         const json = await response.json();
 
         if (!json) createReview();
-        else setReview(json);
+        else {
+          // console.log(json);
+          setReview(json);
+        }
       } catch (err) {
         console.error(err);
       }
@@ -117,6 +121,8 @@ function AdminVideoPanel({ video_data }) {
   }, []);
 
   if (!review) return <Loading />;
+
+  // console.log(review);
 
   return (
     <div className="bg-gray-700 rounded-b-xl p-6 shadow-md flex flex-col gap-6">

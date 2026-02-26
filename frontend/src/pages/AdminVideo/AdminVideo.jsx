@@ -38,7 +38,8 @@ function AdminVideo() {
   }, []);
 
   if (!video) return <Loading />;
-  else
+  else {
+    /* console.log(video); */
     return (
       <div className="flex">
         <AdminSidebar />
@@ -141,6 +142,7 @@ function AdminVideo() {
         </section>
       </div>
     );
+  }
 }
 
 export default AdminVideo;
