@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import RegistrationForm from "./RegistrationForm.jsx";
-import { useState, useEffec } from "react";
+import { useState, useEffect } from "react";
 
 function SelectedEvent({ selectedEvent }) {
   const { t } = useTranslation();
