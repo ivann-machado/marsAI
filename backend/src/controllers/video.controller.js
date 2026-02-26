@@ -109,14 +109,12 @@ export const createVideo = async (req, res) => {
 			return res.status(400).json({ message: "Video file is required" });
 		}
 
-		const result = await insertVideo(body);
+		const result = await insertVideo(req.body);
 
 		const videoId = result.insertId.toString();
 		const videoBuffer = req.file?.buffer;
-		res.status(201).json({
-			message: "Video created",
-			id: videoId,
-		});
+
+		let youtubeId = null;
 
 		if (videoBuffer) {
 			uploadVideo({
