@@ -58,12 +58,12 @@ import { uploadVideo } from "../services/youtube.service.js";
 export const getAllVideos = async (req, res) => {
 	try {
 		const videos = await selectAllVideos();
-		const videosWithUrls = videos.map(video => {
+		const videosWithUrls = videos.map((video) => {
 			return {
 				...video,
 				filename: getFileUrl(video.filename),
 				cover_image: getFileUrl(video.cover_image),
-				subtitles: getFileUrl(video.subtitles)
+				subtitles: getFileUrl(video.subtitles),
 			};
 		});
 		res.status(200).json(videosWithUrls);
@@ -89,7 +89,7 @@ export const getVideoById = async (req, res) => {
 			...video,
 			filename: getFileUrl(video.filename),
 			cover_image: getFileUrl(video.cover_image),
-			subtitles: getFileUrl(video.subtitles)
+			subtitles: getFileUrl(video.subtitles),
 		});
 	} catch (err) {
 		console.error("Get Video By ID Error:", err);
@@ -105,7 +105,7 @@ export const getVideoById = async (req, res) => {
 export const createVideo = async (req, res) => {
 	const body = req.body;
 	try {
-		if (!body.filename || body.filename === 'undefined') {
+		if (!body.filename) {
 			return res.status(400).json({ message: "Video file is required" });
 		}
 
@@ -129,15 +129,14 @@ export const createVideo = async (req, res) => {
 						insertProcessQueue({
 							video_id: videoId,
 							filename: body.filename,
-							type: 'yt_status_check'
+							type: "yt_status_check",
 						});
 					} catch (error) {
 						console.error("Error in callback:", error);
 					}
-				}
+				},
 			});
 		}
-
 	} catch (err) {
 		console.error("Create Video Error:", err);
 		res.status(500).json({ message: "Error creating video" });
@@ -151,7 +150,7 @@ export const createVideo = async (req, res) => {
  */
 export const setVideo = async (req, res) => {
 	try {
-		const result = await updateVideoStatus(req.params.id, req.body);
+		const result = await updateVideo(req.params.id, req.body);
 		if (result.affectedRows === 0) {
 			return res.status(404).json({ message: "Video not found" });
 		}
@@ -171,7 +170,6 @@ export const removeVideo = async (req, res) => {
 	try {
 		const result = await deleteVideo(req.params.id);
 		if (result.affectedRows === 0) {
-
 			return res.status(404).json({ message: "Video not found" });
 		}
 		res.json({ message: "Video deleted" });
