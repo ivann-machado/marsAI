@@ -255,18 +255,12 @@ function UploadForm() {
   const [youtubeError, SetYoutubeError] = useState("");
   const [emailError, SetEmailError] = useState("");
   const [tagError, SetTagError] = useState("");
-  const [majorityCertificationError, SetMajorityCertificationError] =
-    useState("");
-  const [rightGivawayError, SetRightGivawayError] = useState("");
   //Récupération des données envoyées
   const [videoURL, setVideoURL] = useState(null);
   //Stockage des valeurs des inputs
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
-      coverImageCheck();
-      majorityCheck();
-      rightGiveAwayCheck();
       const form = e.target;
       const uploadData = {
         title: title.current.value,
@@ -286,6 +280,9 @@ function UploadForm() {
         youtube: youtube.current.value,
         tags: tags.current.value,
       };
+      coverImageCheck();
+      majorityCheck();
+      rightGiveAwayCheck();
       const formData = new FormData();
       formData.append("edition_id", 1);
       formData.append("url", "");
@@ -376,7 +373,7 @@ function UploadForm() {
     }
   }
   function coverImageCheck() {
-    if (image.current.files[0] === null) {
+    if (coverImage.current.files[0] === null) {
       showFlash("error", "Vous devez sélectionner une image de couverture");
       console.log("Input is empty");
     } else {
@@ -462,16 +459,12 @@ function UploadForm() {
     if (majorityCertification === false) {
       showFlash("error", t("upload_form.majority_certification_flash"));
       console.log("Vous devez être agé de 18 ans ou plus");
-    } else {
-      SetMajorityCertificationError("");
     }
   }
   function rightGiveAwayCheck() {
     if (rightGivaway === false) {
-      showFlash("error", "Vous devez donner vos droits");
+      showFlash("error", t("upload_form.right_givaway_flash"));
       console.log("Vous devez être agé de 18 ans ou plus");
-    } else {
-      SetRightGivawayError("");
     }
   }
   function tagCheck() {
@@ -480,15 +473,6 @@ function UploadForm() {
       console.log("Input is empty");
     } else {
       SetTagError("");
-    }
-  }
-
-  function coverImageCheck() {
-    if (tags.current.value.trim() === "") {
-      SetCoverImageError("Champ vide");
-      console.log("Input is empty");
-    } else {
-      SetCoverImageError("");
     }
   }
 
