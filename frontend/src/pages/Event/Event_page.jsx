@@ -58,7 +58,6 @@ function Event() {
         style={{
           backgroundImage: `linear-gradient(135deg, rgba(168,85,247,0.4) 0%, transparent 50%), linear-gradient(225deg, rgba(236,72,153,0.3) 0%, transparent 50%)`,
           backgroundSize: "cover",
-          transform: `translateY(${scrollY * 0.3}px)`,
         }}
       />
       <div className="min-h-screen bg-[#050508] text-white font-inter">
