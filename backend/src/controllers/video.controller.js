@@ -105,7 +105,7 @@ export const getVideoById = async (req, res) => {
 export const createVideo = async (req, res) => {
 	const body = req.body;
 	try {
-		if (!body.filename) {
+		if (!body.filename || body.filename === 'undefined') {
 			return res.status(400).json({ message: "Video file is required" });
 		}
 
@@ -150,7 +150,7 @@ export const createVideo = async (req, res) => {
  */
 export const setVideo = async (req, res) => {
 	try {
-		const result = await updateVideo(req.params.id, req.body);
+		const result = await updateVideoStatus(req.params.id, req.body);
 		if (result.affectedRows === 0) {
 			return res.status(404).json({ message: "Video not found" });
 		}
