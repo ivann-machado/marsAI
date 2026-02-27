@@ -65,17 +65,20 @@ function VideoDetail() {
     <>
       <Header />
       <section
-        className="w-full min-h-screen bg-[#050508] text-white py-8
+        className="w-full min-h-screen bg-[#050508] text-white py-18
       md:px-[10%]"
       >
         <div className="m-4 mb-8">
-          <a className="text-white hover:text-blue-900 visited:text-white">
+          <a
+            href="/gallery"
+            className="text-white hover:text-blue-900 visited:text-white"
+          >
             {t("video_page.return_gallery")}
           </a>
         </div>
         <iframe
           className="w-full aspect-video"
-          src={video.url}
+          src={"https://www.youtube.com/embed/" + video.url}
           title="YouTube video player"
         ></iframe>
         <h2 className="text-white font-bold text-4xl text-center mb-4 mt-4 md:mx-8">
@@ -152,7 +155,7 @@ function VideoDetail() {
           </h3>
           <p className="m-4 indent-4">{video.description}</p>
           <h4 className="m-4 text-2xl">{t("video_page.ai_used")}</h4>
-          <div>
+          <div className="flex flew-wrap justify-around">
             <AIList type="Scénario" data={video.scenario_ai} />
             <AIList type="Video" data={video.video_gen_ai} />
             <AIList type="Son" data={video.sound_ai} />
