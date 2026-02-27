@@ -19,7 +19,9 @@ function UploadForm() {
   if (i18n.language === "fr") {
     countryOptions = countryListFr;
   } else {
-    countryOptions = countryListEn;
+    countryOptions = countryListEn.sort((a, b) =>
+      a.label.localeCompare(b.label),
+    );
   }
   function handleSelect(event) {
     SetCountryId(event.target.value);
