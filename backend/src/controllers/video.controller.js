@@ -88,6 +88,7 @@ export const getVideoById = async (req, res) => {
 		res.status(200).json({
 			...video,
 			filename: getFileUrl(video.filename),
+			producer_image: getFileUrl(video.producer_image),
 			cover_image: getFileUrl(video.cover_image),
 			subtitles: getFileUrl(video.subtitles)
 		});
