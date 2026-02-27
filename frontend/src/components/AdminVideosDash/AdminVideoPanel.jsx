@@ -125,7 +125,7 @@ function AdminVideoPanel({ video_data }) {
   // console.log(review);
 
   return (
-    <div className="bg-gray-700 rounded-b-xl p-6 shadow-md flex flex-col gap-6">
+    <div className="bg-gray-700 rounded-b-xl p-6 shadow-md flex flex-col gap-6 min-w-200 w-9/10">
       <h3 className="text-xl font-semibold">Menu notation:</h3>
 
       <div className="flex flex-col md:flex-row gap-6 md:items-center justify-between">
