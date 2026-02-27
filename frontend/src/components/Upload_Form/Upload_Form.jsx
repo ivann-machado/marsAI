@@ -634,26 +634,13 @@ bg-gradient-to-br from-[#0f0f1a] via-[#1a1026] to-[#0f0f1a] p-6 font-inter"
       </form> */}
       <form
         onSubmit={handleSubmit}
-        className="
-relative w-[95%] max-w-4xl
-bg-white/5 backdrop-blur-xl
-border border-white/10
-rounded-3xl
-shadow-[0_0_40px_rgba(194,122,255,0.25)]
-flex flex-col items-center gap-10
-px-6 md:px-12 py-10
-overflow-hidden
-"
+        className="relative w-[95%] max-w-4xl bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl shadow-[0_0_40px_rgba(194,122,255,0.25)] flex flex-col items-center gap-10 px-6 md:px-12 py-10 overflow-hidden"
       >
-        <div
-          className="absolute -top-40 -left-40 w-96 h-96 
-bg-purple-600/20 rounded-full blur-3xl"
-        />
+        <div className="absolute -top-40 -left-40 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl" />
         {/* Progress Bar */}
         <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
           <div
-            className="h-full bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400
-               transition-all duration-700 ease-out"
+            className="h-full bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 transition-all duration-700 ease-out"
             style={{ width: `${((step + 1) / 3) * 100}%` }}
           />
         </div>
@@ -668,14 +655,7 @@ bg-purple-600/20 rounded-full blur-3xl"
                 : "opacity-0 -translate-x-full absolute"
             }`}
           >
-            <p
-              className="
-text-3xl md:text-4xl font-semibold
-text-transparent bg-clip-text
-bg-gradient-to-r from-purple-400 via-pink-400 to-orange-300
-text-center mb-8  pb-2 pt-2
-"
-            >
+            <p className="text-3xl md:text-4xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-orange-300 text-center mb-8  pb-2 pt-2">
               {t("upload_form.global_infos")}
             </p>
 
@@ -688,19 +668,7 @@ text-center mb-8  pb-2 pt-2
                 type="text"
                 ref={title}
                 onChange={titleCheck}
-                className="
-bg-white/5
-border border-white/20
-focus:border-purple-400
-focus:ring-2 focus:ring-purple-500/40
-rounded-xl
-h-12
-px-4
-text-white
-placeholder-white/40
-transition-all duration-300
-outline-none
-"
+                className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
               />
               <p className="text-red-400">{titleError}</p>
             </div>
@@ -714,19 +682,7 @@ outline-none
                 type="text"
                 ref={description}
                 onChange={descCheck}
-                className="
-bg-white/5
-border border-white/20
-focus:border-purple-400
-focus:ring-2 focus:ring-purple-500/40
-rounded-xl
-h-12
-px-4
-text-white
-placeholder-white/40
-transition-all duration-300
-outline-none
-"
+                className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
               />
               <p className="text-red-400">{descError}</p>
             </div>
@@ -746,19 +702,7 @@ outline-none
                 onChange={() => {
                   videoCheck();
                 }}
-                className="
-bg-white/5
-border border-white/20
-focus:border-purple-400
-focus:ring-2 focus:ring-purple-500/40
-rounded-xl
-h-12
-px-4
-text-white
-placeholder-white/40
-transition-all duration-300
-outline-none pt-3 pb-2
-"
+                className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none pt-3 pb-2"
               />
               <p className="text-white">{videoError}</p>
             </div>
@@ -783,16 +727,7 @@ outline-none pt-3 pb-2
               <button
                 type="button"
                 onClick={nextStep}
-                className="
-px-8 py-3
-rounded-xl
-font-medium
-bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400
-hover:scale-105
-hover:shadow-[0_0_25px_rgba(236,72,153,0.6)]
-transition-all duration-300
-text-white
-"
+                className="px-8 py-3 rounded-xl font-medium bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 hover:scale-105 hover:shadow-[0_0_25px_rgba(236,72,153,0.6)] transition-all duration-300 text-white"
               >
                 Next →
               </button>
@@ -809,14 +744,7 @@ text-white
                   : "opacity-0 -translate-x-full absolute"
             }`}
           >
-            <p
-              className="
-text-3xl md:text-4xl font-semibold
-text-transparent bg-clip-text
-bg-gradient-to-r from-purple-400 via-pink-400 to-orange-300
-text-center mb-8
-"
-            >
+            <p className="text-3xl md:text-4xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-orange-300 text-center mb-8">
               {t("upload_form.production")}
             </p>
 
@@ -892,19 +820,7 @@ text-center mb-8
                   onChange={() => {
                     videoAiCheck();
                   }}
-                  className="
-bg-white/5
-border border-white/20
-focus:border-purple-400
-focus:ring-2 focus:ring-purple-500/40
-rounded-xl
-h-12
-px-4
-text-white
-placeholder-white/40
-transition-all duration-300
-outline-none
-"
+                  className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{videoAiError}</p>
               </div>
@@ -925,19 +841,7 @@ outline-none
                   onChange={() => {
                     soundAiCheck();
                   }}
-                  className="
-bg-white/5
-border border-white/20
-focus:border-purple-400
-focus:ring-2 focus:ring-purple-500/40
-rounded-xl
-h-12
-px-4
-text-white
-placeholder-white/40
-transition-all duration-300
-outline-none
-"
+                  className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{soundAiError}</p>
               </div>
@@ -956,19 +860,7 @@ outline-none
                   onChange={() => {
                     postProdAiCheck();
                   }}
-                  className="
-bg-white/5
-border border-white/20
-focus:border-purple-400
-focus:ring-2 focus:ring-purple-500/40
-rounded-xl
-h-12
-px-4
-text-white
-placeholder-white/40
-transition-all duration-300
-outline-none
-"
+                  className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{postProdAiError}</p>
               </div>
@@ -978,14 +870,7 @@ outline-none
               <button
                 type="button"
                 onClick={prevStep}
-                className="
-px-6 py-3
-rounded-xl
-bg-white/10
-hover:bg-white/20
-transition-all duration-300
-text-white
-"
+                className=" px-6 py-3 rounded-xl bg-white/10 hover:bg-white/20 transition-all duration-300 text-white"
               >
                 ← Back
               </button>
@@ -993,16 +878,7 @@ text-white
               <button
                 type="button"
                 onClick={nextStep}
-                className="
-px-8 py-3
-rounded-xl
-font-medium
-bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400
-hover:scale-105
-hover:shadow-[0_0_25px_rgba(236,72,153,0.6)]
-transition-all duration-300
-text-white
-"
+                className="px-8 py-3 rounded-xl font-medium bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 hover:scale-105 hover:shadow-[0_0_25px_rgba(236,72,153,0.6)] transition-all duration-300 text-white"
               >
                 Next →
               </button>
@@ -1017,14 +893,7 @@ text-white
                 : "opacity-0 translate-x-full absolute"
             }`}
           >
-            <p
-              className="
-text-3xl md:text-4xl font-semibold
-text-transparent bg-clip-text
-bg-gradient-to-r from-purple-400 via-pink-400 to-orange-300
-text-center mb-8
-"
-            >
+            <p className="text-3xl md:text-4xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-orange-300 text-center mb-8">
               {t("upload_form.more_info")}
             </p>
 
@@ -1063,19 +932,7 @@ text-center mb-8
                   onChange={() => {
                     youtubeCheck();
                   }}
-                  className="
-bg-white/5
-border border-white/20
-focus:border-purple-400
-focus:ring-2 focus:ring-purple-500/40
-rounded-xl
-h-12
-px-4
-text-white
-placeholder-white/40
-transition-all duration-300
-outline-none
-"
+                  className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{youtubeError}</p>
               </div>
@@ -1096,19 +953,7 @@ outline-none
                   onChange={() => {
                     emailCheck();
                   }}
-                  className="
-bg-white/5
-border border-white/20
-focus:border-purple-400
-focus:ring-2 focus:ring-purple-500/40
-rounded-xl
-h-12
-px-4
-text-white
-placeholder-white/40
-transition-all duration-300
-outline-none
-"
+                  className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{emailError}</p>
               </div>
@@ -1127,19 +972,7 @@ outline-none
                   onChange={() => {
                     tagCheck();
                   }}
-                  className="
-bg-white/5
-border border-white/20
-focus:border-purple-400
-focus:ring-2 focus:ring-purple-500/40
-rounded-xl
-h-12
-px-4
-text-white
-placeholder-white/40
-transition-all duration-300
-outline-none
-"
+                  className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{tagError}</p>
               </div>
