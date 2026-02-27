@@ -59,7 +59,10 @@
     "right_givaway": "By clicking here, I agree to transfer my property rights to the festival organizers and I hereby waive my copyright and ownership of the video that I am about to publish.",
     "submit_btn": "Finalize my submission",
     "majority_certification_flash": "You must be 18 or older",
-    "right_givaway_flash": "You must give your property rights"
+    "right_givaway_flash": "You must give your property rights",
+    "errors": {
+      "test": "test"
+    }
   },
 
   "homepage": {
@@ -441,5 +444,9 @@
     "country_usa": "USA",
     "country_germany": "Germany",
     "country_spain": "Spain"
+  },
+  "buttonsComponents": {
+    "back": "Back",
+    "next": "Next"
   }
 }

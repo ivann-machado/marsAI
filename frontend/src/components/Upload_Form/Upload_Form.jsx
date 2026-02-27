@@ -4,6 +4,7 @@ import "../Upload_Form/upload.css";
 import { useFlash } from "../../context/FlashContext";
 import LoadingButton from "../Loading/LoadingButton";
 import { countryListFr, countryListEn } from "../Utils/CountryList";
+import { BackButton, NextButton } from "../Utils/Buttons";
 
 function UploadForm() {
   const { showFlash } = useFlash();
@@ -19,7 +20,9 @@ function UploadForm() {
   if (i18n.language === "fr") {
     countryOptions = countryListFr;
   } else {
-    countryOptions = countryListEn;
+    countryOptions = countryListEn.sort((a, b) =>
+      a.label.localeCompare(b.label),
+    );
   }
   function handleSelect(event) {
     SetCountryId(event.target.value);
@@ -149,7 +152,7 @@ function UploadForm() {
       console.log("Input is empty");
     } else if (title.current.value.length < 5) {
       //Taille temporaire (placeholder !!!!!!)
-      SetTitleError("Ce champ doit être plus grand");
+      SetTitleError(t("upload_form.errors.test")); //"Ce champ doit être plus grand"
       console.log("Input is too short");
     } else if (title.current.value.length > 50) {
       //Taille temporaire (placeholder !!!!!!)
@@ -291,14 +294,12 @@ function UploadForm() {
 
   const formSubmit = useState(false);
   return (
-    <div
-      className="min-h-screen flex items-center justify-center 
-bg-gradient-to-br from-[#0f0f1a] via-[#1a1026] to-[#0f0f1a] p-6 font-inter"
-    >
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0f0f1a] via-[#1a1026] to-[#0f0f1a] p-6 font-inter">
       <form
         onSubmit={handleSubmit}
         className="relative w-[95%] max-w-4xl bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl shadow-[0_0_40px_rgba(194,122,255,0.25)] flex flex-col items-center gap-10 px-6 md:px-12 py-10 overflow-hidden"
       >
+        <div> {/*Titre et Règlement du formulaire*/} </div>
         <div className="absolute -top-40 -left-40 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl" />
         {/* Progress Bar */}
         <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
@@ -387,13 +388,7 @@ bg-gradient-to-br from-[#0f0f1a] via-[#1a1026] to-[#0f0f1a] p-6 font-inter"
             </div>
 
             <div className="flex justify-end p-4">
-              <button
-                type="button"
-                onClick={nextStep}
-                className="px-8 py-3 rounded-xl font-medium bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 hover:scale-105 hover:shadow-[0_0_25px_rgba(236,72,153,0.6)] transition-all duration-300 text-white"
-              >
-                Next →
-              </button>
+              <NextButton onClick={nextStep} />
             </div>
           </div>
 
@@ -530,21 +525,9 @@ bg-gradient-to-br from-[#0f0f1a] via-[#1a1026] to-[#0f0f1a] p-6 font-inter"
             </div>
 
             <div className="flex justify-between p-4">
-              <button
-                type="button"
-                onClick={prevStep}
-                className=" px-6 py-3 rounded-xl bg-white/10 hover:bg-white/20 transition-all duration-300 text-white"
-              >
-                ← Back
-              </button>
+              <BackButton onClick={prevStep} />
 
-              <button
-                type="button"
-                onClick={nextStep}
-                className="px-8 py-3 rounded-xl font-medium bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 hover:scale-105 hover:shadow-[0_0_25px_rgba(236,72,153,0.6)] transition-all duration-300 text-white"
-              >
-                Next →
-              </button>
+              <NextButton onClick={nextStep} />
             </div>
           </div>
 
@@ -714,14 +697,7 @@ bg-gradient-to-br from-[#0f0f1a] via-[#1a1026] to-[#0f0f1a] p-6 font-inter"
             </div>
 
             <div className="flex justify-between p-4">
-              <button
-                type="button"
-                onClick={prevStep}
-                className="px-6 py-3 rounded-xl bg-white/10 hover:bg-white/20 transition-all duration-300 text-white"
-              >
-                ← Back
-              </button>
-
+              <BackButton onClick={prevStep} />
               <LoadingButton type="submit" loading={loading}>
                 {t("upload_form.submit_btn")} →
               </LoadingButton>
