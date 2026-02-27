@@ -93,49 +93,59 @@ function AdminVideo() {
               </h4>
               <div className="flex flex-wrap justify-around w-100%">
                 <div className="w-1/3 md:w-1/6">
-                  <img
-                    src="../src/assets/fb.svg"
-                    className="w-12 h-12 mx-auto"
-                  ></img>
-                  <p className="text-center">Facebook</p>
+                  <a href={video.facebook_link ?? ""}>
+                    <img
+                      src="../src/assets/fb.svg"
+                      className="w-12 h-12 mx-auto"
+                    ></img>
+                    <p className="text-center">Facebook</p>
+                  </a>
                 </div>
                 <div className="w-1/3 md:w-1/6">
-                  <img
-                    src="../src/assets/linkedin.svg"
-                    className="w-12 h-12 mx-auto"
-                  ></img>
-                  <p className="text-center">Linkedin</p>
+                  <a href={video.linked_link ?? ""}>
+                    <img
+                      src="../src/assets/linkedin.svg"
+                      className="w-12 h-12 mx-auto"
+                    ></img>
+                    <p className="text-center">Linkedin</p>
+                  </a>
                 </div>
                 <div className="w-1/3 md:w-1/6">
-                  <img
-                    src="../src/assets/insta.svg"
-                    className="w-12 h-12 mx-auto"
-                  ></img>
-                  <p className="text-center">Instagram</p>
+                  <a href={video.instagram_link ?? ""}>
+                    <img
+                      src="../src/assets/insta.svg"
+                      className="w-12 h-12 mx-auto"
+                    ></img>
+                    <p className="text-center">Instagram</p>
+                  </a>
                 </div>
                 <div className="w-1/3 md:w-1/6">
-                  <img
-                    src="../src/assets/youtube.svg"
-                    className="w-12 h-12 mx-auto"
-                  ></img>
-                  <p className="text-center">Youtube</p>
+                  <a href={video.youtube_link ?? ""}>
+                    <img
+                      src="../src/assets/youtube.svg"
+                      className="w-12 h-12 mx-auto"
+                    ></img>
+                    <p className="text-center">Youtube</p>
+                  </a>
                 </div>
                 <div className="w-1/3 md:w-1/6">
-                  <img
-                    src="../src/assets/twitter.svg"
-                    className="w-12 h-12 mx-auto"
-                  ></img>
-                  <p className="text-center">Twitter/X</p>
+                  <a href={video.twitter_link ?? ""}>
+                    <img
+                      src="../src/assets/twitter.svg"
+                      className="w-12 h-12 mx-auto"
+                    ></img>
+                    <p className="text-center">Twitter/X</p>
+                  </a>
                 </div>
               </div>
             </div>
             <div className="mb-4">
-              <h3 className="text-3xl mb-4 text-center font-bold">
+              <h3 className="text-3xl mb-4 font-bold m-4">
                 {t("video_page.synopsis")}
               </h3>
               <p className="m-4 indent-4">{video.description}</p>
               <h4 className="m-4 text-2xl">{t("video_page.ai_used")}</h4>
-              <div>
+              <div className="flex justify-around">
                 <AIList type="Scénario" data={video.scenario_ai} />
                 <AIList type="Video" data={video.video_gen_ai} />
                 <AIList type="Son" data={video.sound_ai} />
