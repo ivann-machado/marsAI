@@ -49,109 +49,173 @@ function VideoDetail() {
 
   if (!video) return <Loading />;
 
-  console.log(video);
+  // console.log(video);
 
   return (
     <>
       <Header />
       <section
         className="w-full min-h-screen bg-[#050508] text-white py-18
-      md:px-[10%]"
+      md:px-[10%] font-inter"
       >
+        <div
+          className="absolute inset-0 z-0"
+          style={{
+            backgroundImage: `linear-gradient(135deg, rgba(168,85,247,0.4) 0%, transparent 50%), linear-gradient(225deg, rgba(236,72,153,0.3) 0%, transparent 50%)`,
+            backgroundSize: "cover",
+          }}
+        />
         <div className="m-4 mb-8">
           <a
             href="/gallery"
-            className="text-white hover:text-blue-900 visited:text-white"
+            className="text-white hover:text-blue-900 visited:text-white drop-shadow-xl/60 drop-shadow-purple-600"
           >
             {t("video_page.return_gallery")}
           </a>
         </div>
+        <h2 className="text-white font-extrabold text-4xl text-center mb-4 mt-4 md:mx-8 font-orbitron drop-shadow-xl/60 drop-shadow-purple-600">
+          {video.title}
+        </h2>
         <iframe
           className="w-full aspect-video"
           src={"https://www.youtube.com/embed/" + video.url}
           title="YouTube video player"
         ></iframe>
-        <h2 className="text-white font-bold text-4xl text-center mb-4 mt-4 md:mx-8">
-          {video.title}
-        </h2>
-        <div className="md:flex md:items-center md:space-between">
+
+        {/* PRODUCER + COUNTRY */}
+        <div className="md:flex md:items-center md:flex-between">
           <div className="flex md:mx-16">
             <img
               className="w-32 h-32 object-cover rounded-full m-4"
               src={video.producer_image}
             ></img>
             <div className="my-auto">
-              <p className="text-2xl text-white ml-2">
+              <p className="text-2xl text-white ml-2 font-orbitron drop-shadow-xl/60 drop-shadow-purple-600 font-bold">
                 {t("video_page.producer")}
               </p>
               <p className="text-xl text-gray-100 ml-2">{video.producer}</p>
             </div>
           </div>
-          <div className="flex mb-4 ml-8">
-            <span
-              className={`fi fi-2x fi-${country_list[video.country_id - 1].iso.toLowerCase()} scale-200`}
-            ></span>
-            <div className="ml-4">
-              <p className="text-white">{t("video_page.country_of_origin")}</p>
+          <div className="flex mb-4 ml-8 md:justify-between">
+            <div className="mr-20">
+              <p className="text-white drop-shadow-xl/60 drop-shadow-purple-600 font-bold font-orbitron">
+                {t("video_page.country_of_origin")}
+              </p>
               <p className="">{country_list[video.country_id - 1].label}</p>
             </div>
+            <span
+              className={`fi fi-2x fi-${country_list[video.country_id - 1].iso.toLowerCase()} scale-400 drop-shadow-xl/40 drop-shadow-purple-600`}
+            ></span>
           </div>
         </div>
+
+        {/* SYNOPSIS */}
         <div className="mb-4">
-          <h4 className="text-3xl font-bold m-4">
-            {t("video_page.media_links")}
-          </h4>
-          <div className="flex flex-wrap justify-around w-100%">
-            <div className="w-1/3 md:w-1/6">
-              <img
-                src="../src/assets/fb.svg"
-                className="w-12 h-12 mx-auto"
-              ></img>
-              <p className="text-center">Facebook</p>
-            </div>
-            <div className="w-1/3 md:w-1/6">
-              <img
-                src="../src/assets/linkedin.svg"
-                className="w-12 h-12 mx-auto"
-              ></img>
-              <p className="text-center">Linkedin</p>
-            </div>
-            <div className="w-1/3 md:w-1/6">
-              <img
-                src="../src/assets/insta.svg"
-                className="w-12 h-12 mx-auto"
-              ></img>
-              <p className="text-center">Instagram</p>
-            </div>
-            <div className="w-1/3 md:w-1/6">
-              <img
-                src="../src/assets/youtube.svg"
-                className="w-12 h-12 mx-auto"
-              ></img>
-              <p className="text-center">Youtube</p>
-            </div>
-            <div className="w-1/3 md:w-1/6">
-              <img
-                src="../src/assets/twitter.svg"
-                className="w-12 h-12 mx-auto"
-              ></img>
-              <p className="text-center">Twitter/X</p>
-            </div>
-          </div>
-        </div>
-        <div className="mb-4">
-          <h3 className="text-3xl mb-4 text-center font-bold">
+          <h3 className="text-3xl mb-4 text-center font-bold font-orbitron drop-shadow-xl/60 drop-shadow-purple-600">
             {t("video_page.synopsis")}
           </h3>
           <p className="m-4 indent-4">{video.description}</p>
-          <h4 className="m-4 text-2xl">{t("video_page.ai_used")}</h4>
+        </div>
+
+        {/* TOOLS USED */}
+        <div className="mb-4">
+          <h4 className="m-4 text-2xl drop-shadow-xl/60 drop-shadow-purple-600 font-bold font-orbitron">
+            {t("video_page.ai_used")}
+          </h4>
           <div className="flex flew-wrap justify-around">
-            <AIList type="Scénario" data={video.scenario_ai} />
-            <AIList type="Video" data={video.video_gen_ai} />
-            <AIList type="Son" data={video.sound_ai} />
-            <AIList type="Postprod" data={video.postprod_ai} />
+            {video.scenario_ai ? (
+              <AIList type="Scénario" data={video.scenario_ai} />
+            ) : null}
+            {video.video_gen_ai ? (
+              <AIList type="Video" data={video.video_gen_ai} />
+            ) : null}
+            {video.sound_ai ? (
+              <AIList type="Son" data={video.sound_ai} />
+            ) : null}
+            {video.postprod_ai ? (
+              <AIList type="Postprod" data={video.postprod_ai} />
+            ) : null}
           </div>
         </div>
+
+        {/* MEDIA SECTION */}
+        {video.facebook_link ||
+        video.linkedin_link ||
+        video.instagram_link ||
+        video.youtube_link ||
+        video.twitter_link ? (
+          <div className="mb-4">
+            <h4 className="text-3xl font-bold m-4 drop-shadow-xl/60 drop-shadow-purple-600 font-orbitron">
+              {t("video_page.media_links")}
+            </h4>
+            <div className="flex flex-wrap justify-around w-100%">
+              {/* FB */}
+              {video.facebook_link ? (
+                <div className="w-1/3 md:w-1/6">
+                  <a href={video.facebook_link ?? "http://facebook.com"}>
+                    <img
+                      src="../src/assets/fb.svg"
+                      className="w-12 h-12 mx-auto"
+                    ></img>
+                    <p className="text-center">Facebook</p>
+                  </a>
+                </div>
+              ) : null}
+
+              {/* LINKEDIN */}
+              {video.linkedin_link ? (
+                <div className="w-1/3 md:w-1/6">
+                  <a href={video.linkedin_link ?? "http://linkedin.com"}>
+                    <img
+                      src="../src/assets/linkedin.svg"
+                      className="w-12 h-12 mx-auto"
+                    ></img>
+                    <p className="text-center">Linkedin</p>
+                  </a>
+                </div>
+              ) : null}
+
+              {/* INSTA */}
+              {video.instagram_link ? (
+                <div className="w-1/3 md:w-1/6">
+                  <a href={video.instagram_link ?? "http://instagram.com"}>
+                    <img
+                      src="../src/assets/insta.svg"
+                      className="w-12 h-12 mx-auto"
+                    ></img>
+                    <p className="text-center">Instagram</p>
+                  </a>
+                </div>
+              ) : null}
+
+              {/* YT */}
+              {video.youtube_link ? (
+                <div className="w-1/3 md:w-1/6">
+                  <a href={video.youtube_link ?? "http://youtube.com"}>
+                    <img
+                      src="../src/assets/youtube.svg"
+                      className="w-12 h-12 mx-auto"
+                    ></img>
+                    <p className="text-center">Youtube</p>
+                  </a>
+                </div>
+              ) : null}
+
+              {/* TWITTER */}
+              {video.twitter_link ? (
+                <div className="w-1/3 md:w-1/6">
+                  <a href={video.twitter_link ?? "http://x.com"}>
+                    <img
+                      src="../src/assets/twitter.svg"
+                      className="w-12 h-12 mx-auto"
+                    ></img>
+                    <p className="text-center">Twitter/X</p>
+                  </a>
+                </div>
+              ) : null}
+            </div>
+          </div>
+        ) : null}
       </section>
       <Footer />
     </>
