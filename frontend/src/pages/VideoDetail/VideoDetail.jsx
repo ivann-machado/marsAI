@@ -6,29 +6,19 @@ import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import { useState, useEffect } from "react";
 import Loading from "../../components/Utils/Loading";
+import {
+  countryListFr,
+  countryListEn,
+} from "../../components/Utils/CountryList.jsx";
 
 function VideoDetail() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [video, setVideo] = useState(null);
   let params = useParams();
 
-  let mockedVideo = {
-    src: "https://www.youtube.com/embed/_cPdvX-0kRA?si=MP3jAxInyj04TUlx",
-    title: "Test Video",
-    producer: "John Doe",
-    producer_image: "../src/assets/producer_image.png",
-    description:
-      "Dans une ville côtière battue par les tempêtes, Élias, un ancien ingénieur radio marqué par la disparition inexpliquée de sa femme, vit reclus dans un phare abandonné. Une nuit, il capte sur une fréquence interdite un message codé… prononcé avec la voix exacte de sa femme, pourtant déclarée morte depuis dix ans.",
-    cover_image: "",
-    country_name: "France",
-    country_iso: "FR",
-    linkedin_link: "",
-    youtube_link: "",
-    scenario_ai: "ChatGPT, Claude",
-    video_gen_ai: "Sona",
-    sound_ai: "",
-    postprod_ai: "",
-  };
+  let country_list = [];
+  if (i18n.language === "fr") country_list = countryListFr;
+  else country_list = countryListEn;
 
   //console.log(params);
 
@@ -99,11 +89,11 @@ function VideoDetail() {
           </div>
           <div className="flex mb-4 ml-8">
             <span
-              className={`fi fi-2x fi-${mockedVideo.country_iso.toLowerCase()} scale-200`}
+              className={`fi fi-2x fi-${country_list[video.country_id - 1].iso.toLowerCase()} scale-200`}
             ></span>
             <div className="ml-4">
               <p className="text-white">{t("video_page.country_of_origin")}</p>
-              <p className="">{mockedVideo.country_name}</p>
+              <p className="">{country_list[video.country_id - 1].label}</p>
             </div>
           </div>
         </div>
