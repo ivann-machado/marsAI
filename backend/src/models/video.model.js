@@ -149,7 +149,7 @@ export const updateVideoUrl = async (id, url, conn = null) => {
 export const updateVideoStatus = async (id, status, conn = null) => {
 	const query = "UPDATE videos SET status = ? WHERE id = ?";
 	const db = conn || pool;
-	return db.query(query, [url, id]);
+	return db.query(query, [status, id]);
 };
 
 /**

@@ -20,14 +20,14 @@
 		"test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles"
 	},
 	"dependencies": {
-		"@aws-sdk/client-s3": "^3.996.0",
+		"@aws-sdk/client-s3": "^3.999.0",
 		"@getbrevo/brevo": "^4.0.1",
 		"bcryptjs": "^3.0.3",
 		"cors": "^2.8.6",
 		"dotenv": "^17.3.1",
 		"express": "^5.2.1",
 		"express-rate-limit": "^8.2.1",
-		"google-auth-library": "^10.5.0",
+		"google-auth-library": "^10.6.1",
 		"googleapis": "^171.4.0",
 		"helmet": "^8.1.0",
 		"i18next": "^25.8.13",
