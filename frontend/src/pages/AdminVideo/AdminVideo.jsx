@@ -6,11 +6,21 @@ import "flag-icons/css/flag-icons.min.css";
 import { useState, useEffect } from "react";
 import AdminVideoPanel from "../../components/AdminVideosDash/AdminVideoPanel";
 import AdminSidebar from "../../components/AdminSidebar/AdminSidebar.jsx";
+import {
+  countryListFr,
+  countryListEn,
+} from "../../components/Utils/CountryList.jsx";
 
 function AdminVideo() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   let params = useParams();
   const [video, setVideo] = useState(null);
+
+  let country_list = [];
+  if (i18n.language === "fr") country_list = countryListFr;
+  else country_list = countryListEn;
+
+  console.log(country_list[4]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -75,15 +85,15 @@ function AdminVideo() {
                   <p className="text-xl text-gray-100 ml-2">{video.producer}</p>
                 </div>
               </div>
-              <div className="flex mb-4 ml-8">
-                {/* <span
-                className={`fi fi-2x fi-${video.country_iso.toLowerCase()} scale-200`}
-              ></span> */}
+              <div className="flex mb-4 ml-8 ">
+                <span
+                  className={`fi fi-2x fi-${country_list[video.country_id - 1].iso.toLowerCase()} scale-200`}
+                ></span>
                 <div className="ml-4">
                   <p className="text-white">
                     {t("video_page.country_of_origin")}
                   </p>
-                  {/*  <p className="">{video.country_name}</p> */}
+                  <p className="">{country_list[video.country_id - 1].label}</p>
                 </div>
               </div>
             </div>
