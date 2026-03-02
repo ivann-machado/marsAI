@@ -54,12 +54,13 @@ function AdminVideo() {
       <div className="flex">
         <AdminSidebar />
         <section className="w-4/5 min-h-screen text-white bg-[#050508]">
-          <h2 className="text-white font-bold text-4xl text-center mb-4 mt-4 md:mx-8">
+          {/* TITLE */}
+          <h2 className="text-white font-extrabold text-4xl text-center mb-4 mt-4 md:mx-8 font-orbitron drop-shadow-xl/60 drop-shadow-purple-600">
             {video.title}
           </h2>
           <div className="flex flex-col items-center">
             <iframe
-              className="min-w-200 w-9/10 aspect-video"
+              className="min-w-200 w-9/10 aspect-video rounded-t-xl"
               // src="https://www.youtube.com/embed/_cPdvX-0kRA?si=MP3jAxInyj04TUlx"
               src={"https://www.youtube.com/embed/" + video.url}
               title="YouTube video player"
@@ -75,40 +76,46 @@ function AdminVideo() {
           <div className="md:flex md:items-center md:flex-between">
             <div className="flex md:mx-16">
               <img
-                className="w-32 h-32 object-cover rounded-full m-4"
+                className="w-32 h-32 object-cover rounded-full m-4 drop-shadow-xl/60 drop-shadow-amber-600"
                 src={video.producer_image}
               ></img>
               <div className="my-auto">
-                <p className="text-2xl text-white ml-2">
+                <p className="text-2xl text-white ml-2 font-orbitron drop-shadow-xl/60 drop-shadow-purple-600 font-bold">
                   {t("video_page.producer")}
                 </p>
-                <p className="text-xl text-gray-100 ml-2">{video.producer}</p>
+                <p className="text-xl text-gray-100 ml-2 drop-shadow-xl/60 drop-shadow-amber-600">
+                  {video.producer}
+                </p>
               </div>
             </div>
-            <div className="flex mb-4 ml-8">
-              <span
-                className={`fi fi-2x fi-${country_list[video.country_id - 1].iso.toLowerCase()} scale-200`}
-              ></span>
-              <div className="ml-4">
-                <p className="text-white">
+            <div className="flex mb-4 ml-8 md:justify-between">
+              <div className="mr-20">
+                <p className="text-white drop-shadow-xl/60 drop-shadow-purple-600 font-bold font-orbitron">
                   {t("video_page.country_of_origin")}
                 </p>
-                <p className="">{country_list[video.country_id - 1].label}</p>
+                <p className="drop-shadow-xl/60 drop-shadow-amber-600">
+                  {country_list[video.country_id - 1].label}
+                </p>
               </div>
+              <span
+                className={`fi fi-2x fi-${country_list[video.country_id - 1].iso.toLowerCase()} scale-400 drop-shadow-xl/40 drop-shadow-purple-600`}
+              ></span>
             </div>
           </div>
 
           {/* SYNOPSIS */}
           <div className="mb-4">
-            <h3 className="text-3xl mb-4 text-center font-bold">
+            <h3 className="text-3xl mb-4 text-center font-bold font-orbitron drop-shadow-xl/60 drop-shadow-purple-600">
               {t("video_page.synopsis")}
             </h3>
-            <p className="m-4 indent-4">{video.description}</p>
+            <p className="m-4 indent-4 text-center">{video.description}</p>
           </div>
 
           {/* TOOLS USED */}
           <div className="mb-4">
-            <h4 className="m-4 text-2xl">{t("video_page.ai_used")}</h4>
+            <h4 className="m-4 text-2xl drop-shadow-xl/60 drop-shadow-purple-600 font-bold font-orbitron text-center">
+              {t("video_page.ai_used")}
+            </h4>
             <div className="flex flew-wrap justify-around">
               {video.scenario_ai ? (
                 <AIList type="Scénario" data={video.scenario_ai} />
@@ -132,7 +139,7 @@ function AdminVideo() {
           video.youtube_link ||
           video.twitter_link ? (
             <div className="mb-4">
-              <h4 className="text-3xl font-bold m-4">
+              <h4 className="text-3xl font-bold m-4 drop-shadow-xl/60 drop-shadow-purple-600 font-orbitron text-center">
                 {t("video_page.media_links")}
               </h4>
               <div className="flex flex-wrap justify-around w-100%">
@@ -151,7 +158,7 @@ function AdminVideo() {
 
                 {/* LINKEDIN */}
                 {video.linkedin_link ? (
-                  <div className="w-1/3 md:w-1/6">
+                  <div className="w-1/3 md:w-1/6 drop-shadow-xl/60 drop-shadow-amber-600 hover:scale-110 hover:underline transition">
                     <a href={video.linkedin_link ?? "http://linkedin.com"}>
                       <img
                         src="../src/assets/linkedin.svg"
@@ -164,7 +171,7 @@ function AdminVideo() {
 
                 {/* INSTA */}
                 {video.instagram_link ? (
-                  <div className="w-1/3 md:w-1/6">
+                  <div className="w-1/3 md:w-1/6 drop-shadow-xl/60 drop-shadow-amber-600 hover:scale-110 hover:underline transition">
                     <a href={video.instagram_link ?? "http://instagram.com"}>
                       <img
                         src="../src/assets/insta.svg"
@@ -177,7 +184,7 @@ function AdminVideo() {
 
                 {/* YT */}
                 {video.youtube_link ? (
-                  <div className="w-1/3 md:w-1/6">
+                  <div className="w-1/3 md:w-1/6 drop-shadow-xl/60 drop-shadow-amber-600 hover:scale-110 hover:underline transition">
                     <a href={video.youtube_link ?? "http://youtube.com"}>
                       <img
                         src="../src/assets/youtube.svg"
@@ -190,7 +197,7 @@ function AdminVideo() {
 
                 {/* TWITTER */}
                 {video.twitter_link ? (
-                  <div className="w-1/3 md:w-1/6">
+                  <div className="w-1/3 md:w-1/6 drop-shadow-xl/60 drop-shadow-amber-600 hover:scale-110 hover:underline transition">
                     <a href={video.twitter_link ?? "http://x.com"}>
                       <img
                         src="../src/assets/twitter.svg"
