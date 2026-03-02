@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import PhaseIndicator from "../../components/PhaseIndicator/PhaseIndicator";
+import PhaseNavigation from "../../components/PhaseNavigation/PhaseNavigation";
 
 const btn =
   "font-inter font-semibold text-sm tracking-wider uppercase rounded-full transition-all duration-300";
@@ -203,10 +203,10 @@ function HomepagePhase2() {
 
             <div className="grid grid-cols-4 gap-6 max-w-3xl mx-auto mb-10">
               {[
-                { v: timeLeft.days, l: "phase2_days" },
-                { v: timeLeft.hours, l: "phase2_hours" },
-                { v: timeLeft.minutes, l: "phase2_minutes" },
-                { v: timeLeft.seconds, l: "phase2_seconds" },
+                { v: timeLeft.days, l: "homepage.phase2_days" },
+                { v: timeLeft.hours, l: "homepage.phase2_hours" },
+                { v: timeLeft.minutes, l: "homepage.phase2_minutes" },
+                { v: timeLeft.seconds, l: "homepage.phase2_seconds" },
               ].map((x, i) => (
                 <div key={i} className={`${card} p-8 border-[#ec4899]/30`}>
                   <div className="font-orbitron font-black text-6xl text-[#ec4899] mb-2">
@@ -297,43 +297,57 @@ function HomepagePhase2() {
                 </h3>
                 <div className="space-y-4 text-[#a0a0b8]">
                   {[
-                    "phase2_address",
-                    "phase2_tram",
-                    "phase2_parking",
-                    "phase2_accessibility",
+                    "homepage.phase2_address",
+                    "homepage.phase2_tram",
+                    "homepage.phase2_parking",
+                    "homepage.phase2_accessibility",
                   ].map((k) => (
                     <p key={k}>{t(k)}</p>
                   ))}
                 </div>
-                <a
-                  href={MAPS_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`mt-6 w-full px-6 py-3 bg-[#3b82f6]/20 border border-[#3b82f6]/50 text-[#3b82f6] ${btn} hover:bg-[#3b82f6] hover:text-white block text-center`}
-                >
-                  {t("homepage.phase2_view_map")}
-                </a>
+                <div className="mt-6 flex flex-col gap-4">
+                  <div className="w-full rounded-3xl overflow-hidden border border-[#3b82f6]/30">
+                    <iframe
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2904.1234567890123!2d5.3662017!3d43.3141763!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12c9c0c6c8c8c8c8%3A0x123456789abcdef!2s%C3%89cole%20La%20Plateforme_%20Marseille%20-%20Entr%C3%A9e%20Sud!5e0!3m2!1sfr!2sfr!4v1234567890123!5m2!1sfr!2sfr"
+                      width="100%"
+                      height="300"
+                      style={{ border: 0 }}
+                      allowFullScreen=""
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      title="La Plateforme Marseille"
+                    />
+                  </div>
+                  <a
+                    href={MAPS_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`w-full px-6 py-3 bg-[#3b82f6]/20 border border-[#3b82f6]/50 text-[#3b82f6] ${btn} hover:bg-[#3b82f6] hover:text-white block text-center`}
+                  >
+                    {t("homepage.phase2_view_map")}
+                  </a>
+                </div>
               </div>
               <div className="space-y-6">
                 {[
                   {
-                    titleKey: "venue_room_1_title",
-                    descKey: "phase2_sugar_hall_desc",
-                    capKey: "phase2_sugar_hall_capacity",
+                    titleKey: "homepage.venue_room_1_title",
+                    descKey: "homepage.phase2_sugar_hall_desc",
+                    capKey: "homepage.phase2_sugar_hall_capacity",
                     color: "text-[#10b981]",
                     bg: `${card} border-white/5`,
                   },
                   {
-                    titleKey: "venue_room_2_title",
-                    descKey: "phase2_plaza_hall_desc",
-                    capKey: "phase2_plaza_hall_capacity",
+                    titleKey: "homepage.venue_room_2_title",
+                    descKey: "homepage.phase2_plaza_hall_desc",
+                    capKey: "homepage.phase2_plaza_hall_capacity",
                     color: "text-[#ec4899]",
                     bg: `${card} border-white/5`,
                   },
                   {
-                    titleKey: "phase2_free_entry",
-                    descKey: "phase2_free_entry_desc",
-                    capKey: "phase2_free_entry_desc_2",
+                    titleKey: "homepage.phase2_free_entry",
+                    descKey: "homepage.phase2_free_entry_desc",
+                    capKey: "homepage.phase2_free_entry_desc_2",
                     color: "text-white",
                     bg: "bg-gradient-to-r from-[#a855f7]/20 to-[#ec4899]/20 rounded-3xl border border-[#a855f7]/30",
                   },
@@ -386,24 +400,7 @@ function HomepagePhase2() {
         </section>
       </div>
       {/* Navigation entre phases */}
-      <div className="py-16 bg-gradient-to-r from-[#0a0a0f] to-[#1a0a2e] border-t border-white/10">
-        <div className="max-w-7xl mx-auto px-10 flex items-center justify-between">
-          <Link
-            to="/"
-            className="flex items-center gap-3 px-8 py-4 bg-white/10 border border-white/20 text-white font-inter font-semibold text-sm tracking-wider uppercase rounded-full hover:translate-y-[-3px] hover:bg-white/20 transition-all"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
-            {t('phases.phase1_nav')}
-          </Link>
-          <Link
-            to="/phase3"
-            className="flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-[#fbbf24] to-[#f59e0b] text-white font-inter font-semibold text-sm tracking-wider uppercase rounded-full hover:translate-y-[-3px] transition-all shadow-[0_10px_30px_rgba(251,191,36,0.3)] hover:shadow-[0_15px_40px_rgba(251,191,36,0.5)]"
-          >
-            {t('phases.phase3_nav')}
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-          </Link>
-        </div>
-      </div>
+      <PhaseNavigation currentPhase={2} />
 
       <PhaseIndicator currentPhase={2} />
       <Footer />
