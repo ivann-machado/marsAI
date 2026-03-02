@@ -1,0 +1,7 @@
+PrismaClient instantiated successfully
+Video count: 9
+ÔØî Error: 
+Invalid `prisma.videos.findFirst()` invocation:
+
+
+Value '' not found in enum 'videos_status'
