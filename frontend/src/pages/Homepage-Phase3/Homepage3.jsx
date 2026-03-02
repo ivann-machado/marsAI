@@ -256,6 +256,19 @@ function HomepagePhase3() {
                     </div>
                 </section>
             </div>
+            {/* Navigation entre phases */}
+            <div className="py-16 bg-gradient-to-r from-[#0a0a0f] to-[#1a0a2e] border-t border-white/10">
+                <div className="max-w-7xl mx-auto px-10 flex items-center justify-start">
+                    <Link
+                        to="/phase2"
+                        className="flex items-center gap-3 px-8 py-4 bg-white/10 border border-white/20 text-white font-inter font-semibold text-sm tracking-wider uppercase rounded-full hover:translate-y-[-3px] hover:bg-white/20 transition-all"
+                    >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+                        {t('phases.phase2_nav')}
+                    </Link>
+                </div>
+            </div>
+
             <PhaseIndicator currentPhase={3} />
             <Footer />
         </>

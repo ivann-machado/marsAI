@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
@@ -15,10 +16,10 @@ const h2Style =
   "font-orbitron font-black text-[clamp(36px,6vw,64px)] leading-tight mb-6 text-white";
 
 const stats = [
-  { number: "3,247", labelKey: "phase2_visitors", color: "text-[#10b981]" },
-  { number: "50", labelKey: "phase2_films_selection", color: "text-[#ec4899]" },
-  { number: "120", labelKey: "phase2_countries", color: "text-[#06b6d4]" },
-  { number: "60+", labelKey: "phase2_experts", color: "text-[#a855f7]" },
+  { number: "3,247", labelKey: "homepage.phase2_visitors", color: "text-[#10b981]" },
+  { number: "50", labelKey: "homepage.phase2_films_selection", color: "text-[#ec4899]" },
+  { number: "120", labelKey: "homepage.phase2_countries", color: "text-[#06b6d4]" },
+  { number: "60+", labelKey: "homepage.phase2_experts", color: "text-[#a855f7]" },
 ];
 
 const films = [
@@ -384,6 +385,26 @@ function HomepagePhase2() {
           </div>
         </section>
       </div>
+      {/* Navigation entre phases */}
+      <div className="py-16 bg-gradient-to-r from-[#0a0a0f] to-[#1a0a2e] border-t border-white/10">
+        <div className="max-w-7xl mx-auto px-10 flex items-center justify-between">
+          <Link
+            to="/"
+            className="flex items-center gap-3 px-8 py-4 bg-white/10 border border-white/20 text-white font-inter font-semibold text-sm tracking-wider uppercase rounded-full hover:translate-y-[-3px] hover:bg-white/20 transition-all"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+            {t('phases.phase1_nav')}
+          </Link>
+          <Link
+            to="/phase3"
+            className="flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-[#fbbf24] to-[#f59e0b] text-white font-inter font-semibold text-sm tracking-wider uppercase rounded-full hover:translate-y-[-3px] transition-all shadow-[0_10px_30px_rgba(251,191,36,0.3)] hover:shadow-[0_15px_40px_rgba(251,191,36,0.5)]"
+          >
+            {t('phases.phase3_nav')}
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+          </Link>
+        </div>
+      </div>
+
       <PhaseIndicator currentPhase={2} />
       <Footer />
     </>

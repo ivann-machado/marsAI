@@ -433,6 +433,9 @@
   "phases": {
     "before_festival": "Before Festival",
     "during_festival": "Festival Live",
-    "after_festival": "After Festival"
+    "after_festival": "After Festival",
+    "phase1_nav": "Phase 1 — Applications",
+    "phase2_nav": "Phase 2 — Festival",
+    "phase3_nav": "Phase 3 — Awards"
   }
 }

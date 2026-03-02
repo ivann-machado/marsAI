@@ -413,6 +413,9 @@
   "phases": {
     "before_festival": "Avant Festival",
     "during_festival": "Festival en cours",
-    "after_festival": "Après Festival"
+    "after_festival": "Après Festival",
+    "phase1_nav": "Phase 1 — Candidatures",
+    "phase2_nav": "Phase 2 — Festival",
+    "phase3_nav": "Phase 3 — Palmarès"
   }
 }
