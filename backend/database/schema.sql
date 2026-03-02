@@ -194,7 +194,7 @@ CREATE TABLE tokens (
 -- --------------------------------------------------------
 CREATE TABLE process_queue (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    video_id VARCHAR(100) NOT NULL,
+    video_id INT NOT NULL,
     status ENUM('pending','done','failed','timeout') DEFAULT 'pending',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
