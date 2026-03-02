@@ -170,7 +170,7 @@ CREATE TABLE reviews (
     id INT AUTO_INCREMENT PRIMARY KEY,
     admin_id INT NOT NULL,
     video_id INT NOT NULL,
-    note TEXT NOT NULL,
+    note VARCHAR(300) NOT NULL,
     grade INT NOT NULL,
     status ENUM('assigned','done') DEFAULT 'assigned',
     FOREIGN KEY (video_id) REFERENCES videos(id) ON DELETE CASCADE,
