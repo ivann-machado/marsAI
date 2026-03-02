@@ -36,7 +36,7 @@ function SponsorsPage() {
   return (
     <>
       <Header />
-      <div className="bg-gray-900 text-white">
+      <div className="bg-gray-900 text-white font-inter">
         <OfficialSponsors sponsors={sponsors} />
         <MediaSponsors sponsors={sponsors} />
         <TechnicalSponsors sponsors={sponsors} />

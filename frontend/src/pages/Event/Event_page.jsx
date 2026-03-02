@@ -53,18 +53,25 @@ function Event() {
   return (
     <>
       <Header />
-      <div className="min-h-screen bg-[#050508] text-white">
-        <section className="relative py-16 md:py-24 bg-gradient-to-b from-black via-purple-900/20 to-[#050508]">
-          <div className="absolute inset-0 bg-gradient-to-b from-black via-purple-900/60 to-[#050508]"></div>
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage: `linear-gradient(135deg, rgba(168,85,247,0.4) 0%, transparent 50%), linear-gradient(225deg, rgba(236,72,153,0.3) 0%, transparent 50%)`,
+          backgroundSize: "cover",
+        }}
+      />
+      <div className="min-h-screen bg-[#050508] text-white font-inter">
+        <section className="relative py-16 md:py-24 ">
+          <div className="absolute inset-0 "></div>
           <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-8">
             <div className="text-center mb-12">
-              <div className="inline-block px-4 py-2 mb-6 text-sm font-medium bg-white/10 rounded-full border border-white/20">
+              <div className="inline-block px-4 py-2 mb-6 text-sm font-medium bg-white/10 rounded-full border border-white/20 font-orbitron">
                 {t("event_page.hero_badge") || "Events"}
               </div>
-              <h1 className="text-5xl md:text-7xl font-black mb-4 tracking-tighter">
+              <h1 className="text-5xl md:text-7xl font-black mb-4 tracking-tighter font-orbitron">
                 {t("event_page.hero_title") || "EVENTS"}
               </h1>
-              <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+              <p className="text-gray-400 max-w-2xl mx-auto text-lg font-orbitron">
                 {t("event_page.hero_description") ||
                   "Découvrez nos événements exclusifs et participez à des expériences inoubliables"}
               </p>
@@ -72,7 +79,7 @@ function Event() {
           </div>
         </section>
 
-        <section className="relative z-10 py-16 md:py-24 bg-gradient-to-b from-black via-pink-900/10 to-[#050508]">
+        <section className="relative z-10 py-16 md:py-24 ">
           <div className="max-w-7xl mx-auto px-4 md:px-8">
             {loading ? (
               <div className="flex justify-center items-center py-16">
@@ -96,7 +103,7 @@ function Event() {
             ) : (
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-1">
-                  <h2 className="text-2xl font-black mb-6">
+                  <h2 className="text-2xl font-black mb-6 font-orbitron">
                     {t("event_page.list_title") || "Événements"}
                   </h2>
                   <div className="space-y-3">

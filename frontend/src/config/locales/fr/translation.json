@@ -45,7 +45,8 @@
     "title": "Titre",
     "desc": "Description",
     "video": "Vidéo",
-    "image": "Image",
+    "image": "Miniature de votre film",
+    "producer_cover": "Photo du producteur",
     "production": "Réalisation",
     "scenario_ai": "IA scénario",
     "video_ai": "IA générative vidéo",
@@ -53,9 +54,12 @@
     "post_prod_ai": "IA post-production",
     "more_info": "Informations complémentaires",
     "producer": "Producteur",
+    "country": "Pays",
     "majority_certification": "En cliquant ici, je certifie être agé de 18 ans ou plus",
     "right_givaway": "En cliquant ici, j’accepte de céder mes droits de propriété aux organisateurs du festival et je renonce ainsi à mes droits d'auteur et de propriété de la vidéo que je m'apprête à publier.",
-    "submit_btn": "Finaliser ma soumission"
+    "submit_btn": "Finaliser ma soumission",
+    "majority_certification_flash": "Vous devez être agé de 18 ans ou plus",
+    "right_givaway_flash": "Vous devez donner vos droits de propriété"
   },
 
   "homepage": {
@@ -108,7 +112,7 @@
     "protocol_stat_2_label": "EN SÉLECTION",
     "protocol_stat_3": "WEB 3.0",
     "protocol_stat_3_label": "EXPÉRIENCE",
-    "protocol_stat_4": "J4",
+    "protocol_stat_4": "4 JOURS",
     "protocol_stat_4_label": "MARSEILLE",
     "protocol_cta": "REJOINDRE L'AVENTURE",
 
@@ -316,7 +320,16 @@
     "gallery_empty_desc": "Essayez de sélectionner une autre catégorie",
     "gallery_load_more": "CHARGER PLUS DE FILMS",
     "gallery_watch": "REGARDER LE FILM",
-    "gallery_share": "PARTAGER"
+    "gallery_share": "PARTAGER",
+    "gallery_search_placeholder": "Rechercher un film, un réalisateur...",
+    "gallery_filter_title": "Titre A-Z",
+    "gallery_filter_title_desc": "Titre Z-A",
+    "gallery_filter_duration_asc": "Durée ↑",
+    "gallery_filter_duration_desc": "Durée ↓",
+    "gallery_filter_year": "Année",
+    "gallery_filter_country": "Pays",
+    "gallery_watch_film": "REGARDER",
+    "gallery_all_movie": "TOUS LES FILMS"
   },
 
   "page_contact": {
@@ -393,6 +406,13 @@
     "country_usa": "USA",
     "country_germany": "Allemagne",
     "country_spain": "Espagne"
+  },
+  "sponsors_page": {
+    "official_sponsors": "Partenaires officiels",
+    "media_sponsors": "Partenaires médias",
+    "technical_sponsors": "Partenaires techniques",
+    "other_sponsors": "Autres sponsors",
+    "website": "Site web"
   },
   "event_page": {
     "hero_badge": "NOS ÉVÉNEMENTS",

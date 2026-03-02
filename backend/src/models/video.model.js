@@ -57,14 +57,11 @@ export const insertVideo = async (video, conn = null) => {
 	const query = `
 		INSERT INTO videos (
 			edition_id,
-			url,
 			filename,
 			email,
 			cover_image,
-			verified,
 			title,
 			description,
-			status,
 			country_id,
 			producer,
 			producer_image,
@@ -76,19 +73,16 @@ export const insertVideo = async (video, conn = null) => {
 			postprod_ai,
 			tags
 		)
-		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 	`;
 
 	const values = [
 		video.edition_id ?? null,
-		video.url,
 		video.filename,
 		video.email,
 		video.cover_image,
-		video.verified,
 		video.title,
 		video.description,
-		video.status,
 		video.country_id ?? null,
 		video.producer,
 		video.producer_image,
@@ -119,7 +113,8 @@ export const updateVideo = async (id, video, conn = null) => {
 			description = ?,
 			status = ?,
 			verified = ?,
-			tags = ?
+			tags = ?,
+			youtube_link = ?
 		WHERE id = ?
 	`;
 
@@ -129,11 +124,32 @@ export const updateVideo = async (id, video, conn = null) => {
 		video.status,
 		video.verified,
 		video.tags,
+		video.youtube_link,
 		id,
 	];
 
 	const db = conn || pool;
 	return db.query(query, values);
+};
+
+
+/**
+ * Update a video url.
+ * @param {number|string} id
+ * @param {string} url
+ * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
+ * @returns {Promise<any>}
+ */
+export const updateVideoUrl = async (id, url, conn = null) => {
+	const query = "UPDATE videos SET url = ? WHERE id = ?";
+	const db = conn || pool;
+	return db.query(query, [url, id]);
+};
+
+export const updateVideoStatus = async (id, status, conn = null) => {
+	const query = "UPDATE videos SET status = ? WHERE id = ?";
+	const db = conn || pool;
+	return db.query(query, [status, id]);
 };
 
 /**

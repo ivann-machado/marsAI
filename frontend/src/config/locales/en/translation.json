@@ -45,7 +45,8 @@
     "title": "Title",
     "desc": "Description",
     "video": "Video",
-    "image": "Image",
+    "image": "Movie cover image",
+    "producer_cover": "Producer picture",
     "production": "Production",
     "scenario_ai": "Scenario AI",
     "video_ai": "Video generation AI",
@@ -53,9 +54,12 @@
     "post_prod_ai": "post-production AI",
     "more_info": "Complementary informations",
     "producer": "Producer",
+    "country": "Country",
     "majority_certification": "By clicking on this, i certify that i am 18 or older.",
     "right_givaway": "By clicking here, I agree to transfer my property rights to the festival organizers and I hereby waive my copyright and ownership of the video that I am about to publish.",
-    "submit_btn": "Finalize my submission"
+    "submit_btn": "Finalize my submission",
+    "majority_certification_flash": "You must be 18 or older",
+    "right_givaway_flash": "You must give your property rights"
   },
 
   "homepage": {
@@ -108,7 +112,7 @@
     "protocol_stat_2_label": "IN SELECTION",
     "protocol_stat_3": "WEB 3.0",
     "protocol_stat_3_label": "EXPERIENCE",
-    "protocol_stat_4": "J4",
+    "protocol_stat_4": "4 DAYS",
     "protocol_stat_4_label": "MARSEILLE",
     "protocol_cta": "JOIN THE ADVENTURE",
 
@@ -327,7 +331,15 @@
     "gallery_empty_desc": "Try selecting another category",
     "gallery_load_more": "LOAD MORE FILMS",
     "gallery_watch": "WATCH FILM",
-    "gallery_share": "SHARE"
+    "gallery_share": "SHARE",
+    "gallery_filter_title": "Title A-Z",
+    "gallery_filter_title_desc": "Title Z-A",
+    "gallery_filter_duration_asc": "Duration ↑",
+    "gallery_filter_duration_desc": "Duration ↓",
+    "gallery_filter_year": "Year",
+    "gallery_filter_country": "Country",
+    "gallery_watch_film": "WATCH",
+    "gallery_all_movie": "ALL FILMS"
   },
   "page_contact": {
     "contact_badge": "GET IN TOUCH",
