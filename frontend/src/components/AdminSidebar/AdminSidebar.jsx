@@ -7,8 +7,8 @@ function AdminSidebar() {
   const { user, userRole, logout } = useauth();
 
   return (
-    <div className="w-1/5 min-w-20 bg-gray-800 min-h-screen">
-      <div className="bg-gray-900">
+    <div className="w-1/5 min-w-20 bg-linear-to-br from-gray-800 to-gray-900 min-h-screen">
+      <div className="bg-linear-to-tr from-gray-900 to-gray-800">
         <p className="text-white p-3 text-center font-bold">
           Bienvenue <span className="text-amber-600">{user}</span>
         </p>

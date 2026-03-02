@@ -74,8 +74,8 @@ function Gallery() {
   const sortOptions = [
     { id: "title", name: t("gallery.gallery_filter_title") },
     { id: "title-desc", name: t("gallery.gallery_filter_title_desc") },
-    { id: "duration", name: t("gallery.gallery_filter_duration_asc") },
-    { id: "duration-desc", name: t("gallery.gallery_filter_duration_desc") },
+    /*    { id: "duration", name: t("gallery.gallery_filter_duration_asc") },
+    { id: "duration-desc", name: t("gallery.gallery_filter_duration_desc") }, */
     { id: "year", name: t("gallery.gallery_filter_year") },
     { id: "country", name: t("gallery.gallery_filter_country") },
   ];
@@ -127,10 +127,10 @@ function Gallery() {
         return a.title.localeCompare(b.title);
       case "title-desc":
         return b.title.localeCompare(a.title);
-      case "duration":
+      /* case "duration":
         return a.duration.localeCompare(b.duration);
       case "duration-desc":
-        return b.duration.localeCompare(a.duration);
+        return b.duration.localeCompare(a.duration); */
       case "year":
         return a.year - b.year;
       case "country":
