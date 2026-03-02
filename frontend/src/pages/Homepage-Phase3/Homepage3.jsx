@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
+import PhaseIndicator from "../../components/PhaseIndicator/PhaseIndicator";
 
 function HomepagePhase3() {
     const { t } = useTranslation();
@@ -255,7 +256,7 @@ function HomepagePhase3() {
                     </div>
                 </section>
             </div>
-            
+            <PhaseIndicator currentPhase={3} />
             <Footer />
         </>
     );

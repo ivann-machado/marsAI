@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
+import PhaseIndicator from "../../components/PhaseIndicator/PhaseIndicator";
 import { useTranslation } from 'react-i18next';
 
 const btn = "font-inter font-semibold text-sm tracking-wider uppercase rounded-full transition-all duration-300";
@@ -270,7 +271,7 @@ function Homepage() {
                             </h2>
                         </div>
                         
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
+                        <div className="grid grid-cols-3 gap-6 mb-12">
                             <div className={`${card} p-8 border-[#ec4899]/30`}>
                                 <div className="font-orbitron font-black text-4xl text-[#ec4899] mb-2">{t('homepage.protocol_stat_1')}</div>
                                 <div className="text-xs text-[#d1d5db] tracking-wider uppercase">{t('homepage.protocol_stat_1_label')}</div>
@@ -278,10 +279,6 @@ function Homepage() {
                             <div className={`${card} p-8 border-[#10b981]/30`}>
                                 <div className="font-orbitron font-black text-4xl text-[#10b981] mb-2">{t('homepage.protocol_stat_2')}</div>
                                 <div className="text-xs text-[#d1d5db] tracking-wider uppercase">{t('homepage.protocol_stat_2_label')}</div>
-                            </div>
-                            <div className={`${card} p-8 border-[#ec4899]/30`}>
-                                <div className="font-orbitron font-black text-4xl text-[#ec4899] mb-2">{t('homepage.protocol_stat_3')}</div>
-                                <div className="text-xs text-[#d1d5db] tracking-wider uppercase">{t('homepage.protocol_stat_3_label')}</div>
                             </div>
                             <div className={`${card} p-8 border-[#06b6d4]/30`}>
                                 <div className="font-orbitron font-black text-4xl text-[#06b6d4] mb-2">{t('homepage.protocol_stat_4')}</div>
@@ -444,6 +441,7 @@ function Homepage() {
                     </div>
                 </section>
             </div>
+            <PhaseIndicator currentPhase={1} />
             <Footer />
         </>
     );

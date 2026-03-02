@@ -409,5 +409,10 @@
     "event_firstName": "Votre prénom",
     "event_lastName": "Votre nom",
     "event_email": "exemple@email.com"
+  },
+  "phases": {
+    "before_festival": "Avant Festival",
+    "during_festival": "Festival en cours",
+    "after_festival": "Après Festival"
   }
 }

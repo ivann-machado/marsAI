@@ -125,6 +125,8 @@ function App() {
           <SettingsProvider>
             <Routes>
               <Route path="/" element={<Homepage />} />
+              <Route path="/phase2" element={<HomepagePhase2 />} />
+              <Route path="/phase3" element={<HomepagePhase3 />} />
               <Route path="/video/:videoId" element={<VideoDetail />} />
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/participate" element={<UploadPage />} />

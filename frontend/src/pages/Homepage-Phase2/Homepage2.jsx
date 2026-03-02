@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
+import PhaseIndicator from "../../components/PhaseIndicator/PhaseIndicator";
 
 const btn =
   "font-inter font-semibold text-sm tracking-wider uppercase rounded-full transition-all duration-300";
@@ -383,6 +384,7 @@ function HomepagePhase2() {
           </div>
         </section>
       </div>
+      <PhaseIndicator currentPhase={2} />
       <Footer />
     </>
   );

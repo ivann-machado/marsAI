@@ -429,5 +429,10 @@
     "country_usa": "USA",
     "country_germany": "Germany",
     "country_spain": "Spain"
+  },
+  "phases": {
+    "before_festival": "Before Festival",
+    "during_festival": "Festival Live",
+    "after_festival": "After Festival"
   }
 }
