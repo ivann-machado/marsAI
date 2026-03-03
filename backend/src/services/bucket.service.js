@@ -178,3 +178,14 @@ export const getFileUrl = (filename) => {
 	const key = buildKey(filename);
 	return `${endpoint}/${bucketName}/${key}`;
 };
+
+/**
+ * Get the filename from a file URL
+ * @param {string} fileUrl - Public URL of the object in the bucket
+ * @returns {string} - Filename
+ */
+export const getFilename = (fileUrl) => {
+	const { endpoint, bucketName, folder } = getBucketClient();
+	const prefix = folder ? `${folder}/` : '';
+	return fileUrl.replace(`${endpoint}/${bucketName}/${prefix}`, '');
+};
