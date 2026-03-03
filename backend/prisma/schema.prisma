@@ -3,6 +3,11 @@ generator client {
     output   = "../src/generated/prisma"
 }
 
+generator zod {
+    provider = "zod-prisma-types"
+    output   = "../src/generated/zod"
+}
+
 datasource db {
     provider = "mysql"
 }
@@ -146,7 +151,7 @@ model subtitles {
 
 model tokens {
     id         Int            @id @default(autoincrement())
-    value      String         @db.VarChar(100)
+    value      String         @unique(map: "value") @db.VarChar(100)
     created_at DateTime       @default(now()) @db.Timestamp(0)
     status     tokens_status? @default(pending)
     admin_id   Int
