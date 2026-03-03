@@ -9,13 +9,13 @@ import { BackButton, NextButton } from "../Utils/Buttons";
 function UploadForm() {
   const { showFlash } = useFlash();
   const { t, i18n } = useTranslation();
-  const [countryId, SetCountryId] = useState(null);
   const [step, setStep] = useState(0);
   const nextStep = () => setStep((prev) => prev + 1);
   const prevStep = () => setStep((prev) => prev - 1);
   const [loading, SetLoading] = useState(false);
 
   //Status
+  const [countryId, SetCountryId] = useState(null);
   let countryOptions = [];
   if (i18n.language === "fr") {
     countryOptions = countryListFr;
@@ -24,6 +24,16 @@ function UploadForm() {
       a.label.localeCompare(b.label),
     );
   }
+  const movieTypeOption = [
+    { label: "--Select a type--", value: 0 },
+    { label: "100% AI", value: 1 },
+    { label: "Hybrid", value: 2 },
+  ];
+  const movieStatusOption = [
+    { label: "--Select a competition status--", value: 0 },
+    { label: "En compétition", value: 1 },
+    { label: "Hors concours", value: 2 },
+  ];
   function handleSelect(event) {
     SetCountryId(event.target.value);
   }
@@ -462,7 +472,7 @@ function UploadForm() {
     }
     const res = await fetch(import.meta.env.VITE_API_URL + "/api/videos", {
       method: "POST",
-      // body: formData,
+      body: formData,
     });
 
     const data = await res.json().catch(() => ({}));
@@ -599,7 +609,7 @@ function UploadForm() {
             <div className="flex flex-col md:flex-row md:justify-evenly md:p-4 md:gap-10 md:w-full">
               <div className="flex flex-col md:w-full md:max-w-150">
                 <label
-                  htmlFor="more_info"
+                  htmlFor="producer"
                   className="text-sm text-white/70 mb-2 tracking-wide"
                 >
                   {t("upload_form.producer")} :
@@ -633,6 +643,52 @@ function UploadForm() {
                 <p className="text-white">{coverImageError}</p>
               </div>
             </div>
+
+            <div className="flex flex-col md:flex-row md:justify-evenly md:p-4 md:gap-10 md:w-full">
+              <div className="flex flex-col md:w-full md:max-w-150">
+                <label
+                  htmlFor="more_info"
+                  className="text-sm text-white/70 mb-2 tracking-wide"
+                >
+                  Type de production :
+                </label>
+                <select
+                  name="countrySelect"
+                  id="countrySelect"
+                  onChange={handleSelect}
+                  className="bg-[#2D2738] border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
+                >
+                  {movieTypeOption.map((option) => (
+                    <option key={option.value} value={option.value + 1}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+                <p className="text-white"></p>
+              </div>
+              <div className="flex flex-col md:w-full md:max-w-150">
+                <label
+                  htmlFor="producerImage"
+                  className="text-sm text-white/70 mb-2 tracking-wide"
+                >
+                  Statut :
+                </label>
+                <select
+                  name="countrySelect"
+                  id="countrySelect"
+                  onChange={handleSelect}
+                  className="bg-[#2D2738] border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
+                >
+                  {movieStatusOption.map((option) => (
+                    <option key={option.value} value={option.value + 1}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+                <p className="text-white">{coverImageError}</p>
+              </div>
+            </div>
+
             <div className=" flex flex-col md:flex-row md:justify-evenly md:p-4 md:gap-10 md:w-full">
               <div className="flex flex-col md:w-full md:max-w-150">
                 <label
@@ -673,6 +729,7 @@ function UploadForm() {
                 <p className="text-white">{videoAiError}</p>
               </div>
             </div>
+
             <div className="flex flex-col md:flex-row md:justify-evenly md:p-4 md:gap-10 md:w-full">
               <div className="flex flex-col md:w-full md:max-w-150">
                 <label
