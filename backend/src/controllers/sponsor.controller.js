@@ -1,14 +1,6 @@
-// import { getConnection } from "../config/db.js";
+import prisma from "../config/prisma.js";
+import { paginate } from "../utils/paginate.js";
 import { deleteFile, getFileUrl } from "../services/bucket.service.js";
-
-
-import {
-	insertSponsor,
-	selectSponsorById,
-	selectAllSponsors,
-	updateSponsorById,
-	deleteSponsorById,
-} from "../models/sponsor.model.js";
 
 /**
  * Create a new sponsor
@@ -25,14 +17,22 @@ export const createSponsor = async (req, res) => {
 			});
 		}
 
-		const result = await insertSponsor({ edition_id, type, name, url, logo });
+		const sponsor = await prisma.sponsors.create({
+			data: {
+				edition_id: Number(edition_id),
+				type: type || "other",
+				name,
+				url: url || "",
+				logo: logo || (req.file ? req.file.location : ""),
+			},
+		});
+
 		res.status(201).json({
 			message: "Sponsor created",
-			id: result.insertId.toString(),
+			id: sponsor.id.toString(),
 		});
 	} catch (error) {
 		console.error("Create Sponsor Error:", error);
-
 		res.status(500).json({
 			message: "Server error",
 		});
@@ -46,18 +46,22 @@ export const createSponsor = async (req, res) => {
  */
 export const getAllSponsors = async (req, res) => {
 	try {
-		const sponsors = await selectAllSponsors();
-		const sponsorsWithUrls = sponsors.map(sponsor => {
-			return {
-				...sponsor,
-				logo: getFileUrl(sponsor.logo)
-			};
+		const { page, limit } = req.query;
+
+		const result = await paginate(prisma.sponsors, {
+			page,
+			limit,
+			orderBy: { id: "desc" },
 		});
-		res.status(200).json(sponsorsWithUrls);
+
+		result.data = result.data.map(sponsor => ({
+			...sponsor,
+			logo: getFileUrl(sponsor.logo)
+		}));
+
+		res.status(200).json(result);
 	} catch (error) {
-
 		console.error("Get Sponsors Error:", error);
-
 		res.status(500).json({
 			message: "Server error",
 		});
@@ -79,22 +83,22 @@ export const getSponsorById = async (req, res) => {
 			});
 		}
 
-		const result = await selectSponsorById(id);
+		const sponsor = await prisma.sponsors.findUnique({
+			where: { id: Number(id) },
+		});
 
-		if (!result.length) {
+		if (!sponsor) {
 			return res.status(404).json({
 				message: "Sponsor not found",
 			});
 		}
-		const sponsor = result[0];
+
 		res.status(200).json({
 			...sponsor,
 			logo: getFileUrl(sponsor.logo)
 		});
 	} catch (error) {
-
 		console.error("Get Sponsor By Id Error:", error);
-
 		res.status(500).json({
 			message: "Server error",
 		});
@@ -109,7 +113,6 @@ export const getSponsorById = async (req, res) => {
 export const updateSponsor = async (req, res) => {
 	try {
 		const { id } = req.params;
-
 		const { edition_id, type, name, url, logo, oldLogo } = req.body;
 
 		if (!id) {
@@ -118,16 +121,16 @@ export const updateSponsor = async (req, res) => {
 			});
 		}
 
-		const result = await updateSponsorById(
-			id,
-			{ edition_id, type, name, url, logo },
-		);
-
-		if (result.affectedRows === 0) {
-			return res.status(404).json({
-				message: "Sponsor not found",
-			});
-		}
+		await prisma.sponsors.update({
+			where: { id: Number(id) },
+			data: {
+				edition_id: edition_id ? Number(edition_id) : undefined,
+				type,
+				name,
+				url,
+				logo,
+			},
+		});
 
 		if (oldLogo && logo && oldLogo !== logo) {
 			deleteFile(oldLogo).catch(err => console.error("Failed to delete old sponsor logo:", err));
@@ -135,8 +138,12 @@ export const updateSponsor = async (req, res) => {
 
 		res.status(200).json({ message: "Sponsor updated" });
 	} catch (error) {
+		if (error.code === "P2025") {
+			return res.status(404).json({
+				message: "Sponsor not found",
+			});
+		}
 		console.error("Update Sponsor Error:", error);
-
 		res.status(500).json({
 			message: "Server error",
 		});
@@ -158,17 +165,18 @@ export const removeSponsor = async (req, res) => {
 			});
 		}
 
-		const result = await deleteSponsorById(id);
+		await prisma.sponsors.delete({
+			where: { id: Number(id) },
+		});
 
-		if (result.affectedRows === 0) {
+		res.status(200).json({ message: "Sponsor deleted" });
+	} catch (error) {
+		if (error.code === "P2025") {
 			return res.status(404).json({
 				message: "Sponsor not found",
 			});
 		}
-		res.status(200).json({ message: "Sponsor deleted" });
-	} catch (error) {
 		console.error("Delete Sponsor Error:", error);
-
 		res.status(500).json({
 			message: "Server error",
 		});

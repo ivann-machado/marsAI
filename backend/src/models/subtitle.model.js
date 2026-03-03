@@ -1,73 +1,78 @@
-import { pool } from "../config/db.js";
+import prisma from "../config/prisma.js";
 
 /**
  * Insert a new subtitle.
  * @param {Object} data - Subtitle data (video_id, language, filename)
- * @param {import("mariadb").PoolConnection|null} [conn=null] - Optional transaction connection
- * @returns {Promise<Object>} raw MariaDB result
+ * @returns {Promise<Object>} raw result compatibility
  */
-export const insertSubtitle = async ({ video_id, language, filename }, conn = null) => {
-	const query = "INSERT INTO subtitles (video_id, language, filename) VALUES (?, ?, ?)";
-	const db = conn || pool;
-	return db.query(query, [video_id, language, filename]);
+export const insertSubtitle = async ({ video_id, language, filename }) => {
+	const sub = await prisma.subtitles.create({
+		data: {
+			video_id: Number(video_id),
+			language,
+			filename,
+		},
+	});
+	return { insertId: sub.id };
 };
 
 /**
  * Select a subtitle by ID.
  * @param {number} id
- * @param {import("mariadb").PoolConnection|null} [conn=null] - Optional transaction connection
  * @returns {Promise<Object[]>}
  */
-export const selectSubtitleById = async (id, conn = null) => {
-	const query = "SELECT * FROM subtitles WHERE id = ?";
-	const db = conn || pool;
-	return db.query(query, [id]);
+export const selectSubtitleById = async (id) => {
+	const sub = await prisma.subtitles.findUnique({
+		where: { id: Number(id) },
+	});
+	return sub ? [sub] : [];
 };
 
 /**
  * Select all subtitles for a specific video.
  * @param {number} video_id
- * @param {import("mariadb").PoolConnection|null} [conn=null] - Optional transaction connection
  * @returns {Promise<Object[]>}
  */
-export const selectSubtitlesByVideoId = async (video_id, conn = null) => {
-	const query = "SELECT * FROM subtitles WHERE video_id = ?";
-	const db = conn || pool;
-	return db.query(query, [video_id]);
+export const selectSubtitlesByVideoId = async (video_id) => {
+	return prisma.subtitles.findMany({
+		where: { video_id: Number(video_id) },
+	});
 };
 
 /**
  * Select all subtitles.
- * @param {import("mariadb").PoolConnection|null} [conn=null] - Optional transaction connection
  * @returns {Promise<Object[]>}
  */
-export const selectAllSubtitles = async (conn = null) => {
-	const query = "SELECT * FROM subtitles";
-	const db = conn || pool;
-	return db.query(query);
+export const selectAllSubtitles = async () => {
+	return prisma.subtitles.findMany();
 };
 
 /**
  * Update a subtitle by ID.
  * @param {number} id
  * @param {Object} data - Subtitle data
- * @param {import("mariadb").PoolConnection|null} [conn=null] - Optional transaction connection
  * @returns {Promise<Object>}
  */
-export const updateSubtitle = async (id, { video_id, language, filename }, conn = null) => {
-	const query = "UPDATE subtitles SET video_id = ?, language = ?, filename = ? WHERE id = ?";
-	const db = conn || pool;
-	return db.query(query, [video_id, language, filename, id]);
+export const updateSubtitle = async (id, { video_id, language, filename }) => {
+	await prisma.subtitles.update({
+		where: { id: Number(id) },
+		data: {
+			video_id: Number(video_id),
+			language,
+			filename,
+		},
+	});
+	return { affectedRows: 1 };
 };
 
 /**
  * Delete a subtitle by ID.
  * @param {number} id
- * @param {import("mariadb").PoolConnection|null} [conn=null] - Optional transaction connection
  * @returns {Promise<Object>}
  */
-export const deleteSubtitle = async (id, conn = null) => {
-	const query = "DELETE FROM subtitles WHERE id = ?";
-	const db = conn || pool;
-	return db.query(query, [id]);
+export const deleteSubtitle = async (id) => {
+	await prisma.subtitles.delete({
+		where: { id: Number(id) },
+	});
+	return { affectedRows: 1 };
 };

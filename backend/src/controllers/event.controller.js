@@ -1,10 +1,5 @@
-import {
-	insertEvent,
-	selectEventById,
-	selectAllEvents,
-	updateEvent,
-	deleteEvent,
-} from "../models/event.model.js";
+import prisma from "../config/prisma.js";
+import { paginate } from "../utils/paginate.js";
 import { deleteFile, getFileUrl } from "../services/bucket.service.js";
 
 /**
@@ -32,21 +27,23 @@ export const createEvent = async (req, res) => {
 				.json({ message: "Type, name, url, logo and date are required" });
 		}
 
-		const result = await insertEvent({
-			type,
-			name,
-			url,
-			logo,
-			info,
-			place,
-			duration,
-			cover_image,
-			date,
+		const event = await prisma.events.create({
+			data: {
+				type,
+				name,
+				url,
+				logo: logo || (req.file ? req.file.location : ""),
+				info: info || "",
+				place: place || "",
+				duration: duration ? Number(duration) : 0,
+				cover_image: cover_image || "",
+				date: new Date(date),
+			},
 		});
 
 		res.status(201).json({
 			message: "Event created successfully",
-			id: result.insertId.toString(),
+			id: event.id.toString(),
 		});
 	} catch (error) {
 		console.error("Create Event Error:", error);
@@ -61,15 +58,21 @@ export const createEvent = async (req, res) => {
  */
 export const getAllEvents = async (req, res) => {
 	try {
-		const events = await selectAllEvents();
-		const eventsWithUrls = events.map(event => {
-			return {
-				...event,
-				logo: getFileUrl(event.logo),
-				cover_image: getFileUrl(event.cover_image)
-			};
+		const { page, limit } = req.query;
+
+		const result = await paginate(prisma.events, {
+			page,
+			limit,
+			orderBy: { date: "desc" },
 		});
-		res.status(200).json(eventsWithUrls);
+
+		result.data = result.data.map(event => ({
+			...event,
+			logo: getFileUrl(event.logo),
+			cover_image: getFileUrl(event.cover_image)
+		}));
+
+		res.status(200).json(result);
 	} catch (error) {
 		console.error("Get All Events Error:", error);
 		res.status(500).json({ message: "Server error" });
@@ -83,11 +86,14 @@ export const getAllEvents = async (req, res) => {
  */
 export const getEventById = async (req, res) => {
 	try {
-		const rows = await selectEventById(req.params.id);
-		const event = rows[0];
+		const event = await prisma.events.findUnique({
+			where: { id: Number(req.params.id) },
+		});
+
 		if (!event) {
 			return res.status(404).json({ message: "Event not found" });
 		}
+
 		res.status(200).json({
 			...event,
 			logo: getFileUrl(event.logo),
@@ -120,21 +126,20 @@ export const setEvent = async (req, res) => {
 			oldCover_image
 		} = req.body;
 
-		const result = await updateEvent(req.params.id, {
-			type,
-			name,
-			url,
-			logo,
-			info,
-			place,
-			duration,
-			cover_image,
-			date,
+		await prisma.events.update({
+			where: { id: Number(req.params.id) },
+			data: {
+				type,
+				name,
+				url,
+				logo,
+				info,
+				place,
+				duration: duration ? Number(duration) : undefined,
+				cover_image,
+				date: date ? new Date(date) : undefined,
+			},
 		});
-
-		if (result.affectedRows === 0) {
-			return res.status(404).json({ message: "Event not found" });
-		}
 
 		if (oldLogo && logo && oldLogo !== logo) {
 			deleteFile(oldLogo).catch(err => console.error("Failed to delete old event logo:", err));
@@ -145,6 +150,9 @@ export const setEvent = async (req, res) => {
 
 		res.status(200).json({ message: "Event updated successfully" });
 	} catch (error) {
+		if (error.code === "P2025") {
+			return res.status(404).json({ message: "Event not found" });
+		}
 		console.error("Set Event Error:", error);
 		res.status(500).json({ message: "Server error" });
 	}
@@ -157,14 +165,15 @@ export const setEvent = async (req, res) => {
  */
 export const removeEvent = async (req, res) => {
 	try {
-		const result = await deleteEvent(req.params.id);
-
-		if (result.affectedRows === 0) {
-			return res.status(404).json({ message: "Event not found" });
-		}
+		await prisma.events.delete({
+			where: { id: Number(req.params.id) },
+		});
 
 		res.status(200).json({ message: "Event deleted successfully" });
 	} catch (error) {
+		if (error.code === "P2025") {
+			return res.status(404).json({ message: "Event not found" });
+		}
 		console.error("Remove Event Error:", error);
 		res.status(500).json({ message: "Server error" });
 	}
