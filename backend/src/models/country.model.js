@@ -1,61 +1,61 @@
-import { pool } from "../config/db.js";
+import prisma from "../config/prisma.js";
 
 /**
  * Insert a new country.
  * @param {Object} data - Country data (name, iso_code)
- * @param {import("mariadb").PoolConnection|null} [conn=null] - Optional transaction connection
- * @returns {Promise<Object>} raw MariaDB result
+ * @returns {Promise<Object>} raw result compatibility
  */
-export const insertCountry = async ({ name, iso_code }, conn = null) => {
-	const query = "INSERT INTO countries (name, iso_code) VALUES (?, ?)";
-	const db = conn || pool;
-	return db.query(query, [name, iso_code]);
+export const insertCountry = async ({ name, iso_code }) => {
+	const country = await prisma.countries.create({
+		data: { name, iso_code },
+	});
+	return { insertId: country.id };
 };
 
 /**
  * Select a country by ID.
  * @param {number} id
- * @param {import("mariadb").PoolConnection|null} [conn=null] - Optional transaction connection
  * @returns {Promise<Object[]>}
  */
-export const selectCountryById = async (id, conn = null) => {
-	const query = "SELECT * FROM countries WHERE id = ?";
-	const db = conn || pool;
-	return db.query(query, [id]);
+export const selectCountryById = async (id) => {
+	const country = await prisma.countries.findUnique({
+		where: { id: Number(id) },
+	});
+	return country ? [country] : [];
 };
 
 /**
  * Select all countries.
- * @param {import("mariadb").PoolConnection|null} [conn=null] - Optional transaction connection
  * @returns {Promise<Object[]>}
  */
-export const selectAllCountries = async (conn = null) => {
-	const query = "SELECT * FROM countries ORDER BY name ASC";
-	const db = conn || pool;
-	return db.query(query);
+export const selectAllCountries = async () => {
+	return prisma.countries.findMany({
+		orderBy: { name: "asc" },
+	});
 };
 
 /**
  * Update a country by ID.
  * @param {number} id
  * @param {Object} data - Country data
- * @param {import("mariadb").PoolConnection|null} [conn=null] - Optional transaction connection
  * @returns {Promise<Object>}
  */
-export const updateCountry = async (id, { name, iso_code }, conn = null) => {
-	const query = "UPDATE countries SET name = ?, iso_code = ? WHERE id = ?";
-	const db = conn || pool;
-	return db.query(query, [name, iso_code, id]);
+export const updateCountry = async (id, { name, iso_code }) => {
+	await prisma.countries.update({
+		where: { id: Number(id) },
+		data: { name, iso_code },
+	});
+	return { affectedRows: 1 };
 };
 
 /**
  * Delete a country by ID.
  * @param {number} id
- * @param {import("mariadb").PoolConnection|null} [conn=null] - Optional transaction connection
  * @returns {Promise<Object>}
  */
-export const deleteCountry = async (id, conn = null) => {
-	const query = "DELETE FROM countries WHERE id = ?";
-	const db = conn || pool;
-	return db.query(query, [id]);
+export const deleteCountry = async (id) => {
+	await prisma.countries.delete({
+		where: { id: Number(id) },
+	});
+	return { affectedRows: 1 };
 };

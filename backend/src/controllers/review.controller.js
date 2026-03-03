@@ -1,12 +1,19 @@
-import { getConnection } from "../config/db.js";
-import {
-	insertReview,
-	selectReviewById,
-	selectReviewByAdminAndVideo,
-	selectAllReviews,
-	updateReview,
-	deleteReview,
-} from "../models/review.model.js";
+import prisma from "../config/prisma.js";
+import { paginate } from "../utils/paginate.js";
+
+/** Shared include object for eager-loading review relations. */
+const reviewIncludes = {
+	admins: {
+		select: {
+			login: true,
+		},
+	},
+	videos: {
+		select: {
+			title: true,
+		},
+	},
+};
 
 /**
  * Create a new review
@@ -26,11 +33,18 @@ export const createReview = async (req, res) => {
 				.json({ message: "admin_id and video_id are required" });
 		}
 
-		const result = await insertReview({ admin_id, video_id });
+		const review = await prisma.reviews.create({
+			data: {
+				admin_id: Number(admin_id),
+				video_id: Number(video_id),
+				status: "assigned",
+				note: "",
+			},
+		});
 
 		res.status(201).json({
 			message: "Review created",
-			id: result.insertId.toString(),
+			id: review.id.toString(),
 		});
 	} catch (error) {
 		console.error("Create Review Error:", error);
@@ -48,22 +62,44 @@ export const createReview = async (req, res) => {
  */
 export const getAllReviews = async (req, res) => {
 	try {
-		const { admin_id, video_id } = req.query;
+		const { admin_id, video_id, page, limit } = req.query;
+
+		const where = {};
+		if (admin_id) where.admin_id = Number(admin_id);
+		if (video_id) where.video_id = Number(video_id);
+
 		if (admin_id && video_id) {
-			const review = await selectReviewByAdminAndVideo(
-				parseInt(admin_id, 10),
-				parseInt(video_id, 10),
-			);
+			const review = await prisma.reviews.findFirst({
+				where,
+				include: reviewIncludes,
+			});
 
 			if (!review) {
 				return res.status(200).json(null);
 			}
 
-			return res.status(200).json(review);
+			return res.status(200).json({
+				...review,
+				admin_login: review.admins?.login,
+				video_title: review.videos?.title,
+			});
 		}
 
-		const reviews = await selectAllReviews();
-		res.status(200).json(reviews);
+		const result = await paginate(prisma.reviews, {
+			page,
+			limit,
+			where,
+			include: reviewIncludes,
+			orderBy: { id: "desc" },
+		});
+
+		result.data = result.data.map(review => ({
+			...review,
+			admin_login: review.admins?.login,
+			video_title: review.videos?.title,
+		}));
+
+		res.status(200).json(result);
 	} catch (error) {
 		console.error("Get Reviews Error:", error);
 		res.status(500).json({ message: "Server error" });
@@ -84,12 +120,19 @@ export const getReviewById = async (req, res) => {
 		if (!id)
 			return res.status(400).json({ message: "Review id is required" });
 
-		const review = await selectReviewById(id);
+		const review = await prisma.reviews.findUnique({
+			where: { id: Number(id) },
+			include: reviewIncludes,
+		});
 
 		if (!review)
 			return res.status(404).json({ message: "Review not found" });
 
-		res.status(200).json(review);
+		res.status(200).json({
+			...review,
+			admin_login: review.admins?.login,
+			video_title: review.videos?.title,
+		});
 	} catch (error) {
 		console.error("Get Review By Id Error:", error);
 		res.status(500).json({ message: "Server error" });
@@ -112,11 +155,20 @@ export const setReview = async (req, res) => {
 		if (!id)
 			return res.status(400).json({ message: "Review id is required" });
 
-		const result = await updateReview(id, { note, grade, status });
-		const affectedRows = result.affectedRows;
+		const review = await prisma.reviews.update({
+			where: { id: Number(id) },
+			data: {
+				note,
+				grade: grade !== undefined ? Number(grade) : undefined,
+				status,
+			},
+		});
 
-		res.status(200).json({ message: "Review updated", affectedRows });
+		res.status(200).json({ message: "Review updated", affectedRows: 1 });
 	} catch (error) {
+		if (error.code === "P2025") {
+			return res.status(404).json({ message: "Review not found" });
+		}
 		console.error("Update Review Error:", error);
 		res.status(500).json({ message: "Server error" });
 	}
@@ -136,10 +188,15 @@ export const removeReview = async (req, res) => {
 		if (!id)
 			return res.status(400).json({ message: "Review id is required" });
 
-		const affectedRows = await deleteReview(id);
+		await prisma.reviews.delete({
+			where: { id: Number(id) },
+		});
 
-		res.status(200).json({ message: "Review deleted", affectedRows });
+		res.status(200).json({ message: "Review deleted", affectedRows: 1 });
 	} catch (error) {
+		if (error.code === "P2025") {
+			return res.status(404).json({ message: "Review not found" });
+		}
 		console.error("Delete Review Error:", error);
 		res.status(500).json({ message: "Server error" });
 	}

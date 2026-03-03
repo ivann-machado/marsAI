@@ -1,61 +1,64 @@
-import { pool } from "../config/db.js";
+import prisma from "../config/prisma.js";
 
 /**
  * Insert a new edition.
  * @param {Object} data - Edition data (name, year)
- * @param {import("mariadb").PoolConnection|null} [conn=null] - Optional transaction connection
- * @returns {Promise<Object>} raw MariaDB result
+ * @returns {Promise<Object>} raw result compatibility
  */
-export const insertEdition = async ({ name, year }, conn = null) => {
-	const query = "INSERT INTO editions (name, year) VALUES (?, ?)";
-	const db = conn || pool;
-	return db.query(query, [name, year]);
+export const insertEdition = async ({ name, year }) => {
+	const edition = await prisma.editions.create({
+		data: { name, year: Number(year) },
+	});
+	return { insertId: edition.id };
 };
 
 /**
  * Select an edition by ID.
  * @param {number} id
- * @param {import("mariadb").PoolConnection|null} [conn=null] - Optional transaction connection
  * @returns {Promise<Object[]>}
  */
-export const selectEditionById = async (id, conn = null) => {
-	const query = "SELECT * FROM editions WHERE id = ?";
-	const db = conn || pool;
-	return db.query(query, [id]);
+export const selectEditionById = async (id) => {
+	const edition = await prisma.editions.findUnique({
+		where: { id: Number(id) },
+	});
+	return edition ? [edition] : [];
 };
 
 /**
  * Select all editions.
- * @param {import("mariadb").PoolConnection|null} [conn=null] - Optional transaction connection
  * @returns {Promise<Object[]>}
  */
-export const selectAllEditions = async (conn = null) => {
-	const query = "SELECT * FROM editions ORDER BY year DESC, name ASC";
-	const db = conn || pool;
-	return db.query(query);
+export const selectAllEditions = async () => {
+	return prisma.editions.findMany({
+		orderBy: [
+			{ year: "desc" },
+			{ name: "asc" },
+		],
+	});
 };
 
 /**
  * Update an edition by ID.
  * @param {number} id
  * @param {Object} data - Edition data
- * @param {import("mariadb").PoolConnection|null} [conn=null] - Optional transaction connection
  * @returns {Promise<Object>}
  */
-export const updateEdition = async (id, { name, year }, conn = null) => {
-	const query = "UPDATE editions SET name = ?, year = ? WHERE id = ?";
-	const db = conn || pool;
-	return db.query(query, [name, year, id]);
+export const updateEdition = async (id, { name, year }) => {
+	await prisma.editions.update({
+		where: { id: Number(id) },
+		data: { name, year: Number(year) },
+	});
+	return { affectedRows: 1 };
 };
 
 /**
  * Delete an edition by ID.
  * @param {number} id
- * @param {import("mariadb").PoolConnection|null} [conn=null] - Optional transaction connection
  * @returns {Promise<Object>}
  */
-export const deleteEdition = async (id, conn = null) => {
-	const query = "DELETE FROM editions WHERE id = ?";
-	const db = conn || pool;
-	return db.query(query, [id]);
+export const deleteEdition = async (id) => {
+	await prisma.editions.delete({
+		where: { id: Number(id) },
+	});
+	return { affectedRows: 1 };
 };

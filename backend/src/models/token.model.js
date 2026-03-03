@@ -1,26 +1,44 @@
-import { pool } from "../config/db.js";
+import prisma from "../config/prisma.js";
 
 /**
  * Create a new invite token linked to an admin.
  * @param {string} tokenValue - Random token value.
  * @param {number} admin_id - Related admin ID.
- * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
- * @returns {Promise<number>} Inserted token ID.
+ * @returns {Promise<Object>} Compatibility result with insertId.
  */
-export const insertToken = async (tokenValue, admin_id, conn = null) => {
-	const query = `INSERT INTO tokens (value, admin_id) VALUES (?, ?)`;
-	const db = conn || pool;
-	return db.query(query, [tokenValue, admin_id]);
+export const insertToken = async (tokenValue, admin_id) => {
+	const token = await prisma.tokens.create({
+		data: {
+			value: tokenValue,
+			admin_id: Number(admin_id),
+			status: "pending",
+		},
+	});
+	return { insertId: token.id };
 };
 
-export const selectTokenByValue = async (tokenValue, conn = null) => {
-	const query = `SELECT * FROM tokens WHERE value = ?`;
-	const db = conn || pool;
-	return db.query(query, [tokenValue]);
+/**
+ * Find a token by its value.
+ * @param {string} tokenValue
+ * @returns {Promise<Object[]>} Compatibility result (array of rows).
+ */
+export const selectTokenByValue = async (tokenValue) => {
+	const token = await prisma.tokens.findUnique({
+		where: { value: tokenValue },
+	});
+	return token ? [token] : [];
 };
 
-export const updateTokenStatus = async (tokenValue, status, conn = null) => {
-	const query = `UPDATE tokens set status = ? WHERE value = ?`;
-	const db = conn || pool;
-	return db.query(query, [status, tokenValue]);
+/**
+ * Update the status of a token.
+ * @param {string} tokenValue
+ * @param {string} status
+ * @returns {Promise<Object>} Affected rows compatibility result.
+ */
+export const updateTokenStatus = async (tokenValue, status) => {
+	await prisma.tokens.update({
+		where: { value: tokenValue },
+		data: { status },
+	});
+	return { affectedRows: 1 };
 };
