@@ -277,11 +277,15 @@ function UploadForm() {
     }
   }
   function tagCheck() {
+    const tagRegex = /^(#\w+,\s*)*$/;
     if (tags.current.value.trim() === "") {
       SetTagError("Champ vide");
       console.log("Input is empty");
       return false;
-    } else if (tags.current.value.length > 50) {
+    } else if (!tagRegex.test(tags.current.value)) {
+      SetTagError("Format de tag invalide");
+      return false;
+    } else if (tags.current.value.length > 100) {
       SetTagError("Ce champ ne doit pas être supérieur à 100 caractères");
       return false;
     } else {
@@ -458,7 +462,7 @@ function UploadForm() {
     }
     const res = await fetch(import.meta.env.VITE_API_URL + "/api/videos", {
       method: "POST",
-      body: formData,
+      // body: formData,
     });
 
     const data = await res.json().catch(() => ({}));
