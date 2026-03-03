@@ -183,7 +183,7 @@ CREATE TABLE reviews (
 CREATE TABLE tokens (
     id INT AUTO_INCREMENT PRIMARY KEY,
     admin_id INT NOT NULL,
-    value VARCHAR(100) NOT NULL,
+    value VARCHAR(100) NOT NULL UNIQUE,
     status ENUM('pending','used','revoked') DEFAULT 'pending',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (admin_id) REFERENCES admins(id) ON DELETE CASCADE
