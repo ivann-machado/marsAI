@@ -5,8 +5,8 @@ function SidebarButton({ link, name, clickAction, type }) {
         onClick={clickAction}
         className={
           type === "logout"
-            ? "p-3 bg-red-800 text-center hover:bg-amber-500"
-            : "p-3 text-center hover:bg-amber-500"
+            ? "p-3 bg-red-800 text-center hover:bg-amber-500 transition duration-400"
+            : "p-3 text-center hover:bg-amber-500 transition duration-400"
         }
       >
         {name}

@@ -54,8 +54,9 @@ function AdminVideoPanel({ video_data }) {
 
       if (!response.ok) throw new Error("Erreur lors de la sauvegarde");
 
-      const updatedReview = await response.json();
-      setReview(updatedReview);
+      /*const updatedReview = await response.json();
+      console.log("updated review", updatedReview);
+      setReview(updatedReview); */
       showFlash("success", "Review enregistrée.");
     } catch (err) {
       showFlash("error", "Erreur lors de l'enregistrement du review");
@@ -107,7 +108,10 @@ function AdminVideoPanel({ video_data }) {
         const json = await response.json();
 
         if (!json) createReview();
-        else setReview(json);
+        else {
+          // console.log(json);
+          setReview(json);
+        }
       } catch (err) {
         console.error(err);
       }
@@ -118,8 +122,10 @@ function AdminVideoPanel({ video_data }) {
 
   if (!review) return <Loading />;
 
+  // console.log(review);
+
   return (
-    <div className="bg-gray-700 rounded-b-xl p-6 shadow-md flex flex-col gap-6">
+    <div className="bg-linear-to-br from-gray-700 to-gray-900 rounded-b-xl p-6 shadow-md flex flex-col gap-6 min-w-200 w-9/10">
       <h3 className="text-xl font-semibold">Menu notation:</h3>
 
       <div className="flex flex-col md:flex-row gap-6 md:items-center justify-between">
@@ -157,7 +163,7 @@ function AdminVideoPanel({ video_data }) {
           />
           <button
             onClick={handleSave}
-            className="bg-amber-400 text-black p-3 rounded-r-lg font-medium hover:bg-green-500 hover:ring-2 hover:ring-white transition "
+            className="bg-linear-to-br from-amber-400 to-amber-500 text-black p-3 rounded-r-lg font-medium hover:bg-green-500 hover:ring-2 hover:ring-white transition "
           >
             Sauvegarder
           </button>

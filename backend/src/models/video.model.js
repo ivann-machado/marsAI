@@ -1,4 +1,4 @@
-import { pool } from "../config/db.js";
+import prisma from "../config/prisma.js";
 
 /**
  * Video object type.
@@ -26,140 +26,112 @@ import { pool } from "../config/db.js";
 
 /**
  * Get all videos.
- * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
  * @returns {Promise<any[]>}
  */
-export const selectAllVideos = async (conn = null) => {
-	const query = "SELECT * FROM videos";
-	const db = conn || pool;
-	return db.query(query);
+export const selectAllVideos = async () => {
+	return prisma.videos.findMany();
 };
 
 /**
  * Get one video by ID.
  * @param {number|string} id
- * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
- * @returns {Promise<any>}
+ * @returns {Promise<any[]>}
  */
-export const selectVideoById = async (id, conn = null) => {
-	const query = "SELECT * FROM videos WHERE id = ?";
-	const db = conn || pool;
-	return db.query(query, [id]);
+export const selectVideoById = async (id) => {
+	const video = await prisma.videos.findUnique({
+		where: { id: Number(id) },
+	});
+	return video ? [video] : [];
 };
 
 /**
  * Create a new video.
  * @param {Video} video
- * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
  * @returns {Promise<any>}
  */
-export const insertVideo = async (video, conn = null) => {
-	const query = `
-		INSERT INTO videos (
-			edition_id,
-			filename,
-			email,
-			cover_image,
-			title,
-			description,
-			country_id,
-			producer,
-			producer_image,
-			linkedin_link,
-			youtube_link,
-			scenario_ai,
-			video_gen_ai,
-			sound_ai,
-			postprod_ai,
-			tags
-		)
-		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-	`;
-
-	const values = [
-		video.edition_id ?? null,
-		video.filename,
-		video.email,
-		video.cover_image,
-		video.title,
-		video.description,
-		video.country_id ?? null,
-		video.producer,
-		video.producer_image,
-		video.linkedin_link,
-		video.youtube_link,
-		video.scenario_ai,
-		video.video_gen_ai,
-		video.sound_ai,
-		video.postprod_ai,
-		video.tags,
-	];
-
-	const db = conn || pool;
-	return db.query(query, values);
+export const insertVideo = async (video) => {
+	const newVideo = await prisma.videos.create({
+		data: {
+			edition_id: video.edition_id ? Number(video.edition_id) : null,
+			url: video.url || "",
+			filename: video.filename,
+			email: video.email,
+			cover_image: video.cover_image,
+			verified: Boolean(video.verified),
+			title: video.title,
+			description: video.description,
+			country_id: video.country_id ? Number(video.country_id) : null,
+			producer: video.producer,
+			producer_image: video.producer_image,
+			linkedin_link: video.linkedin_link,
+			youtube_link: video.youtube_link || "",
+			scenario_ai: video.scenario_ai,
+			video_gen_ai: video.video_gen_ai,
+			sound_ai: video.sound_ai,
+			postprod_ai: video.postprod_ai,
+			tags: video.tags,
+		},
+	});
+	return { insertId: newVideo.id };
 };
 
 /**
  * Update a video.
  * @param {number|string} id
  * @param {Partial<Video>} video
- * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
  * @returns {Promise<any>}
  */
-export const updateVideo = async (id, video, conn = null) => {
-	const query = `
-		UPDATE videos SET
-			title = ?,
-			description = ?,
-			status = ?,
-			verified = ?,
-			tags = ?,
-			youtube_link = ?
-		WHERE id = ?
-	`;
-
-	const values = [
-		video.title,
-		video.description,
-		video.status,
-		video.verified,
-		video.tags,
-		video.youtube_link,
-		id,
-	];
-
-	const db = conn || pool;
-	return db.query(query, values);
+export const updateVideo = async (id, video) => {
+	await prisma.videos.update({
+		where: { id: Number(id) },
+		data: {
+			title: video.title,
+			description: video.description,
+			status: video.status,
+			verified: video.verified !== undefined ? Boolean(video.verified) : undefined,
+			tags: video.tags,
+			youtube_link: video.youtube_link,
+		},
+	});
+	return { affectedRows: 1 };
 };
-
 
 /**
  * Update a video url.
  * @param {number|string} id
  * @param {string} url
- * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
  * @returns {Promise<any>}
  */
-export const updateVideoUrl = async (id, url, conn = null) => {
-	const query = "UPDATE videos SET url = ? WHERE id = ?";
-	const db = conn || pool;
-	return db.query(query, [url, id]);
+export const updateVideoUrl = async (id, url) => {
+	await prisma.videos.update({
+		where: { id: Number(id) },
+		data: { url },
+	});
+	return { affectedRows: 1 };
 };
 
-export const updateVideoStatus = async (id, status, conn = null) => {
-	const query = "UPDATE videos SET status = ? WHERE id = ?";
-	const db = conn || pool;
-	return db.query(query, [status, id]);
+/**
+ * Update a video status.
+ * @param {number|string} id
+ * @param {string} status
+ * @returns {Promise<any>}
+ */
+export const updateVideoStatus = async (id, status) => {
+	await prisma.videos.update({
+		where: { id: Number(id) },
+		data: { status },
+	});
+	return { affectedRows: 1 };
 };
 
 /**
  * Delete a video by ID.
  * @param {number|string} id
- * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
  * @returns {Promise<any>}
  */
-export const deleteVideo = async (id, conn = null) => {
-	const query = "DELETE FROM videos WHERE id = ?";
-	const db = conn || pool;
-	return db.query(query, [id]);
+export const deleteVideo = async (id) => {
+	await prisma.videos.delete({
+		where: { id: Number(id) },
+	});
+	return { affectedRows: 1 };
 };

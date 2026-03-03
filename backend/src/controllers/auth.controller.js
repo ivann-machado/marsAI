@@ -1,28 +1,15 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
-import {
-	insertAdmin,
-	selectAdminByLogin,
-	selectAdminById,
-	updateAdminPassword,
-} from "../models/admin.model.js";
-import {
-	insertToken,
-	selectTokenByValue,
-	updateTokenStatus,
-} from "../models/token.model.js";
+import prisma from "../config/prisma.js";
 import { JWT_SECRET, JWT_EXPIRES_IN, DEV_MODE, FRONTEND_URL } from "../config/index.js";
-import { getConnection } from "../config/db.js";
 import { renderView } from "../utils/view.util.js";
 import { sendEmail } from "../services/brevo.service.js";
-
 
 /**
  * Authenticate an admin and return a JWT token.
  * @param {import('express').Request} req
  * @param {import('express').Response} res
- * @returns {Promise<void>}
  */
 export const login = async (req, res) => {
 	try {
@@ -34,8 +21,9 @@ export const login = async (req, res) => {
 				.json({ message: "Login and password are required" });
 		}
 
-		const admins = await selectAdminByLogin(login);
-		const admin = admins[0];
+		const admin = await prisma.admins.findUnique({
+			where: { login },
+		});
 
 		if (!admin) {
 			return res.status(401).json({ message: "Invalid credentials" });
@@ -65,8 +53,12 @@ export const login = async (req, res) => {
 	}
 };
 
+/**
+ * Invite a new admin.
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
 export const inviteAdmin = async (req, res) => {
-	let conn;
 	try {
 		const { login } = req.body;
 
@@ -74,48 +66,51 @@ export const inviteAdmin = async (req, res) => {
 			return res.status(400).json({ message: "Login (email) is required" });
 		}
 
-		const admins = await selectAdminByLogin(login);
-		if (admins[0]) {
-			return res.status(409).json({ message: "Admin already exists" });
-		}
-
-		conn = await getConnection();
-		await conn.beginTransaction();
-
-		const result = await insertAdmin(login, null, "admin", conn);
-		const adminId = result.insertId;
-
-		const token = crypto.randomUUID();
-		await insertToken(token, adminId, conn);
-		const inviteLink = `${FRONTEND_URL}/validate/${token}`;
-
-		const htmlContent = await renderView('emails/inviteAdmin.html', { inviteLink });
-
-		await sendEmail(login, "Invitation Admin MarsAI", htmlContent);
-
-		await conn.commit();
-
-		res
-			.status(201)
-			.json({
-				message: "Invite sent successfully",
-				adminId: adminId.toString(),
+		const result = await prisma.$transaction(async (tx) => {
+			const admin = await tx.admins.create({
+				data: {
+					login,
+					password: null,
+					role: "admin",
+				},
 			});
+
+			const tokenValue = crypto.randomUUID();
+			await tx.tokens.create({
+				data: {
+					value: tokenValue,
+					admin_id: admin.id,
+					status: "pending",
+				},
+			});
+
+			const inviteLink = `${FRONTEND_URL}/validate/${tokenValue}`;
+			const htmlContent = await renderView('emails/inviteAdmin.html', { inviteLink });
+
+			await sendEmail(login, "Invitation Admin MarsAI", htmlContent);
+
+			return { adminId: admin.id };
+		});
+
+		res.status(201).json({
+			message: "Invite sent successfully",
+			adminId: result.adminId.toString(),
+		});
 	} catch (error) {
-		if (conn) {
-			await conn.rollback();
+		if (error.code === 'P2002') {
+			return res.status(409).json({ message: "Admin already exists" });
 		}
 		console.error("Invite Error:", error);
 		res.status(500).json({ message: "Server error" });
-	} finally {
-		if (conn) {
-			conn.release();
-		}
 	}
 };
 
+/**
+ * Logout admin.
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
 export const logout = async (req, res) => {
-	// Placeholder for future implementation
 	return res.status(200).json({ message: "Logged out successfully" });
 };
 
@@ -123,16 +118,17 @@ export const logout = async (req, res) => {
  * Validate an invite token and return the related admin and token row.
  * @param {string} token
  * @returns {Promise<{admin: Object, existingToken: Object}>}
- * @throws Will throw an object with `status` and `message` if invalid.
  * @private
  */
-const validateInviteToken = async (token) => {
+const validateInviteTokenRaw = async (token) => {
 	if (!token) {
 		throw { status: 400, message: "No token provided" };
 	}
 
-	const tokens = await selectTokenByValue(token);
-	const existingToken = tokens[0];
+	const existingToken = await prisma.tokens.findUnique({
+		where: { value: token },
+		include: { admins: true },
+	});
 
 	if (DEV_MODE) {
 		console.log("ValidateToken found:", existingToken);
@@ -146,9 +142,7 @@ const validateInviteToken = async (token) => {
 		throw { status: 401, message: "Token already used or expired" };
 	}
 
-	const admins = await selectAdminById(existingToken.admin_id);
-	const admin = admins[0];
-
+	const admin = existingToken.admins;
 	if (!admin) {
 		throw { status: 401, message: "Admin not found" };
 	}
@@ -156,10 +150,15 @@ const validateInviteToken = async (token) => {
 	return { admin, existingToken };
 };
 
+/**
+ * Verify if an invite token is valid.
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
 export const verifyInvite = async (req, res) => {
 	const token = req.params.token;
 	try {
-		await validateInviteToken(token);
+		await validateInviteTokenRaw(token);
 		return res.status(200).json({ valid: true, message: "Token is valid" });
 	} catch (error) {
 		console.error("Verify Invite Error:", error);
@@ -169,11 +168,15 @@ export const verifyInvite = async (req, res) => {
 	}
 };
 
+/**
+ * Accept an invite and set the password.
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
 export const acceptInvite = async (req, res) => {
-	const token = req.params.token;
-	let conn;
+	const tokenValue = req.params.token;
 	try {
-		const { admin } = await validateInviteToken(token);
+		const { admin } = await validateInviteTokenRaw(tokenValue);
 
 		if (!req.body.password) {
 			return res
@@ -181,29 +184,26 @@ export const acceptInvite = async (req, res) => {
 				.json({ valid: false, message: "Password is required" });
 		}
 
-		conn = await getConnection();
-		await conn.beginTransaction();
-
 		const hashedPassword = await bcrypt.hash(req.body.password, 10);
-		await updateAdminPassword(admin.id, hashedPassword, conn);
-		await updateTokenStatus(token, "used", conn);
 
-		await conn.commit();
+		await prisma.$transaction([
+			prisma.admins.update({
+				where: { id: admin.id },
+				data: { password: hashedPassword },
+			}),
+			prisma.tokens.update({
+				where: { value: tokenValue },
+				data: { status: "used" },
+			}),
+		]);
 
 		return res
 			.status(200)
 			.json({ valid: true, message: "Token validated and password set" });
 	} catch (error) {
-		if (conn) {
-			await conn.rollback();
-		}
 		console.error("Accept Invite Error:", error);
 		res
 			.status(error.status || 500)
 			.json({ valid: false, message: error.message || "Server error" });
-	} finally {
-		if (conn) {
-			conn.release();
-		}
 	}
 };
