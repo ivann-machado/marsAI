@@ -54,7 +54,7 @@ function UploadForm() {
     SetRightGivaway(!rightGivaway);
   };
   //Messages d'erreur
-  const [titleError, SetTitleError] = useState();
+  const [titleError, SetTitleError] = useState("");
   const [descError, SetDescError] = useState("");
   const [videoError, SetVideoError] = useState("");
   const [coverImageError, SetCoverImageError] = useState("");
@@ -69,6 +69,227 @@ function UploadForm() {
   const [youtubeError, SetYoutubeError] = useState("");
   const [emailError, SetEmailError] = useState("");
   const [tagError, SetTagError] = useState("");
+
+  //Vérification des champs du formulaire
+  function titleCheck() {
+    if (title.current.value.trim() === "") {
+      SetTitleError("Champ vide");
+      console.log("Input is empty");
+      return false;
+    } else if (title.current.value.length < 5) {
+      //Taille temporaire (placeholder !!!!!!)
+      SetTitleError(t("upload_form.errors.test")); //"Ce champ doit être plus grand"
+      console.log("Input is too short");
+      return false;
+    } else if (title.current.value.length > 50) {
+      //Taille temporaire (placeholder !!!!!!)
+      SetTitleError("Ce champ ne doit pas être supérieur à 50 caractères");
+      console.log("Input is too long");
+      return false;
+    } else {
+      SetTitleError("");
+      return true;
+    }
+  }
+  function descCheck() {
+    if (description.current.value.trim() === "") {
+      SetDescError("Champ vide");
+      console.log("Input is empty");
+      return false;
+    } else if (description.current.value.length < 10) {
+      //Taille temporaire (placeholder !!!!!!)
+      SetDescError("Ce champ doit être plus grand");
+      console.log("Input is too short");
+      return false;
+    } else if (description.current.value.length > 300) {
+      //Taille temporaire (placeholder !!!!!!)
+      SetDescError("Ce champ doit être plus petit");
+      console.log("Input is too long");
+      return false;
+    } else {
+      SetDescError("");
+      return true;
+    }
+  }
+  function videoCheck() {
+    if (video.current.value.trim() === "") {
+      SetVideoError("Champ vide");
+      console.log("Input is empty");
+      return false;
+    } else {
+      SetVideoError("");
+      return true;
+    }
+  }
+  function coverImageCheck() {
+    if (coverImage.current.value.trim() === "") {
+      SetCoverImageError("Vous devez sélectionner une image de couverture");
+      console.log("Input is empty");
+      return false;
+    } else {
+      SetCoverImageError("");
+      return true;
+    }
+  }
+  function scenarioAiCheck() {
+    if (scenario_ai.current.value.trim() === "") {
+      SetScenarioAiError("Champ vide");
+      return false;
+      console.log("Input is empty");
+    } else if (scenario_ai.current.value.length > 50) {
+      SetScenarioAiError("Ce champ ne doit pas être supérieur à 50 caractères");
+      return false;
+    } else {
+      SetScenarioAiError("");
+      return true;
+    }
+  }
+  function videoAiCheck() {
+    if (video_ai.current.value.trim() === "") {
+      SetVideoAiError("Champ vide");
+      console.log("Input is empty");
+      return false;
+    } else if (video_ai.current.value.length > 50) {
+      SetVideoAiError("Ce champ ne doit pas être supérieur à 50 caractères");
+      return false;
+    } else {
+      SetVideoAiError("");
+      return true;
+    }
+  }
+  function soundAiCheck() {
+    if (sound_ai.current.value.trim() === "") {
+      SetSoundAiError("Champ vide");
+      return false;
+      console.log("Input is empty");
+    } else if (sound_ai.current.value.length > 50) {
+      SetSoundAiError("Ce champ ne doit pas être supérieur à 50 caractères");
+      return false;
+    } else {
+      SetSoundAiError("");
+      return true;
+    }
+  }
+  function postProdAiCheck() {
+    if (post_prod_ai.current.value.trim() === "") {
+      SetPostProdAiError("Champ vide");
+      console.log("Input is empty");
+      return false;
+    } else if (post_prod_ai.current.value.length > 50) {
+      SetPostProdAiError("Ce champ ne doit pas être supérieur à 50 caractères");
+      return false;
+    } else {
+      SetPostProdAiError("");
+      return true;
+    }
+  }
+  function producerCheck() {
+    if (producer.current.value.trim() === "") {
+      SetProducerError("Champ vide");
+      console.log("Input is empty");
+      return false;
+    } else if (producer.current.value.length > 50) {
+      SetProducerError("Ce champ ne doit pas être supérieur à 50 caractères");
+      return false;
+    } else {
+      SetProducerError("");
+      return true;
+    }
+  }
+  function producerImageCheck() {
+    if (producerImage.current.value.trim() === "") {
+      SetProducerImageError("Vous devez sélectionner une image de couverture");
+      console.log("Input is empty");
+      return false;
+    } else {
+      SetProducerImageError("");
+      return true;
+    }
+  }
+  function instagramCheck() {
+    if (instagram.current.value.trim() === "") {
+      SetInstagramError("Champ vide");
+      console.log("Input is empty");
+      return false;
+    } else if (instagram.current.value.length > 50) {
+      SetInstagramError("Ce champ ne doit pas être supérieur à 50 caractères");
+      return false;
+    } else {
+      SetInstagramError("");
+      return true;
+    }
+  }
+  function linkedinCheck() {
+    if (linkedin.current.value.trim() === "") {
+      SetLinkedinError("Champ vide");
+      console.log("Input is empty");
+      return false;
+    } else if (linkedin.current.value.length > 50) {
+      SetLinkedinError("Ce champ ne doit pas être supérieur à 50 caractères");
+      return false;
+    } else {
+      SetLinkedinError("");
+      return true;
+    }
+  }
+  function youtubeCheck() {
+    if (youtube.current.value.trim() === "") {
+      SetYoutubeError("Champ vide");
+      console.log("Input is empty");
+      return false;
+    } else if (youtube.current.value.length > 50) {
+      SetYoutubeError("Ce champ ne doit pas être supérieur à 50 caractères");
+      return false;
+    } else {
+      SetYoutubeError("");
+      return true;
+    }
+  }
+  function emailCheck() {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (email.current.value.trim() === "") {
+      SetEmailError("Champ vide");
+      console.log("Input is empty");
+      return false;
+    } else if (!regex.test(email.current.value)) {
+      SetEmailError("Format d'email invalide");
+      return false;
+    } else if (email.current.value.length > 50) {
+      SetEmailError("Ce champ ne doit pas être supérieur à 50 caractères");
+      return false;
+    } else {
+      SetEmailError("");
+      return true;
+    }
+  }
+  function majorityCheck() {
+    if (majorityCertification === false) {
+      showFlash("error", t("upload_form.majority_certification_flash"));
+      console.log("Vous devez être agé de 18 ans ou plus");
+    } else {
+      SetMajorityCertification(true);
+    }
+  }
+  function rightGiveAwayCheck() {
+    if (rightGivaway === false) {
+      showFlash("error", t("upload_form.right_givaway_flash"));
+      console.log("Vous devez être agé de 18 ans ou plus");
+    }
+  }
+  function tagCheck() {
+    if (tags.current.value.trim() === "") {
+      SetTagError("Champ vide");
+      console.log("Input is empty");
+      return false;
+    } else if (tags.current.value.length > 50) {
+      SetTagError("Ce champ ne doit pas être supérieur à 100 caractères");
+      return false;
+    } else {
+      SetTagError("");
+      return true;
+    }
+  }
+
   //Récupération des données envoyées
   const [videoURL, setVideoURL] = useState(null);
   //Stockage des valeurs des inputs
@@ -93,7 +314,7 @@ function UploadForm() {
       youtube: youtube.current.value,
       tags: tags.current.value,
     };
-    coverImageCheck();
+    //Rappel des vérifications
     majorityCheck();
     rightGiveAwayCheck();
     const formData = new FormData();
@@ -119,8 +340,119 @@ function UploadForm() {
 
     console.log(uploadData);
     SetLoading(true);
-    if (majorityCertification === false) {
-      showFlash("error", "Erreururrureuueueuerueruerueur");
+    if (!titleCheck()) {
+      showFlash(
+        "error",
+        "Titre: " + (titleError != "" ? titleError : "Champ vide"),
+      );
+      SetLoading(false);
+      return;
+    } else if (!descCheck()) {
+      showFlash(
+        "error",
+        "Description: " + (descError != "" ? descError : "Champ vide"),
+      );
+      SetLoading(false);
+      return;
+    } else if (!videoCheck()) {
+      showFlash(
+        "error",
+        "Vidéo: " + (videoError != "" ? videoError : "Champ vide"),
+      );
+      SetLoading(false);
+      return;
+    } else if (!coverImageCheck()) {
+      showFlash(
+        "error",
+        "Miniature du film: " +
+          (coverImageError != "" ? coverImageError : "Champ vide"),
+      );
+      SetLoading(false);
+      return;
+    } else if (!producerCheck()) {
+      showFlash(
+        "error",
+        "Producteur: " + (producerError != "" ? producerError : "Champ vide"),
+      );
+      SetLoading(false);
+      return;
+    } else if (!producerImageCheck()) {
+      showFlash(
+        "error",
+        "Photo du producteur: " +
+          (producerImageError != "" ? producerImageError : "Champ vide"),
+      );
+      SetLoading(false);
+      return;
+    } else if (!scenarioAiCheck()) {
+      showFlash(
+        "error",
+        "IA scénario: " +
+          (scenarioAiError != "" ? scenarioAiError : "Champ vide"),
+      );
+      SetLoading(false);
+      return;
+    } else if (!videoAiCheck()) {
+      showFlash(
+        "error",
+        "IA générative de vidéos: " +
+          (videoAiError != "" ? videoAiError : "Champ vide"),
+      );
+      SetLoading(false);
+      return;
+    } else if (!soundAiCheck()) {
+      showFlash(
+        "error",
+        "IA sons et musiques: " +
+          (soundAiError != "" ? soundAiError : "Champ vide"),
+      );
+      SetLoading(false);
+      return;
+    } else if (!postProdAiCheck()) {
+      showFlash(
+        "error",
+        "IA post-production: " +
+          (postProdAiError != "" ? postProdAiError : "Champ vide"),
+      );
+      SetLoading(false);
+      return;
+    } else if (!linkedinCheck()) {
+      showFlash(
+        "error",
+        "Linkedin: " + (linkedinError != "" ? linkedinError : "Champ vide"),
+      );
+      SetLoading(false);
+      return;
+    } else if (!youtubeCheck()) {
+      showFlash(
+        "error",
+        "Youtube: " + (youtubeError != "" ? youtubeError : "Champ vide"),
+      );
+      SetLoading(false);
+      return;
+    } else if (!instagramCheck()) {
+      showFlash(
+        "error",
+        "Instagram: " + (instagramError != "" ? instagramError : "Champ vide"),
+      );
+      SetLoading(false);
+      return;
+    } else if (!emailCheck()) {
+      showFlash(
+        "error",
+        "Email: " + (emailError != "" ? emailError : "Champ vide"),
+      );
+      SetLoading(false);
+      return;
+    } else if (!tagCheck()) {
+      showFlash("error", "tags: " + (tagError != "" ? tagError : "Champ vide"));
+      SetLoading(false);
+      return;
+    } else if (!majorityCertification) {
+      SetLoading(false);
+
+      return;
+    } else if (rightGivaway === false) {
       SetLoading(false);
       return;
     }
@@ -145,152 +477,6 @@ function UploadForm() {
       SetLoading(false);
     }
   };
-  //Vérification des champs du formulaire
-  function titleCheck() {
-    if (title.current.value.trim() === "") {
-      SetTitleError("Champ vide");
-      console.log("Input is empty");
-    } else if (title.current.value.length < 5) {
-      //Taille temporaire (placeholder !!!!!!)
-      SetTitleError(t("upload_form.errors.test")); //"Ce champ doit être plus grand"
-      console.log("Input is too short");
-    } else if (title.current.value.length > 50) {
-      //Taille temporaire (placeholder !!!!!!)
-      SetTitleError("Ce champ doit être plus petit");
-      console.log("Input is too long");
-    } else {
-      SetTitleError();
-    }
-  }
-  function descCheck() {
-    if (description.current.value.trim() === "") {
-      SetDescError("Champ vide");
-      console.log("Input is empty");
-    } else if (description.current.value.length < 10) {
-      //Taille temporaire (placeholder !!!!!!)
-      SetDescError("Ce champ doit être plus grand");
-      console.log("Input is too short");
-    } else if (description.current.value.length > 300) {
-      //Taille temporaire (placeholder !!!!!!)
-      SetDescError("Ce champ doit être plus petit");
-      console.log("Input is too long");
-    } else {
-      SetDescError("");
-    }
-  }
-  function videoCheck() {
-    if (video.current.value.trim() === "") {
-      SetVideoError("Champ vide");
-      console.log("Input is empty");
-    } else {
-      SetVideoError("");
-    }
-  }
-  function coverImageCheck() {
-    if (coverImage.current.files[0] === null) {
-      showFlash("error", "Vous devez sélectionner une image de couverture");
-      console.log("Input is empty");
-    } else {
-      SetCoverImageError("");
-    }
-  }
-  function scenarioAiCheck() {
-    if (scenario_ai.current.value.trim() === "") {
-      SetScenarioAiError("Champ vide");
-      console.log("Input is empty");
-    } else {
-      SetScenarioAiError("");
-    }
-  }
-  function videoAiCheck() {
-    if (video_ai.current.value.trim() === "") {
-      SetVideoAiError("Champ vide");
-      console.log("Input is empty");
-    } else {
-      SetVideoAiError("");
-    }
-  }
-  function soundAiCheck() {
-    if (sound_ai.current.value.trim() === "") {
-      SetSoundAiError("Champ vide");
-      console.log("Input is empty");
-    } else {
-      SetSoundAiError("");
-    }
-  }
-  function postProdAiCheck() {
-    if (post_prod_ai.current.value.trim() === "") {
-      SetPostProdAiError("Champ vide");
-      console.log("Input is empty");
-    } else {
-      SetPostProdAiError("");
-    }
-  }
-  function producerCheck() {
-    if (producer.current.value.trim() === "") {
-      SetProducerError("Champ vide");
-      console.log("Input is empty");
-    } else {
-      SetProducerError("");
-    }
-  }
-  function instagramCheck() {
-    if (instagram.current.value.trim() === "") {
-      SetInstagramError("Champ vide");
-      console.log("Input is empty");
-    } else {
-      SetInstagramError("");
-    }
-  }
-  function linkedinCheck() {
-    if (linkedin.current.value.trim() === "") {
-      SetLinkedinError("Champ vide");
-      console.log("Input is empty");
-    } else {
-      SetLinkedinError("");
-    }
-  }
-  function youtubeCheck() {
-    if (youtube.current.value.trim() === "") {
-      SetYoutubeError("Champ vide");
-      console.log("Input is empty");
-    } else {
-      SetYoutubeError("");
-    }
-  }
-  function emailCheck() {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (email.current.value.trim() === "") {
-      SetEmailError("Champ vide");
-      console.log("Input is empty");
-    } else if (!regex.test(email.current.value)) {
-      SetEmailError("Format d'email invalide");
-    } else {
-      SetEmailError("");
-    }
-  }
-  function majorityCheck() {
-    if (majorityCertification === false) {
-      showFlash("error", t("upload_form.majority_certification_flash"));
-      console.log("Vous devez être agé de 18 ans ou plus");
-    } else {
-      SetMajorityCertification(true);
-    }
-  }
-  function rightGiveAwayCheck() {
-    if (rightGivaway === false) {
-      showFlash("error", t("upload_form.right_givaway_flash"));
-      console.log("Vous devez être agé de 18 ans ou plus");
-    }
-  }
-  function tagCheck() {
-    if (tags.current.value.trim() === "") {
-      SetTagError("Champ vide");
-      console.log("Input is empty");
-    } else {
-      SetTagError("");
-    }
-  }
 
   const formSubmit = useState(false);
   return (
