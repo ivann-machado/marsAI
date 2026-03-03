@@ -170,7 +170,7 @@ CREATE TABLE reviews (
     id INT AUTO_INCREMENT PRIMARY KEY,
     admin_id INT NOT NULL,
     video_id INT NOT NULL,
-    note TEXT NOT NULL,
+    note VARCHAR(300) NOT NULL,
     grade INT NOT NULL,
     status ENUM('assigned','done') DEFAULT 'assigned',
     FOREIGN KEY (video_id) REFERENCES videos(id) ON DELETE CASCADE,
@@ -183,7 +183,7 @@ CREATE TABLE reviews (
 CREATE TABLE tokens (
     id INT AUTO_INCREMENT PRIMARY KEY,
     admin_id INT NOT NULL,
-    value VARCHAR(100) NOT NULL,
+    value VARCHAR(100) NOT NULL UNIQUE,
     status ENUM('pending','used','revoked') DEFAULT 'pending',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (admin_id) REFERENCES admins(id) ON DELETE CASCADE
@@ -194,7 +194,7 @@ CREATE TABLE tokens (
 -- --------------------------------------------------------
 CREATE TABLE process_queue (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    video_id VARCHAR(100) NOT NULL,
+    video_id INT NOT NULL,
     status ENUM('pending','done','failed','timeout') DEFAULT 'pending',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

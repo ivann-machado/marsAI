@@ -1,90 +1,73 @@
-import { pool } from "../config/db.js";
+import prisma from "../config/prisma.js";
 
 /**
  * Create a new sponsor.
- *
  * @param {Object} data
- * @param {number} data.edition_id
- * @param {string} data.type
- * @param {string} data.name
- * @param {string} data.url
- * @param {string} data.logo
- * @param {import("mariadb").PoolConnection} [conn]
- *
- * @returns {Promise<number>} inserted sponsor id
+ * @returns {Promise<Object>} raw MariaDB-like result for compatibility
  */
-export const insertSponsor = async ({ edition_id, type, name, url, logo }, conn = null) => {
-	const query = "INSERT INTO sponsors (edition_id, type, name, url, logo) VALUES (?, ?, ?, ?, ?)";
-	const db = conn || pool;
-
-	return db.query(query, [edition_id, type, name, url, logo]);
+export const insertSponsor = async ({ edition_id, type, name, url, logo }) => {
+	const sponsor = await prisma.sponsors.create({
+		data: {
+			edition_id: Number(edition_id),
+			type: type || "other",
+			name,
+			url: url || "",
+			logo: logo || "",
+		},
+	});
+	return { insertId: sponsor.id };
 };
 
 /**
  * Find sponsor by id
- *
  * @param {number} id
- * @param {import("mariadb").PoolConnection} [conn]
- *
- * @returns {Promise<Object|undefined>}
+ * @returns {Promise<Object[]>} Compatibility result (array of rows)
  */
-export const selectSponsorById = async (id, conn = null) => {
-	const query = "SELECT * FROM sponsors WHERE id = ?";
-
-	const db = conn || pool;
-
-	return db.query(query, [id]);
+export const selectSponsorById = async (id) => {
+	const sponsor = await prisma.sponsors.findUnique({
+		where: { id: Number(id) },
+	});
+	return sponsor ? [sponsor] : [];
 };
 
 /**
  * Find all sponsors
- *
- * @param {import("mariadb").PoolConnection} [conn]
- *
- * @returns {Promise<Object[]>}
+ * @returns {Promise<Object[]>} Compliance result (array of rows)
  */
-export const selectAllSponsors = async (conn = null) => {
-	const query = "SELECT * FROM sponsors ORDER BY id DESC";
-
-	const db = conn || pool;
-
-	return db.query(query);
+export const selectAllSponsors = async () => {
+	return prisma.sponsors.findMany({
+		orderBy: { id: "desc" },
+	});
 };
 
 /**
  * Update sponsor by id
- *
  * @param {number} id
  * @param {Object} data
- * @param {number} data.edition_id
- * @param {string} data.type
- * @param {string} data.name
- * @param {string} data.url
- * @param {string} data.logo
- * @param {import("mariadb").PoolConnection} [conn]
- *
- * @returns {Promise<number>} affected rows
+ * @returns {Promise<Object>} raw MariaDB-like result for compatibility
  */
-export const updateSponsorById = async (id, { edition_id, type, name, url, logo }, conn = null) => {
-	const query = "UPDATE sponsors SET edition_id = ?, type = ?, name = ?, url = ?, logo = ? WHERE id = ?";
-
-	const db = conn || pool;
-
-	return db.query(query, [edition_id, type, name, url, logo, id]);
+export const updateSponsorById = async (id, { edition_id, type, name, url, logo }) => {
+	await prisma.sponsors.update({
+		where: { id: Number(id) },
+		data: {
+			edition_id: edition_id ? Number(edition_id) : undefined,
+			type,
+			name,
+			url,
+			logo,
+		},
+	});
+	return { affectedRows: 1 };
 };
 
 /**
  * Delete sponsor by id
- *
  * @param {number} id
- * @param {import("mariadb").PoolConnection} [conn]
- *
- * @returns {Promise<number>} affected rows
+ * @returns {Promise<Object>} Compatibility result
  */
-export const deleteSponsorById = async (id, conn = null) => {
-	const query = "DELETE FROM sponsors WHERE id = ?";
-
-	const db = conn || pool;
-
-	return db.query(query, [id]);
+export const deleteSponsorById = async (id) => {
+	await prisma.sponsors.delete({
+		where: { id: Number(id) },
+	});
+	return { affectedRows: 1 };
 };

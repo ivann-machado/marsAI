@@ -1,89 +1,110 @@
-import { pool } from "../config/db.js";
+import prisma from "../config/prisma.js";
 
 /**
  * Insert a new review.
  * @param {Object} data - Review data (admin_id, video_id)
- * @param {import("mariadb").PoolConnection|null} [conn=null] - Optional transaction connection
- * @returns {Promise<Object>} raw MariaDB result
+ * @returns {Promise<Object>} raw MariaDB-like result for compatibility
  */
-export const insertReview = async ({ admin_id, video_id }, conn = null) => {
-	const query = "INSERT INTO reviews (admin_id, video_id) VALUES (?, ?)";
-	const db = conn || pool;
-	return db.query(query, [admin_id, video_id]);
+export const insertReview = async ({ admin_id, video_id }) => {
+	const review = await prisma.reviews.create({
+		data: {
+			admin_id: Number(admin_id),
+			video_id: Number(video_id),
+			status: "assigned",
+			note: "",
+		},
+	});
+	return { insertId: review.id };
 };
 
 /**
  * Select a review by ID.
  * @param {number} id
- * @param {import("mariadb").PoolConnection|null} [conn=null] - Optional transaction connection
- * @returns {Promise<Object[]>}
+ * @returns {Promise<Object|null>}
  */
-export const selectReviewById = async (id, conn = null) => {
-	const query = "SELECT * FROM reviews WHERE id = ?";
-	const db = conn || pool;
-	return db.query(query, [id]);
+export const selectReviewById = async (id) => {
+	return prisma.reviews.findUnique({
+		where: { id: Number(id) },
+		include: {
+			admins: { select: { login: true } },
+			videos: { select: { title: true } },
+		},
+	});
 };
 
 /**
  * Select a review by admin_id and video_id.
  * @param {number} admin_id
  * @param {number} video_id
- * @param {import("mariadb").PoolConnection|null} [conn=null] - Optional transaction connection
  * @returns {Promise<Object|null>}
  */
-export const selectReviewByAdminAndVideo = async (
-	admin_id,
-	video_id,
-	conn = null,
-) => {
-	const query =
-		"SELECT r.*, a.login as admin_login, v.title as video_title FROM reviews r JOIN admins a ON r.admin_id = a.id JOIN videos v ON r.video_id = v.id WHERE r.admin_id = ? AND r.video_id = ?";
-	const db = conn || pool;
-	const rows = await db.query(query, [admin_id, video_id]);
-	return rows[0] || null;
+export const selectReviewByAdminAndVideo = async (admin_id, video_id) => {
+	const review = await prisma.reviews.findFirst({
+		where: {
+			admin_id: Number(admin_id),
+			video_id: Number(video_id),
+		},
+		include: {
+			admins: { select: { login: true } },
+			videos: { select: { title: true } },
+		},
+	});
+
+	if (!review) return null;
+
+	return {
+		...review,
+		admin_login: review.admins?.login,
+		video_title: review.videos?.title,
+	};
 };
 
 /**
  * Select all reviews.
- * @param {import("mariadb").PoolConnection|null} [conn=null] - Optional transaction connection
  * @returns {Promise<Object[]>}
  */
-export const selectAllReviews = async (conn = null) => {
-	const query =
-		"SELECT r.*, a.login as admin_login, v.title as video_title FROM reviews r JOIN admins a ON r.admin_id = a.id JOIN videos v ON r.video_id = v.id";
-	const db = conn || pool;
-	return db.query(query);
+export const selectAllReviews = async () => {
+	const reviews = await prisma.reviews.findMany({
+		include: {
+			admins: { select: { login: true } },
+			videos: { select: { title: true } },
+		},
+		orderBy: { id: "desc" },
+	});
+
+	return reviews.map(review => ({
+		...review,
+		admin_login: review.admins?.login,
+		video_title: review.videos?.title,
+	}));
 };
 
 /**
  * Update a review by ID
  * @param {number} id - Review ID
  * @param {Object} data - Fields to update
- * @param {number} [data.note]
- * @param {string} [data.grade]
- * @param {string} [data.status]
- * @param {import('mariadb').PoolConnection} [conn]
- * @returns {Promise<number>} Number of affected rows
+ * @returns {Promise<Object>} Compatibility result
  */
-export const updateReview = async (
-	id,
-	{ note, grade, status },
-	conn = null,
-) => {
-	const query =
-		"UPDATE reviews SET note = ?, grade = ?, status = ? WHERE id = ?";
-	const db = conn || pool;
-	return db.query(query, [note, grade, status, id]);
+export const updateReview = async (id, { note, grade, status }) => {
+	await prisma.reviews.update({
+		where: { id: Number(id) },
+		data: {
+			note,
+			grade: grade !== undefined ? Number(grade) : undefined,
+			status,
+		},
+	});
+	return { affectedRows: 1 };
 };
 
 /**
  * Delete a review by ID.
  * @param {number} id
- * @param {import("mariadb").PoolConnection|null} [conn=null] - Optional transaction connection
- * @returns {Promise<Object>}
+ * @returns {Promise<number>} Number of affected rows
  */
-export const deleteReview = async (id, conn = null) => {
-	const query = "DELETE FROM reviews WHERE id = ?";
-	const db = conn || pool;
-	return db.query(query, [id]);
+export const deleteReview = async (id) => {
+	await prisma.reviews.delete({
+		where: { id: Number(id) },
+	});
+	return 1;
 };

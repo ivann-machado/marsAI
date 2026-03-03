@@ -1,11 +1,5 @@
-import { getConnection } from "../config/db.js";
-import {
-	insertJury,
-	selectJuryById,
-	selectAllJuries,
-	updateJury,
-	deleteJury,
-} from "../models/jury.model.js";
+import prisma from "../config/prisma.js";
+import { paginate } from "../utils/paginate.js";
 import { deleteFile, getFileUrl } from "../services/bucket.service.js";
 
 /**
@@ -14,7 +8,6 @@ import { deleteFile, getFileUrl } from "../services/bucket.service.js";
  * @param {import("express").Response} res
  */
 export const createJury = async (req, res) => {
-	let conn;
 	try {
 		const { edition_id, name, bio, profession } = req.body;
 
@@ -26,14 +19,19 @@ export const createJury = async (req, res) => {
 
 		const finalPhoto = req.file ? req.file.location : null;
 
-		const result = await insertJury(
-			{ edition_id, name, bio, photo: finalPhoto, profession },
-			conn
-		);
+		const jury = await prisma.jury.create({
+			data: {
+				edition_id: Number(edition_id),
+				name,
+				bio: bio || "",
+				photo: finalPhoto,
+				profession: profession || "",
+			},
+		});
 
 		res.status(201).json({
 			message: "Jury member created",
-			id: result.insertId.toString(),
+			id: jury.id.toString(),
 		});
 	} catch (error) {
 		console.error("Create Jury Error:", error);
@@ -48,14 +46,20 @@ export const createJury = async (req, res) => {
  */
 export const getAllJuries = async (req, res) => {
 	try {
-		const juries = await selectAllJuries();
-		const juriesWithUrls = juries.map(jury => {
-			return {
-				...jury,
-				photo: getFileUrl(jury.photo)
-			};
+		const { page, limit } = req.query;
+
+		const result = await paginate(prisma.jury, {
+			page,
+			limit,
+			orderBy: { id: "desc" },
 		});
-		res.status(200).json(juriesWithUrls);
+
+		result.data = result.data.map(jury => ({
+			...jury,
+			photo: getFileUrl(jury.photo)
+		}));
+
+		res.status(200).json(result);
 	} catch (error) {
 		console.error("Get All Juries Error:", error);
 		res.status(500).json({ message: "Server error" });
@@ -77,8 +81,9 @@ export const getJuryById = async (req, res) => {
 			});
 		}
 
-		const result = await selectJuryById(id);
-		const jury = result[0];
+		const jury = await prisma.jury.findUnique({
+			where: { id: Number(id) },
+		});
 
 		if (!jury) {
 			return res.status(404).json({
@@ -112,16 +117,16 @@ export const setJury = async (req, res) => {
 			});
 		}
 
-		const result = await updateJury(
-			id,
-			{ edition_id, name, bio, photo, profession },
-		);
-
-		if (result.affectedRows === 0) {
-			return res.status(404).json({
-				message: "Jury not found",
-			});
-		}
+		const jury = await prisma.jury.update({
+			where: { id: Number(id) },
+			data: {
+				edition_id: edition_id ? Number(edition_id) : undefined,
+				name,
+				bio,
+				photo,
+				profession,
+			},
+		});
 
 		if (oldPhoto && photo && oldPhoto !== photo) {
 			deleteFile(oldPhoto).catch(err => console.error("Failed to delete old jury photo:", err));
@@ -131,6 +136,11 @@ export const setJury = async (req, res) => {
 			message: "Jury updated",
 		});
 	} catch (error) {
+		if (error.code === "P2025") {
+			return res.status(404).json({
+				message: "Jury not found",
+			});
+		}
 		console.error("Set Jury Error:", error);
 		res.status(500).json({ message: "Server error" });
 	}
@@ -151,18 +161,19 @@ export const removeJury = async (req, res) => {
 			});
 		}
 
-		const result = await deleteJury(id);
-
-		if (result.affectedRows === 0) {
-			return res.status(404).json({
-				message: "Jury not found",
-			});
-		}
+		await prisma.jury.delete({
+			where: { id: Number(id) },
+		});
 
 		res.status(200).json({
 			message: "Jury deleted",
 		});
 	} catch (error) {
+		if (error.code === "P2025") {
+			return res.status(404).json({
+				message: "Jury not found",
+			});
+		}
 		console.error("Remove Jury Error:", error);
 		res.status(500).json({ message: "Server error" });
 	}

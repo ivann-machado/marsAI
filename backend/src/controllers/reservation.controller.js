@@ -1,9 +1,5 @@
-import {
-	insertReservation,
-	selectAllReservations,
-	selectReservationById,
-	deleteReservation,
-} from "../models/reservation.model.js";
+import prisma from "../config/prisma.js";
+import { paginate } from "../utils/paginate.js";
 
 /**
  * Create a new reservation.
@@ -20,16 +16,18 @@ export const createReservation = async (req, res) => {
 				.json({ message: "Event ID, firstname, lastname and email are required" });
 		}
 
-		const result = await insertReservation({
-			event_id,
-			firstname,
-			lastname,
-			email,
+		const reservation = await prisma.reservations.create({
+			data: {
+				event_id: Number(event_id),
+				firstname,
+				lastname,
+				email,
+			},
 		});
 
 		res.status(201).json({
 			message: "Reservation created successfully",
-			id: result.insertId.toString(),
+			id: reservation.id.toString(),
 		});
 	} catch (error) {
 		console.error("Create Reservation Error:", error);
@@ -44,8 +42,16 @@ export const createReservation = async (req, res) => {
  */
 export const getAllReservations = async (req, res) => {
 	try {
-		const reservations = await selectAllReservations();
-		res.status(200).json(reservations);
+		const { page, limit } = req.query;
+
+		const result = await paginate(prisma.reservations, {
+			page,
+			limit,
+			include: { events: true },
+			orderBy: { id: "desc" },
+		});
+
+		res.status(200).json(result);
 	} catch (error) {
 		console.error("Get All Reservations Error:", error);
 		res.status(500).json({ message: "Server error" });
@@ -59,8 +65,11 @@ export const getAllReservations = async (req, res) => {
  */
 export const getReservationById = async (req, res) => {
 	try {
-		const rows = await selectReservationById(req.params.id);
-		const reservation = rows[0];
+		const reservation = await prisma.reservations.findUnique({
+			where: { id: Number(req.params.id) },
+			include: { events: true },
+		});
+
 		if (!reservation) {
 			return res.status(404).json({ message: "Reservation not found" });
 		}
@@ -78,14 +87,15 @@ export const getReservationById = async (req, res) => {
  */
 export const removeReservation = async (req, res) => {
 	try {
-		const result = await deleteReservation(req.params.id);
-
-		if (result.affectedRows === 0) {
-			return res.status(404).json({ message: "Reservation not found" });
-		}
+		await prisma.reservations.delete({
+			where: { id: Number(req.params.id) },
+		});
 
 		res.status(200).json({ message: "Reservation deleted successfully" });
 	} catch (error) {
+		if (error.code === "P2025") {
+			return res.status(404).json({ message: "Reservation not found" });
+		}
 		console.error("Remove Reservation Error:", error);
 		res.status(500).json({ message: "Server error" });
 	}
