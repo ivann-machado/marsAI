@@ -21,6 +21,13 @@ export const InviteAdminSchema = adminsSchema
 	});
 
 /**
+ * Check invite token.
+ */
+export const inviteTokenSchema = z.object({
+	token: z.uuid({ error: "Token is required" }),
+});
+
+/**
  * Accept an invite – set a new password with confirmation.
  */
 export const AcceptInviteSchema = z
@@ -32,6 +39,7 @@ export const AcceptInviteSchema = z
 		confirmPassword: z
 			.string()
 			.min(1, { error: "Password confirmation is required" }),
+		token: z.uuid({ error: "Token is required" }),
 	})
 	.refine(
 		(data) => data.password === data.confirmPassword,
