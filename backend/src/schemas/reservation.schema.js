@@ -8,7 +8,6 @@ export const CreateReservationSchema = reservationsSchema
 	.omit({ id: true })
 	.extend({
 		event_id: z
-			.number({ error: "Event ID must be a number" })
 			.int({ error: "Event ID must be a whole number" })
 			.positive({ error: "Event ID must be a positive number" }),
 		firstname: z

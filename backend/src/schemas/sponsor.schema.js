@@ -8,7 +8,6 @@ export const CreateSponsorSchema = sponsorsSchema
 	.omit({ id: true })
 	.extend({
 		edition_id: z
-			.number({ error: "Edition ID must be a number" })
 			.int({ error: "Edition ID must be a whole number" })
 			.positive({ error: "Edition ID must be a positive number" }),
 		type: sponsors_typeSchema
@@ -19,8 +18,7 @@ export const CreateSponsorSchema = sponsorsSchema
 			.min(1, { error: "Name is required" })
 			.max(50, { error: "Name must be at most 50 characters" }),
 		url: z
-			.string()
-			.max(100, { error: "URL must be at most 100 characters" })
+			.url({ error: "URL must be a valid URL" })
 			.optional()
 			.default(""),
 		logo: z
