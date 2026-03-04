@@ -17,7 +17,8 @@
 	"scripts": {
 		"start": "nodemon --exec \"node --experimental-strip-types\" server.js",
 		"dev": "nodemon --exec \"node --experimental-strip-types\" server.js",
-		"test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles"
+		"test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles",
+		"prisma:generate": "prisma generate"
 	},
 	"dependencies": {
 		"@aws-sdk/client-s3": "^3.1000.0",

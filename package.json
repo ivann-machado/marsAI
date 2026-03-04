@@ -16,14 +16,14 @@
 		"dev": "concurrently \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\"",
 		"start": "concurrently \"npm start --prefix backend\" \"npm run preview --prefix frontend\"",
 		"backend": "npm run dev --prefix backend",
-		"frontend": "npm run dev --prefix frontend"
+		"frontend": "npm run dev --prefix frontend",
+		"install:all": "npm install && npm install --prefix backend && npm install --prefix frontend",
+		"install:back": "npm install --prefix backend",
+		"install:front": "npm install --prefix frontend",
+		"prisma:generate": "npm run prisma:generate --prefix backend"
 	},
 	"devDependencies": {
 		"concurrently": "^9.2.1"
 	},
-	"dependencies": {
-		"@tailwindcss/vite": "^4.1.18",
-		"react-i18next": "^16.5.4",
-		"tailwindcss": "^4.1.18"
-	}
+	"dependencies": {}
 }
