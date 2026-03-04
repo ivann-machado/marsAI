@@ -19,9 +19,5 @@ export const CreateReservationSchema = reservationsSchema
 			.string()
 			.min(1, { error: "Last name is required" })
 			.max(50, { error: "Last name must be at most 50 characters" }),
-		email: z
-			.string()
-			.min(1, { error: "Email is required" })
-			.max(50, { error: "Email must be at most 50 characters" })
-			.email({ error: "Email must be a valid email address" }),
+		email: z.email({ error: "Email must be a valid email address" }),
 	});
