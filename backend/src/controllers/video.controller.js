@@ -67,11 +67,11 @@ export const getAllVideos = async (req, res) => {
 			orderBy: { id: "desc" },
 		});
 
-		result.data = result.data.map(video => ({
+		result.data = result.data.map((video) => ({
 			...video,
 			filename: getFileUrl(video.filename),
 			cover_image: getFileUrl(video.cover_image),
-			subtitles: video.subtitles.map(sub => ({
+			subtitles: video.subtitles.map((sub) => ({
 				...sub,
 				filename: getFileUrl(sub.filename),
 			})),
@@ -105,7 +105,7 @@ export const getVideoById = async (req, res) => {
 			filename: getFileUrl(video.filename),
 			producer_image: getFileUrl(video.producer_image),
 			cover_image: getFileUrl(video.cover_image),
-			subtitles: video.subtitles.map(sub => ({
+			subtitles: video.subtitles.map((sub) => ({
 				...sub,
 				filename: getFileUrl(sub.filename),
 			})),
@@ -131,7 +131,9 @@ export const createVideo = async (req, res) => {
 
 		const video = await prisma.videos.create({
 			data: {
-				edition_id: body.edition_id ? Number(body.edition_id) : undefined,
+				edition_id: body.edition_id
+					? Number(body.edition_id)
+					: undefined,
 				url: body.url ?? "",
 				filename: body.filename,
 				email: body.email,
@@ -139,7 +141,9 @@ export const createVideo = async (req, res) => {
 				verified: false,
 				title: body.title,
 				description: body.description,
-				country_id: body.country_id ? Number(body.country_id) : undefined,
+				country_id: body.country_id
+					? Number(body.country_id)
+					: undefined,
 				producer: body.producer,
 				producer_image: body.producer_image,
 				linkedin_link: body.linkedin_link,
@@ -211,6 +215,59 @@ export const setVideo = async (req, res) => {
 		}
 		console.error("Set Video Error:", err);
 		res.status(500).json({ message: "Error updating video" });
+	}
+};
+
+/**
+ * Return videos assigned to the authenticated admin (via reviews).
+ * The admin is identified by req.user.id from the JWT token.
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
+export const getAssignedVideos = async (req, res) => {
+	try {
+		const adminId = req.user.id;
+		const { page, limit } = req.query;
+
+		const result = await paginate(prisma.videos, {
+			page,
+			limit,
+			where: {
+				reviews: {
+					some: {
+						admin_id: Number(adminId),
+					},
+				},
+			},
+			include: {
+				...videoIncludes,
+				reviews: {
+					where: { admin_id: Number(adminId) },
+					select: {
+						id: true,
+						note: true,
+						grade: true,
+						status: true,
+					},
+				},
+			},
+			orderBy: { id: "desc" },
+		});
+
+		result.data = result.data.map((video) => ({
+			...video,
+			filename: getFileUrl(video.filename),
+			cover_image: getFileUrl(video.cover_image),
+			subtitles: video.subtitles.map((sub) => ({
+				...sub,
+				filename: getFileUrl(sub.filename),
+			})),
+		}));
+
+		res.status(200).json(result);
+	} catch (err) {
+		console.error("Get Assigned Videos Error:", err);
+		res.status(500).json({ message: "Failed to fetch assigned videos" });
 	}
 };
 
