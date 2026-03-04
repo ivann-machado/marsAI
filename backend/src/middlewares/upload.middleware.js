@@ -89,7 +89,7 @@ export const processAndUpload = (options = {}) => {
 		fileFilter: fileFilter,
 		limits: {
 			fileSize: LIMITS.GLOBAL_SUM,
-			files: 3
+			files: 4
 		}
 	}).any();
 
