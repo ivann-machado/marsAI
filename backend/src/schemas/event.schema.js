@@ -12,11 +12,7 @@ export const CreateEventSchema = eventsSchema
 			.string()
 			.min(1, { error: "Name is required" })
 			.max(50, { error: "Name must be at most 50 characters" }),
-		url: z
-			.string()
-			.min(1, { error: "URL is required" })
-			.max(100, { error: "URL must be at most 100 characters" })
-			.url({ error: "URL must be a valid URL" }),
+		url: z.url({ error: "URL must be a valid URL" }),
 		logo: z
 			.string()
 			.max(100, { error: "Logo path must be at most 100 characters" }),

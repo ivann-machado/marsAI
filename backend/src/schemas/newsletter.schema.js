@@ -5,13 +5,9 @@ import { newslettersSchema } from "../generated/zod/index.ts";
  * Subscribe to the newsletter – tighten email validation.
  */
 export const CreateNewsletterSchema = newslettersSchema
-	.omit({ id: true })
+	.pick({ email: true })
 	.extend({
-		email: z
-			.string()
-			.min(1, { error: "Email is required" })
-			.max(50, { error: "Email must be at most 50 characters" })
-			.email({ error: "Email must be a valid email address" }),
+		email: z.email({ error: "Email must be a valid email address" }),
 	});
 
 /**

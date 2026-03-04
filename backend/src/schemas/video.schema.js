@@ -18,11 +18,7 @@ export const CreateVideoSchema = videosSchema
 			.string()
 			.min(1, { error: "Video filename is required" })
 			.max(100, { error: "Filename must be at most 100 characters" }),
-		email: z
-			.string()
-			.min(1, { error: "Email is required" })
-			.max(50, { error: "Email must be at most 50 characters" })
-			.email({ error: "Email must be a valid email address" }),
+		email: z.email({ error: "Email must be a valid email address" }),
 		cover_image: z
 			.string()
 			.min(1, { error: "Cover image is required" })
