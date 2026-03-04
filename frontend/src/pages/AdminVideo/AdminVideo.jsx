@@ -20,8 +20,6 @@ function AdminVideo() {
   if (i18n.language === "fr") country_list = countryListFr;
   else country_list = countryListEn;
 
-  console.log(country_list[4]);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
