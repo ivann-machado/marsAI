@@ -21,7 +21,7 @@
 		"prisma:generate": "prisma generate"
 	},
 	"dependencies": {
-		"@aws-sdk/client-s3": "^3.1000.0",
+		"@aws-sdk/client-s3": "^3.1001.0",
 		"@getbrevo/brevo": "^4.0.1",
 		"@prisma/adapter-mariadb": "^7.4.2",
 		"@prisma/client": "^7.4.2",
@@ -33,7 +33,6 @@
 		"google-auth-library": "^10.6.1",
 		"googleapis": "^171.4.0",
 		"helmet": "^8.1.0",
-		"i18next": "^25.8.13",
 		"jsonwebtoken": "^9.0.3",
 		"mariadb": "^3.5.1",
 		"morgan": "^1.10.1",
