@@ -24,12 +24,12 @@ function AdminUsersDash() {
   if (!users) return <Loading />;
 
   return (
-    <div className="w-4/5 bg-gray-950 flex flex-col items-center">
-      <h1 className="py-2 font-bold text-3xl text-white text-center">
+    <div className="w-4/5 bg-linear-to-br from-gray-950 to-gray-800  flex flex-col items-center">
+      <h1 className="py-4 font-bold text-3xl text-white text-center">
         Gestion Utilisateurs
       </h1>
 
-      <div className="bg-gray-900 text-white">
+      <div className="bg-gray-900 text-white w-9/10">
         <div className="grid grid-cols-6 w-full mx-4 my-2 text-center">
           <p>ID</p>
           <p>Login</p>
@@ -38,7 +38,7 @@ function AdminUsersDash() {
           <p>Supprimer</p>
         </div>
         {users.map((user) => (
-          <AdminUserCard userData={user} />
+          <AdminUserCard key={user.id} userData={user} />
         ))}
       </div>
       <AdminUserInviteForm />
