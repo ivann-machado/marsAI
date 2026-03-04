@@ -9,7 +9,6 @@ export const CreateVideoSchema = videosSchema
 	.omit({ id: true, url: true, verified: true, status: true })
 	.extend({
 		edition_id: z
-			.number({ error: "Edition ID must be a number" })
 			.int({ error: "Edition ID must be a whole number" })
 			.positive({ error: "Edition ID must be a positive number" })
 			.optional()
@@ -31,7 +30,6 @@ export const CreateVideoSchema = videosSchema
 			.string()
 			.min(1, { error: "Description is required" }),
 		country_id: z
-			.number({ error: "Country ID must be a number" })
 			.int({ error: "Country ID must be a whole number" })
 			.positive({ error: "Country ID must be a positive number" }),
 		producer: z
@@ -43,13 +41,15 @@ export const CreateVideoSchema = videosSchema
 			.min(1, { error: "Producer image is required" })
 			.max(100, { error: "Producer image path must be at most 100 characters" }),
 		linkedin_link: z
-			.string()
-			.max(50, { error: "LinkedIn link must be at most 50 characters" })
+			.url({ error: "LinkedIn link must be a valid URL", hostname: /^linkedin\.com/ })
 			.optional()
 			.default(""),
 		youtube_link: z
-			.string()
-			.max(50, { error: "YouTube link must be at most 50 characters" })
+			.url({ error: "YouTube link must be a valid URL", hostname: /^youtube\.com/ })
+			.optional()
+			.default(""),
+		instagram_link: z
+			.url({ error: "Instagram link must be a valid URL", hostname: /^instagram\.com/ })
 			.optional()
 			.default(""),
 		scenario_ai: z
