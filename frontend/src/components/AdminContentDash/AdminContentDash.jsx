@@ -17,7 +17,7 @@ function AdminSettingsDash() {
         );
         if (!response.ok) throw new Error("Erreur fetch JSON");
         const json = await response.json();
-        setContent(json);
+        setContent(json.data);
       } catch (err) {
         console.error(err);
       }

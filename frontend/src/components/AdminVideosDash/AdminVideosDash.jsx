@@ -26,7 +26,7 @@ function AdminVideosDash() {
         );
         if (!response.ok) throw new Error("Erreur fetch JSON");
         let res = await response.json();
-        setVideoQueue(res);
+        setVideoQueue(res.data);
 
         /* Recuperation des autres videos */
         response = await fetch(import.meta.env.VITE_API_URL + "/api/videos", {
@@ -35,7 +35,7 @@ function AdminVideosDash() {
         });
         if (!response.ok) throw new Error("Erreur fetch JSON");
         res = await response.json();
-        setOtherVideo(res);
+        setOtherVideo(res.data);
       } catch (err) {
         console.error(err);
       }

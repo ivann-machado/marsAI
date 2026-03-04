@@ -14,7 +14,7 @@ datasource db {
 
 model admins {
     id       Int         @id @default(autoincrement())
-    login    String      @db.VarChar(50)
+    login    String      @unique(map: "login") @db.VarChar(50)
     password String?     @db.VarChar(255)
     role     admins_role
     reviews  reviews[]
