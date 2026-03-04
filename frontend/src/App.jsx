@@ -25,8 +25,13 @@ import { SettingsProvider } from "./context/SettingsContext.jsx";
 import { FlashProvider } from "./context/FlashContext.jsx";
 import NotFound from "./components/Utils/NotFound.jsx";
 import AdminRegister from "./pages/AdminRegister/AdminRegister.jsx";
+import { useSettings } from "./context/SettingsContext.jsx";
+import Loading from "./components/Utils/Loading.jsx";
 
 function App() {
+  const settings = useSettings();
+  if (settings === null) return <Loading />;
+
   if (window.location.host.split(".")[0] == "admin")
     /* PAGES ADMIN */
     return (
@@ -127,7 +132,13 @@ function App() {
         <FlashProvider>
           <SettingsProvider>
             <Routes>
-              <Route path="/" element={<Homepage />} />
+              {settings.phase === "1" ? (
+                <Route path="/" element={<Homepage />} />
+              ) : settings.phase === "2" ? (
+                <Route path="/" element={<HomepagePhase2 />} />
+              ) : (
+                <Route path="/" element={<HomepagePhase3 />} />
+              )}
               <Route path="/video/:videoId" element={<VideoDetail />} />
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/participate" element={<UploadPage />} />

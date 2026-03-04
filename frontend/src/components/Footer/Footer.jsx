@@ -57,12 +57,12 @@ function Footer() {
 
   if (!settings) return <Loading />;
 
-  console.log(
+  /*   console.log(
     settings.bg_color_primary_alt,
     (settings.bg_color_primary_alt
       ? " bg-[" + settings.bg_color_primary_alt + "] "
       : " bg-gray-900 ") + " w-full px-10 py-20",
-  );
+  ); */
 
   // Exemple si on veut changer dynamiquement le CSS en utilisant settings, à voir si on trouve une meilleure solution
   {
