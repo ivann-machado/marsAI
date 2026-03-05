@@ -18,7 +18,7 @@ export const verifyToken = (req, res, next) => {
 };
 
 export const requireSuperAdmin = (req, res, next) => {
-  if (req.user && req.user.role === "super admin") {
+  if (req.user && req.user.role === "super_admin") {
     next();
   } else {
     res.status(403).json({ message: "Require Super Admin Role" });
