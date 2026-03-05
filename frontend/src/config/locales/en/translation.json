@@ -60,6 +60,16 @@
     "submit_btn": "Finalize my submission",
     "majority_certification_flash": "You must be 18 or older",
     "right_givaway_flash": "You must give your property rights",
+    "production_type": {
+      "label": "--Select a type--",
+      "ai": "AI",
+      "hybrid": "hybrid"
+    },
+    "competition_status": {
+      "label": "--Select a competition status--",
+      "in_competition": "In competition",
+      "standout": "Standout"
+    },
     "errors": {
       "test": "ce champ doit être plus grand"
     }

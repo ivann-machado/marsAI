@@ -60,6 +60,16 @@
     "submit_btn": "Finaliser ma soumission",
     "majority_certification_flash": "Vous devez être agé de 18 ans ou plus",
     "right_givaway_flash": "Vous devez donner vos droits de propriété",
+    "production_type": {
+      "label": "--Sélectionnez un type--",
+      "ai": "IA",
+      "hybrid": "hybride"
+    },
+    "competition_status": {
+      "label": "--Sélectionnez un statut--",
+      "in_competition": "En compétition",
+      "standout": "Hors-concours"
+    },
     "errors": {
       "text_too_short": "Ce champ doit être plus grand"
     }

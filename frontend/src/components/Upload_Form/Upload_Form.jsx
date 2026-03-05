@@ -14,30 +14,9 @@ function UploadForm() {
   const prevStep = () => setStep((prev) => prev - 1);
   const [loading, SetLoading] = useState(false);
 
-  //Status
-  const [countryId, SetCountryId] = useState(null);
-  let countryOptions = [];
-  if (i18n.language === "fr") {
-    countryOptions = countryListFr;
-  } else {
-    countryOptions = countryListEn.sort((a, b) =>
-      a.label.localeCompare(b.label),
-    );
-  }
-  const movieTypeOption = [
-    { label: "--Select a type--", value: 0 },
-    { label: "100% AI", value: 1 },
-    { label: "Hybrid", value: 2 },
-  ];
-  const movieStatusOption = [
-    { label: "--Select a competition status--", value: 0 },
-    { label: "En compétition", value: 1 },
-    { label: "Hors concours", value: 2 },
-  ];
-  function handleSelect(event) {
-    SetCountryId(event.target.value);
-  }
-  //Stockage des valeurs de chaques input dans leurs variables respectives
+  /**
+   * Stockage des valeurs de chaques input dans leurs variables respectives
+   */
   const title = useRef(null);
   const description = useRef(null);
   const video = useRef(null);
@@ -53,17 +32,50 @@ function UploadForm() {
   const youtube = useRef(null);
   const email = useRef(null);
   const tags = useRef(null);
+  const tiktok = useRef(null);
   const [majorityCertification, SetMajorityCertification] = useState(false);
   console.log({ majorityCertification });
   const certficitationHandler = () => {
     SetMajorityCertification(!majorityCertification);
   };
-
   const [rightGivaway, SetRightGivaway] = useState(false);
   const rightGiveAwayHandler = () => {
     SetRightGivaway(!rightGivaway);
   };
-  //Messages d'erreur
+
+  /**
+   * Select
+   */
+  const [movieType, SetMovieType] = useState("");
+  const [movieStatus, SetMovieStatus] = useState("");
+  const [countryId, SetCountryId] = useState(0);
+  let countryOptions = [];
+  if (i18n.language === "fr") {
+    countryOptions = countryListFr;
+  } else {
+    countryOptions = countryListEn.sort((a, b) =>
+      a.label.localeCompare(b.label),
+    );
+  }
+  const movieTypeOption = [
+    { label: "--Select a type--", value: "" },
+    { label: "100% " + t("upload_form.production_type.ai"), value: "100%_ia" },
+    { label: t("upload_form.production_type.hybrid"), value: "hybride" },
+  ];
+  const movieStatusOption = [
+    { label: "--Select a competition status--", value: "" },
+    { label: "En compétition", value: "en_concours" },
+    { label: "Hors concours", value: "hors_concours" },
+  ];
+  function handleSelect(event, key) {
+    if (key === "country") SetCountryId(event.target.value);
+    if (key === "movie_type") SetMovieType(event.target.value);
+    if (key === "movie_status") SetMovieStatus(event.target.value);
+  }
+
+  /**
+   * Messages d'erreur
+   */
   const [titleError, SetTitleError] = useState("");
   const [descError, SetDescError] = useState("");
   const [videoError, SetVideoError] = useState("");
@@ -79,22 +91,26 @@ function UploadForm() {
   const [youtubeError, SetYoutubeError] = useState("");
   const [emailError, SetEmailError] = useState("");
   const [tagError, SetTagError] = useState("");
+  const [movieTypeError, SetMovieTypeError] = useState("");
+  const [movieStatusError, SetMovieStatusError] = useState("");
+  const [tiktokError, SetTiktokError] = useState("");
 
-  //Vérification des champs du formulaire
+  /**
+   * Vérification des champs du formulaire
+   */
   function titleCheck() {
     if (title.current.value.trim() === "") {
       SetTitleError("Champ vide");
-      console.log("Input is empty");
       return false;
     } else if (title.current.value.length < 5) {
       //Taille temporaire (placeholder !!!!!!)
       SetTitleError(t("upload_form.errors.test")); //"Ce champ doit être plus grand"
-      console.log("Input is too short");
+      // console.log("Input is too short");
       return false;
     } else if (title.current.value.length > 50) {
       //Taille temporaire (placeholder !!!!!!)
       SetTitleError("Ce champ ne doit pas être supérieur à 50 caractères");
-      console.log("Input is too long");
+      //console.log("Input is too long");
       return false;
     } else {
       SetTitleError("");
@@ -104,17 +120,14 @@ function UploadForm() {
   function descCheck() {
     if (description.current.value.trim() === "") {
       SetDescError("Champ vide");
-      console.log("Input is empty");
       return false;
     } else if (description.current.value.length < 10) {
       //Taille temporaire (placeholder !!!!!!)
       SetDescError("Ce champ doit être plus grand");
-      console.log("Input is too short");
       return false;
     } else if (description.current.value.length > 300) {
       //Taille temporaire (placeholder !!!!!!)
       SetDescError("Ce champ doit être plus petit");
-      console.log("Input is too long");
       return false;
     } else {
       SetDescError("");
@@ -124,7 +137,6 @@ function UploadForm() {
   function videoCheck() {
     if (video.current.value.trim() === "") {
       SetVideoError("Champ vide");
-      console.log("Input is empty");
       return false;
     } else {
       SetVideoError("");
@@ -134,7 +146,6 @@ function UploadForm() {
   function coverImageCheck() {
     if (coverImage.current.value.trim() === "") {
       SetCoverImageError("Vous devez sélectionner une image de couverture");
-      console.log("Input is empty");
       return false;
     } else {
       SetCoverImageError("");
@@ -145,7 +156,6 @@ function UploadForm() {
     if (scenario_ai.current.value.trim() === "") {
       SetScenarioAiError("Champ vide");
       return false;
-      console.log("Input is empty");
     } else if (scenario_ai.current.value.length > 50) {
       SetScenarioAiError("Ce champ ne doit pas être supérieur à 50 caractères");
       return false;
@@ -157,7 +167,6 @@ function UploadForm() {
   function videoAiCheck() {
     if (video_ai.current.value.trim() === "") {
       SetVideoAiError("Champ vide");
-      console.log("Input is empty");
       return false;
     } else if (video_ai.current.value.length > 50) {
       SetVideoAiError("Ce champ ne doit pas être supérieur à 50 caractères");
@@ -171,7 +180,6 @@ function UploadForm() {
     if (sound_ai.current.value.trim() === "") {
       SetSoundAiError("Champ vide");
       return false;
-      console.log("Input is empty");
     } else if (sound_ai.current.value.length > 50) {
       SetSoundAiError("Ce champ ne doit pas être supérieur à 50 caractères");
       return false;
@@ -183,7 +191,6 @@ function UploadForm() {
   function postProdAiCheck() {
     if (post_prod_ai.current.value.trim() === "") {
       SetPostProdAiError("Champ vide");
-      console.log("Input is empty");
       return false;
     } else if (post_prod_ai.current.value.length > 50) {
       SetPostProdAiError("Ce champ ne doit pas être supérieur à 50 caractères");
@@ -196,7 +203,6 @@ function UploadForm() {
   function producerCheck() {
     if (producer.current.value.trim() === "") {
       SetProducerError("Champ vide");
-      console.log("Input is empty");
       return false;
     } else if (producer.current.value.length > 50) {
       SetProducerError("Ce champ ne doit pas être supérieur à 50 caractères");
@@ -209,7 +215,6 @@ function UploadForm() {
   function producerImageCheck() {
     if (producerImage.current.value.trim() === "") {
       SetProducerImageError("Vous devez sélectionner une image de couverture");
-      console.log("Input is empty");
       return false;
     } else {
       SetProducerImageError("");
@@ -219,7 +224,6 @@ function UploadForm() {
   function instagramCheck() {
     if (instagram.current.value.trim() === "") {
       SetInstagramError("Champ vide");
-      console.log("Input is empty");
       return false;
     } else if (instagram.current.value.length > 50) {
       SetInstagramError("Ce champ ne doit pas être supérieur à 50 caractères");
@@ -232,7 +236,6 @@ function UploadForm() {
   function linkedinCheck() {
     if (linkedin.current.value.trim() === "") {
       SetLinkedinError("Champ vide");
-      console.log("Input is empty");
       return false;
     } else if (linkedin.current.value.length > 50) {
       SetLinkedinError("Ce champ ne doit pas être supérieur à 50 caractères");
@@ -245,7 +248,6 @@ function UploadForm() {
   function youtubeCheck() {
     if (youtube.current.value.trim() === "") {
       SetYoutubeError("Champ vide");
-      console.log("Input is empty");
       return false;
     } else if (youtube.current.value.length > 50) {
       SetYoutubeError("Ce champ ne doit pas être supérieur à 50 caractères");
@@ -259,7 +261,6 @@ function UploadForm() {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (email.current.value.trim() === "") {
       SetEmailError("Champ vide");
-      console.log("Input is empty");
       return false;
     } else if (!regex.test(email.current.value)) {
       SetEmailError("Format d'email invalide");
@@ -272,10 +273,38 @@ function UploadForm() {
       return true;
     }
   }
+  function countrySelectcheck() {
+    if (countryId <= 0) {
+      console.log("Erreur, pays invalide");
+
+      return false;
+    } else {
+      return true;
+    }
+  }
+  function movieTypeCheck() {
+    console.log("Le type sera: " + movieType);
+    if (movieType === "") {
+      SetMovieTypeError("Le type de production est incorrect");
+      return false;
+    } else {
+      SetMovieTypeError("");
+      return true;
+    }
+  }
+  function movieStatusCheck() {
+    console.log("Le statut sera: " + movieStatus);
+    if (movieStatus === "") {
+      SetMovieStatusError("Le statut du film est incorrect");
+      return false;
+    } else {
+      SetMovieStatusError("");
+      return true;
+    }
+  }
   function majorityCheck() {
     if (majorityCertification === false) {
       showFlash("error", t("upload_form.majority_certification_flash"));
-      console.log("Vous devez être agé de 18 ans ou plus");
     } else {
       SetMajorityCertification(true);
     }
@@ -283,7 +312,6 @@ function UploadForm() {
   function rightGiveAwayCheck() {
     if (rightGivaway === false) {
       showFlash("error", t("upload_form.right_givaway_flash"));
-      console.log("Vous devez être agé de 18 ans ou plus");
     }
   }
   function tagCheck() {
@@ -303,10 +331,26 @@ function UploadForm() {
       return true;
     }
   }
+  function tiktokCheck() {
+    if (tiktok.current.value.trim() === "") {
+      SetTiktokError("Champ vide");
+      return false;
+    } else if (tiktok.current.value.length > 50) {
+      SetTiktokError("Ce champ ne doit pas être supérieur à 50 caractères");
+      return false;
+    } else {
+      SetTiktokError("");
+      return true;
+    }
+  }
 
-  //Récupération des données envoyées
+  /**
+   * Récupération des données envoyées
+   */
   const [videoURL, setVideoURL] = useState(null);
-  //Stockage des valeurs des inputs
+  /**
+   * Stockage des valeurs des inputs
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.target;
@@ -320,6 +364,8 @@ function UploadForm() {
       sound_ai: sound_ai.current.value,
       post_prod_ai: post_prod_ai.current.value,
       producer: producer.current.value,
+      movie_type: movieType,
+      movie_status: movieStatus,
       email: email.current.value,
       producerImage: producerImage.current.files[0],
       country: countryId,
@@ -327,8 +373,14 @@ function UploadForm() {
       linkedin: linkedin.current.value,
       youtube: youtube.current.value,
       tags: tags.current.value,
+      tiktok: tiktok.current.value,
     };
-    //Rappel des vérifications
+    /**
+     * Appel des vérifications non automatisées
+     */
+    movieTypeCheck();
+    movieStatusCheck();
+    countrySelectcheck();
     majorityCheck();
     rightGiveAwayCheck();
     const formData = new FormData();
@@ -351,8 +403,9 @@ function UploadForm() {
     formData.append("sound_ai", uploadData.sound_ai);
     formData.append("postprod_ai", uploadData.post_prod_ai);
     formData.append("tags", uploadData.tags);
-
     console.log(uploadData);
+    console.log(movieTypeError);
+    console.log(movieStatusError);
     SetLoading(true);
     if (!titleCheck()) {
       showFlash(
@@ -395,6 +448,22 @@ function UploadForm() {
         "error",
         "Photo du producteur: " +
           (producerImageError != "" ? producerImageError : "Champ vide"),
+      );
+      SetLoading(false);
+      return;
+    } else if (!movieTypeCheck()) {
+      showFlash(
+        "error",
+        "Type de production:" +
+          (movieTypeError != "" ? movieTypeError : "champ incorrect"),
+      );
+      SetLoading(false);
+      return;
+    } else if (!movieStatusCheck()) {
+      showFlash(
+        "error",
+        "Statut du film:" +
+          (movieStatusError != "" ? movieStatusError : "champ incorrect"),
       );
       SetLoading(false);
       return;
@@ -462,6 +531,9 @@ function UploadForm() {
       showFlash("error", "tags: " + (tagError != "" ? tagError : "Champ vide"));
       SetLoading(false);
       return;
+    } else if (!countrySelectcheck()) {
+      showFlash("error", "Pays invalide");
+      SetLoading(false);
     } else if (!majorityCertification) {
       SetLoading(false);
 
@@ -480,7 +552,9 @@ function UploadForm() {
     if (res.ok) {
       SetLoading(false);
       showFlash("success", "Film envoyé avec succès.");
-      //Création d'un URL pour afficher les files
+      /**
+       * Création d'un URL pour afficher les files
+       */
       if (uploadData.video) {
         const url = URL.createObjectURL(uploadData.video);
         console.log({ url });
@@ -499,7 +573,6 @@ function UploadForm() {
         onSubmit={handleSubmit}
         className="relative w-[95%] max-w-4xl bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl shadow-[0_0_40px_rgba(194,122,255,0.25)] flex flex-col items-center gap-10 px-6 md:px-12 py-10 overflow-hidden"
       >
-        <div> {/*Titre et Règlement du formulaire*/} </div>
         <div className="absolute -top-40 -left-40 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl" />
         {/* Progress Bar */}
         <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
@@ -508,7 +581,7 @@ function UploadForm() {
             style={{ width: `${((step + 1) / 3) * 100}%` }}
           />
         </div>
-
+        <div> {/*Titre et Règlement du formulaire*/} </div>
         {/* Animated Container */}
         <div className="relative w-full overflow-hidden">
           {/* ================= STEP 1 ================= */}
@@ -653,18 +726,18 @@ function UploadForm() {
                   Type de production :
                 </label>
                 <select
-                  name="countrySelect"
-                  id="countrySelect"
-                  onChange={handleSelect}
+                  name="movieTypeSelect"
+                  id="movieTypeSelect"
+                  onChange={(e) => handleSelect(e, "movie_type")}
                   className="bg-[#2D2738] border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 >
                   {movieTypeOption.map((option) => (
-                    <option key={option.value} value={option.value + 1}>
+                    <option key={option.value} value={option.value}>
                       {option.label}
                     </option>
                   ))}
                 </select>
-                <p className="text-white"></p>
+                <p className="text-white">{movieTypeError}</p>
               </div>
               <div className="flex flex-col md:w-full md:max-w-150">
                 <label
@@ -674,18 +747,18 @@ function UploadForm() {
                   Statut :
                 </label>
                 <select
-                  name="countrySelect"
-                  id="countrySelect"
-                  onChange={handleSelect}
+                  name="movieStatusSelect"
+                  id="movieStatusSelect"
+                  onChange={(e) => handleSelect(e, "movie_status")}
                   className="bg-[#2D2738] border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 >
                   {movieStatusOption.map((option) => (
-                    <option key={option.value} value={option.value + 1}>
+                    <option key={option.value} value={option.value}>
                       {option.label}
                     </option>
                   ))}
                 </select>
-                <p className="text-white">{coverImageError}</p>
+                <p className="text-white">{movieStatusError}</p>
               </div>
             </div>
 
@@ -830,6 +903,7 @@ function UploadForm() {
                 <p className="text-white">{youtubeError}</p>
               </div>
             </div>
+
             <div className="flex flex-col md:flex-row md:justify-evenly md:p-4 md:gap-10 md:w-full">
               <div className="flex flex-col md:w-full md:max-w-150">
                 <label
@@ -870,6 +944,48 @@ function UploadForm() {
                 <p className="text-white">{tagError}</p>
               </div>
             </div>
+
+            <div className="flex flex-col md:flex-row md:justify-evenly md:p-4 md:gap-10 md:w-full">
+              <div className="flex flex-col md:w-full md:max-w-150">
+                <label
+                  htmlFor="tiktok"
+                  className="text-sm text-white/70 mb-2 tracking-wide"
+                >
+                  TikTok :
+                </label>
+                <input
+                  type="text"
+                  name="tiktok"
+                  id="tiktok"
+                  ref={tiktok}
+                  onChange={() => {
+                    tiktokCheck();
+                  }}
+                  className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
+                />
+                <p className="text-white">{tiktokError}</p>
+              </div>
+              <div className="flex flex-col md:w-full md:max-w-150">
+                <label
+                  htmlFor="youtube"
+                  className="text-sm text-white/70 mb-2 tracking-wide"
+                >
+                  Placeholder :
+                </label>
+                <input
+                  type="text"
+                  name="youtube"
+                  id="youtube"
+                  ref={youtube}
+                  onChange={() => {
+                    youtubeCheck();
+                  }}
+                  className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
+                />
+                <p className="text-white">{youtubeError}</p>
+              </div>
+            </div>
+
             <div className="flex flex-col md:flex-row md:justify-evenly md:p-4 md:gap-10 md:w-full">
               <div className="flex flex-col md:w-full md:max-w-150">
                 <label
@@ -900,7 +1016,7 @@ function UploadForm() {
                 <select
                   name="countrySelect"
                   id="countrySelect"
-                  onChange={handleSelect}
+                  onChange={(e) => handleSelect(e, "country")}
                   className="bg-[#2D2738] border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 >
                   {countryOptions.map((option) => (
@@ -909,7 +1025,6 @@ function UploadForm() {
                     </option>
                   ))}
                 </select>
-                <p className="text-white">{tagError}</p>
               </div>
             </div>
 
