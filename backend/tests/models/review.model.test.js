@@ -1,14 +1,21 @@
 import { jest } from '@jest/globals';
 
 // 1. Define the mock FIRST
-jest.unstable_mockModule('../../src/config/db.js', () => ({
-	pool: {
-		query: jest.fn()
+jest.unstable_mockModule('../../src/config/prisma.js', () => ({
+	default: {
+		reviews: {
+			create: jest.fn(),
+			findUnique: jest.fn(),
+			findFirst: jest.fn(),
+			findMany: jest.fn(),
+			update: jest.fn(),
+			delete: jest.fn(),
+		}
 	}
 }));
 
 // 2. Use top-level await to import your modules AFTER the mock
-const { pool } = await import('../../src/config/db.js');
+const prisma = (await import('../../src/config/prisma.js')).default;
 const reviewModel = await import('../../src/models/review.model.js');
 
 describe('Review Model', () => {
@@ -17,89 +24,85 @@ describe('Review Model', () => {
 	});
 
 	describe('insertReview', () => {
-		it('should insert a review correctly using default pool', async () => {
-			const mockReview = { admin_id: 1, video_id: 2 };
-			const mockResult = { insertId: 10, affectedRows: 1 };
+		it('should insert a review correctly', async () => {
+			const mockReviewInput = { admin_id: 1, video_id: 2 };
+			const mockCreatedReview = { id: 10, ...mockReviewInput, status: 'assigned', note: '' };
 
-			pool.query.mockResolvedValueOnce(mockResult);
+			prisma.reviews.create.mockResolvedValueOnce(mockCreatedReview);
 
-			const result = await reviewModel.insertReview(mockReview);
+			const result = await reviewModel.insertReview(mockReviewInput);
 
-			expect(result).toEqual(mockResult);
-			expect(pool.query).toHaveBeenCalledWith(
-				'INSERT INTO reviews (admin_id, video_id) VALUES (?, ?)',
-				[mockReview.admin_id, mockReview.video_id]
-			);
-		});
-
-		it('should insert a review correctly using connection transaction', async () => {
-			const mockReview = { admin_id: 1, video_id: 2 };
-			const mockConn = { query: jest.fn().mockResolvedValueOnce({ insertId: 11 }) };
-
-			const result = await reviewModel.insertReview(mockReview, mockConn);
-
-			expect(result).toEqual({ insertId: 11 });
-			expect(mockConn.query).toHaveBeenCalledWith(
-				'INSERT INTO reviews (admin_id, video_id) VALUES (?, ?)',
-				[mockReview.admin_id, mockReview.video_id]
-			);
-			expect(pool.query).not.toHaveBeenCalled();
+			expect(result).toEqual({ insertId: 10 });
+			expect(prisma.reviews.create).toHaveBeenCalledWith({
+				data: {
+					admin_id: 1,
+					video_id: 2,
+					status: "assigned",
+					note: "",
+				}
+			});
 		});
 	});
 
 	describe('selectReviewById', () => {
 		it('should fetch a review by ID', async () => {
-			const mockReview = [{ id: 1, note: 5 }];
-			pool.query.mockResolvedValueOnce(mockReview);
+			const mockReview = { id: 1, note: 'good' };
+			prisma.reviews.findUnique.mockResolvedValueOnce(mockReview);
 
 			const result = await reviewModel.selectReviewById(1);
 
 			expect(result).toEqual(mockReview);
-			expect(pool.query).toHaveBeenCalledWith('SELECT * FROM reviews WHERE id = ?', [1]);
+			expect(prisma.reviews.findUnique).toHaveBeenCalledWith({
+				where: { id: 1 },
+				include: {
+					admins: { select: { login: true } },
+					videos: { select: { title: true } },
+				}
+			});
 		});
 	});
 
 	describe('selectAllReviews', () => {
-		it('should fetch all reviews with joins', async () => {
-			const mockReviews = [
-				{ id: 1, note: 5, admin_login: 'admin1', video_title: 'video1' }
+		it('should fetch all reviews with relations', async () => {
+			const mockPrismaReviews = [
+				{ id: 1, note: 'ok', admins: { login: 'admin1' }, videos: { title: 'video1' } }
 			];
-			pool.query.mockResolvedValueOnce(mockReviews);
+			prisma.reviews.findMany.mockResolvedValueOnce(mockPrismaReviews);
 
 			const result = await reviewModel.selectAllReviews();
 
-			expect(result).toEqual(mockReviews);
-			expect(pool.query).toHaveBeenCalledWith(
-				'SELECT r.*, a.login as admin_login, v.title as video_title FROM reviews r JOIN admins a ON r.admin_id = a.id JOIN videos v ON r.video_id = v.id'
-			);
+			expect(result).toEqual([
+				{ id: 1, note: 'ok', admins: { login: 'admin1' }, videos: { title: 'video1' }, admin_login: 'admin1', video_title: 'video1' }
+			]);
+			expect(prisma.reviews.findMany).toHaveBeenCalled();
 		});
 	});
 
 	describe('updateReview', () => {
 		it('should update specific fields of a review and return affectedRows', async () => {
-			pool.query.mockResolvedValueOnce({ affectedRows: 1 });
+			prisma.reviews.update.mockResolvedValueOnce({ id: 1 });
 
-			const updateData = { note: 4, grade: 'B', status: 'archived' };
+			const updateData = { note: 'updated', grade: 4, status: 'done' };
 			const result = await reviewModel.updateReview(1, updateData);
 
 			expect(result.affectedRows).toBe(1);
-			expect(pool.query).toHaveBeenCalledWith(
-				'UPDATE reviews SET note = ?, grade = ?, status = ? WHERE id = ?',
-				[4, 'B', 'archived', 1]
-			);
+			expect(prisma.reviews.update).toHaveBeenCalledWith({
+				where: { id: 1 },
+				data: { note: 'updated', grade: 4, status: 'done' }
+			});
 		});
 	});
 
 	describe('deleteReview', () => {
 		it('should delete a review by ID', async () => {
-			const mockResult = { affectedRows: 1 };
-			pool.query.mockResolvedValueOnce(mockResult);
+			prisma.reviews.delete.mockResolvedValueOnce({ id: 1 });
 
 			const result = await reviewModel.deleteReview(1);
-			console.log(result);
 
-			expect(result.affectedRows).toBe(1);
-			expect(pool.query).toHaveBeenCalledWith('DELETE FROM reviews WHERE id = ?', [1]);
+			expect(result).toBe(1);
+			expect(prisma.reviews.delete).toHaveBeenCalledWith({
+				where: { id: 1 }
+			});
 		});
 	});
 });

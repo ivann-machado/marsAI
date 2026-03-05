@@ -22,7 +22,7 @@ function JuryPage() {
         );
         if (!response.ok) throw new Error("Erreur fetch JSON");
         let res = await response.json();
-        setJury(res);
+        setJury(res.data);
       } catch (err) {
         console.error(err);
       }
