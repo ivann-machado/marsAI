@@ -26,6 +26,7 @@ function AdminLogin() {
       const loginResponse = await response.json();
       if (loginResponse) {
         const login_info = jwtDecode(loginResponse.token);
+        if (login_info.role === "super_admin") login_info.role = "super admin";
         //console.log("text", login_info.exp);
         //console.log(loginResponse.token);
         login(
