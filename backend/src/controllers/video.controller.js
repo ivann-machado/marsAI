@@ -129,39 +129,61 @@ export const createVideo = async (req, res) => {
 			return res.status(400).json({ message: "Video file is required" });
 		}
 
+		if (!body.country_id) {
+			return res.status(400).json({ message: "country_id is required" });
+		}
+
+		if (!body.edition_id) {
+			return res.status(400).json({ message: "edition_id is required" });
+		}
+
+		// Use a transaction: create video + auto-create review if admin_id is provided
+		const adminId = body.admin_id ? Number(body.admin_id) : null;
+
 		const video = await prisma.videos.create({
 			data: {
-				edition_id: body.edition_id
-					? Number(body.edition_id)
-					: undefined,
+				edition_id: Number(body.edition_id),
 				url: body.url ?? "",
 				filename: body.filename,
 				email: body.email,
-				cover_image: body.cover_image,
+				cover_image: body.cover_image ?? "",
 				verified: false,
 				title: body.title,
 				description: body.description,
-				country_id: body.country_id
-					? Number(body.country_id)
-					: undefined,
-				producer: body.producer,
-				producer_image: body.producer_image,
-				linkedin_link: body.linkedin_link,
+				country_id: Number(body.country_id),
+				producer: body.producer ?? "",
+				producer_image: body.producer_image ?? "",
+				linkedin_link: body.linkedin_link ?? "",
 				youtube_link: body.youtube_link ?? "",
-				scenario_ai: body.scenario_ai,
-				video_gen_ai: body.video_gen_ai,
-				sound_ai: body.sound_ai,
-				postprod_ai: body.postprod_ai,
-				tags: body.tags,
+				scenario_ai: body.scenario_ai ?? "",
+				video_gen_ai: body.video_gen_ai ?? "",
+				sound_ai: body.sound_ai ?? "",
+				postprod_ai: body.postprod_ai ?? "",
+				tags: body.tags ?? "",
 			},
 		});
 
 		const videoId = video.id;
+
+		// Auto-create a review to link this video to an admin (the "bridge")
+		let review = null;
+		if (adminId) {
+			review = await prisma.reviews.create({
+				data: {
+					admin_id: adminId,
+					video_id: videoId,
+					status: "assigned",
+					note: "",
+				},
+			});
+		}
+
 		const videoBuffer = req.file?.buffer;
 
 		res.status(201).json({
 			message: "Video created",
 			id: videoId,
+			review_id: review?.id ?? null,
 		});
 
 		if (videoBuffer) {
