@@ -162,7 +162,7 @@ model tokens {
 
 model videos {
     id             Int             @id @default(autoincrement())
-    edition_id     Int             @default(2026)
+    edition_id     Int
     url            String          @db.VarChar(100)
     filename       String          @db.VarChar(100)
     email          String          @db.VarChar(50)

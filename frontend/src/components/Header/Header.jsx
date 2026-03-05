@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useSettings } from "../../context/SettingsContext";
 import i18n from "../../config/i18n";
 
 function Header() {
@@ -8,6 +9,7 @@ function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+  const settings = useSettings();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -39,15 +41,25 @@ function Header() {
     }
   }, [isOpen]);
 
-  const navLinks = [
-    { to: "/", label: t("header.home") },
-    { to: "/gallery", label: t("header.gallery") },
-    { to: "/participate", label: t("header.participate") },
-    { to: "/jury", label: t("header.board") },
-    { to: "/partners", label: t("header.partners") },
-    { to: "/contact", label: t("header.contact") },
-    { to: "/event", label: t("header.event") },
-  ];
+  let navLinks = [];
+  if (settings.phase === "1")
+    navLinks = [
+      { to: "/", label: t("header.home") },
+      { to: "/participate", label: t("header.participate") },
+      { to: "/jury", label: t("header.board") },
+      { to: "/partners", label: t("header.partners") },
+      { to: "/contact", label: t("header.contact") },
+      { to: "/event", label: t("header.event") },
+    ];
+  else
+    navLinks = [
+      { to: "/", label: t("header.home") },
+      { to: "/gallery", label: t("header.gallery") },
+      { to: "/jury", label: t("header.board") },
+      { to: "/partners", label: t("header.partners") },
+      { to: "/contact", label: t("header.contact") },
+      { to: "/event", label: t("header.event") },
+    ];
 
   const isActive = (path) => location.pathname === path;
 
@@ -65,6 +77,8 @@ function Header() {
     const newLang = currentLang === "fr" ? "en" : "fr";
     i18n.changeLanguage(newLang);
   };
+
+  if (!settings) return <Loading />;
 
   return (
     <>
