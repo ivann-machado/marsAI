@@ -28,16 +28,14 @@ function VideoCard({ video, type }) {
         </a>
       </div>
       {type != "queue" ? (
-        <div
-          className={
-            "w-8 h-4 bg-gray-600 m-auto " +
-            (video.status === "selected" ? " bg-green-600 " : " bg-red-700 ")
-          }
-        >
-          <p>
-            className=
-            {"w-8 h-4 bg-gray-600 m-auto " +
-              (video.status === "selected" ? " bg-green-600 " : " bg-red-700 ")}
+        <div className="flex justify-center items-center ">
+          <p
+            className={
+              "w-8 h-4 bg-gray-600 m-auto " +
+              (video.status === "selected" ? " bg-green-600 " : " bg-red-700 ")
+            }
+          >
+            {video.status === "selected" ? "Selected" : "Select"}
           </p>
         </div>
       ) : null}
