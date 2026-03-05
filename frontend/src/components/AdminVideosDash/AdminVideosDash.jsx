@@ -107,7 +107,7 @@ function AdminVideosDash() {
         <input
           type="button"
           value="Filtrer"
-          className="ml-5 bg-gray-300 text-black p-1"
+          className="ml-5 bg-gray-300 text-black p-1 hover:ring-2 hover:ring-purple-600 hover:bg-gray-200 cursor-pointer"
           onClick={() => updateAppliedFilters()}
         ></input>
       </div>

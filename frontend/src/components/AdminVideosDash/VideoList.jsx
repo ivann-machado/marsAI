@@ -1,5 +1,7 @@
 function VideoCard({ video, type }) {
-  const selectVideo = () => {};
+  const selectVideo = () => {
+    video.status = "selected";
+  };
 
   return (
     <div className="grid grid-cols-6 w-full mx-4 my-2 text-center border-t p-1">
@@ -31,9 +33,10 @@ function VideoCard({ video, type }) {
         <div className="flex justify-center items-center ">
           <p
             className={
-              "w-8 h-4 bg-gray-600 m-auto " +
+              "m-auto p-2 rounded-md cursor-pointer hover:ring-2 hover:ring-purple-600 " +
               (video.status === "selected" ? " bg-green-600 " : " bg-red-700 ")
             }
+            onClick={() => selectVideo()}
           >
             {video.status === "selected" ? "Selected" : "Select"}
           </p>
