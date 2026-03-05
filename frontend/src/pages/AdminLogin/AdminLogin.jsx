@@ -35,9 +35,10 @@ function AdminLogin() {
           login_info.exp,
           loginResponse.token,
         );
-        if (login_info.role === "super admin")
+        console.log(login_info);
+        /* if (login_info.role === "super admin")
           navigate("/", { replace: "true" });
-        else navigate("/videos", { replace: "true" });
+        else navigate("/videos", { replace: "true" }); */
       }
     } catch (err) {
       console.log(err);

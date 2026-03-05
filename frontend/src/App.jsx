@@ -24,6 +24,7 @@ import Event from "./pages/Event/Event_page.jsx";
 import { SettingsProvider } from "./context/SettingsContext.jsx";
 import { FlashProvider } from "./context/FlashContext.jsx";
 import NotFound from "./components/Utils/NotFound.jsx";
+import AdminRegister from "./pages/AdminRegister/AdminRegister.jsx";
 
 function App() {
   if (window.location.host.split(".")[0] == "admin")
@@ -33,6 +34,8 @@ function App() {
         <FlashProvider>
           <Routes>
             <Route path="/login" element={<AdminLogin />} />
+            <Route path="/register/:token" element={<AdminRegister />} />
+            <Route path="/register" element={<AdminRegister />} />
             <Route
               path="/"
               element={

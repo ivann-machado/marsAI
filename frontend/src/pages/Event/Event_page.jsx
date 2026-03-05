@@ -35,9 +35,9 @@ function Event() {
         });
         if (!response.ok) throw new Error("Failed to fetch events");
         const data = await response.json();
-        setEvents(data);
-        if (data && data.length > 0) {
-          setSelectedEvent(data[0]);
+        setEvents(data.data);
+        if (data.data && data.data.length > 0) {
+          setSelectedEvent(data.data[0]);
         }
       } catch (err) {
         setError(err.message);

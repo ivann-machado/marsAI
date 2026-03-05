@@ -1,15 +1,68 @@
 import { useState } from "react";
+import { useFlash } from "../../context/FlashContext";
+import { useauth } from "../../context/AuthContext";
 
 function AdminUserCard({ userData }) {
   const [user, setUser] = useState(userData);
-  // const [modified, setModified] = useState(false);
+  const [confirm, setConfirm] = useState(false);
+  const { showFlash } = useFlash();
+  const authToken = useauth();
 
-  const updateUser = (key, value) => {
+  /* const updateUser = (key, value) => {
     setUser((prev) => ({
       ...prev,
       [key]: value,
     }));
     setModified(true);
+  }; */
+
+  const updateRole = async (value) => {
+    try {
+      const response = await fetch(
+        import.meta.env.VITE_API_URL + "/api/auth/" + user.id,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: "Bearer " + authToken.token,
+          },
+          body: JSON.stringify({ role: value }),
+        },
+      );
+      if (!response.ok) throw new Error("Erreur fetch JSON");
+      showFlash(
+        "success",
+        "Utilisateur " + user.id + " a maintenant le role de " + value,
+      );
+    } catch (err) {
+      showFlash("error", "Erreur lors de la mise à jour");
+      console.error(err);
+    }
+  };
+
+  const deleteUser = () => {
+    if (!confirm) setConfirm(true);
+    else setConfirm(false);
+  };
+
+  const confirmDelete = async () => {
+    try {
+      const response = await fetch(
+        import.meta.env.VITE_API_URL + "/api/auth/" + user.id,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: "Bearer " + authToken.token,
+          },
+        },
+      );
+      if (!response.ok) throw new Error("Erreur fetch JSON");
+      showFlash("success", "Admin supprimé avec succes.");
+    } catch (err) {
+      showFlash("error", "Erreur lors de la suppression");
+      console.error(err);
+    }
+
+    setUser(null);
   };
 
   /* const saveUser = async () => {
@@ -60,30 +113,25 @@ function AdminUserCard({ userData }) {
 
   // if (!sponsor) return <></>;
 
+  if (!user) return null;
+
   return (
-    <div
-      key={user.id}
-      className="grid grid-cols-6 w-full mx-4 my-2 text-center border-t p-1"
-    >
-      <p>{user.id}</p>
-      <input
-        value={user.login}
-        onChange={(e) => updateUser("login", e.target.value)}
-        className="hover:bg-gray-800 text-center"
-      ></input>
+    <div className="grid grid-cols-6 w-full mx-4 my-2 text-center border-t p-1">
+      <p className="col-span-1">{user.id}</p>
+      <p className="col-span-1">{user.login}</p>
 
       <select
         value={user.role}
-        onChange={(e) => updateUser("role", e.target.value)}
+        onChange={(e) => updateRole(e.target.value)}
         className={
           (user.role === "Admin" ? "bg-amber-500" : "bg-red-700") +
           " text-center"
         }
       >
-        <option value="Admin" className="text-black">
+        <option value="admin" className="text-black">
           Admin
         </option>
-        <option value="SuperAdmin" className="text-black">
+        <option value="super admin" className="text-black">
           SuperAdmin
         </option>
       </select>
@@ -96,16 +144,21 @@ function AdminUserCard({ userData }) {
           "bg-red-700 m-auto px-2 hover:bg-red-500 hover:cursor-pointer"
         }
       >
-        <button>Supprimer</button>
+        {confirm ? (
+          <button onClick={() => deleteUser()}>Annuler</button>
+        ) : (
+          <button onClick={() => deleteUser()}>Supprimer</button>
+        )}
       </div>
-      {/*  <div
-        className={
-          "bg-green-700 m-auto px-2 hover:bg-green-500 hover:cursor-pointer " +
-          (modified ? "block" : "hidden")
-        }
-      >
-        <button>Sauvegarder</button>
-      </div> */}
+      {confirm ? (
+        <div
+          className={
+            "bg-green-700 m-auto px-2 hover:bg-green-500 hover:cursor-pointer "
+          }
+        >
+          <button onClick={() => confirmDelete()}>Confirmer Suppression</button>
+        </div>
+      ) : null}
     </div>
   );
 }

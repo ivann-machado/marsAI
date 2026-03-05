@@ -34,8 +34,8 @@ function AdminUserInviteForm() {
 
   return (
     <form className="mx-auto">
-      <h5 className="text-gray-100 text-4xl m-4 font-bold">Invite Admin</h5>
-      <label for="login" className="text-gray-100 text-lg font-bold m-2">
+      <h5 className="text-gray-100 text-4xl m-4 font-bol">Invite Admin</h5>
+      <label htmlFor="login" className="text-gray-100 text-lg font-bold m-2">
         Email
       </label>
       <input
@@ -47,7 +47,7 @@ function AdminUserInviteForm() {
       ></input>
       <button
         type="submit"
-        className="text-black bg-gray-300 m-2 p-2"
+        className="text-black bg-gray-300 m-2 p-2 hover:ring-2 hover:ring-purple-600"
         onClick={(e) => sendInvite(e)}
       >
         Envoyer Invitation

@@ -20,7 +20,7 @@ function AdminEventDash() {
         );
         if (!response.ok) throw new Error("Erreur fetch JSON");
         const json = await response.json();
-        setEvents(json);
+        setEvents(json.data);
       } catch (err) {
         console.error(err);
       }
