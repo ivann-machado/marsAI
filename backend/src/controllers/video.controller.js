@@ -258,6 +258,7 @@ export const getAssignedVideos = async (req, res) => {
 				reviews: {
 					some: {
 						admin_id: Number(adminId),
+						status: "assigned",
 					},
 				},
 			},
