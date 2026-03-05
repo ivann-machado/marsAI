@@ -105,9 +105,13 @@ function Footer() {
         <div className="md:w-1/6">
           <h4 className="text-purple-600 mb-7">{t("footer.navigation")}</h4>
           <ul>
-            <li className="mb-7 hover:underline">{t("footer.gallery")}</li>
+            {settings.phase != "1" ? (
+              <li className="mb-7 hover:underline">{t("footer.gallery")}</li>
+            ) : null}
             <li className="mb-7 hover:underline">{t("footer.schedule")}</li>
-            <li className="mb-7 hover:underline">{t("footer.top50")}</li>
+            {settings.phase != "1" ? (
+              <li className="mb-7 hover:underline">{t("footer.top50")}</li>
+            ) : null}
             <li className="mb-7 hover:underline">{t("footer.tickets")}</li>
           </ul>
         </div>

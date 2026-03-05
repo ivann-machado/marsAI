@@ -21,7 +21,7 @@ import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.jsx";
 import JuryPage from "./pages/JuryPage/JuryPage.jsx";
 import SponsorsPage from "./pages/SponsorsPage/SponsorsPage.jsx";
 import Event from "./pages/Event/Event_page.jsx";
-import { SettingsProvider } from "./context/SettingsContext.jsx";
+// import { SettingsProvider } from "./context/SettingsContext.jsx";
 import { FlashProvider } from "./context/FlashContext.jsx";
 import NotFound from "./components/Utils/NotFound.jsx";
 import AdminRegister from "./pages/AdminRegister/AdminRegister.jsx";
@@ -125,30 +125,58 @@ function App() {
         </FlashProvider>
       </BrowserRouter>
     );
-  else
-    /* PAGES PUBLIQUES */
+  else if (settings.phase === "1")
+    /* PHASE 1 */
     return (
       <BrowserRouter>
         <FlashProvider>
-          <SettingsProvider>
-            <Routes>
-              {settings.phase === "1" ? (
-                <Route path="/" element={<Homepage />} />
-              ) : settings.phase === "2" ? (
-                <Route path="/" element={<HomepagePhase2 />} />
-              ) : (
-                <Route path="/" element={<HomepagePhase3 />} />
-              )}
-              <Route path="/video/:videoId" element={<VideoDetail />} />
-              <Route path="/gallery" element={<Gallery />} />
-              <Route path="/participate" element={<UploadPage />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/jury" element={<JuryPage />} />
-              <Route path="/partners" element={<SponsorsPage />} />
-              <Route path="/Event" element={<Event />} />
-              <Route path="*" element={<NotFound />}></Route>
-            </Routes>
-          </SettingsProvider>
+          <Routes>
+            <Route path="/" element={<Homepage />} />
+            {/* <Route path="/video/:videoId" element={<VideoDetail />} /> */}
+            {/* <Route path="/gallery" element={<Gallery />} /> */}
+            <Route path="/participate" element={<UploadPage />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/jury" element={<JuryPage />} />
+            <Route path="/partners" element={<SponsorsPage />} />
+            <Route path="/Event" element={<Event />} />
+            <Route path="*" element={<NotFound />}></Route>
+          </Routes>
+        </FlashProvider>
+      </BrowserRouter>
+    );
+  else if (settings.phase === "2")
+    return (
+      <BrowserRouter>
+        <FlashProvider>
+          <Routes>
+            <Route path="/" element={<HomepagePhase2 />} />
+            <Route path="/video/:videoId" element={<VideoDetail />} />
+            <Route path="/gallery" element={<Gallery />} />
+            {/* <Route path="/participate" element={<UploadPage />} /> */}
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/jury" element={<JuryPage />} />
+            <Route path="/partners" element={<SponsorsPage />} />
+            <Route path="/Event" element={<Event />} />
+            <Route path="*" element={<NotFound />}></Route>
+          </Routes>
+        </FlashProvider>
+      </BrowserRouter>
+    );
+  else if (settings.phase === "3")
+    return (
+      <BrowserRouter>
+        <FlashProvider>
+          <Routes>
+            <Route path="/" element={<HomepagePhase3 />} />
+            <Route path="/video/:videoId" element={<VideoDetail />} />
+            <Route path="/gallery" element={<Gallery />} />
+            {/* <Route path="/participate" element={<UploadPage />} /> */}
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/jury" element={<JuryPage />} />
+            <Route path="/partners" element={<SponsorsPage />} />
+            <Route path="/Event" element={<Event />} />
+            <Route path="*" element={<NotFound />}></Route>
+          </Routes>
         </FlashProvider>
       </BrowserRouter>
     );
