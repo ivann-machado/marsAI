@@ -34,15 +34,15 @@ function AdminVideosDash() {
 				let res = await response.json();
 				setVideoQueue(res.data ?? res);
 
-				/* Recuperation de toutes les videos */
+				/* Recuperation des vidéos non attribuées */
 				response = await fetch(
-					import.meta.env.VITE_API_URL + "/api/videos",
+					import.meta.env.VITE_API_URL + "/api/videos/unassigned",
 					{
 						method: "GET",
 						headers: { "Content-Type": "application/json" },
 					},
 				);
-				if (!response.ok) throw new Error("Erreur fetch JSON");
+				if (!response.ok) throw new Error("Erreur fetch unassigned");
 				res = await response.json();
 				setOtherVideo(res.data ?? res);
 			} catch (err) {
@@ -118,7 +118,10 @@ function AdminVideosDash() {
 				></input>
 			</div>
 
-			{/* OTHER MOVIES */}
+			{/* UNASSIGNED MOVIES */}
+			<h2 className="text-2xl font-bold ml-8 text-white mt-4">
+				Films non attribués:
+			</h2>
 			<VideoList videoList={otherVideo} filters={appliedFilters} />
 		</div>
 	);
