@@ -40,11 +40,13 @@ export const createReview = async (req, res) => {
 				status: "assigned",
 				note: "",
 			},
+			include: reviewIncludes,
 		});
 
 		res.status(201).json({
-			message: "Review created",
-			id: review.id.toString(),
+			...review,
+			admin_login: review.admins?.login,
+			video_title: review.videos?.title,
 		});
 	} catch (error) {
 		console.error("Create Review Error:", error);
@@ -93,7 +95,7 @@ export const getAllReviews = async (req, res) => {
 			orderBy: { id: "desc" },
 		});
 
-		result.data = result.data.map(review => ({
+		result.data = result.data.map((review) => ({
 			...review,
 			admin_login: review.admins?.login,
 			video_title: review.videos?.title,
