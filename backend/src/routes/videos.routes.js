@@ -3,6 +3,7 @@ import {
 	getAllVideos,
 	getVideoById,
 	getAssignedVideos,
+	getUnassignedVideos,
 	createVideo,
 	setVideo,
 	removeVideo,
@@ -25,6 +26,7 @@ const router = express.Router();
  */
 router.get("/", getAllVideos);
 router.get("/assigned", verifyToken, getAssignedVideos);
+router.get("/unassigned", getUnassignedVideos);
 router.get("/:id", getVideoById);
 
 router.post("/", processAndUpload(), createVideo);

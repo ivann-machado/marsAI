@@ -258,6 +258,7 @@ export const getAssignedVideos = async (req, res) => {
 				reviews: {
 					some: {
 						admin_id: Number(adminId),
+						status: "assigned",
 					},
 				},
 			},
@@ -290,6 +291,44 @@ export const getAssignedVideos = async (req, res) => {
 	} catch (err) {
 		console.error("Get Assigned Videos Error:", err);
 		res.status(500).json({ message: "Failed to fetch assigned videos" });
+	}
+};
+
+/**
+ * Return videos NOT assigned to any admin (no reviews).
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
+export const getUnassignedVideos = async (req, res) => {
+	try {
+		const { page, limit } = req.query;
+
+		const result = await paginate(prisma.videos, {
+			page,
+			limit,
+			where: {
+				reviews: {
+					none: {},
+				},
+			},
+			include: videoIncludes,
+			orderBy: { id: "desc" },
+		});
+
+		result.data = result.data.map((video) => ({
+			...video,
+			filename: getFileUrl(video.filename),
+			cover_image: getFileUrl(video.cover_image),
+			subtitles: video.subtitles.map((sub) => ({
+				...sub,
+				filename: getFileUrl(sub.filename),
+			})),
+		}));
+
+		res.status(200).json(result);
+	} catch (err) {
+		console.error("Get Unassigned Videos Error:", err);
+		res.status(500).json({ message: "Failed to fetch unassigned videos" });
 	}
 };
 
