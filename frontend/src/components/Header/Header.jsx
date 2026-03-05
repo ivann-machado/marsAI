@@ -81,102 +81,105 @@ function Header() {
   if (!settings) return <Loading />;
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-[#050508]/90 backdrop-blur-xl shadow-[0_4px_30px_rgba(168,85,247,0.15)]"
-          : "bg-transparent"
-      }`}
-    >
-      <nav className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <Link to="/" className="flex items-center group">
-          <span className="font-orbitron font-black text-2xl md:text-3xl tracking-tight">
-            <span className="bg-gradient-to-br from-white to-[#e0e0ff] bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(168,85,247,0.4)] group-hover:drop-shadow-[0_0_25px_rgba(168,85,247,0.6)] transition-all">
-              MARS
+    <>
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          scrolled
+            ? "bg-[#050508]/90 backdrop-blur-xl shadow-[0_4px_30px_rgba(168,85,247,0.15)]"
+            : "bg-transparent"
+        }`}
+      >
+        <nav className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+          <Link to="/" className="flex items-center group">
+            <span className="font-orbitron font-black text-2xl md:text-3xl tracking-tight">
+              <span className="bg-gradient-to-br from-white to-[#e0e0ff] bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(168,85,247,0.4)] group-hover:drop-shadow-[0_0_25px_rgba(168,85,247,0.6)] transition-all">
+                MARS
+              </span>
+              <span className="bg-gradient-to-br from-[#a855f7] to-[#ec4899] bg-clip-text text-transparent drop-shadow-[0_0_25px_rgba(236,72,153,0.6)] group-hover:drop-shadow-[0_0_30px_rgba(236,72,153,0.8)] transition-all">
+                AI
+              </span>
             </span>
-            <span className="bg-gradient-to-br from-[#a855f7] to-[#ec4899] bg-clip-text text-transparent drop-shadow-[0_0_25px_rgba(236,72,153,0.6)] group-hover:drop-shadow-[0_0_30px_rgba(236,72,153,0.8)] transition-all">
-              AI
-            </span>
-          </span>
-        </Link>
-        <ul className="hidden lg:flex items-center gap-1">
-          {navLinks.map((link) => (
-            <li key={link.to}>
-              <Link
-                to={link.to}
-                className={`relative px-4 py-2 font-inter font-medium text-sm tracking-wide transition-all duration-300 rounded-full ${
-                  isActive(link.to)
-                    ? "text-white bg-gradient-to-r from-[#a855f7]/20 to-[#ec4899]/20"
-                    : "text-[#a0a0b8] hover:text-white"
+          </Link>
+
+          <ul className="hidden lg:flex items-center gap-1">
+            {navLinks.map((link) => (
+              <li key={link.to}>
+                <Link
+                  to={link.to}
+                  className={`relative px-4 py-2 font-inter font-medium text-sm tracking-wide transition-all duration-300 rounded-full ${
+                    isActive(link.to)
+                      ? "text-white bg-gradient-to-r from-[#a855f7]/20 to-[#ec4899]/20"
+                      : "text-[#a0a0b8] hover:text-white"
+                  }`}
+                >
+                  {link.label}
+                  {isActive(link.to) && (
+                    <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 bg-gradient-to-r from-[#a855f7] to-[#ec4899] rounded-full" />
+                  )}
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          <div className="hidden lg:flex items-center gap-3">
+            <button
+              onClick={toggleLanguage}
+              className="relative flex items-center gap-1 px-3 py-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-all"
+              aria-label="Toggle language"
+            >
+              <span
+                className={`font-inter font-semibold text-sm transition-all ${
+                  currentLang === "fr" ? "text-white" : "text-[#a0a0b8]"
                 }`}
               >
-                {link.label}
-                {isActive(link.to) && (
-                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 bg-gradient-to-r from-[#a855f7] to-[#ec4899] rounded-full" />
-                )}
-              </Link>
-            </li>
-          ))}
-        </ul>
+                FR
+              </span>
+              <span className="text-[#a0a0b8] text-xs">/</span>
+              <span
+                className={`font-inter font-semibold text-sm transition-all ${
+                  currentLang === "en" ? "text-white" : "text-[#a0a0b8]"
+                }`}
+              >
+                EN
+              </span>
+            </button>
 
-        <div className="hidden lg:flex items-center gap-3">
-          <button
-            onClick={toggleLanguage}
-            className="relative flex items-center gap-1 px-3 py-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-all"
-            aria-label="Toggle language"
-          >
-            <span
-              className={`font-inter font-semibold text-sm transition-all ${
-                currentLang === "fr" ? "text-white" : "text-[#a0a0b8]"
-              }`}
+            <Link
+              to="/participate"
+              className="px-6 py-2.5 bg-gradient-to-r from-[#a855f7] to-[#ec4899] text-white font-inter font-semibold text-sm tracking-wide rounded-full transition-all duration-300 hover:drop-shadow-[0_0_15px_rgba(236,72,153,0.8)]"
             >
-              FR
-            </span>
-            <span className="text-[#a0a0b8] text-xs">/</span>
-            <span
-              className={`font-inter font-semibold text-sm transition-all ${
-                currentLang === "en" ? "text-white" : "text-[#a0a0b8]"
-              }`}
-            >
-              EN
-            </span>
-          </button>
-
-          <Link
-            to="/participate"
-            className="px-6 py-2.5 bg-gradient-to-r from-[#a855f7] to-[#ec4899] text-white font-inter font-semibold text-sm tracking-wide rounded-full transition-all duration-300 hover:drop-shadow-[0_0_15px_rgba(236,72,153,0.8)]"
-          >
-            {t("header.participate")}
-          </Link>
-        </div>
-
-        <button
-          onClick={toggleMenu}
-          className="lg:hidden relative w-10 h-10 flex items-center justify-center rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-all"
-          aria-label="Toggle menu"
-        >
-          <div className="w-5 h-4 flex flex-col justify-between">
-            <span
-              className={`w-full h-0.5 bg-gradient-to-r from-[#a855f7] to-[#ec4899] rounded-full transition-all duration-300 origin-center ${
-                isOpen ? "rotate-45 translate-y-[7px]" : ""
-              }`}
-            />
-            <span
-              className={`w-full h-0.5 bg-gradient-to-r from-[#a855f7] to-[#ec4899] rounded-full transition-all duration-300 ${
-                isOpen ? "opacity-0 scale-0" : ""
-              }`}
-            />
-            <span
-              className={`w-full h-0.5 bg-gradient-to-r from-[#a855f7] to-[#ec4899] rounded-full transition-all duration-300 origin-center ${
-                isOpen ? "-rotate-45 -translate-y-[7px]" : ""
-              }`}
-            />
+              {t("header.participate")}
+            </Link>
           </div>
-        </button>
-      </nav>
+
+          <button
+            onClick={toggleMenu}
+            className="lg:hidden relative w-10 h-10 flex items-center justify-center rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-all"
+            aria-label="Toggle menu"
+          >
+            <div className="w-5 h-4 flex flex-col justify-between">
+              <span
+                className={`w-full h-0.5 bg-gradient-to-r from-[#a855f7] to-[#ec4899] rounded-full transition-all duration-300 origin-center ${
+                  isOpen ? "rotate-45 translate-y-[7px]" : ""
+                }`}
+              />
+              <span
+                className={`w-full h-0.5 bg-gradient-to-r from-[#a855f7] to-[#ec4899] rounded-full transition-all duration-300 ${
+                  isOpen ? "opacity-0 scale-0" : ""
+                }`}
+              />
+              <span
+                className={`w-full h-0.5 bg-gradient-to-r from-[#a855f7] to-[#ec4899] rounded-full transition-all duration-300 origin-center ${
+                  isOpen ? "-rotate-45 -translate-y-[7px]" : ""
+                }`}
+              />
+            </div>
+          </button>
+        </nav>
+      </header>
 
       <div
-        className={`lg:hidden fixed inset-0 z-40 transition-all duration-500 ${
+        className={`lg:hidden fixed inset-0 z-[999] transition-all duration-500 ${
           isOpen ? "opacity-100 visible" : "opacity-0 invisible"
         }`}
       >
@@ -186,7 +189,7 @@ function Header() {
         />
 
         <div
-          className={`relative h-full flex flex-col items-center justify-center transition-all duration-500 ${
+          className={`absolute inset-0 flex flex-col items-center justify-center transition-all duration-500 ${
             isOpen ? "translate-y-0 opacity-100" : "-translate-y-10 opacity-0"
           }`}
         >
@@ -266,7 +269,7 @@ function Header() {
           </Link>
         </div>
       </div>
-    </header>
+    </>
   );
 }
 
