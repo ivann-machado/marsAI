@@ -1,29 +1,57 @@
+import { useState } from "react";
+import { useFlash } from "../../context/FlashContext";
+import { useauth } from "../../context/AuthContext";
+
 function VideoCard({ video, type }) {
-  const selectVideo = () => {
-    video.status = "selected";
+  const [currVideo, setCurrVideo] = useState(video);
+  const { showFlash } = useFlash();
+  const authToken = useauth();
+
+  const selectVideo = async () => {
+    try {
+      const response = await fetch(
+        import.meta.env.VITE_API_URL + "/api/videos/" + currVideo.id,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + authToken.token,
+          },
+          body: JSON.stringify({ status: "selected" }),
+        },
+      );
+
+      if (!response.ok) throw new Error("Erreur lors de la sauvegarde");
+      setCurrVideo((prev) => ({ ...prev, status: "selected" }));
+      showFlash("success", "Video is now selected!");
+    } catch (err) {
+      showFlash("error", "Erreur lors de la selection de la video");
+      console.error(err);
+    }
   };
 
   return (
     <div className="grid grid-cols-6 w-full mx-4 my-2 text-center border-t p-1">
-      <img src={video.cover_image} className="m-auto rounded-md "></img>
-      <p className="flex justify-center items-center">{video.title}</p>
-      <p className="flex justify-center items-center">{video.producer}</p>
+      <img src={currVideo.cover_image} className="m-auto rounded-md "></img>
+      <p className="flex justify-center items-center">{currVideo.title}</p>
+      <p className="flex justify-center items-center">{currVideo.producer}</p>
       <div className="flex justify-center items-center">
         <p
           className={
-            (video.status === "unverified"
+            (currVideo.status === "unverified"
               ? "bg-amber-500"
-              : video.status === "verified" || video.status === "selected"
+              : currVideo.status === "verified" ||
+                  currVideo.status === "selected"
                 ? "bg-green-600"
                 : "bg-red-700") + " p-2 rounded-2xl"
           }
         >
-          {video.status}
+          {currVideo.status}
         </p>
       </div>
       <div className="flex justify-center items-center ">
         <a
-          href={"/video/" + video.id}
+          href={"/video/" + currVideo.id}
           className="bg-gray-700 p-2 rounded-md hover:ring-2 hover:ring-purple-600"
         >
           {type === "queue" ? "Noter Film" : "Details"}
@@ -34,11 +62,13 @@ function VideoCard({ video, type }) {
           <p
             className={
               "m-auto p-2 rounded-md cursor-pointer hover:ring-2 hover:ring-purple-600 " +
-              (video.status === "selected" ? " bg-green-600 " : " bg-red-700 ")
+              (currVideo.status === "selected"
+                ? " bg-green-600 "
+                : " bg-red-700 ")
             }
             onClick={() => selectVideo()}
           >
-            {video.status === "selected" ? "Selected" : "Select"}
+            {currVideo.status === "selected" ? "Selected" : "Select"}
           </p>
         </div>
       ) : null}
