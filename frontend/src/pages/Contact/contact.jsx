@@ -7,17 +7,11 @@ import { useFlash } from "../../context/FlashContext.jsx";
 function Contact() {
   const { t } = useTranslation();
   const [name, setName] = useState("");
-  const [nameValid, setNameValid] = useState(
-    t("page_contact.error_empty_field"),
-  );
+  const [nameValid, setNameValid] = useState("");
   const [email, setEmail] = useState("");
-  const [emailValid, setEmailValid] = useState(
-    t("page_contact.error_empty_field"),
-  );
+  const [emailValid, setEmailValid] = useState("");
   const [message, setMessage] = useState("");
-  const [messageValid, setMessageValid] = useState(
-    t("page_contact.error_empty_field"),
-  );
+  const [messageValid, setMessageValid] = useState("");
   const { showFlash } = useFlash();
 
   const handleSubmit = async (e) => {
@@ -104,6 +98,12 @@ function Contact() {
       setMessageValid(t("page_contact.error_minimum_length"));
     } else setMessageValid("");
   }, [message]);
+
+  useEffect(() => {
+    setNameValid("");
+    setEmailValid("");
+    setMessageValid("");
+  }, []);
 
   return (
     <>
