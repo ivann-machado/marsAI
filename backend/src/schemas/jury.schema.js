@@ -1,12 +1,12 @@
 import { z } from "zod";
 import { jurySchema } from "../generated/zod/index.ts";
-
+import { fileSchema } from "./file.schema.js";
 /**
  * Create a jury member.
  * `photo` is omitted because it comes from a file upload (req.file).
  */
 export const CreateJurySchema = jurySchema
-	.omit({ id: true, photo: true })
+	.omit({ id: true })
 	.extend({
 		edition_id: z
 			.int({ error: "Edition ID must be a whole number" })
@@ -25,6 +25,7 @@ export const CreateJurySchema = jurySchema
 			.max(50, { error: "Profession must be at most 50 characters" })
 			.optional()
 			.default(""),
+		photo: fileSchema(5 * 1024 * 1024, ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/avif', 'image/svg+xml']),
 	});
 
 /**

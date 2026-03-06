@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { sponsorsSchema, sponsors_typeSchema } from "../generated/zod/index.ts";
+import { fileSchema } from "./file.schema.js";
 
 /**
  * Create a new sponsor.
@@ -21,9 +22,7 @@ export const CreateSponsorSchema = sponsorsSchema
 			.url({ error: "URL must be a valid URL" })
 			.optional()
 			.default(""),
-		logo: z
-			.string()
-			.max(100, { error: "Logo path must be at most 100 characters" }),
+		logo: fileSchema(5 * 1024 * 1024, ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/avif', 'image/svg+xml']),
 	});
 
 /**
