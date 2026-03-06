@@ -7,7 +7,12 @@ function VideoCard({ video, type }) {
   const { showFlash } = useFlash();
   const authToken = useauth();
 
-  const selectVideo = async () => {
+  const selectVideo = async (operation) => {
+    // selected ou verified
+    if (operation === "selected" && currVideo.status != "verified") {
+      showFlash("error", "Video must be verified before being selected.");
+      return;
+    }
     try {
       const response = await fetch(
         import.meta.env.VITE_API_URL + "/api/videos/" + currVideo.id,
@@ -17,15 +22,15 @@ function VideoCard({ video, type }) {
             "Content-Type": "application/json",
             Authorization: "Bearer " + authToken.token,
           },
-          body: JSON.stringify({ status: "selected" }),
+          body: JSON.stringify({ status: operation }),
         },
       );
 
       if (!response.ok) throw new Error("Erreur lors de la sauvegarde");
-      setCurrVideo((prev) => ({ ...prev, status: "selected" }));
-      showFlash("success", "Video is now selected!");
+      setCurrVideo((prev) => ({ ...prev, status: operation }));
+      showFlash("success", "Video is now " + operation + "!");
     } catch (err) {
-      showFlash("error", "Erreur lors de la selection de la video");
+      showFlash("error", "Erreur lors du changement du status");
       console.error(err);
     }
   };
@@ -62,13 +67,16 @@ function VideoCard({ video, type }) {
           <p
             className={
               "m-auto p-2 rounded-md cursor-pointer hover:ring-2 hover:ring-purple-600 " +
-              (currVideo.status === "selected"
+              (currVideo.status !== "selected"
                 ? " bg-green-600 "
                 : " bg-red-700 ")
             }
-            onClick={() => selectVideo()}
+            onClick={() => {
+              if (currVideo.status !== "selected") selectVideo("selected");
+              else selectVideo("verified");
+            }}
           >
-            {currVideo.status === "selected" ? "Selected" : "Select"}
+            {currVideo.status === "selected" ? "Unselect" : "Select"}
           </p>
         </div>
       ) : null}
