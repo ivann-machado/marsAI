@@ -77,33 +77,48 @@ function Contact() {
     }
   };
 
-  useEffect(() => {
+  const validateName = () => {
     if (name.length < 1) {
       setNameValid(t("page_contact.error_empty_field"));
     } else {
       setNameValid("");
     }
-  }, [name]);
+  };
 
   useEffect(() => {
+    if (name.length > 1) {
+      setNameValid("");
+    }
+  }, [name]);
+
+  const validateEmail = () => {
     if (email.length < 1) {
       setEmailValid(t("page_contact.error_empty_field"));
     } else if (!/\S+@\S+\.\S+/.test(email)) {
       setEmailValid(t("page_contact.error_invalid_email"));
     } else setEmailValid("");
-  }, [email]);
+  };
 
   useEffect(() => {
+    if (/\S+@\S+\.\S+/.test(email)) setEmailValid("");
+  }, [email]);
+  j;
+
+  const validateMessage = () => {
     if (message.length < 10) {
       setMessageValid(t("page_contact.error_minimum_length"));
     } else setMessageValid("");
-  }, [message]);
+  };
 
   useEffect(() => {
+    if (message.length >= 10) setMessageValid("");
+  }, [message]);
+
+  /*   useEffect(() => {
     setNameValid("");
     setEmailValid("");
     setMessageValid("");
-  }, []);
+  }, []); */
 
   return (
     <>
@@ -131,6 +146,7 @@ function Contact() {
                 placeholder={t("page_contact.contact_name_placeholder")}
                 className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
                 onChange={(e) => setName(e.target.value)}
+                onBlur={() => validateName()}
               />
               <div className="text-red-800">{nameValid}</div>
             </div>
@@ -145,6 +161,7 @@ function Contact() {
                 placeholder={t("page_contact.contact_email_placeholder")}
                 className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-white "
                 onChange={(e) => setEmail(e.target.value)}
+                onBlur={() => validateEmail()}
               />
               <div className="text-red-800">{emailValid}</div>
             </div>
@@ -159,6 +176,7 @@ function Contact() {
                 placeholder={t("page_contact.contact_message_placeholder")}
                 className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
                 onChange={(e) => setMessage(e.target.value)}
+                onBlur={() => validateMessage()}
               />
               <div className="text-red-800">{messageValid}</div>
             </div>
