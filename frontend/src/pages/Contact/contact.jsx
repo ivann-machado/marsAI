@@ -102,7 +102,6 @@ function Contact() {
   useEffect(() => {
     if (/\S+@\S+\.\S+/.test(email)) setEmailValid("");
   }, [email]);
-  j;
 
   const validateMessage = () => {
     if (message.length < 10) {
