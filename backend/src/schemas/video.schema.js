@@ -1,5 +1,7 @@
 import { z } from "zod";
 import { videosSchema } from "../generated/zod/index.ts";
+import { fileSchema } from "./file.schema.js";
+import { getMp4Duration } from "../utils/file.util.js";
 
 /**
  * Create a new video.
@@ -13,15 +15,13 @@ export const CreateVideoSchema = videosSchema
 			.positive({ error: "Edition ID must be a positive number" })
 			.optional()
 			.default(2026),
-		filename: z
-			.string()
-			.min(1, { error: "Video filename is required" })
-			.max(100, { error: "Filename must be at most 100 characters" }),
+		filename: fileSchema(300 * 1024 * 1024, ['video/mp4'])
+			.refine((file) => {
+				const duration = getMp4Duration(file.buffer);
+				return duration !== null && duration <= 90;
+			}, "Video duration exceeds 90 seconds"),
 		email: z.email({ error: "Email must be a valid email address" }),
-		cover_image: z
-			.string()
-			.min(1, { error: "Cover image is required" })
-			.max(100, { error: "Cover image path must be at most 100 characters" }),
+		cover_image: fileSchema(5 * 1024 * 1024, ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/avif', 'image/svg+xml']),
 		title: z
 			.string()
 			.min(1, { error: "Title is required" })
@@ -36,10 +36,7 @@ export const CreateVideoSchema = videosSchema
 			.string()
 			.min(1, { error: "Producer name is required" })
 			.max(50, { error: "Producer name must be at most 50 characters" }),
-		producer_image: z
-			.string()
-			.min(1, { error: "Producer image is required" })
-			.max(100, { error: "Producer image path must be at most 100 characters" }),
+		producer_image: fileSchema(5 * 1024 * 1024, ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/avif', 'image/svg+xml']),
 		linkedin_link: z
 			.url({ error: "LinkedIn link must be a valid URL", hostname: /^linkedin\.com/ })
 			.optional()
@@ -73,6 +70,7 @@ export const CreateVideoSchema = videosSchema
 			.max(100, { error: "Tags must be at most 100 characters" })
 			.optional()
 			.default(""),
+		subtitle: fileSchema(2 * 1024 * 1024, ['application/x-subrip', 'text/srt']),
 	});
 
 /**

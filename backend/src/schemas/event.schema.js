@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { eventsSchema, events_typeSchema } from "../generated/zod/index.ts";
+import { fileSchema } from "./file.schema.js";
 
 /**
  * Create a new event.
@@ -13,9 +14,8 @@ export const CreateEventSchema = eventsSchema
 			.min(1, { error: "Name is required" })
 			.max(50, { error: "Name must be at most 50 characters" }),
 		url: z.url({ error: "URL must be a valid URL" }),
-		logo: z
-			.string()
-			.max(100, { error: "Logo path must be at most 100 characters" }),
+		logo: fileSchema(5 * 1024 * 1024, ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/avif', 'image/svg+xml']),
+
 		info: z
 			.string()
 			.max(5000, { error: "Info must be at most 5000 characters" })
@@ -27,16 +27,12 @@ export const CreateEventSchema = eventsSchema
 			.optional()
 			.default(""),
 		duration: z
-			.number({ error: "Duration must be a number" })
 			.int({ error: "Duration must be a whole number" })
 			.min(0, { error: "Duration must be 0 or greater" })
 			.optional()
 			.default(0),
-		cover_image: z
-			.string()
-			.max(100, { error: "Cover image path must be at most 100 characters" })
-			.optional()
-			.default(""),
+		cover_image: fileSchema(5 * 1024 * 1024, ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/avif', 'image/svg+xml']),
+
 		date: z.coerce.date({ error: "Date must be a valid date" }),
 	});
 
