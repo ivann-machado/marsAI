@@ -21,6 +21,7 @@ import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.jsx";
 import JuryPage from "./pages/JuryPage/JuryPage.jsx";
 import SponsorsPage from "./pages/SponsorsPage/SponsorsPage.jsx";
 import Event from "./pages/Event/Event_page.jsx";
+import CguCgv from "./pages/CguCgv/CguCgv.jsx";
 // import { SettingsProvider } from "./context/SettingsContext.jsx";
 import { FlashProvider } from "./context/FlashContext.jsx";
 import NotFound from "./components/Utils/NotFound.jsx";
@@ -139,6 +140,7 @@ function App() {
             <Route path="/jury" element={<JuryPage />} />
             <Route path="/partners" element={<SponsorsPage />} />
             <Route path="/Event" element={<Event />} />
+            <Route path="/CguCgv" element={<CguCgv />} />
             <Route path="*" element={<NotFound />}></Route>
           </Routes>
         </FlashProvider>
@@ -157,6 +159,7 @@ function App() {
             <Route path="/jury" element={<JuryPage />} />
             <Route path="/partners" element={<SponsorsPage />} />
             <Route path="/Event" element={<Event />} />
+            <Route path="/CguCgv" element={<CguCgv />} />
             <Route path="*" element={<NotFound />}></Route>
           </Routes>
         </FlashProvider>
@@ -175,6 +178,7 @@ function App() {
             <Route path="/jury" element={<JuryPage />} />
             <Route path="/partners" element={<SponsorsPage />} />
             <Route path="/Event" element={<Event />} />
+            <Route path="/CguCgv" element={<CguCgv />} />
             <Route path="*" element={<NotFound />}></Route>
           </Routes>
         </FlashProvider>

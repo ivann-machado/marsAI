@@ -441,5 +441,24 @@
     "country_usa": "USA",
     "country_germany": "Germany",
     "country_spain": "Spain"
+  },
+  "CguCgv_page": {
+    "header.cguCgv": "CGU & CGV",
+    "hero_badge": "CGU & CGV",
+    "hero_title": "General Terms and Conditions",
+    "hero_title_highlight": "of Use & Sale",
+    "hero_description": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "cgu_title": "Cgu title",
+    "cgu_intro": "Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    "cgu_section1_title": "1. Cgu title",
+    "cgu_section1_content": "In reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+    "cgu_section2_title": "2. Cgu title",
+    "cgu_section2_content": "Cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    "cgv_title": "Cgv title",
+    "cgv_intro": "Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "cgv_section1_title": "1. Cgv title",
+    "cgv_section1_content": "Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    "cgv_section2_title": "2. Cgv title",
+    "cgv_section2_content": "In reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
   }
 }

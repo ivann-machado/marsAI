@@ -429,5 +429,24 @@
     "event_firstName": "Votre prénom",
     "event_lastName": "Votre nom",
     "event_email": "exemple@email.com"
+  },
+  "CguCgv_page": {
+    "header.cguCgv": "CGU & CGV",
+    "hero_badge": "CGU & CGV",
+    "hero_title": "Conditions Générales",
+    "hero_title_highlight": "d'Utilisation & de Vente",
+    "hero_description": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "cgu_title": "Cgu titre",
+    "cgu_intro": "Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    "cgu_section1_title": "1. Cgu titre",
+    "cgu_section1_content": "In reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+    "cgu_section2_title": "2. Cgu titre",
+    "cgu_section2_content": "Cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    "cgv_title": "Cgv titre",
+    "cgv_intro": "Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "cgv_section1_title": "1. Cgv titre",
+    "cgv_section1_content": "Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    "cgv_section2_title": "2. Cgv titre",
+    "cgv_section2_content": "In reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
   }
 }
