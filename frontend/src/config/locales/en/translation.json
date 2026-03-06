@@ -71,7 +71,8 @@
       "standout": "Standout"
     },
     "errors": {
-      "test": "ce champ doit être plus grand"
+      "test": "ce champ doit être plus grand",
+      "default_field_error": "field not valid"
     }
   },
 

@@ -71,7 +71,8 @@
       "standout": "Hors-concours"
     },
     "errors": {
-      "text_too_short": "Ce champ doit être plus grand"
+      "text_too_short": "Ce champ doit être plus grand",
+      "default_field_error": "champ non valide"
     }
   },
 

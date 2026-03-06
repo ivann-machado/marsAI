@@ -47,7 +47,6 @@ function UploadForm() {
    * Select
    */
   const [movieType, SetMovieType] = useState("");
-  const [movieStatus, SetMovieStatus] = useState("");
   const [countryId, SetCountryId] = useState(0);
   let countryOptions = [];
   if (i18n.language === "fr") {
@@ -62,15 +61,9 @@ function UploadForm() {
     { label: "100% " + t("upload_form.production_type.ai"), value: "100%_ia" },
     { label: t("upload_form.production_type.hybrid"), value: "hybride" },
   ];
-  const movieStatusOption = [
-    { label: "--Select a competition status--", value: "" },
-    { label: "En compétition", value: "en_concours" },
-    { label: "Hors concours", value: "hors_concours" },
-  ];
   function handleSelect(event, key) {
     if (key === "country") SetCountryId(event.target.value);
     if (key === "movie_type") SetMovieType(event.target.value);
-    if (key === "movie_status") SetMovieStatus(event.target.value);
   }
 
   /**
@@ -92,7 +85,6 @@ function UploadForm() {
   const [emailError, SetEmailError] = useState("");
   const [tagError, SetTagError] = useState("");
   const [movieTypeError, SetMovieTypeError] = useState("");
-  const [movieStatusError, SetMovieStatusError] = useState("");
   const [tiktokError, SetTiktokError] = useState("");
 
   /**
@@ -292,16 +284,7 @@ function UploadForm() {
       return true;
     }
   }
-  function movieStatusCheck() {
-    console.log("Le statut sera: " + movieStatus);
-    if (movieStatus === "") {
-      SetMovieStatusError("Le statut du film est incorrect");
-      return false;
-    } else {
-      SetMovieStatusError("");
-      return true;
-    }
-  }
+
   function majorityCheck() {
     if (majorityCertification === false) {
       showFlash("error", t("upload_form.majority_certification_flash"));
@@ -364,8 +347,6 @@ function UploadForm() {
       sound_ai: sound_ai.current.value,
       post_prod_ai: post_prod_ai.current.value,
       producer: producer.current.value,
-      movie_type: movieType,
-      movie_status: movieStatus,
       email: email.current.value,
       producerImage: producerImage.current.files[0],
       country: countryId,
@@ -379,7 +360,6 @@ function UploadForm() {
      * Appel des vérifications non automatisées
      */
     movieTypeCheck();
-    movieStatusCheck();
     countrySelectcheck();
     majorityCheck();
     rightGiveAwayCheck();
@@ -395,17 +375,16 @@ function UploadForm() {
     formData.append("status", "unverified");
     formData.append("country_id", uploadData.country);
     formData.append("producer", uploadData.producer);
-    formData.append("producer_image", uploadData.producerImage);
-    formData.append("linkedin_link", uploadData.linkedin);
-    formData.append("youtube_link", uploadData.youtube);
-    formData.append("scenario_ai", uploadData.scenario_ai);
-    formData.append("video_gen_ai", uploadData.video_ai);
-    formData.append("sound_ai", uploadData.sound_ai);
-    formData.append("postprod_ai", uploadData.post_prod_ai);
-    formData.append("tags", uploadData.tags);
+    formData.append("producer_image", uploadData.producerImage); //null ?
+    formData.append("linkedin_link", uploadData.linkedin); //null
+    formData.append("youtube_link", uploadData.youtube); //null
+    formData.append("scenario_ai", uploadData.scenario_ai); //null
+    formData.append("video_gen_ai", uploadData.video_ai); //null
+    formData.append("sound_ai", uploadData.sound_ai); //null
+    formData.append("postprod_ai", uploadData.post_prod_ai); //null
+    formData.append("tags", uploadData.tags); //null
     console.log(uploadData);
     console.log(movieTypeError);
-    console.log(movieStatusError);
     SetLoading(true);
     if (!titleCheck()) {
       showFlash(
@@ -459,19 +438,11 @@ function UploadForm() {
       );
       SetLoading(false);
       return;
-    } else if (!movieStatusCheck()) {
-      showFlash(
-        "error",
-        "Statut du film:" +
-          (movieStatusError != "" ? movieStatusError : "champ incorrect"),
-      );
-      SetLoading(false);
-      return;
     } else if (!scenarioAiCheck()) {
       showFlash(
         "error",
         "IA scénario: " +
-          (scenarioAiError != "" ? scenarioAiError : "Champ vide"),
+          (scenarioAiError != "" ? scenarioAiError : "Champ non valide"),
       );
       SetLoading(false);
       return;
@@ -479,7 +450,7 @@ function UploadForm() {
       showFlash(
         "error",
         "IA générative de vidéos: " +
-          (videoAiError != "" ? videoAiError : "Champ vide"),
+          (videoAiError != "" ? videoAiError : "Champ non valide"),
       );
       SetLoading(false);
       return;
@@ -487,7 +458,7 @@ function UploadForm() {
       showFlash(
         "error",
         "IA sons et musiques: " +
-          (soundAiError != "" ? soundAiError : "Champ vide"),
+          (soundAiError != "" ? soundAiError : "Champ non valide"),
       );
       SetLoading(false);
       return;
@@ -495,7 +466,9 @@ function UploadForm() {
       showFlash(
         "error",
         "IA post-production: " +
-          (postProdAiError != "" ? postProdAiError : "Champ vide"),
+          (postProdAiError != ""
+            ? postProdAiError
+            : t("upload_form.errors_default_field_error")),
       );
       SetLoading(false);
       return;
@@ -701,6 +674,28 @@ function UploadForm() {
               </div>
               <div className="flex flex-col md:w-full md:max-w-150">
                 <label
+                  htmlFor="email"
+                  className="text-sm text-white/70 mb-2 tracking-wide"
+                >
+                  Email :
+                </label>
+                <input
+                  type="text"
+                  name="email"
+                  id="email"
+                  ref={email}
+                  onChange={() => {
+                    emailCheck();
+                  }}
+                  className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
+                />
+                <p className="text-white">{emailError}</p>
+              </div>
+            </div>
+
+            <div className="flex flex-col md:flex-row md:justify-evenly md:p-4 md:gap-10 md:w-full">
+              <div className="flex flex-col md:w-full md:max-w-150">
+                <label
                   htmlFor="producerImage"
                   className="text-sm text-white/70 mb-2 tracking-wide"
                 >
@@ -715,9 +710,6 @@ function UploadForm() {
                 />
                 <p className="text-white">{coverImageError}</p>
               </div>
-            </div>
-
-            <div className="flex flex-col md:flex-row md:justify-evenly md:p-4 md:gap-10 md:w-full">
               <div className="flex flex-col md:w-full md:max-w-150">
                 <label
                   htmlFor="more_info"
@@ -738,27 +730,6 @@ function UploadForm() {
                   ))}
                 </select>
                 <p className="text-white">{movieTypeError}</p>
-              </div>
-              <div className="flex flex-col md:w-full md:max-w-150">
-                <label
-                  htmlFor="producerImage"
-                  className="text-sm text-white/70 mb-2 tracking-wide"
-                >
-                  Statut :
-                </label>
-                <select
-                  name="movieStatusSelect"
-                  id="movieStatusSelect"
-                  onChange={(e) => handleSelect(e, "movie_status")}
-                  className="bg-[#2D2738] border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
-                >
-                  {movieStatusOption.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-                <p className="text-white">{movieStatusError}</p>
               </div>
             </div>
 
@@ -907,47 +878,6 @@ function UploadForm() {
             <div className="flex flex-col md:flex-row md:justify-evenly md:p-4 md:gap-10 md:w-full">
               <div className="flex flex-col md:w-full md:max-w-150">
                 <label
-                  htmlFor="email"
-                  className="text-sm text-white/70 mb-2 tracking-wide"
-                >
-                  Email :
-                </label>
-                <input
-                  type="text"
-                  name="email"
-                  id="email"
-                  ref={email}
-                  onChange={() => {
-                    emailCheck();
-                  }}
-                  className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
-                />
-                <p className="text-white">{emailError}</p>
-              </div>
-              <div className="flex flex-col md:w-full md:max-w-150">
-                <label
-                  htmlFor="tags"
-                  className="text-sm text-white/70 mb-2 tracking-wide"
-                >
-                  Tags :
-                </label>
-                <input
-                  type="text"
-                  name="tags"
-                  id="tags"
-                  ref={tags}
-                  onChange={() => {
-                    tagCheck();
-                  }}
-                  className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
-                />
-                <p className="text-white">{tagError}</p>
-              </div>
-            </div>
-
-            <div className="flex flex-col md:flex-row md:justify-evenly md:p-4 md:gap-10 md:w-full">
-              <div className="flex flex-col md:w-full md:max-w-150">
-                <label
                   htmlFor="tiktok"
                   className="text-sm text-white/70 mb-2 tracking-wide"
                 >
@@ -967,22 +897,22 @@ function UploadForm() {
               </div>
               <div className="flex flex-col md:w-full md:max-w-150">
                 <label
-                  htmlFor="youtube"
+                  htmlFor="tags"
                   className="text-sm text-white/70 mb-2 tracking-wide"
                 >
-                  Placeholder :
+                  Tags :
                 </label>
                 <input
                   type="text"
-                  name="youtube"
-                  id="youtube"
-                  ref={youtube}
+                  name="tags"
+                  id="tags"
+                  ref={tags}
                   onChange={() => {
-                    youtubeCheck();
+                    tagCheck();
                   }}
                   className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 />
-                <p className="text-white">{youtubeError}</p>
+                <p className="text-white">{tagError}</p>
               </div>
             </div>
 
