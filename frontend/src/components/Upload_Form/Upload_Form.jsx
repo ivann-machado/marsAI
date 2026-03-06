@@ -356,13 +356,6 @@ function UploadForm() {
       tags: tags.current.value,
       tiktok: tiktok.current.value,
     };
-    /**
-     * Appel des vérifications non automatisées
-     */
-    movieTypeCheck();
-    countrySelectcheck();
-    majorityCheck();
-    rightGiveAwayCheck();
     const formData = new FormData();
     formData.append("edition_id", 1);
     formData.append("url", "");
@@ -386,135 +379,7 @@ function UploadForm() {
     console.log(uploadData);
     console.log(movieTypeError);
     SetLoading(true);
-    if (!titleCheck()) {
-      showFlash(
-        "error",
-        "Titre: " + (titleError != "" ? titleError : "Champ vide"),
-      );
-      SetLoading(false);
-      return;
-    } else if (!descCheck()) {
-      showFlash(
-        "error",
-        "Description: " + (descError != "" ? descError : "Champ vide"),
-      );
-      SetLoading(false);
-      return;
-    } else if (!videoCheck()) {
-      showFlash(
-        "error",
-        "Vidéo: " + (videoError != "" ? videoError : "Champ vide"),
-      );
-      SetLoading(false);
-      return;
-    } else if (!coverImageCheck()) {
-      showFlash(
-        "error",
-        "Miniature du film: " +
-          (coverImageError != "" ? coverImageError : "Champ vide"),
-      );
-      SetLoading(false);
-      return;
-    } else if (!producerCheck()) {
-      showFlash(
-        "error",
-        "Producteur: " + (producerError != "" ? producerError : "Champ vide"),
-      );
-      SetLoading(false);
-      return;
-    } else if (!producerImageCheck()) {
-      showFlash(
-        "error",
-        "Photo du producteur: " +
-          (producerImageError != "" ? producerImageError : "Champ vide"),
-      );
-      SetLoading(false);
-      return;
-    } else if (!movieTypeCheck()) {
-      showFlash(
-        "error",
-        "Type de production:" +
-          (movieTypeError != "" ? movieTypeError : "champ incorrect"),
-      );
-      SetLoading(false);
-      return;
-    } else if (!scenarioAiCheck()) {
-      showFlash(
-        "error",
-        "IA scénario: " +
-          (scenarioAiError != "" ? scenarioAiError : "Champ non valide"),
-      );
-      SetLoading(false);
-      return;
-    } else if (!videoAiCheck()) {
-      showFlash(
-        "error",
-        "IA générative de vidéos: " +
-          (videoAiError != "" ? videoAiError : "Champ non valide"),
-      );
-      SetLoading(false);
-      return;
-    } else if (!soundAiCheck()) {
-      showFlash(
-        "error",
-        "IA sons et musiques: " +
-          (soundAiError != "" ? soundAiError : "Champ non valide"),
-      );
-      SetLoading(false);
-      return;
-    } else if (!postProdAiCheck()) {
-      showFlash(
-        "error",
-        "IA post-production: " +
-          (postProdAiError != ""
-            ? postProdAiError
-            : t("upload_form.errors_default_field_error")),
-      );
-      SetLoading(false);
-      return;
-    } else if (!linkedinCheck()) {
-      showFlash(
-        "error",
-        "Linkedin: " + (linkedinError != "" ? linkedinError : "Champ vide"),
-      );
-      SetLoading(false);
-      return;
-    } else if (!youtubeCheck()) {
-      showFlash(
-        "error",
-        "Youtube: " + (youtubeError != "" ? youtubeError : "Champ vide"),
-      );
-      SetLoading(false);
-      return;
-    } else if (!instagramCheck()) {
-      showFlash(
-        "error",
-        "Instagram: " + (instagramError != "" ? instagramError : "Champ vide"),
-      );
-      SetLoading(false);
-      return;
-    } else if (!emailCheck()) {
-      showFlash(
-        "error",
-        "Email: " + (emailError != "" ? emailError : "Champ vide"),
-      );
-      SetLoading(false);
-      return;
-    } else if (!tagCheck()) {
-      showFlash("error", "tags: " + (tagError != "" ? tagError : "Champ vide"));
-      SetLoading(false);
-      return;
-    } else if (!countrySelectcheck()) {
-      showFlash("error", "Pays invalide");
-      SetLoading(false);
-    } else if (!majorityCertification) {
-      SetLoading(false);
 
-      return;
-    } else if (rightGivaway === false) {
-      SetLoading(false);
-      return;
-    }
     const res = await fetch(import.meta.env.VITE_API_URL + "/api/videos", {
       method: "POST",
       body: formData,
