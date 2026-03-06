@@ -1,17 +1,17 @@
 import { PORT } from './src/config/index.js';
+import { performance } from 'perf_hooks';
 import { loadSettings } from './src/config/settings.js';
 import { createServer } from "http";
 import app from './src/app.js';
 
-const microtime = Date.now();
 
 await loadSettings();
-console.log(`Settings loaded in ${Date.now() - microtime}ms`);
+console.log(`Settings loaded in ${Math.round(Date.now() - performance.timeOrigin)}ms`);
 
 const server = createServer(app);
 
 server.on('listening', () => {
-	console.log(`Server started on http://localhost:${PORT} in ${Date.now() - microtime}ms`);
+	console.log(`Server started on http://localhost:${PORT} in ${Math.round(Date.now() - performance.timeOrigin)}ms`);
 });
 
 const startServer = (port, retries = 20) => {
