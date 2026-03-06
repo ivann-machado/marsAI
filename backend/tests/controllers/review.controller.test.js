@@ -1,145 +1,325 @@
-import { jest } from '@jest/globals';
+import { jest } from "@jest/globals";
 
-const mockInsertReview = jest.fn();
-const mockSelectReviewById = jest.fn();
-const mockSelectAllReviews = jest.fn();
-const mockUpdateReview = jest.fn();
-const mockDeleteReview = jest.fn();
+// Mock prisma client
+const mockPrisma = {
+	reviews: {
+		create: jest.fn(),
+		findFirst: jest.fn(),
+		findMany: jest.fn(),
+		findUnique: jest.fn(),
+		update: jest.fn(),
+		delete: jest.fn(),
+		count: jest.fn(),
+	},
+	$transaction: jest.fn(),
+};
 
-jest.unstable_mockModule('../../src/models/review.model.js', () => ({
-	insertReview: mockInsertReview,
-	selectReviewById: mockSelectReviewById,
-	selectAllReviews: mockSelectAllReviews,
-	updateReview: mockUpdateReview,
-	deleteReview: mockDeleteReview,
+jest.unstable_mockModule("../../src/config/prisma.js", () => ({
+	default: mockPrisma,
 }));
 
-jest.unstable_mockModule('../../src/config/db.js', () => {
-	const mockConn = {
-		beginTransaction: jest.fn(),
-		commit: jest.fn(),
-		rollback: jest.fn(),
-		release: jest.fn(),
-	};
-	return {
-		getConnection: jest.fn().mockResolvedValue(mockConn),
-		pool: { query: jest.fn() }
-	};
-});
+jest.unstable_mockModule("../../src/utils/paginate.js", () => ({
+	paginate: jest.fn(),
+}));
 
-const { createReview, getAllReviews, getReviewById, setReview, removeReview } = await import('../../src/controllers/review.controller.js');
-const reviewModel = await import('../../src/models/review.model.js');
+const { createReview, getAllReviews, getReviewById, setReview, removeReview } =
+	await import("../../src/controllers/review.controller.js");
+const { paginate } = await import("../../src/utils/paginate.js");
 
-describe('Review Controller', () => {
+describe("Review Controller", () => {
 	let mockReq, mockRes;
 
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mockReq = {
 			body: {},
-			params: {}
+			params: {},
+			query: {},
 		};
 		mockRes = {
 			status: jest.fn().mockReturnThis(),
-			json: jest.fn()
+			json: jest.fn(),
 		};
 	});
 
-	describe('createReview', () => {
-		it('should return 400 if admin_id or video_id are missing', async () => {
-			mockReq.body = { admin_id: 1 }; // missing video_id
+	// ─── createReview ────────────────────────────────────────────────
+
+	describe("createReview", () => {
+		it("should return 400 if admin_id is missing", async () => {
+			mockReq.body = { video_id: 2 };
 			await createReview(mockReq, mockRes);
 			expect(mockRes.status).toHaveBeenCalledWith(400);
-			expect(mockRes.json).toHaveBeenCalledWith({ message: "admin_id and video_id are required" });
+			expect(mockRes.json).toHaveBeenCalledWith({
+				message: "admin_id and video_id are required",
+			});
 		});
 
-		it('should create review and return 201', async () => {
+		it("should return 400 if video_id is missing", async () => {
+			mockReq.body = { admin_id: 1 };
+			await createReview(mockReq, mockRes);
+			expect(mockRes.status).toHaveBeenCalledWith(400);
+		});
+
+		it("should create review and return 201 with full data", async () => {
 			mockReq.body = { admin_id: 1, video_id: 2 };
-			reviewModel.insertReview.mockResolvedValueOnce({ insertId: 10 });
+
+			const createdReview = {
+				id: 10,
+				admin_id: 1,
+				video_id: 2,
+				status: "assigned",
+				note: "",
+				grade: 0,
+				admins: { login: "admin1" },
+				videos: { title: "Test Video" },
+			};
+			mockPrisma.reviews.create.mockResolvedValueOnce(createdReview);
 
 			await createReview(mockReq, mockRes);
 
+			expect(mockPrisma.reviews.create).toHaveBeenCalledWith({
+				data: {
+					admin_id: 1,
+					video_id: 2,
+					status: "assigned",
+					note: "",
+				},
+				include: {
+					admins: { select: { login: true } },
+					videos: { select: { title: true } },
+				},
+			});
 			expect(mockRes.status).toHaveBeenCalledWith(201);
-			expect(mockRes.json).toHaveBeenCalledWith({ message: "Review created", id: 10 });
+			expect(mockRes.json).toHaveBeenCalledWith(
+				expect.objectContaining({
+					id: 10,
+					admin_login: "admin1",
+					video_title: "Test Video",
+				}),
+			);
+		});
+
+		it("should return 500 on prisma error", async () => {
+			mockReq.body = { admin_id: 1, video_id: 2 };
+			mockPrisma.reviews.create.mockRejectedValueOnce(
+				new Error("DB error"),
+			);
+
+			await createReview(mockReq, mockRes);
+
+			expect(mockRes.status).toHaveBeenCalledWith(500);
+			expect(mockRes.json).toHaveBeenCalledWith({
+				message: "Server error",
+			});
 		});
 	});
 
-	describe('getAllReviews', () => {
-		it('should return 200 with all reviews', async () => {
-			const mockReviews = [{ id: 1, admin_id: 1 }];
-			reviewModel.selectAllReviews.mockResolvedValueOnce(mockReviews);
+	// ─── getAllReviews ────────────────────────────────────────────────
+
+	describe("getAllReviews", () => {
+		it("should return single review when admin_id and video_id provided", async () => {
+			mockReq.query = { admin_id: "1", video_id: "2" };
+
+			const mockReview = {
+				id: 5,
+				admin_id: 1,
+				video_id: 2,
+				admins: { login: "admin1" },
+				videos: { title: "Video A" },
+			};
+			mockPrisma.reviews.findFirst.mockResolvedValueOnce(mockReview);
+
+			await getAllReviews(mockReq, mockRes);
+
+			expect(mockPrisma.reviews.findFirst).toHaveBeenCalledWith({
+				where: { admin_id: 1, video_id: 2 },
+				include: {
+					admins: { select: { login: true } },
+					videos: { select: { title: true } },
+				},
+			});
+			expect(mockRes.status).toHaveBeenCalledWith(200);
+			expect(mockRes.json).toHaveBeenCalledWith(
+				expect.objectContaining({
+					id: 5,
+					admin_login: "admin1",
+					video_title: "Video A",
+				}),
+			);
+		});
+
+		it("should return null when admin_id+video_id but no review found", async () => {
+			mockReq.query = { admin_id: "1", video_id: "999" };
+			mockPrisma.reviews.findFirst.mockResolvedValueOnce(null);
 
 			await getAllReviews(mockReq, mockRes);
 
 			expect(mockRes.status).toHaveBeenCalledWith(200);
-			expect(mockRes.json).toHaveBeenCalledWith(mockReviews);
+			expect(mockRes.json).toHaveBeenCalledWith(null);
+		});
+
+		it("should return paginated reviews when no admin_id+video_id", async () => {
+			mockReq.query = { page: "1", limit: "10" };
+
+			const paginatedResult = {
+				data: [
+					{
+						id: 1,
+						admins: { login: "admin1" },
+						videos: { title: "Vid1" },
+					},
+				],
+				meta: {
+					totalCount: 1,
+					totalPages: 1,
+					currentPage: 1,
+					limit: 10,
+				},
+			};
+			paginate.mockResolvedValueOnce(paginatedResult);
+
+			await getAllReviews(mockReq, mockRes);
+
+			expect(paginate).toHaveBeenCalled();
+			expect(mockRes.status).toHaveBeenCalledWith(200);
 		});
 	});
 
-	describe('getReviewById', () => {
-		it('should return 400 if id is missing', async () => {
+	// ─── getReviewById ───────────────────────────────────────────────
+
+	describe("getReviewById", () => {
+		it("should return 400 if id is missing", async () => {
+			mockReq.params = {};
 			await getReviewById(mockReq, mockRes);
 			expect(mockRes.status).toHaveBeenCalledWith(400);
-			expect(mockRes.json).toHaveBeenCalledWith({ message: "Review id is required" });
+			expect(mockRes.json).toHaveBeenCalledWith({
+				message: "Review id is required",
+			});
 		});
 
-		it('should return 404 if review not found', async () => {
-			mockReq.params = { id: 999 };
-			reviewModel.selectReviewById.mockResolvedValueOnce(null); // or empty array if array returned
+		it("should return 404 if review not found", async () => {
+			mockReq.params = { id: "999" };
+			mockPrisma.reviews.findUnique.mockResolvedValueOnce(null);
 
 			await getReviewById(mockReq, mockRes);
 
 			expect(mockRes.status).toHaveBeenCalledWith(404);
-			expect(mockRes.json).toHaveBeenCalledWith({ message: "Review not found" });
+			expect(mockRes.json).toHaveBeenCalledWith({
+				message: "Review not found",
+			});
 		});
 
-		it('should return 200 with review data', async () => {
-			mockReq.params = { id: 1 };
-			const mockReview = { id: 1, admin_id: 1 };
-			reviewModel.selectReviewById.mockResolvedValueOnce(mockReview);
+		it("should return 200 with review data", async () => {
+			mockReq.params = { id: "1" };
+			const mockReview = {
+				id: 1,
+				admin_id: 1,
+				video_id: 2,
+				admins: { login: "admin1" },
+				videos: { title: "Video A" },
+			};
+			mockPrisma.reviews.findUnique.mockResolvedValueOnce(mockReview);
 
 			await getReviewById(mockReq, mockRes);
 
 			expect(mockRes.status).toHaveBeenCalledWith(200);
-			expect(mockRes.json).toHaveBeenCalledWith(mockReview);
+			expect(mockRes.json).toHaveBeenCalledWith(
+				expect.objectContaining({
+					id: 1,
+					admin_login: "admin1",
+					video_title: "Video A",
+				}),
+			);
 		});
 	});
 
-	describe('setReview', () => {
-		it('should return 400 if id is missing', async () => {
-			mockReq.body = { note: 5, grade: 'A', status: 'done' };
+	// ─── setReview ───────────────────────────────────────────────────
+
+	describe("setReview", () => {
+		it("should return 400 if id is missing", async () => {
+			mockReq.params = {};
+			mockReq.body = { note: "good", grade: 4, status: "done" };
 			await setReview(mockReq, mockRes);
 			expect(mockRes.status).toHaveBeenCalledWith(400);
-			expect(mockRes.json).toHaveBeenCalledWith({ message: "Review id is required" });
+			expect(mockRes.json).toHaveBeenCalledWith({
+				message: "Review id is required",
+			});
 		});
 
-		it('should return 200 with affectedRows', async () => {
-			mockReq.params = { id: 1 };
-			mockReq.body = { note: 5, grade: 'A', status: 'done' };
-			reviewModel.updateReview.mockResolvedValueOnce({ affectedRows: 1 });
+		it("should return 200 on success", async () => {
+			mockReq.params = { id: "1" };
+			mockReq.body = { note: "excellent", grade: 5, status: "done" };
+			mockPrisma.reviews.update.mockResolvedValueOnce({ id: 1 });
 
 			await setReview(mockReq, mockRes);
 
+			expect(mockPrisma.reviews.update).toHaveBeenCalledWith({
+				where: { id: 1 },
+				data: { note: "excellent", grade: 5, status: "done" },
+			});
 			expect(mockRes.status).toHaveBeenCalledWith(200);
-			expect(mockRes.json).toHaveBeenCalledWith({ message: "Review updated", affectedRows: 1 });
+			expect(mockRes.json).toHaveBeenCalledWith({
+				message: "Review updated",
+				affectedRows: 1,
+			});
+		});
+
+		it("should return 404 if review not found (P2025)", async () => {
+			mockReq.params = { id: "999" };
+			mockReq.body = { note: "test" };
+			const error = new Error("Not found");
+			error.code = "P2025";
+			mockPrisma.reviews.update.mockRejectedValueOnce(error);
+
+			await setReview(mockReq, mockRes);
+
+			expect(mockRes.status).toHaveBeenCalledWith(404);
+			expect(mockRes.json).toHaveBeenCalledWith({
+				message: "Review not found",
+			});
 		});
 	});
 
-	describe('removeReview', () => {
-		it('should return 400 if id is missing', async () => {
+	// ─── removeReview ────────────────────────────────────────────────
+
+	describe("removeReview", () => {
+		it("should return 400 if id is missing", async () => {
+			mockReq.params = {};
 			await removeReview(mockReq, mockRes);
 			expect(mockRes.status).toHaveBeenCalledWith(400);
-			expect(mockRes.json).toHaveBeenCalledWith({ message: "Review id is required" });
+			expect(mockRes.json).toHaveBeenCalledWith({
+				message: "Review id is required",
+			});
 		});
 
-		it('should return 200 and delete review', async () => {
-			mockReq.params = { id: 1 };
-			reviewModel.deleteReview.mockResolvedValueOnce({ affectedRows: 1 });
+		it("should return 200 on successful delete", async () => {
+			mockReq.params = { id: "1" };
+			mockPrisma.reviews.delete.mockResolvedValueOnce({ id: 1 });
 
 			await removeReview(mockReq, mockRes);
 
+			expect(mockPrisma.reviews.delete).toHaveBeenCalledWith({
+				where: { id: 1 },
+			});
 			expect(mockRes.status).toHaveBeenCalledWith(200);
-			expect(mockRes.json).toHaveBeenCalledWith({ message: "Review deleted", affectedRows: { affectedRows: 1 } });
+			expect(mockRes.json).toHaveBeenCalledWith({
+				message: "Review deleted",
+				affectedRows: 1,
+			});
+		});
+
+		it("should return 404 if review not found (P2025)", async () => {
+			mockReq.params = { id: "999" };
+			const error = new Error("Not found");
+			error.code = "P2025";
+			mockPrisma.reviews.delete.mockRejectedValueOnce(error);
+
+			await removeReview(mockReq, mockRes);
+
+			expect(mockRes.status).toHaveBeenCalledWith(404);
+			expect(mockRes.json).toHaveBeenCalledWith({
+				message: "Review not found",
+			});
 		});
 	});
 });

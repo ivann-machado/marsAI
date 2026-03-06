@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import VideoList from "./VideoList.jsx";
 import Loading from "../Utils/Loading.jsx";
+import { useauth } from "../../context/AuthContext";
 
 function AdminVideosDash() {
   const [videoQueue, setVideoQueue] = useState(null);
@@ -12,30 +13,34 @@ function AdminVideosDash() {
     selected: "",
   });
   const [appliedFilters, setAppliedFilters] = useState(null);
+  const authToken = useauth();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        /* Recuperation videos à review */
+        /* Recuperation des vidéos assignées à l'admin (via reviews) */
         let response = await fetch(
-          import.meta.env.VITE_API_URL + "/api/videos",
+          import.meta.env.VITE_API_URL + "/api/videos/assigned",
           {
             method: "GET",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + authToken.token,
+            },
           },
         );
-        if (!response.ok) throw new Error("Erreur fetch JSON");
+        if (!response.ok) throw new Error("Erreur fetch assigned videos");
         let res = await response.json();
-        setVideoQueue(res.data);
+        setVideoQueue(res.data ?? res);
 
-        /* Recuperation des autres videos */
+        /* Recuperation de toutes les videos */
         response = await fetch(import.meta.env.VITE_API_URL + "/api/videos", {
           method: "GET",
           headers: { "Content-Type": "application/json" },
         });
         if (!response.ok) throw new Error("Erreur fetch JSON");
         res = await response.json();
-        setOtherVideo(res.data);
+        setOtherVideo(res.data ?? res);
       } catch (err) {
         console.error(err);
       }
@@ -56,7 +61,7 @@ function AdminVideosDash() {
   if (!videoQueue || !otherVideo) return <Loading />;
 
   return (
-    <div className="w-4/5 bg-gray-950 px-4">
+    <div className="w-4/5 bg-gray-950 px-4 font-inter">
       <h1 className="py-2 font-bold text-3xl text-white text-center">
         Gestion des films
       </h1>
@@ -102,7 +107,7 @@ function AdminVideosDash() {
         <input
           type="button"
           value="Filtrer"
-          className="ml-5 bg-gray-300 text-black p-1"
+          className="ml-5 bg-gray-300 text-black p-1 hover:ring-2 hover:ring-purple-600 hover:bg-gray-200 cursor-pointer"
           onClick={() => updateAppliedFilters()}
         ></input>
       </div>

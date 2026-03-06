@@ -11,6 +11,18 @@ export const SettingsProvider = ({ children }) => {
 
   useEffect(() => {
     // console.log("API URL " + import.meta.env.VITE_API_URL);
+    // const stored = localStorage.getItem("settings");
+    const stored = null; // forcer le chargement de la DB
+
+    if (stored) {
+      const { storedSetting, storedExpiration } = JSON.parse(stored);
+      if (Date.now() < storedExpiration) {
+        setSettings(storedSetting);
+        return;
+      } else {
+        localStorage.removeItem("settings");
+      }
+    }
     const fetchData = async () => {
       //   console.log(import.meta.env.VITE_API_URL + "/api/content");
       try {
@@ -26,26 +38,31 @@ export const SettingsProvider = ({ children }) => {
 
         const res = await response.json();
 
-        // console.log(res);
         const settingsObject = res.reduce((acc, item) => {
           acc[item.name] = item.value;
           return acc;
         }, {});
 
+        localStorage.setItem(
+          "settings",
+          JSON.stringify({
+            storedExpiration: Date.now() + 100000000,
+            storedSetting: settingsObject,
+          }),
+        );
         setSettings(settingsObject);
       } catch (err) {
-        return {}; // TO REMOVE
-        //console.error(err);
+        console.error(err);
       }
     };
     fetchData();
   }, []);
 
   /* useEffect(() => {
-    fetch("/api/settings")
-      .then((res) => res.json())
-      .then((data) => setSettings(data));
-  }, []); */
+      fetch("/api/settings")
+        .then((res) => res.json())
+        .then((data) => setSettings(data));
+    }, []); */
 
   return (
     <SettingsContext.Provider value={settings}>

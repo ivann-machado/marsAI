@@ -57,12 +57,12 @@ function Footer() {
 
   if (!settings) return <Loading />;
 
-  console.log(
+  /*   console.log(
     settings.bg_color_primary_alt,
     (settings.bg_color_primary_alt
       ? " bg-[" + settings.bg_color_primary_alt + "] "
       : " bg-gray-900 ") + " w-full px-10 py-20",
-  );
+  ); */
 
   // Exemple si on veut changer dynamiquement le CSS en utilisant settings, à voir si on trouve une meilleure solution
   {
@@ -105,9 +105,13 @@ function Footer() {
         <div className="md:w-1/6">
           <h4 className="text-purple-600 mb-7">{t("footer.navigation")}</h4>
           <ul>
-            <li className="mb-7 hover:underline">{t("footer.gallery")}</li>
+            {settings.phase != "1" ? (
+              <li className="mb-7 hover:underline">{t("footer.gallery")}</li>
+            ) : null}
             <li className="mb-7 hover:underline">{t("footer.schedule")}</li>
-            <li className="mb-7 hover:underline">{t("footer.top50")}</li>
+            {settings.phase != "1" ? (
+              <li className="mb-7 hover:underline">{t("footer.top50")}</li>
+            ) : null}
             <li className="mb-7 hover:underline">{t("footer.tickets")}</li>
           </ul>
         </div>
