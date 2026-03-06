@@ -341,6 +341,7 @@
     "gallery_watch_film": "WATCH",
     "gallery_all_movie": "ALL FILMS"
   },
+
   "page_contact": {
     "contact_badge": "GET IN TOUCH",
     "contact_title": "CONTACT US",
@@ -348,7 +349,13 @@
     "contact_submit": "Send Message",
     "contact_name_placeholder": "Your Name",
     "contact_email_placeholder": "example@email.com",
-    "contact_message_placeholder": "Your Message..."
+    "contact_message_placeholder": "Your Message...",
+    "error_empty_fields": "All fields must be filled",
+    "error_invalid_email": "Please type a valid email address",
+    "error_minimum_length": "Message has to be atleast 10 characters long",
+    "success_message_sent": "Your message has been sent succesfully!",
+    "error_message_fail": "There has been an error sending your message",
+    "error_network": "Network error. Please try again later."
   },
 
   "jury_page": {

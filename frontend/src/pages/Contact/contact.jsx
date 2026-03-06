@@ -2,13 +2,14 @@ import { useTranslation } from "react-i18next";
 import { useRef, useState } from "react";
 import Footer from "../../components/Footer/Footer.jsx";
 import Header from "../../components/Header/Header.jsx";
+import { useFlash } from "../../components/Flashmsg/FlashMsg.jsx";
 
 function Contact() {
   const { t } = useTranslation();
-  //const [name, setName] = useState('');
   const name = useRef();
   const email = useRef();
   const message = useRef();
+  const { showFlash } = useFlash();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,17 +19,17 @@ function Contact() {
     const messageVal = message.current?.value?.trim();
 
     if (!nameVal || !emailVal || !messageVal) {
-      alert("Veuillez remplir tous les champs.");
+      showFlash("error", t("page_contact.error_empty_fields"));
       return;
     }
 
     if (!/\S+@\S+\.\S+/.test(emailVal)) {
-      alert("Veuillez entrer une adresse email valide.");
+      showFlash("error", t("page_contact.error_invalid_email"));
       return;
     }
 
     if (messageVal.length < 10) {
-      alert("Le message doit contenir au moins 10 caractères.");
+      showFlash("error", t("page_contact.error_minimum_length"));
       return;
     }
 
@@ -46,16 +47,22 @@ function Contact() {
       const data = await res.json().catch(() => ({}));
 
       if (res.ok) {
-        alert(data.message || "Message envoyé avec succès.");
+        showFlash(
+          "success",
+          data.message || t("page_contact.success_message_sent"),
+        );
         name.current.value = "";
         email.current.value = "";
         message.current.value = "";
       } else {
-        alert(data.message || "Erreur lors de l'envoi du message.");
+        showFlash(
+          "error",
+          data.message || t("page_contact.error_message_fail"),
+        );
       }
     } catch (error) {
       console.error("Contact submit error:", error);
-      alert("Erreur réseau. Réessayez plus tard.");
+      showFlash("error", t("page_contact.error_network"));
     }
   };
 
