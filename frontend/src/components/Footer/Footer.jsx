@@ -108,7 +108,7 @@ function Footer() {
           <ul>
             {settings.phase != "1" ? (
               <li className="mb-7 hover:underline">
-                <Link to="/gallery">{t("footer.gallery")}</Link>
+                <Link to="/">{t("footer.footer_home")}</Link>
               </li>
             ) : null}
             <li className="mb-7 hover:underline">
@@ -116,7 +116,7 @@ function Footer() {
             </li>
             {settings.phase != "1" ? (
               <li className="mb-7 hover:underline">
-                <Link to="/gallery">{t("footer.top50")}</Link>
+                <Link to="/gallery">{t("footer.gallery")}</Link>
               </li>
             ) : null}
             <li className="mb-7 hover:underline">{t("footer.tickets")}</li>
