@@ -431,7 +431,7 @@
     "event_email": "exemple@email.com"
   },
   "CguCgv_page": {
-    "header.cguCgv": "CGU & CGV",
+    "footer.cguCgv": "mentions légales",
     "hero_badge": "CGU & CGV",
     "hero_title": "Conditions Générales",
     "hero_title_highlight": "d'Utilisation & de Vente",

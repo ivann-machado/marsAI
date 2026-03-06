@@ -448,6 +448,7 @@ function Gallery() {
           </div>
         </section>
       </div>
+      <Footer />
     </>
   );
 }

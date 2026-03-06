@@ -50,7 +50,6 @@ function Header() {
       { to: "/partners", label: t("header.partners") },
       { to: "/contact", label: t("header.contact") },
       { to: "/event", label: t("header.event") },
-      { to: "/CguCgv", label: t("CguCgv_page.header.cguCgv") },
     ];
   else
     navLinks = [
@@ -60,7 +59,6 @@ function Header() {
       { to: "/partners", label: t("header.partners") },
       { to: "/contact", label: t("header.contact") },
       { to: "/event", label: t("header.event") },
-      { to: "/CguCgv", label: t("CguCgv_page.header.cguCgv") },
     ];
 
   const isActive = (path) => location.pathname === path;

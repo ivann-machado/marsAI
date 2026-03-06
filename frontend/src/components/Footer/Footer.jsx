@@ -6,6 +6,7 @@ import Loading from "../Utils/Loading";
 import { useTranslation } from "react-i18next";
 import { useState, useContext } from "react";
 import { useSettings } from "../../context/SettingsContext";
+import { Link } from "react-router-dom";
 
 function Footer() {
   const { t } = useTranslation();
@@ -106,11 +107,17 @@ function Footer() {
           <h4 className="text-purple-600 mb-7">{t("footer.navigation")}</h4>
           <ul>
             {settings.phase != "1" ? (
-              <li className="mb-7 hover:underline">{t("footer.gallery")}</li>
+              <li className="mb-7 hover:underline">
+                <Link to="/gallery">{t("footer.gallery")}</Link>
+              </li>
             ) : null}
-            <li className="mb-7 hover:underline">{t("footer.schedule")}</li>
+            <li className="mb-7 hover:underline">
+              <Link to="/event">{t("footer.schedule")}</Link>
+            </li>
             {settings.phase != "1" ? (
-              <li className="mb-7 hover:underline">{t("footer.top50")}</li>
+              <li className="mb-7 hover:underline">
+                <Link to="/gallery">{t("footer.top50")}</Link>
+              </li>
             ) : null}
             <li className="mb-7 hover:underline">{t("footer.tickets")}</li>
           </ul>
@@ -118,11 +125,15 @@ function Footer() {
         <div className="md:w-1/6">
           <h4 className="text-pink-600 mb-7">{t("footer.legal")}</h4>
           <ul>
-            <li className="mb-7 hover:underline">{t("footer.partners")}</li>
-            <li className="mb-7 hover:underline">{t("footer.faq")}</li>
-            <li className="mb-7 hover:underline">{t("footer.contact")}</li>
             <li className="mb-7 hover:underline">
-              {t("footer.legal_notices")}
+              <Link to="/partners">{t("footer.partners")}</Link>
+            </li>
+            <li className="mb-7 hover:underline">{t("footer.faq")}</li>
+            <li className="mb-7 hover:underline">
+              <Link to="/contact">{t("footer.contact")}</Link>
+            </li>
+            <li className="mb-7 hover:underline">
+              <Link to="/CguCgv">{t("CguCgv_page.footer.cguCgv")}</Link>
             </li>
           </ul>
         </div>
