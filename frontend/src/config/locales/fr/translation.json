@@ -339,7 +339,14 @@
     "contact_submit": "Envoyer le message",
     "contact_name_placeholder": "Votre nom",
     "contact_email_placeholder": "exemple@email.com",
-    "contact_message_placeholder": "Votre message..."
+    "contact_message_placeholder": "Votre message...",
+    "error_empty_field": "Le champ doit être rempli",
+    "error_empty_fields": "Tous les champs doivent être remplis",
+    "error_invalid_email": "Veuillez saisir une adresse email valide",
+    "error_minimum_length": "Le message doit contenir au moins 10 caractères",
+    "success_message_sent": "Votre message a été envoyé avec succès !",
+    "error_message_fail": "Une erreur est survenue lors de l'envoi de votre message",
+    "error_network": "Erreur réseau. Veuillez réessayer plus tard."
   },
   "jury_page": {
     "title": "Membres du jury",
