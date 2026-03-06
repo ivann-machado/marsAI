@@ -23,7 +23,7 @@ export const InviteAdminSchema = adminsSchema
 /**
  * Check invite token.
  */
-export const inviteTokenSchema = z.object({
+export const InviteTokenSchema = z.object({
 	token: z.uuid({ error: "Token is required" }),
 });
 
