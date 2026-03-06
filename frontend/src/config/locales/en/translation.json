@@ -350,6 +350,7 @@
     "contact_name_placeholder": "Your Name",
     "contact_email_placeholder": "example@email.com",
     "contact_message_placeholder": "Your Message...",
+    "error_empty_field": "Field must be completed",
     "error_empty_fields": "All fields must be filled",
     "error_invalid_email": "Please type a valid email address",
     "error_minimum_length": "Message has to be atleast 10 characters long",
