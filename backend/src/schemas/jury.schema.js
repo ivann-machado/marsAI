@@ -9,6 +9,7 @@ export const CreateJurySchema = jurySchema
 	.omit({ id: true })
 	.extend({
 		edition_id: z
+			.coerce.number()
 			.int({ error: "Edition ID must be a whole number" })
 			.positive({ error: "Edition ID must be a positive number" }),
 		name: z
@@ -36,8 +37,10 @@ export const UpdateJurySchema = jurySchema
 	.partial()
 	.extend({
 		edition_id: z
+			.coerce.number()
 			.int({ error: "Edition ID must be a whole number" })
 			.positive({ error: "Edition ID must be a positive number" })
 			.optional(),
+		photo: fileSchema(5 * 1024 * 1024, ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/avif', 'image/svg+xml']),
 		oldPhoto: z.string().optional(),
 	});
