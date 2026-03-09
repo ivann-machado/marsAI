@@ -11,6 +11,8 @@ import {
 	verifyToken,
 	requireSuperAdmin,
 } from "../middlewares/auth.middleware.js";
+import { validate } from "../middlewares/validate.middleware.js";
+import { CreateNewsletterSubscriptionSchema, SendNewsletterSchema } from "../schemas/newsletter.schema.js";
 
 const router = Router();
 
@@ -27,15 +29,13 @@ const router = Router();
  */
 
 // Subscribe (public)
-router.post("/", createNewsletter);
+router.post("/", validate(CreateNewsletterSubscriptionSchema), createNewsletter);
 
 // Admin routes
 router.get("/", verifyToken, requireSuperAdmin, getAllNewsletters);
 
 router.delete("/:email", verifyToken, requireSuperAdmin, removeNewsletter);
-router.post("/send", verifyToken, requireSuperAdmin, sendNewsletter);
+router.post("/send", verifyToken, requireSuperAdmin, validate(SendNewsletterSchema), sendNewsletter);
 
-// Send newsletter (ADMIN ONLY)
-router.post("/send", verifyToken, requireSuperAdmin, sendNewsletter);
 
 export default router;

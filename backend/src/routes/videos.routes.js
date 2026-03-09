@@ -13,6 +13,7 @@ import {
 	requireSuperAdmin,
 } from "../middlewares/auth.middleware.js";
 import { processAndUpload } from "../middlewares/upload.middleware.js";
+import { CreateVideoSchema, UpdateVideoSchema } from "../schemas/video.schema.js";
 
 const router = express.Router();
 
@@ -29,12 +30,12 @@ router.get("/assigned", verifyToken, getAssignedVideos);
 router.get("/unassigned", verifyToken, getUnassignedVideos);
 router.get("/:id", getVideoById);
 
-router.post("/", processAndUpload(), createVideo);
+router.post("/", processAndUpload({ schema: CreateVideoSchema }), createVideo);
 router.put(
 	"/:id",
 	verifyToken,
 	requireSuperAdmin,
-	processAndUpload(),
+	processAndUpload({ schema: UpdateVideoSchema }),
 	setVideo,
 );
 router.delete("/:id", verifyToken, requireSuperAdmin, removeVideo);
