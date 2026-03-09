@@ -5,6 +5,8 @@ import {
 	getReservationById,
 	removeReservation,
 } from "../controllers/reservation.controller.js";
+import { validate } from "../middlewares/validate.middleware.js";
+import { CreateReservationSchema } from "../schemas/reservation.schema.js";
 
 const router = express.Router();
 
@@ -15,7 +17,7 @@ const router = express.Router();
  * - GET  `/:id` : get a reservation.
  * - DELETE `/:id` : delete a reservation.
  */
-router.post("/", createReservation);
+router.post("/", validate(CreateReservationSchema), createReservation);
 router.get("/", getAllReservations);
 router.get("/:id", getReservationById);
 router.delete("/:id", removeReservation);
