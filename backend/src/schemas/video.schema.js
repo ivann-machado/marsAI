@@ -42,30 +42,26 @@ export const CreateVideoSchema = videosSchema
 		linkedin_link: z
 			.url({ error: "LinkedIn link must be a valid URL", hostname: /^linkedin\.com/ })
 			.optional()
-			.default(""),
+			.or(z.literal("")),
 		youtube_link: z
 			.url({ error: "YouTube link must be a valid URL", hostname: /^youtube\.com/ })
 			.optional()
-			.default(""),
+			.or(z.literal("")),
 		instagram_link: z
 			.url({ error: "Instagram link must be a valid URL", hostname: /^instagram\.com/ })
 			.optional()
-			.default(""),
+			.or(z.literal("")),
 		scenario_ai: z
 			.string()
-			.min(1, { error: "Scenario AI tool is required" })
 			.max(50, { error: "Scenario AI must be at most 50 characters" }),
 		video_gen_ai: z
 			.string()
-			.min(1, { error: "Video generation AI tool is required" })
 			.max(50, { error: "Video gen AI must be at most 50 characters" }),
 		sound_ai: z
 			.string()
-			.min(1, { error: "Sound AI tool is required" })
 			.max(50, { error: "Sound AI must be at most 50 characters" }),
 		postprod_ai: z
 			.string()
-			.min(1, { error: "Post-production AI tool is required" })
 			.max(50, { error: "Post-production AI must be at most 50 characters" }),
 		tags: z
 			.string()
