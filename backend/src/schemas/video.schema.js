@@ -1,26 +1,21 @@
 import { z } from "zod";
 import { videosSchema } from "../generated/zod/index.ts";
 import { fileSchema } from "./file.schema.js";
-import { getMp4Duration } from "../utils/file.util.js";
+import { getMp4Metadata } from "../utils/file.util.js";
 
 /**
- * Create a new video.
+ * Base video schema.
  * System-managed fields (`id`, `url`, `verified`, `status`) are omitted.
  */
-export const CreateVideoSchema = videosSchema
+const VideoSchema = videosSchema
 	.omit({ id: true, url: true, verified: true, status: true })
 	.extend({
 		edition_id: z
 			.coerce.number()
 			.int({ error: "Edition ID must be a whole number" })
 			.positive({ error: "Edition ID must be a positive number" })
-			.optional()
-			.default(2026),
-		filename: fileSchema(300 * 1024 * 1024, ['video/mp4'])
-			.refine((file) => {
-				const duration = getMp4Duration(file.buffer);
-				return duration !== null && duration <= 90;
-			}, "Video duration exceeds 90 seconds"),
+			.optional(),
+		filename: fileSchema(300 * 1024 * 1024, ['video/mp4']),
 		email: z.email({ error: "Email must be a valid email address" }),
 		cover_image: fileSchema(5 * 1024 * 1024, ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/avif', 'image/svg+xml']),
 		title: z
@@ -70,8 +65,26 @@ export const CreateVideoSchema = videosSchema
 			.default(""),
 		subtitle: fileSchema(2 * 1024 * 1024, ['application/x-subrip', 'text/srt']),
 	});
+const videoRefinement = (schema) => schema.superRefine((data, ctx) => {
+	if (!data.filename) return;
+	const metadata = getMp4Metadata(data.filename?.buffer);
+	if (!metadata) {
+		ctx.addIssue({ code: "custom", path: ["filename"], message: "Could not parse video metadata" });
+		return;
+	}
+	if (metadata.duration > 90) {
+		ctx.addIssue({ code: "custom", path: ["filename"], message: "Video duration must not exceed 90 seconds" });
+	}
+	if (metadata.aspectRatio !== "16:9") {
+		ctx.addIssue({ code: "custom", path: ["filename"], message: "Video aspect ratio must be 16:9" });
+	}
+});
 
+/**
+ * Create a new video.
+ */
+export const CreateVideoSchema = videoRefinement(VideoSchema);
 /**
  * Update a video – all fields optional.
  */
-export const UpdateVideoSchema = CreateVideoSchema.partial();
+export const UpdateVideoSchema = videoRefinement(VideoSchema.partial());
