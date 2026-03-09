@@ -128,7 +128,9 @@ function Footer() {
             <li className="mb-7 hover:underline">
               <Link to="/partners">{t("footer.partners")}</Link>
             </li>
-            <li className="mb-7 hover:underline">{t("footer.faq")}</li>
+            <li className="mb-7 hover:underline">
+              <Link to="/Faq">{t("footer.faq")}</Link>
+            </li>
             <li className="mb-7 hover:underline">
               <Link to="/contact">{t("footer.contact")}</Link>
             </li>
