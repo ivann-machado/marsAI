@@ -77,6 +77,7 @@ function AdminVideosDash() {
 
   const updateAppliedFilters = () => {
     //console.log("updates");
+    // TODO make filters fetch data again
     setAppliedFilters(filters);
   };
 
