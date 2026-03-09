@@ -367,15 +367,12 @@ function UploadForm() {
     rightGiveAwayCheck();
     const formData = new FormData();
     formData.append("edition_id", 1);
-    formData.append("url", "");
-    formData.append("verified", 1);
     if (uploadData.video) formData.append("filename", uploadData.video);
     if (uploadData.email) formData.append("email", uploadData.email);
     if (uploadData.image) formData.append("cover_image", uploadData.image);
     if (uploadData.title) formData.append("title", uploadData.title);
     if (uploadData.description)
       formData.append("description", uploadData.description);
-    formData.append("status", "unverified");
     if (uploadData.country) formData.append("country_id", uploadData.country);
     if (uploadData.producer) formData.append("producer", uploadData.producer);
     if (uploadData.producerImage)
@@ -392,7 +389,7 @@ function UploadForm() {
       formData.append("postprod_ai", uploadData.post_prod_ai); //null
     if (uploadData.tags) formData.append("tags", uploadData.tags); //null
     console.log(uploadData);
-    console.log("formData est : " + formData);
+    console.log("formData est : ", formData);
     SetLoading(true);
     if (!titleCheck()) {
       showFlash(
