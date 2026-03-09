@@ -265,7 +265,7 @@ export const getAssignedVideos = async (req, res) => {
 			include: {
 				...videoIncludes,
 				reviews: {
-					where: { admin_id: Number(adminId) },
+					where: { admin_id: Number(adminId), status: "assigned" },
 					select: {
 						id: true,
 						note: true,
