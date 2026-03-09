@@ -81,10 +81,10 @@ export const getMp4Duration = (buffer) => {
 			const size = buffer.readUInt32BE(offset);
 			const type = buffer.toString('ascii', offset + 4, offset + 8);
 
-			if (size < 8) break; // Invalid box size
+			if (size < 8) break;
 
 			if (type === 'moov') {
-				offset += 8; // Enter moov box
+				offset += 8;
 				continue;
 			}
 
@@ -95,7 +95,9 @@ export const getMp4Duration = (buffer) => {
 				if (version === 1) {
 					// 64-bit values
 					timeScale = buffer.readUInt32BE(offset + 28);
-					duration = buffer.readUInt32BE(offset + 36);
+					const high = buffer.readUInt32BE(offset + 32);
+					const low = buffer.readUInt32BE(offset + 36);
+					duration = high * 0x100000000 + low;
 				} else {
 					// 32-bit values
 					timeScale = buffer.readUInt32BE(offset + 20);
@@ -107,6 +109,7 @@ export const getMp4Duration = (buffer) => {
 				}
 				return null;
 			}
+
 
 			offset += size;
 		}
