@@ -21,6 +21,7 @@ function UploadForm() {
   const description = useRef(null);
   const video = useRef(null);
   const coverImage = useRef(null);
+  const subtitles = useRef(null);
   const scenario_ai = useRef(null);
   const video_ai = useRef(null);
   const sound_ai = useRef(null);
@@ -342,6 +343,7 @@ function UploadForm() {
       description: description.current.value,
       video: video.current.files[0],
       image: coverImage.current.files[0],
+      subtitles: subtitles.current.files,
       scenario_ai: scenario_ai.current.value,
       video_ai: video_ai.current.value,
       sound_ai: sound_ai.current.value,
@@ -367,24 +369,30 @@ function UploadForm() {
     formData.append("edition_id", 1);
     formData.append("url", "");
     formData.append("verified", 1);
-    formData.append("filename", uploadData.video);
-    formData.append("email", uploadData.email);
-    formData.append("cover_image", uploadData.image);
-    formData.append("title", uploadData.title);
-    formData.append("description", uploadData.description);
+    if (uploadData.video) formData.append("filename", uploadData.video);
+    if (uploadData.email) formData.append("email", uploadData.email);
+    if (uploadData.image) formData.append("cover_image", uploadData.image);
+    if (uploadData.title) formData.append("title", uploadData.title);
+    if (uploadData.description)
+      formData.append("description", uploadData.description);
     formData.append("status", "unverified");
-    formData.append("country_id", uploadData.country);
-    formData.append("producer", uploadData.producer);
-    formData.append("producer_image", uploadData.producerImage); //null ?
-    formData.append("linkedin_link", uploadData.linkedin); //null
-    formData.append("youtube_link", uploadData.youtube); //null
-    formData.append("scenario_ai", uploadData.scenario_ai); //null
-    formData.append("video_gen_ai", uploadData.video_ai); //null
-    formData.append("sound_ai", uploadData.sound_ai); //null
-    formData.append("postprod_ai", uploadData.post_prod_ai); //null
-    formData.append("tags", uploadData.tags); //null
+    if (uploadData.country) formData.append("country_id", uploadData.country);
+    if (uploadData.producer) formData.append("producer", uploadData.producer);
+    if (uploadData.producerImage)
+      formData.append("producer_image", uploadData.producerImage); //null ?
+    if (uploadData.linkedin)
+      formData.append("linkedin_link", uploadData.linkedin); //null
+    if (uploadData.youtube) formData.append("youtube_link", uploadData.youtube); //null
+    if (uploadData.scenario_ai)
+      formData.append("scenario_ai", uploadData.scenario_ai); //null
+    if (uploadData.video_ai)
+      formData.append("video_gen_ai", uploadData.video_ai); //null
+    if (uploadData.sound_ai) formData.append("sound_ai", uploadData.sound_ai); //null
+    if (uploadData.post_prod_ai)
+      formData.append("postprod_ai", uploadData.post_prod_ai); //null
+    if (uploadData.tags) formData.append("tags", uploadData.tags); //null
     console.log(uploadData);
-    console.log(movieTypeError);
+    console.log("formData est : " + formData);
     SetLoading(true);
     if (!titleCheck()) {
       showFlash(
@@ -514,6 +522,7 @@ function UploadForm() {
     } else if (rightGivaway === false) {
       SetLoading(false);
       return;
+    } else {
     }
     const res = await fetch(import.meta.env.VITE_API_URL + "/api/videos", {
       method: "POST",
@@ -628,6 +637,23 @@ function UploadForm() {
                 name="cover-image"
                 id="cover-mage"
                 ref={coverImage}
+                className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none pt-3 pb-2"
+              />
+              <p className="text-white">{coverImageError}</p>
+            </div>
+            <div className="flex flex-col p-4">
+              <label
+                htmlFor="image"
+                className="text-sm text-white/70 mb-2 tracking-wide "
+              >
+                {t("upload_form.subtitles")} :
+              </label>
+              <input
+                type="file"
+                name="subtitles"
+                id="subtitles"
+                ref={subtitles}
+                multiple
                 className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none pt-3 pb-2"
               />
               <p className="text-white">{coverImageError}</p>
