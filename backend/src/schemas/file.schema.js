@@ -1,5 +1,11 @@
 import { z } from "zod";
 
+/**
+ * File schema for Zod validation
+ * @param {number} maxSize - Maximum file size in bytes
+ * @param {string[]} allowedMimes - Allowed MIME types
+ * @returns {z.ZodObject} - Zod schema for file validation
+ */
 export const fileSchema = (maxSize, allowedMimes) =>
 	z.object({
 		mimetype: z.string().refine(m => allowedMimes.includes(m), {
