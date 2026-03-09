@@ -26,7 +26,7 @@ const router = express.Router();
  */
 router.get("/", getAllVideos);
 router.get("/assigned", verifyToken, getAssignedVideos);
-router.get("/unassigned", getUnassignedVideos);
+router.get("/unassigned", verifyToken, getUnassignedVideos);
 router.get("/:id", getVideoById);
 
 router.post("/", processAndUpload(), createVideo);
