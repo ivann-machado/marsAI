@@ -1,5 +1,5 @@
 import multer from 'multer';
-import { convertToWebp, toWebpFilename, generateFilename, getMp4Duration } from '../utils/file.util.js';
+import { convertToWebp, toWebpFilename, generateFilename } from '../utils/file.util.js';
 import { uploadFile } from '../services/bucket.service.js';
 
 // Configuration Limits
