@@ -11,6 +11,7 @@ export const CreateVideoSchema = videosSchema
 	.omit({ id: true, url: true, verified: true, status: true })
 	.extend({
 		edition_id: z
+			.coerce.number()
 			.int({ error: "Edition ID must be a whole number" })
 			.positive({ error: "Edition ID must be a positive number" })
 			.optional()
@@ -30,6 +31,7 @@ export const CreateVideoSchema = videosSchema
 			.string()
 			.min(1, { error: "Description is required" }),
 		country_id: z
+			.coerce.number()
 			.int({ error: "Country ID must be a whole number" })
 			.positive({ error: "Country ID must be a positive number" }),
 		producer: z
