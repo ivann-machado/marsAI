@@ -10,7 +10,7 @@ function AdminVideoPanel({ video_data }) {
   const authToken = useauth();
 
   const handleGrade = (value) => {
-    setReview((prev) => ({ ...prev, grade: value }));
+    setReview((prev) => ({ ...prev, grade: value, status: "done" }));
   };
 
   const createReview = async () => {
