@@ -358,24 +358,27 @@ function UploadForm() {
     };
     const formData = new FormData();
     formData.append("edition_id", 1);
-    formData.append("url", "");
-    formData.append("verified", 1);
-    formData.append("filename", uploadData.video);
-    formData.append("email", uploadData.email);
-    formData.append("cover_image", uploadData.image);
-    formData.append("title", uploadData.title);
-    formData.append("description", uploadData.description);
-    formData.append("status", "unverified");
-    formData.append("country_id", uploadData.country);
-    formData.append("producer", uploadData.producer);
-    formData.append("producer_image", uploadData.producerImage); //null ?
-    formData.append("linkedin_link", uploadData.linkedin); //null
-    formData.append("youtube_link", uploadData.youtube); //null
-    formData.append("scenario_ai", uploadData.scenario_ai); //null
-    formData.append("video_gen_ai", uploadData.video_ai); //null
-    formData.append("sound_ai", uploadData.sound_ai); //null
-    formData.append("postprod_ai", uploadData.post_prod_ai); //null
-    formData.append("tags", uploadData.tags); //null
+    if (uploadData.video) formData.append("filename", uploadData.video);
+    if (uploadData.email) formData.append("email", uploadData.email);
+    if (uploadData.image) formData.append("cover_image", uploadData.image);
+    if (uploadData.title) formData.append("title", uploadData.title);
+    if (uploadData.description)
+      formData.append("description", uploadData.description);
+    if (uploadData.country) formData.append("country_id", uploadData.country);
+    if (uploadData.producer) formData.append("producer", uploadData.producer);
+    if (uploadData.producerImage)
+      formData.append("producer_image", uploadData.producerImage); //null ?
+    if (uploadData.linkedin)
+      formData.append("linkedin_link", uploadData.linkedin); //null
+    if (uploadData.youtube) formData.append("youtube_link", uploadData.youtube); //null
+    if (uploadData.scenario_ai)
+      formData.append("scenario_ai", uploadData.scenario_ai); //null
+    if (uploadData.video_ai)
+      formData.append("video_gen_ai", uploadData.video_ai); //null
+    if (uploadData.sound_ai) formData.append("sound_ai", uploadData.sound_ai); //null
+    if (uploadData.post_prod_ai)
+      formData.append("postprod_ai", uploadData.post_prod_ai); //null
+    if (uploadData.tags) formData.append("tags", uploadData.tags); //null
     console.log(uploadData);
     console.log(movieTypeError);
     SetLoading(true);
