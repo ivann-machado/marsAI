@@ -2,13 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
-<<<<<<< HEAD
-import PhaseIndicator from "../../components/PhaseIndicator/PhaseIndicator";
-import PhaseNavigation from "../../components/PhaseNavigation/PhaseNavigation";
-import { useTranslation } from 'react-i18next';
-=======
 import { useTranslation } from "react-i18next";
->>>>>>> origin/dev
 
 const btn =
   "font-inter font-semibold text-sm tracking-wider uppercase rounded-full transition-all duration-300";
@@ -284,198 +278,6 @@ function Homepage() {
               </p>
             </div>
 
-<<<<<<< HEAD
-                {/* Protocol Section */}
-                <section className="py-32 bg-[#0a0a0f]">
-                    <div className="max-w-5xl mx-auto px-10 text-center">
-                        <div className="mb-12">
-                            <div className={`${badge} bg-[#ec4899]/20 border border-[#ec4899]/50 text-[#ec4899] mb-8`}>
-                                {t('homepage.protocol_badge')}
-                            </div>
-                            <h2 className="font-orbitron font-black text-[clamp(32px,6vw,56px)] leading-tight mb-6 text-white whitespace-pre-line">
-                                {t('homepage.protocol_title')}
-                            </h2>
-                        </div>
-                        
-                        <div className="grid grid-cols-3 gap-6 mb-12">
-                            <div className={`${card} p-8 border-[#ec4899]/30`}>
-                                <div className="font-orbitron font-black text-4xl text-[#ec4899] mb-2">{t('homepage.protocol_stat_1')}</div>
-                                <div className="text-xs text-[#d1d5db] tracking-wider uppercase">{t('homepage.protocol_stat_1_label')}</div>
-                            </div>
-                            <div className={`${card} p-8 border-[#10b981]/30`}>
-                                <div className="font-orbitron font-black text-4xl text-[#10b981] mb-2">{t('homepage.protocol_stat_2')}</div>
-                                <div className="text-xs text-[#d1d5db] tracking-wider uppercase">{t('homepage.protocol_stat_2_label')}</div>
-                            </div>
-                            <div className={`${card} p-8 border-[#06b6d4]/30`}>
-                                <div className="font-orbitron font-black text-4xl text-[#06b6d4] mb-2">{t('homepage.protocol_stat_4')}</div>
-                                <div className="text-xs text-[#d1d5db] tracking-wider uppercase">{t('homepage.protocol_stat_4_label')}</div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                {/* Platform Section */}
-                <section className="py-32 bg-[#0a0a0f]">
-                    <div className={container}>
-                        <div className="mb-16">
-                            <div className={`${badge} bg-[#3b82f6]/20 border border-[#3b82f6]/50 text-[#3b82f6] mb-8`}>
-                                {t('homepage.venue_badge')}
-                            </div>
-                            <h2 className={h2Style}>
-                                {t('homepage.venue_title')}<span className="text-[#3b82f6] drop-shadow-[0_0_20px_rgba(59,130,246,0.5)]">{t('homepage.venue_title_highlight')}</span>
-                            </h2>
-                            <div className="flex flex-col md:flex-row gap-8 text-[#d1d5db]">
-                                <div className="whitespace-pre-line">{t('homepage.venue_location_1')}</div>
-                                <div className="whitespace-pre-line">{t('homepage.venue_location_2')}</div>
-                                <div>{t('homepage.venue_location_3')}</div>
-                            </div>
-                        </div>
-                        
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                            <div className="space-y-6">
-                                <div className={`${card} p-10 border-[#10b981]/30 hover:border-[#10b981]/50 transition-all duration-300 hover:translate-y-[-5px]`}>
-                                    <h3 className="font-orbitron font-bold text-2xl mb-4 text-[#10b981]">{t('homepage.venue_room_1_title')}</h3>
-                                    <p className="text-[#d1d5db] leading-relaxed">
-                                        {t('homepage.venue_room_1_desc')}
-                                    </p>
-                                </div>
-                                
-                                <div className={`${card} p-10 border-[#ec4899]/30 hover:border-[#ec4899]/50 transition-all duration-300 hover:translate-y-[-5px]`}>
-                                    <h3 className="font-orbitron font-bold text-2xl mb-4 text-[#ec4899]">{t('homepage.venue_room_2_title')}</h3>
-                                    <p className="text-[#d1d5db] leading-relaxed">
-                                        {t('homepage.venue_room_2_desc')}
-                                    </p>
-                                </div>
-                            </div>
-                            
-                            <div className="flex flex-col gap-4">
-                                <div className="w-full min-h-[400px] rounded-3xl overflow-hidden border border-[#3b82f6]/30">
-                                    <iframe 
-                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2904.1234567890123!2d5.3662017!3d43.3141763!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12c9c0c6c8c8c8c8%3A0x123456789abcdef!2s%C3%89cole%20La%20Plateforme_%20Marseille%20-%20Entr%C3%A9e%20Sud!5e0!3m2!1sfr!2sfr!4v1234567890123!5m2!1sfr!2sfr"
-                                        width="100%"
-                                        height="400"
-                                        style={{ border: 0 }}
-                                        allowFullScreen=""
-                                        loading="lazy"
-                                        referrerPolicy="no-referrer-when-downgrade"
-                                        title="La Plateforme Marseille"
-                                    />
-                                </div>
-                                <a 
-                                    href="https://www.google.com/maps/place/École+La+Plateforme_+Marseille+-+Entrée+Sud/@43.3141763,5.3662017,17z" 
-                                    target="_blank" 
-                                    rel="noopener noreferrer"
-                                    className={`w-full text-center px-6 py-4 bg-[#3b82f6]/20 border border-[#3b82f6]/50 text-[#3b82f6] ${btn} hover:bg-[#3b82f6] hover:text-white transition-all duration-300`}
-                                >
-                                    {t('homepage.venue_view_map')}
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-            {/* Statistics Section - Chiffres Projetés */}
-                <section className="relative z-10 py-32 bg-gradient-to-br from-[#050508] via-[#0a0a0f] to-[#1a0a2e] relative overflow-hidden">
-                    {/* Background decoration */}
-                    <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(168,85,247,0.1)_0%,transparent_70%)] blur-3xl"></div>
-                    <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(236,72,153,0.1)_0%,transparent_70%)] blur-3xl"></div>
-                    
-                    <div className="max-w-7xl mx-auto px-10 relative z-10">
-                        <div className="mb-20">
-                            <h2 className="font-orbitron font-black text-[clamp(36px,6vw,64px)] leading-tight mb-3 text-white">
-                                {t('homepage.stats_title')}<br />
-                                <span className="text-[#ec4899] drop-shadow-[0_0_20px_rgba(236,72,153,0.5)]">{t('homepage.stats_title_highlight')}</span>
-                            </h2>
-                            <p className="text-sm text-[#d1d5db] tracking-[2px] uppercase">
-                                {t('homepage.stats_subtitle')}
-                            </p>
-                        </div>
-                        
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-6xl">
-                            {[
-                                {
-                                    number: t('homepage.stats_countries'),
-                                    label: t('homepage.stats_countries_label'),
-                                    gradient: 'from-[#1a1a24] to-[#2a1a34]',
-                                    borderGlow: 'group-hover:shadow-[0_0_40px_rgba(168,85,247,0.3)]',
-                                    colors: 'from-[#a855f7] to-[#ec4899]'
-                                },
-                                {
-                                    number: t('homepage.stats_films'),
-                                    label: t('homepage.stats_films_label'),
-                                    gradient: 'from-[#1a1a24] to-[#341a2a]',
-                                    borderGlow: 'group-hover:shadow-[0_0_40px_rgba(236,72,153,0.3)]',
-                                    colors: 'from-[#ec4899] to-[#f97316]'
-                                },
-                                {
-                                    number: t('homepage.stats_visitors'),
-                                    label: t('homepage.stats_visitors_label'),
-                                    gradient: 'from-[#1a1a24] to-[#1a2a34]',
-                                    borderGlow: 'group-hover:shadow-[0_0_40px_rgba(16,185,129,0.3)]',
-                                    colors: 'from-[#10b981] to-[#06b6d4]'
-                                },
-                                {
-                                    number: t('homepage.stats_experts'),
-                                    label: t('homepage.stats_experts_label'),
-                                    gradient: 'from-[#1a1a24] to-[#2a1a2a]',
-                                    borderGlow: 'group-hover:shadow-[0_0_40px_rgba(59,130,246,0.3)]',
-                                    colors: 'from-[#3b82f6] to-[#a855f7]'
-                                }
-                            ].map((stat, index) => (
-                                <div
-                                    key={index}
-                                    className="group relative p-8 rounded-3xl bg-gradient-to-br border border-white/5 hover:border-white/10 transition-all duration-500 hover:translate-y-[-8px]"
-                                    style={{
-                                        background: `linear-gradient(135deg, #1a1a24 0%, #2a1a34 100%)`
-                                    }}
-                                >
-                                    {/* Glow effect on hover */}
-                                    <div className={`absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${stat.borderGlow}`}></div>
-                                    
-                                    <div className="relative z-10">
-                                        <div className={`font-orbitron font-black text-[clamp(40px,6vw,70px)] mb-2 bg-gradient-to-br ${stat.colors} bg-clip-text text-transparent`}>
-                                            {stat.number}
-                                        </div>
-                                        <div className="text-xs text-[#d1d5db] tracking-[2px] uppercase font-inter font-semibold">
-                                            {stat.label}
-                                        </div>
-                                    </div>
-                                    
-                                    {/* Corner decoration */}
-                                    <div className="absolute top-3 right-3 w-8 h-8 border-t-2 border-r-2 border-white/10 rounded-tr-xl"></div>
-                                    <div className="absolute bottom-3 left-3 w-8 h-8 border-b-2 border-l-2 border-white/10 rounded-bl-xl"></div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-
-                {/* Partners Link Section */}
-                <section className="py-20 bg-[#0a0a0f]">
-                    <div className={container}>
-                        <div className="text-center">
-                            <p className="text-[#d1d5db] text-lg mb-6">
-                                {t('homepage.partners_link_text')}
-                            </p>
-                            <Link 
-                                to="/partners" 
-                                className={`px-10 py-4 bg-gradient-to-r from-[#06b6d4] to-[#3b82f6] text-white ${btn} ${btnHover} hover:shadow-[0_15px_40px_rgba(6,182,212,0.4)]`}
-                            >
-                                {t('homepage.partners_link_cta')}
-                            </Link>
-                        </div>
-                    </div>
-                </section>
-            </div>
-
-            {/* Navigation entre phases */}
-            <PhaseNavigation currentPhase={1} />
-
-            <PhaseIndicator currentPhase={1} />
-            <Footer />
-        </>
-    );
-=======
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
               <div
                 className={`${card} p-8 text-center border-[#f97316]/30 hover:border-[#f97316]/50 transition-all duration-300`}
@@ -602,10 +404,6 @@ function Homepage() {
                   {t("homepage.protocol_stat_2_label")}
                 </div>
               </div>
-              {/* <div className={`${card} p-8 border-[#ec4899]/30`}>
-                                <div className="font-orbitron font-black text-4xl text-[#ec4899] mb-2">{t('homepage.protocol_stat_3')}</div>
-                                <div className="text-xs text-[#d1d5db] tracking-wider uppercase">{t('homepage.protocol_stat_3_label')}</div>
-                            </div> */}
               <div className={`${card} p-8 border-[#06b6d4]/30`}>
                 <div className="font-orbitron font-black text-4xl text-[#06b6d4] mb-2">
                   {t("homepage.protocol_stat_4")}
@@ -695,9 +493,8 @@ function Homepage() {
           </div>
         </section>
 
-        {/* Statistics Section - Chiffres Projetés */}
-        <section className="relative z-10 py-32 bg-gradient-to-br from-[#050508] via-[#0a0a0f] to-[#1a0a2e] relative overflow-hidden">
-          {/* Background decoration */}
+        {/* Statistics Section */}
+        <section className="relative z-10 py-32 bg-gradient-to-br from-[#050508] via-[#0a0a0f] to-[#1a0a2e] overflow-hidden">
           <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(168,85,247,0.1)_0%,transparent_70%)] blur-3xl"></div>
           <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(236,72,153,0.1)_0%,transparent_70%)] blur-3xl"></div>
 
@@ -720,44 +517,35 @@ function Homepage() {
                 {
                   number: t("homepage.stats_countries"),
                   label: t("homepage.stats_countries_label"),
-                  gradient: "from-[#1a1a24] to-[#2a1a34]",
-                  borderGlow:
-                    "group-hover:shadow-[0_0_40px_rgba(168,85,247,0.3)]",
+                  borderGlow: "group-hover:shadow-[0_0_40px_rgba(168,85,247,0.3)]",
                   colors: "from-[#a855f7] to-[#ec4899]",
                 },
                 {
                   number: t("homepage.stats_films"),
                   label: t("homepage.stats_films_label"),
-                  gradient: "from-[#1a1a24] to-[#341a2a]",
-                  borderGlow:
-                    "group-hover:shadow-[0_0_40px_rgba(236,72,153,0.3)]",
+                  borderGlow: "group-hover:shadow-[0_0_40px_rgba(236,72,153,0.3)]",
                   colors: "from-[#ec4899] to-[#f97316]",
                 },
                 {
                   number: t("homepage.stats_visitors"),
                   label: t("homepage.stats_visitors_label"),
-                  gradient: "from-[#1a1a24] to-[#1a2a34]",
-                  borderGlow:
-                    "group-hover:shadow-[0_0_40px_rgba(16,185,129,0.3)]",
+                  borderGlow: "group-hover:shadow-[0_0_40px_rgba(16,185,129,0.3)]",
                   colors: "from-[#10b981] to-[#06b6d4]",
                 },
                 {
                   number: t("homepage.stats_experts"),
                   label: t("homepage.stats_experts_label"),
-                  gradient: "from-[#1a1a24] to-[#2a1a2a]",
-                  borderGlow:
-                    "group-hover:shadow-[0_0_40px_rgba(59,130,246,0.3)]",
+                  borderGlow: "group-hover:shadow-[0_0_40px_rgba(59,130,246,0.3)]",
                   colors: "from-[#3b82f6] to-[#a855f7]",
                 },
               ].map((stat, index) => (
                 <div
                   key={index}
-                  className="group relative p-8 rounded-3xl bg-gradient-to-br border border-white/5 hover:border-white/10 transition-all duration-500 hover:translate-y-[-8px]"
+                  className="group relative p-8 rounded-3xl border border-white/5 hover:border-white/10 transition-all duration-500 hover:translate-y-[-8px]"
                   style={{
                     background: `linear-gradient(135deg, #1a1a24 0%, #2a1a34 100%)`,
                   }}
                 >
-                  {/* Glow effect on hover */}
                   <div
                     className={`absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${stat.borderGlow}`}
                   ></div>
@@ -773,7 +561,6 @@ function Homepage() {
                     </div>
                   </div>
 
-                  {/* Corner decoration */}
                   <div className="absolute top-3 right-3 w-8 h-8 border-t-2 border-r-2 border-white/10 rounded-tr-xl"></div>
                   <div className="absolute bottom-3 left-3 w-8 h-8 border-b-2 border-l-2 border-white/10 rounded-bl-xl"></div>
                 </div>
@@ -802,7 +589,6 @@ function Homepage() {
       <Footer />
     </>
   );
->>>>>>> origin/dev
 }
 
 export default Homepage;
