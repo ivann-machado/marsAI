@@ -332,6 +332,129 @@ function UploadForm() {
    * Récupération des données envoyées
    */
   const [videoURL, setVideoURL] = useState(null);
+
+  const handleStep1 = async (e) => {
+    const step1Data = {
+      title: title.current.value,
+      description: description.current.value,
+      video: video.current.files[0],
+      cover_image: coverImage.current.files[0],
+      subtitles: subtitles.current.files,
+    };
+
+    if (!titleCheck()) {
+      showFlash(
+        "error",
+        "Titre: " + (titleError != "" ? titleError : "Champ vide"),
+      );
+      SetLoading(false);
+      return;
+    } else if (!descCheck()) {
+      showFlash(
+        "error",
+        "Description: " + (descError != "" ? descError : "Champ vide"),
+      );
+      SetLoading(false);
+      return;
+    } else if (!videoCheck()) {
+      showFlash(
+        "error",
+        "Vidéo: " + (videoError != "" ? videoError : "Champ vide"),
+      );
+      SetLoading(false);
+      return;
+    } else if (!coverImageCheck()) {
+      showFlash(
+        "error",
+        "Miniature du film: " +
+          (coverImageError != "" ? coverImageError : "Champ vide"),
+      );
+      SetLoading(false);
+      return;
+    } else {
+      nextStep();
+    }
+  };
+
+  const handleStep2 = async (e) => {
+    const step2Data = {
+      producer: producer.current.value,
+      email: email.current.value,
+      producer_image: producerImage.current.files[0],
+      movie_type: movieType.current.value,
+      scenario_ai: scenario_ai.current.value,
+      video_ai: video_ai.current.value,
+      sound_ai: sound_ai.current.value,
+      post_prod_ai: post_prod_ai.current.value,
+    };
+    if (!producerCheck()) {
+      showFlash(
+        "error",
+        "Producteur: " + (producerError != "" ? producerError : "Champ vide"),
+      );
+      SetLoading(false);
+      return;
+    } else if (!emailCheck()) {
+      showFlash(
+        "error",
+        "Email: " + (emailError != "" ? emailError : "Champ vide"),
+      );
+      SetLoading(false);
+      return;
+    } else if (!producerImageCheck()) {
+      showFlash(
+        "error",
+        "Photo du producteur: " +
+          (producerImageError != "" ? producerImageError : "Champ vide"),
+      );
+      SetLoading(false);
+      return;
+    } else if (!movieTypeCheck()) {
+      showFlash(
+        "error",
+        "Type de production:" +
+          (movieTypeError != "" ? movieTypeError : "champ incorrect"),
+      );
+      SetLoading(false);
+      return;
+    } else if (!scenarioAiCheck()) {
+      showFlash(
+        "error",
+        "IA scénario: " +
+          (scenarioAiError != "" ? scenarioAiError : "Champ non valide"),
+      );
+      SetLoading(false);
+      return;
+    } else if (!videoAiCheck()) {
+      showFlash(
+        "error",
+        "IA générative de vidéos: " +
+          (videoAiError != "" ? videoAiError : "Champ non valide"),
+      );
+      SetLoading(false);
+      return;
+    } else if (!soundAiCheck()) {
+      showFlash(
+        "error",
+        "IA sons et musiques: " +
+          (soundAiError != "" ? soundAiError : "Champ non valide"),
+      );
+      SetLoading(false);
+      return;
+    } else if (!postProdAiCheck()) {
+      showFlash(
+        "error",
+        "IA post-production: " +
+          (postProdAiError != ""
+            ? postProdAiError
+            : t("upload_form.errors_default_field_error")),
+      );
+      SetLoading(false);
+      return;
+    } else {
+      nextStep();
+    }
+  };
   /**
    * Stockage des valeurs des inputs
    */
@@ -391,93 +514,7 @@ function UploadForm() {
     console.log(uploadData);
     console.log("formData est : ", formData);
     SetLoading(true);
-    if (!titleCheck()) {
-      showFlash(
-        "error",
-        "Titre: " + (titleError != "" ? titleError : "Champ vide"),
-      );
-      SetLoading(false);
-      return;
-    } else if (!descCheck()) {
-      showFlash(
-        "error",
-        "Description: " + (descError != "" ? descError : "Champ vide"),
-      );
-      SetLoading(false);
-      return;
-    } else if (!videoCheck()) {
-      showFlash(
-        "error",
-        "Vidéo: " + (videoError != "" ? videoError : "Champ vide"),
-      );
-      SetLoading(false);
-      return;
-    } else if (!coverImageCheck()) {
-      showFlash(
-        "error",
-        "Miniature du film: " +
-          (coverImageError != "" ? coverImageError : "Champ vide"),
-      );
-      SetLoading(false);
-      return;
-    } else if (!producerCheck()) {
-      showFlash(
-        "error",
-        "Producteur: " + (producerError != "" ? producerError : "Champ vide"),
-      );
-      SetLoading(false);
-      return;
-    } else if (!producerImageCheck()) {
-      showFlash(
-        "error",
-        "Photo du producteur: " +
-          (producerImageError != "" ? producerImageError : "Champ vide"),
-      );
-      SetLoading(false);
-      return;
-    } else if (!movieTypeCheck()) {
-      showFlash(
-        "error",
-        "Type de production:" +
-          (movieTypeError != "" ? movieTypeError : "champ incorrect"),
-      );
-      SetLoading(false);
-      return;
-    } else if (!scenarioAiCheck()) {
-      showFlash(
-        "error",
-        "IA scénario: " +
-          (scenarioAiError != "" ? scenarioAiError : "Champ non valide"),
-      );
-      SetLoading(false);
-      return;
-    } else if (!videoAiCheck()) {
-      showFlash(
-        "error",
-        "IA générative de vidéos: " +
-          (videoAiError != "" ? videoAiError : "Champ non valide"),
-      );
-      SetLoading(false);
-      return;
-    } else if (!soundAiCheck()) {
-      showFlash(
-        "error",
-        "IA sons et musiques: " +
-          (soundAiError != "" ? soundAiError : "Champ non valide"),
-      );
-      SetLoading(false);
-      return;
-    } else if (!postProdAiCheck()) {
-      showFlash(
-        "error",
-        "IA post-production: " +
-          (postProdAiError != ""
-            ? postProdAiError
-            : t("upload_form.errors_default_field_error")),
-      );
-      SetLoading(false);
-      return;
-    } else if (!linkedinCheck()) {
+    if (!linkedinCheck()) {
       showFlash(
         "error",
         "Linkedin: " + (linkedinError != "" ? linkedinError : "Champ vide"),
@@ -495,13 +532,6 @@ function UploadForm() {
       showFlash(
         "error",
         "Instagram: " + (instagramError != "" ? instagramError : "Champ vide"),
-      );
-      SetLoading(false);
-      return;
-    } else if (!emailCheck()) {
-      showFlash(
-        "error",
-        "Email: " + (emailError != "" ? emailError : "Champ vide"),
       );
       SetLoading(false);
       return;
@@ -657,7 +687,7 @@ function UploadForm() {
             </div>
 
             <div className="flex justify-end p-4">
-              <NextButton onClick={nextStep} />
+              <NextButton onClick={handleStep1} />
             </div>
           </div>
 
@@ -841,7 +871,7 @@ function UploadForm() {
             <div className="flex justify-between p-4">
               <BackButton onClick={prevStep} />
 
-              <NextButton onClick={nextStep} />
+              <NextButton onClick={handleStep2} />
             </div>
           </div>
 
