@@ -438,6 +438,31 @@
     "event_lastName": "Votre nom",
     "event_email": "exemple@email.com"
   },
+  "phases": {
+    "before_festival": "Avant Festival",
+    "during_festival": "Festival en cours",
+    "after_festival": "Après Festival",
+    "phase1_nav": "Phase 1 — Candidatures",
+    "phase2_nav": "Phase 2 — Festival",
+    "phase3_nav": "Phase 3 — Palmarès",
+
+    "nav_title": "LE PARCOURS DU FESTIVAL",
+    "nav_phase1_title": "CANDIDATURES",
+    "nav_phase1_desc": "Soumission des courts-métrages d'une minute générés par IA",
+    "nav_phase1_date": "Janv. — Avril 2026",
+    "nav_phase1_status": "TERMINÉ",
+    "nav_phase2_title": "FESTIVAL",
+    "nav_phase2_desc": "2 jours de projections, conférences et workshops",
+    "nav_phase2_date": "12 — 13 Juin 2026",
+    "nav_phase2_status": "EN COURS",
+    "nav_phase3_title": "PALMARÈS",
+    "nav_phase3_desc": "Remise des prix et révélation des lauréats",
+    "nav_phase3_date": "À partir du 14 Juin 2026",
+    "nav_phase3_status": "À VENIR",
+    "nav_current": "VOUS ÊTES ICI",
+    "nav_revisit": "REVOIR",
+    "nav_discover": "DÉCOUVRIR"
+  },
   "CguCgv_page": {
     "footer.cguCgv": "mentions légales",
     "hero_badge": "CGU & CGV",

@@ -451,6 +451,31 @@
     "country_germany": "Germany",
     "country_spain": "Spain"
   },
+  "phases": {
+    "before_festival": "Before Festival",
+    "during_festival": "Festival Live",
+    "after_festival": "After Festival",
+    "phase1_nav": "Phase 1 — Applications",
+    "phase2_nav": "Phase 2 — Festival",
+    "phase3_nav": "Phase 3 — Awards",
+
+    "nav_title": "THE FESTIVAL JOURNEY",
+    "nav_phase1_title": "APPLICATIONS",
+    "nav_phase1_desc": "Submit one-minute AI-generated short films",
+    "nav_phase1_date": "Jan. — Apr. 2026",
+    "nav_phase1_status": "COMPLETED",
+    "nav_phase2_title": "FESTIVAL",
+    "nav_phase2_desc": "2 days of screenings, conferences and workshops",
+    "nav_phase2_date": "June 12 — 13, 2026",
+    "nav_phase2_status": "LIVE NOW",
+    "nav_phase3_title": "AWARDS",
+    "nav_phase3_desc": "Award ceremony and winners announcement",
+    "nav_phase3_date": "From June 14, 2026",
+    "nav_phase3_status": "COMING SOON",
+    "nav_current": "YOU ARE HERE",
+    "nav_revisit": "REVISIT",
+    "nav_discover": "DISCOVER"
+  },
   "CguCgv_page": {
     "footer.cguCgv": "legal notices",
     "hero_badge": "CGU & CGV",
