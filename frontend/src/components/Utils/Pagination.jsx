@@ -41,7 +41,7 @@ function Pagination({ currentPage, totalPages, setPage }) {
           </span>
         ) : (
           <button
-            key={page}
+            key={index}
             onClick={() => setPage(page)}
             className={`px-3 py-1 rounded ${
               page === currentPage ? "bg-blue-600 text-white" : "bg-gray-200"

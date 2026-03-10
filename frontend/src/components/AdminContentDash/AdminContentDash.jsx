@@ -1,9 +1,13 @@
 import AdminContentCard from "./AdminContentCard";
 import { useState, useEffect } from "react";
 import Loading from "../../components/Utils/Loading.jsx";
+import Pagination from "../Utils/Pagination.jsx";
 
 function AdminSettingsDash() {
   const [content, setContent] = useState(null);
+  const [contentPage, setContentPage] = useState(1);
+  const [contentPages, setContentPages] = useState(1);
+  const ITEMS_PER_PAGE = 15;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -17,13 +21,14 @@ function AdminSettingsDash() {
         );
         if (!response.ok) throw new Error("Erreur fetch JSON");
         const json = await response.json();
+        setContentPages(Math.floor((json.length - 1) / ITEMS_PER_PAGE) + 1);
         setContent(json);
       } catch (err) {
         console.error(err);
       }
     };
     fetchData();
-  }, []);
+  }, [contentPage]);
 
   if (!content) return <Loading />;
 
@@ -35,34 +40,24 @@ function AdminSettingsDash() {
           <p className="text-center text-xl font-bold">Content</p>
           <p className="text-center text-xl font-bold">Value</p>
         </div>
-        {content.map((content_item) => (
-          <AdminContentCard
-            name={content_item.name}
-            value={content_item.value}
-          />
-        ))}
-        {/* <form className="flex flex-col mx-auto bg-gray-800 text-white p-4">
-            <p>Créer nouveau content:</p>
-            <input
-              value={newName}
-              placeholder="name"
-              onChange={(e) => setNewName(e.target.value)}
-              className="bg-white text-black"
-            ></input>
-            <input
-              value={newValue}
-              placeholder="value"
-              onChange={(e) => setNewValue(e.target.value)}
-              className="bg-white text-black"
-            ></input>
-            <button
-              className="bg-white text-black mt-4"
-              onClick={() => addNewValue(newName, newValue)}
-            >
-              Enregistrer
-            </button>
-          </form> */}
+        {content
+          .slice(
+            (contentPage - 1) * ITEMS_PER_PAGE,
+            contentPage * ITEMS_PER_PAGE,
+          )
+          .map((content_item) => (
+            <AdminContentCard
+              key={content_item.name}
+              name={content_item.name}
+              value={content_item.value}
+            />
+          ))}
       </div>
+      <Pagination
+        currentPage={contentPage}
+        totalPages={contentPages}
+        setPage={setContentPage}
+      />
     </div>
   );
 }
