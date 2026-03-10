@@ -404,10 +404,6 @@ function Homepage() {
                   {t("homepage.protocol_stat_2_label")}
                 </div>
               </div>
-              {/* <div className={`${card} p-8 border-[#ec4899]/30`}>
-                                <div className="font-orbitron font-black text-4xl text-[#ec4899] mb-2">{t('homepage.protocol_stat_3')}</div>
-                                <div className="text-xs text-[#d1d5db] tracking-wider uppercase">{t('homepage.protocol_stat_3_label')}</div>
-                            </div> */}
               <div className={`${card} p-8 border-[#06b6d4]/30`}>
                 <div className="font-orbitron font-black text-4xl text-[#06b6d4] mb-2">
                   {t("homepage.protocol_stat_4")}
@@ -497,9 +493,8 @@ function Homepage() {
           </div>
         </section>
 
-        {/* Statistics Section - Chiffres Projetés */}
-        <section className="relative z-10 py-32 bg-gradient-to-br from-[#050508] via-[#0a0a0f] to-[#1a0a2e] relative overflow-hidden">
-          {/* Background decoration */}
+        {/* Statistics Section */}
+        <section className="relative z-10 py-32 bg-gradient-to-br from-[#050508] via-[#0a0a0f] to-[#1a0a2e] overflow-hidden">
           <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(168,85,247,0.1)_0%,transparent_70%)] blur-3xl"></div>
           <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(236,72,153,0.1)_0%,transparent_70%)] blur-3xl"></div>
 
@@ -522,44 +517,35 @@ function Homepage() {
                 {
                   number: t("homepage.stats_countries"),
                   label: t("homepage.stats_countries_label"),
-                  gradient: "from-[#1a1a24] to-[#2a1a34]",
-                  borderGlow:
-                    "group-hover:shadow-[0_0_40px_rgba(168,85,247,0.3)]",
+                  borderGlow: "group-hover:shadow-[0_0_40px_rgba(168,85,247,0.3)]",
                   colors: "from-[#a855f7] to-[#ec4899]",
                 },
                 {
                   number: t("homepage.stats_films"),
                   label: t("homepage.stats_films_label"),
-                  gradient: "from-[#1a1a24] to-[#341a2a]",
-                  borderGlow:
-                    "group-hover:shadow-[0_0_40px_rgba(236,72,153,0.3)]",
+                  borderGlow: "group-hover:shadow-[0_0_40px_rgba(236,72,153,0.3)]",
                   colors: "from-[#ec4899] to-[#f97316]",
                 },
                 {
                   number: t("homepage.stats_visitors"),
                   label: t("homepage.stats_visitors_label"),
-                  gradient: "from-[#1a1a24] to-[#1a2a34]",
-                  borderGlow:
-                    "group-hover:shadow-[0_0_40px_rgba(16,185,129,0.3)]",
+                  borderGlow: "group-hover:shadow-[0_0_40px_rgba(16,185,129,0.3)]",
                   colors: "from-[#10b981] to-[#06b6d4]",
                 },
                 {
                   number: t("homepage.stats_experts"),
                   label: t("homepage.stats_experts_label"),
-                  gradient: "from-[#1a1a24] to-[#2a1a2a]",
-                  borderGlow:
-                    "group-hover:shadow-[0_0_40px_rgba(59,130,246,0.3)]",
+                  borderGlow: "group-hover:shadow-[0_0_40px_rgba(59,130,246,0.3)]",
                   colors: "from-[#3b82f6] to-[#a855f7]",
                 },
               ].map((stat, index) => (
                 <div
                   key={index}
-                  className="group relative p-8 rounded-3xl bg-gradient-to-br border border-white/5 hover:border-white/10 transition-all duration-500 hover:translate-y-[-8px]"
+                  className="group relative p-8 rounded-3xl border border-white/5 hover:border-white/10 transition-all duration-500 hover:translate-y-[-8px]"
                   style={{
                     background: `linear-gradient(135deg, #1a1a24 0%, #2a1a34 100%)`,
                   }}
                 >
-                  {/* Glow effect on hover */}
                   <div
                     className={`absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${stat.borderGlow}`}
                   ></div>
@@ -575,7 +561,6 @@ function Homepage() {
                     </div>
                   </div>
 
-                  {/* Corner decoration */}
                   <div className="absolute top-3 right-3 w-8 h-8 border-t-2 border-r-2 border-white/10 rounded-tr-xl"></div>
                   <div className="absolute bottom-3 left-3 w-8 h-8 border-b-2 border-l-2 border-white/10 rounded-bl-xl"></div>
                 </div>

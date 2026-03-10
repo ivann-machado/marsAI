@@ -22,12 +22,14 @@
     "contact": "Contact",
     "legal_notices": "Legal Notices",
     "stay_connected": "Stay Connected",
+    "subscription": "Subscribe to our newsletter.",
     "home": "Home",
     "participate": "Participate",
     "board": "Board",
     "about": "About",
     "subscription_success": "Succesfully subscribed to our Newsletter. Thank you!",
-    "email_error": "Invalid email"
+    "email_error": "Invalid email",
+    "bottom_message": "2026 MARS AI PROTOCOL"
   },
   "header": {
     "home": "Home",
@@ -450,6 +452,31 @@
     "country_usa": "USA",
     "country_germany": "Germany",
     "country_spain": "Spain"
+  },
+  "phases": {
+    "before_festival": "Before Festival",
+    "during_festival": "Festival Live",
+    "after_festival": "After Festival",
+    "phase1_nav": "Phase 1 — Applications",
+    "phase2_nav": "Phase 2 — Festival",
+    "phase3_nav": "Phase 3 — Awards",
+
+    "nav_title": "THE FESTIVAL JOURNEY",
+    "nav_phase1_title": "APPLICATIONS",
+    "nav_phase1_desc": "Submit one-minute AI-generated short films",
+    "nav_phase1_date": "Jan. — Apr. 2026",
+    "nav_phase1_status": "COMPLETED",
+    "nav_phase2_title": "FESTIVAL",
+    "nav_phase2_desc": "2 days of screenings, conferences and workshops",
+    "nav_phase2_date": "June 12 — 13, 2026",
+    "nav_phase2_status": "LIVE NOW",
+    "nav_phase3_title": "AWARDS",
+    "nav_phase3_desc": "Award ceremony and winners announcement",
+    "nav_phase3_date": "From June 14, 2026",
+    "nav_phase3_status": "COMING SOON",
+    "nav_current": "YOU ARE HERE",
+    "nav_revisit": "REVISIT",
+    "nav_discover": "DISCOVER"
   },
   "CguCgv_page": {
     "footer.cguCgv": "legal notices",
