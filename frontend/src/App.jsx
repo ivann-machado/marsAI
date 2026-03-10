@@ -21,11 +21,19 @@ import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.jsx";
 import JuryPage from "./pages/JuryPage/JuryPage.jsx";
 import SponsorsPage from "./pages/SponsorsPage/SponsorsPage.jsx";
 import Event from "./pages/Event/Event_page.jsx";
-import { SettingsProvider } from "./context/SettingsContext.jsx";
+import CguCgv from "./pages/CguCgv/CguCgv.jsx";
+import Faq from "./pages/Faq/Faq.jsx";
+// import { SettingsProvider } from "./context/SettingsContext.jsx";
 import { FlashProvider } from "./context/FlashContext.jsx";
 import NotFound from "./components/Utils/NotFound.jsx";
+import AdminRegister from "./pages/AdminRegister/AdminRegister.jsx";
+import { useSettings } from "./context/SettingsContext.jsx";
+import Loading from "./components/Utils/Loading.jsx";
 
 function App() {
+  const settings = useSettings();
+  if (settings === null) return <Loading />;
+
   if (window.location.host.split(".")[0] == "admin")
     /* PAGES ADMIN */
     return (
@@ -33,6 +41,8 @@ function App() {
         <FlashProvider>
           <Routes>
             <Route path="/login" element={<AdminLogin />} />
+            <Route path="/register/:token" element={<AdminRegister />} />
+            <Route path="/register" element={<AdminRegister />} />
             <Route
               path="/"
               element={
@@ -117,26 +127,64 @@ function App() {
         </FlashProvider>
       </BrowserRouter>
     );
-  else
-    /* PAGES PUBLIQUES */
+  else if (settings.phase === "1")
+    /* PHASE 1 */
     return (
       <BrowserRouter>
         <FlashProvider>
-          <SettingsProvider>
-            <Routes>
-              <Route path="/" element={<Homepage />} />
-              <Route path="/phase2" element={<HomepagePhase2 />} />
-              <Route path="/phase3" element={<HomepagePhase3 />} />
-              <Route path="/video/:videoId" element={<VideoDetail />} />
-              <Route path="/gallery" element={<Gallery />} />
-              <Route path="/participate" element={<UploadPage />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/jury" element={<JuryPage />} />
-              <Route path="/partners" element={<SponsorsPage />} />
-              <Route path="/Event" element={<Event />} />
-              <Route path="*" element={<NotFound />}></Route>
-            </Routes>
-          </SettingsProvider>
+          <Routes>
+            <Route path="/" element={<Homepage />} />
+            {/* <Route path="/video/:videoId" element={<VideoDetail />} /> */}
+            {/* <Route path="/gallery" element={<Gallery />} /> */}
+            <Route path="/participate" element={<UploadPage />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/jury" element={<JuryPage />} />
+            <Route path="/partners" element={<SponsorsPage />} />
+            <Route path="/Event" element={<Event />} />
+            <Route path="/CguCgv" element={<CguCgv />} />
+            <Route path="/Faq" element={<Faq />} />
+            <Route path="*" element={<NotFound />}></Route>
+          </Routes>
+        </FlashProvider>
+      </BrowserRouter>
+    );
+  else if (settings.phase === "2")
+    return (
+      <BrowserRouter>
+        <FlashProvider>
+          <Routes>
+            <Route path="/" element={<HomepagePhase2 />} />
+            <Route path="/video/:videoId" element={<VideoDetail />} />
+            <Route path="/gallery" element={<Gallery />} />
+            {/* <Route path="/participate" element={<UploadPage />} /> */}
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/jury" element={<JuryPage />} />
+            <Route path="/partners" element={<SponsorsPage />} />
+            <Route path="/Event" element={<Event />} />
+            <Route path="/CguCgv" element={<CguCgv />} />
+            <Route path="/Faq" element={<Faq />} />
+            <Route path="*" element={<NotFound />}></Route>
+          </Routes>
+        </FlashProvider>
+      </BrowserRouter>
+    );
+  else if (settings.phase === "3")
+    return (
+      <BrowserRouter>
+        <FlashProvider>
+          <Routes>
+            <Route path="/" element={<HomepagePhase3 />} />
+            <Route path="/video/:videoId" element={<VideoDetail />} />
+            <Route path="/gallery" element={<Gallery />} />
+            {/* <Route path="/participate" element={<UploadPage />} /> */}
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/jury" element={<JuryPage />} />
+            <Route path="/partners" element={<SponsorsPage />} />
+            <Route path="/Event" element={<Event />} />
+            <Route path="/CguCgv" element={<CguCgv />} />
+            <Route path="/Faq" element={<Faq />} />
+            <Route path="*" element={<NotFound />}></Route>
+          </Routes>
         </FlashProvider>
       </BrowserRouter>
     );

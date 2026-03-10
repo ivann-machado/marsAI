@@ -1,16 +1,17 @@
 import { PORT } from './src/config/index.js';
-import connectDB, { pool } from './src/config/db.js';
+import { performance } from 'perf_hooks';
 import { loadSettings } from './src/config/settings.js';
 import { createServer } from "http";
 import app from './src/app.js';
 
-connectDB();
+
 await loadSettings();
+console.log(`Settings loaded in ${Math.round(Date.now() - performance.timeOrigin)}ms`);
 
 const server = createServer(app);
 
 server.on('listening', () => {
-	console.log(`Server started on http://localhost:${PORT}`);
+	console.log(`Server started on http://localhost:${PORT} in ${Math.round(Date.now() - performance.timeOrigin)}ms`);
 });
 
 const startServer = (port, retries = 20) => {

@@ -57,7 +57,7 @@ function Gallery() {
         );
         if (!response.ok) throw new Error("Erreur fetch JSON");
         let res = await response.json();
-        setFilms(res);
+        setFilms(res.data);
       } catch (err) {
         console.error(err);
       }
@@ -448,6 +448,7 @@ function Gallery() {
           </div>
         </section>
       </div>
+      <Footer />
     </>
   );
 }

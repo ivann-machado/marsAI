@@ -29,7 +29,7 @@ function AdminSponsorDash() {
         );
         if (!response.ok) throw new Error("Erreur fetch JSON");
         let res = await response.json();
-        setSponsor(res);
+        setSponsor(res.data);
       } catch (err) {
         console.error(err);
       }

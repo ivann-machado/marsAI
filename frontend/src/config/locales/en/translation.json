@@ -9,6 +9,7 @@
   },
 
   "footer": {
+    "footer_home": "Home",
     "footer_message": "\"The global platform for generative storytelling, anchored in the light of Marseille.\"",
     "navigation": "Navigation",
     "gallery": "Gallery",
@@ -341,6 +342,7 @@
     "gallery_watch_film": "WATCH",
     "gallery_all_movie": "ALL FILMS"
   },
+
   "page_contact": {
     "contact_badge": "GET IN TOUCH",
     "contact_title": "CONTACT US",
@@ -348,7 +350,14 @@
     "contact_submit": "Send Message",
     "contact_name_placeholder": "Your Name",
     "contact_email_placeholder": "example@email.com",
-    "contact_message_placeholder": "Your Message..."
+    "contact_message_placeholder": "Your Message...",
+    "error_empty_field": "Field must be completed",
+    "error_empty_fields": "All fields must be filled",
+    "error_invalid_email": "Please type a valid email address",
+    "error_minimum_length": "Message has to be atleast 10 characters long",
+    "success_message_sent": "Your message has been sent succesfully!",
+    "error_message_fail": "There has been an error sending your message",
+    "error_network": "Network error. Please try again later."
   },
 
   "jury_page": {
@@ -465,6 +474,64 @@
     "nav_phase3_status": "COMING SOON",
     "nav_current": "YOU ARE HERE",
     "nav_revisit": "REVISIT",
-    "nav_discover": "DISCOVER"
+    "nav_discover": "DISCOVER",
+    "CguCgv_page": {
+      "footer.cguCgv": "legal notices",
+      "hero_badge": "CGU & CGV",
+      "hero_title": "General Terms and Conditions",
+      "hero_title_highlight": "of Use & Sale",
+      "hero_description": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "cgu_title": "Cgu title",
+      "cgu_intro": "Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "cgu_section1_title": "1. Cgu title",
+      "cgu_section1_content": "In reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+      "cgu_section2_title": "2. Cgu title",
+      "cgu_section2_content": "Cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      "cgv_title": "Cgv title",
+      "cgv_intro": "Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "cgv_section1_title": "1. Cgv title",
+      "cgv_section1_content": "Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "cgv_section2_title": "2. Cgv title",
+      "cgv_section2_content": "In reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+    },
+    "Faq_page": {
+      "hero_badge": "FREQUENTLY ASKED QUESTIONS",
+      "hero_title": "Do you have",
+      "hero_title_highlight": "questions ?",
+      "hero_description": "Find answers to your questions about the MARS.AI 2026 festival",
+      "faq_section_submission": "Submit a Film",
+      "faq_q1": "How do I submit my film?",
+      "faq_a1": "To submit your film, go to the 'Participate' section on the website. You must fill out the form with your film information, upload the video, and declare the AI tools used. The submission process is free and open to everyone.",
+      "faq_q2": "What is the maximum duration of a film?",
+      "faq_a2": "All films must be a maximum of 60 seconds. This is an important constraint of the ultra-short format of the festival to ensure equality between participants. Make sure your film respects this duration before submission.",
+      "faq_q3": "What video formats are accepted?",
+      "faq_a3": "We accept common video formats: MP4, MOV, AVI, WebM. The minimum recommended resolution is 1280x720 (720p). Make sure your file does not exceed 500 MB to facilitate upload.",
+      "faq_q4": "Is AI use mandatory?",
+      "faq_a4": "Yes, the use of at least one generative AI tool is required. You must declare the categories of AI used: scenario, image, video, sound/music or post-production. This is part of the festival's concept.",
+      "faq_section_selection": "Selection and Evaluation",
+      "faq_q5": "How are films selected?",
+      "faq_a5": "Films are evaluated by a jury composed of experts in AI and cinema according to four criteria: AI originality, visual aesthetics, narrative quality and emotion/impact. The 50 best films are selected for the festival.",
+      "faq_q6": "When will selected films be announced?",
+      "faq_a6": "The official selection will be announced on June 1, 2026, 11 days before the festival. Creators of selected films will be notified directly by email with all participation details.",
+      "faq_q7": "Can I submit multiple films?",
+      "faq_a7": "Yes, you can submit multiple films during the application period. However, each film must be unique and meet all festival requirements. There is no limit to submissions per person.",
+      "faq_section_event": "The Event",
+      "faq_q8": "Where and when will the festival take place?",
+      "faq_a8": "The MARS.AI 2026 festival will take place on June 12-13, 2026 at La Plateforme, 12 Rue d'Uzès, 13002 Marseille. Easy access by trams T2/T3 stop Arenc Le Silo.",
+      "faq_q9": "Is admission free?",
+      "faq_a9": "No, admission to all events (screenings and conferences) is completely free. Only certain premium activities such as intensive workshops may have a fee. Booking is recommended to secure your place.",
+      "faq_q10": "Will there be awards?",
+      "faq_a10": "Yes! There will be several prizes: the MARS.AI Grand Prize 2026, the Jury Prize, Best Direction, AI Innovation Prize, Best Screenplay and Artistic Prize. Awards will be presented at the closing ceremony on June 13.",
+      "faq_section_rights": "Rights and Conditions",
+      "faq_q11": "What happens to my copyright?",
+      "faq_a11": "By submitting your film, you agree to transfer property rights to the festival organizers for the duration of the festival and associated promotional uses. You waive your copyright and ownership of the submitted video. Please read the terms carefully before submitting.",
+      "faq_q12": "Do I need to be an adult to participate?",
+      "faq_a12": "Yes, participants must be 18 years or older to submit a film. This is part of the festival's terms of use. A certification from you is required during submission.",
+      "faq_section_technical": "Technical Questions",
+      "faq_q13": "What should I do if I encounter technical issues during submission?",
+      "faq_a13": "If you have technical issues, first check our troubleshooting page or contact us directly through the contact form. Our support team will respond to your question within 24 hours.",
+      "faq_q14": "My film was rejected, can I know why?",
+      "faq_a14": "Unfortunately, we cannot provide detailed feedback on each submission due to the large number of films received. If you have specific questions, feel free to contact us directly."
+    }
   }
 }

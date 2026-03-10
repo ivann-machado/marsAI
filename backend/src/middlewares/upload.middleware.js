@@ -1,5 +1,5 @@
 import multer from 'multer';
-import { convertToWebp, toWebpFilename, generateFilename, getMp4Duration } from '../utils/file.util.js';
+import { convertToWebp, toWebpFilename, generateFilename } from '../utils/file.util.js';
 import { uploadFile } from '../services/bucket.service.js';
 
 // Configuration Limits
@@ -76,45 +76,60 @@ const handleProcessedFileUpload = async (file, { acl, quality }) => {
  * @param {object} [options]
  * @param {string} [options.acl='public-read'] - S3 ACL
  * @param {number} [options.quality=80] - WebP image quality
+ * @param {object} [options.schema=null] - Optional Zod schema for validation
  * @returns {Array} Express middleware array
  */
 export const processAndUpload = (options = {}) => {
 	const {
 		acl = 'public-read',
-		quality = 80
+		quality = 80,
+		maxFiles = 4,
+		maxSize = LIMITS.GLOBAL_SUM,
+		schema = null
 	} = options;
 
 	const receive = multer({
 		storage: multer.memoryStorage(),
 		fileFilter: fileFilter,
 		limits: {
-			fileSize: LIMITS.GLOBAL_SUM,
-			files: 3
+			fileSize: maxSize,
+			files: maxFiles
 		}
 	}).any();
 
 	const process = async (req, res, next) => {
 		try {
+			if (schema) {
+				const filesForZod = {};
+				if (req.files) {
+					req.files.forEach(file => {
+						filesForZod[file.fieldname] = file;
+					});
+				}
+				const validatedData = schema.parse({ ...req.body, ...filesForZod });
+				req.body = { ...req.body, ...validatedData };
+			}
+
 			if (!req.files || req.files.length === 0) return next();
 
-			for (const file of req.files) {
-				if (file.mimetype.startsWith('image/') && file.size > LIMITS.IMAGE) {
-					return res.status(400).json({ message: `Image file too large. Maximum size is ${LIMITS.IMAGE / (1024 * 1024)}Mo.` });
-				}
-				if ((file.mimetype === 'text/srt' || file.mimetype === 'application/x-subrip') && file.size > LIMITS.SUBTITLE) {
-					return res.status(400).json({ message: `Subtitle file too large. Maximum size is ${LIMITS.SUBTITLE / (1024 * 1024)}Mo.` });
-				}
-				if (file.mimetype.startsWith('video/')) {
-					if (file.size > LIMITS.VIDEO) {
-						return res.status(400).json({ message: `Video file too large. Maximum size is ${LIMITS.VIDEO / (1024 * 1024)}Mo.` });
-					}
+			// for (const file of req.files) {
+			// 	if (file.mimetype.startsWith('image/') && file.size > LIMITS.IMAGE) {
+			// 		return res.status(400).json({ message: `Image file too large. Maximum size is ${LIMITS.IMAGE / (1024 * 1024)}Mo.` });
+			// 	}
+			// 	if ((file.mimetype === 'text/srt' || file.mimetype === 'application/x-subrip') && file.size > LIMITS.SUBTITLE) {
+			// 		return res.status(400).json({ message: `Subtitle file too large. Maximum size is ${LIMITS.SUBTITLE / (1024 * 1024)}Mo.` });
+			// 	}
+			// 	if (file.mimetype.startsWith('video/')) {
+			// 		if (file.size > LIMITS.VIDEO) {
+			// 			return res.status(400).json({ message: `Video file too large. Maximum size is ${LIMITS.VIDEO / (1024 * 1024)}Mo.` });
+			// 		}
 
-					const duration = getMp4Duration(file.buffer);
-					if (duration !== null && duration > LIMITS.VIDEO_DURATION_SEC) {
-						return res.status(400).json({ message: `Video duration exceeds maximum allowed time (${LIMITS.VIDEO_DURATION_SEC} seconds).` });
-					}
-				}
-			}
+			// 		const duration = getMp4Duration(file.buffer);
+			// 		if (duration !== null && duration > LIMITS.VIDEO_DURATION_SEC) {
+			// 			return res.status(400).json({ message: `Video duration exceeds maximum allowed time (${LIMITS.VIDEO_DURATION_SEC} seconds).` });
+			// 		}
+			// 	}
+			// }
 
 			const processingTasks = req.files.map(file =>
 				handleProcessedFileUpload(file, { acl, quality })
@@ -132,6 +147,12 @@ export const processAndUpload = (options = {}) => {
 
 			next();
 		} catch (error) {
+			if (error.name === 'ZodError') {
+				return res.status(400).json({
+					message: "Validation failed",
+					errors: error.flatten().fieldErrors
+				});
+			}
 			console.error("Upload Processing Error:", error);
 			res.status(500).json({ message: "An error occurred during file upload." });
 		}

@@ -15,35 +15,38 @@
 	"type": "module",
 	"main": "server.js",
 	"scripts": {
-		"start": "nodemon server.js",
-		"dev": "nodemon server.js",
-		"test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles"
+		"start": "nodemon --exec \"node --experimental-strip-types\" server.js",
+		"dev": "nodemon --exec \"node --experimental-strip-types\" server.js",
+		"test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles",
+		"prisma:generate": "prisma generate"
 	},
 	"dependencies": {
-		"@aws-sdk/client-s3": "^3.999.0",
+		"@aws-sdk/client-s3": "^3.1004.0",
 		"@getbrevo/brevo": "^4.0.1",
+		"@prisma/adapter-mariadb": "^7.4.2",
+		"@prisma/client": "^7.4.2",
 		"bcryptjs": "^3.0.3",
 		"cors": "^2.8.6",
 		"dotenv": "^17.3.1",
 		"express": "^5.2.1",
-		"express-rate-limit": "^8.2.1",
-		"google-auth-library": "^10.6.1",
+		"express-rate-limit": "^8.3.1",
 		"googleapis": "^171.4.0",
 		"helmet": "^8.1.0",
-		"i18next": "^25.8.13",
 		"jsonwebtoken": "^9.0.3",
-		"mariadb": "^3.5.1",
 		"morgan": "^1.10.1",
-		"multer": "^2.0.2",
+		"multer": "^2.1.1",
 		"sharp": "^0.34.5",
 		"swagger-jsdoc": "^6.2.8",
-		"swagger-ui-express": "^5.0.1"
+		"swagger-ui-express": "^5.0.1",
+		"zod": "^4.3.6"
 	},
 	"devDependencies": {
 		"jest": "^30.2.0",
 		"jsdoc": "^4.0.5",
 		"jsdoc-to-markdown": "^9.1.3",
 		"nodemon": "^3.1.14",
-		"supertest": "^7.2.2"
+		"prisma": "^7.4.2",
+		"supertest": "^7.2.2",
+		"zod-prisma-types": "^3.3.11"
 	}
 }

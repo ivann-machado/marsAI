@@ -1,4 +1,4 @@
-import { selectAllSettings, updateSetting } from "../models/setting.model.js";
+import prisma from "../config/prisma.js";
 
 /**
  * Get all settings.
@@ -7,7 +7,7 @@ import { selectAllSettings, updateSetting } from "../models/setting.model.js";
  */
 export const getSettings = async (req, res) => {
 	try {
-		const settings = await selectAllSettings();
+		const settings = await prisma.settings.findMany();
 		res.status(200).json(settings);
 	} catch (error) {
 		console.error("Get Settings Error:", error);
@@ -28,14 +28,16 @@ export const setSetting = async (req, res) => {
 			return res.status(400).json({ message: "Name and value are required" });
 		}
 
-		const result = await updateSetting(name, value);
-
-		if (result.affectedRows === 0) {
-			return res.status(404).json({ message: "Setting not found" });
-		}
+		await prisma.settings.update({
+			where: { name },
+			data: { value },
+		});
 
 		res.status(200).json({ message: "Setting updated successfully" });
 	} catch (error) {
+		if (error.code === "P2025") {
+			return res.status(404).json({ message: "Setting not found" });
+		}
 		console.error("Set Setting Error:", error);
 		res.status(500).json({ message: "Server error" });
 	}

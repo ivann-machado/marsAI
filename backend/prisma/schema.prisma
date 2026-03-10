@@ -1,0 +1,250 @@
+generator client {
+    provider = "prisma-client"
+    output   = "../src/generated/prisma"
+}
+
+generator zod {
+    provider = "zod-prisma-types"
+    output   = "../src/generated/zod"
+}
+
+datasource db {
+    provider = "mysql"
+}
+
+model admins {
+    id       Int         @id @default(autoincrement())
+    login    String      @unique(map: "login") @db.VarChar(50)
+    password String?     @db.VarChar(255)
+    role     admins_role
+    reviews  reviews[]
+    tokens   tokens[]
+}
+
+model content {
+    name       String   @id @unique(map: "name") @db.VarChar(50)
+    value      String   @db.Text
+    updated_at DateTime @default(now()) @db.Timestamp(0)
+
+    @@index([name], map: "name_2")
+}
+
+model countries {
+    id       Int      @id @default(autoincrement())
+    name     String   @db.VarChar(50)
+    iso_code String   @db.VarChar(5)
+    videos   videos[]
+}
+
+model editions {
+    id       Int        @id @default(autoincrement())
+    year     Int        @db.Year
+    name     String     @db.VarChar(50)
+    phase    Int        @default(1) @db.TinyInt
+    jury     jury[]
+    sponsors sponsors[]
+    videos   videos[]
+}
+
+model events {
+    id           Int            @id @default(autoincrement())
+    type         events_type
+    name         String         @db.VarChar(50)
+    url          String         @db.VarChar(100)
+    logo         String         @db.VarChar(100)
+    info         String         @db.Text
+    place        String         @db.VarChar(100)
+    duration     Int
+    cover_image  String         @db.VarChar(100)
+    date         DateTime       @db.DateTime(0)
+    reservations reservations[]
+}
+
+model jury {
+    id         Int      @id @default(autoincrement())
+    edition_id Int
+    name       String   @db.VarChar(50)
+    bio        String   @db.VarChar(200)
+    photo      String   @db.VarChar(100)
+    profession String   @db.VarChar(50)
+    editions   editions @relation(fields: [edition_id], references: [id], onUpdate: Restrict, map: "jury_ibfk_1")
+
+    @@index([edition_id], map: "edition_id")
+}
+
+model newsletters {
+    id    Int    @id @default(autoincrement())
+    email String @unique(map: "email") @db.VarChar(50)
+}
+
+model prized_videos {
+    video_id Int    @id
+    prix     String @db.VarChar(50)
+    videos   videos @relation(fields: [video_id], references: [id], onDelete: Cascade, map: "prized_videos_ibfk_1")
+}
+
+model process_queue {
+    id         Int                  @id @default(autoincrement())
+    video_id   Int
+    status     process_queue_status @default(pending)
+    date       DateTime             @default(now()) @db.Timestamp(0)
+    filename   String               @db.VarChar(100)
+    type       process_queue_type
+    updated_at DateTime             @default(now()) @db.Timestamp(0)
+    video      videos               @relation(fields: [video_id], references: [id])
+}
+
+model reservations {
+    id        Int    @id @default(autoincrement())
+    event_id  Int
+    firstname String @db.VarChar(50)
+    lastname  String @db.VarChar(50)
+    email     String @db.VarChar(50)
+    events    events @relation(fields: [event_id], references: [id], onDelete: Cascade, map: "reservations_ibfk_1")
+
+    @@index([event_id], map: "event_id")
+}
+
+model reviews {
+    id       Int            @id @default(autoincrement())
+    admin_id Int
+    video_id Int
+    note     String         @db.VarChar(300)
+    grade    Int            @default(0)
+    status   reviews_status
+    videos   videos         @relation(fields: [video_id], references: [id], onDelete: Cascade, map: "reviews_ibfk_1")
+    admins   admins         @relation(fields: [admin_id], references: [id], onDelete: Cascade, map: "reviews_ibfk_2")
+
+    @@index([admin_id], map: "admin_id")
+    @@index([video_id], map: "video_id")
+}
+
+model settings {
+    name       String   @id @unique(map: "name") @db.VarChar(50)
+    value      String   @db.Text
+    updated_at DateTime @default(now()) @db.Timestamp(0)
+
+    @@index([name], map: "name_2")
+}
+
+model sponsors {
+    id         Int           @id @default(autoincrement())
+    edition_id Int
+    type       sponsors_type
+    name       String        @db.VarChar(50)
+    url        String        @db.VarChar(100)
+    logo       String        @db.VarChar(100)
+    editions   editions      @relation(fields: [edition_id], references: [id], onUpdate: Restrict, map: "sponsors_ibfk_1")
+
+    @@index([edition_id], map: "edition_id")
+}
+
+model subtitles {
+    id       Int                @id @default(autoincrement())
+    video_id Int
+    language subtitles_language
+    filename String             @db.VarChar(100)
+    videos   videos             @relation(fields: [video_id], references: [id], onDelete: Cascade, map: "subtitles_ibfk_1")
+
+    @@index([video_id], map: "video_id")
+}
+
+model tokens {
+    id         Int            @id @default(autoincrement())
+    value      String         @unique(map: "value") @db.VarChar(100)
+    created_at DateTime       @default(now()) @db.Timestamp(0)
+    status     tokens_status? @default(pending)
+    admin_id   Int
+    admins     admins         @relation(fields: [admin_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "tokens_ibfk_1")
+
+    @@index([admin_id], map: "admin_id")
+}
+
+model videos {
+    id             Int             @id @default(autoincrement())
+    edition_id     Int
+    url            String          @db.VarChar(100)
+    filename       String          @db.VarChar(100)
+    email          String          @db.VarChar(50)
+    cover_image    String          @db.VarChar(100)
+    verified       Boolean
+    title          String          @db.VarChar(50)
+    description    String          @db.Text
+    status         videos_status   @default(unverified)
+    country_id     Int
+    producer       String          @db.VarChar(50)
+    producer_image String          @db.VarChar(100)
+    linkedin_link  String          @db.VarChar(50)
+    youtube_link   String          @db.VarChar(50)
+    scenario_ai    String          @db.VarChar(50)
+    video_gen_ai   String          @db.VarChar(50)
+    sound_ai       String          @db.VarChar(50)
+    postprod_ai    String          @db.VarChar(50)
+    tags           String          @db.VarChar(100)
+    prized_videos  prized_videos?
+    reviews        reviews[]
+    subtitles      subtitles[]
+    editions       editions        @relation(fields: [edition_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "videos_ibfk_1")
+    countries      countries       @relation(fields: [country_id], references: [id], onUpdate: Restrict, map: "videos_ibfk_2")
+    processQueues  process_queue[]
+
+    @@index([country_id], map: "country_id")
+    @@index([edition_id], map: "edition_id")
+}
+
+enum events_type {
+    atelier
+    EMPTY_ENUM_VALUE @map("")
+}
+
+enum sponsors_type {
+    official
+    media
+    technical
+    other
+}
+
+enum subtitles_language {
+    french
+    english
+    EMPTY_ENUM_VALUE @map("")
+}
+
+enum process_queue_status {
+    pending
+    done
+    error
+    timeout
+}
+
+enum admins_role {
+    admin
+    super_admin      @map("super admin")
+    EMPTY_ENUM_VALUE @map("")
+}
+
+enum tokens_status {
+    pending
+    used
+    revoked
+}
+
+enum reviews_status {
+    assigned
+    done
+    EMPTY_ENUM_VALUE @map("")
+}
+
+enum process_queue_type {
+    yt_upload
+    yt_status_check
+    s3_upload
+    EMPTY_ENUM_VALUE @map("")
+}
+
+enum videos_status {
+    unverified
+    verified
+    selected
+    denied
+}

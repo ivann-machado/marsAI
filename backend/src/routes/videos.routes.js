@@ -1,16 +1,19 @@
 import express from "express";
 import {
-  getAllVideos,
-  getVideoById,
-  createVideo,
-  setVideo,
-  removeVideo,
+	getAllVideos,
+	getVideoById,
+	getAssignedVideos,
+	getUnassignedVideos,
+	createVideo,
+	setVideo,
+	removeVideo,
 } from "../controllers/video.controller.js";
 import {
-  verifyToken,
-  requireSuperAdmin,
+	verifyToken,
+	requireSuperAdmin,
 } from "../middlewares/auth.middleware.js";
 import { processAndUpload } from "../middlewares/upload.middleware.js";
+import { CreateVideoSchema, UpdateVideoSchema } from "../schemas/video.schema.js";
 
 const router = express.Router();
 
@@ -23,15 +26,17 @@ const router = express.Router();
  * - DELETE `/:id` : delete a video.
  */
 router.get("/", getAllVideos);
+router.get("/assigned", verifyToken, getAssignedVideos);
+router.get("/unassigned", verifyToken, getUnassignedVideos);
 router.get("/:id", getVideoById);
 
-router.post("/", processAndUpload(), createVideo);
+router.post("/", processAndUpload({ schema: CreateVideoSchema }), createVideo);
 router.put(
-  "/:id",
-  verifyToken,
-  requireSuperAdmin,
-  processAndUpload(),
-  setVideo,
+	"/:id",
+	verifyToken,
+	requireSuperAdmin,
+	processAndUpload({ schema: UpdateVideoSchema }),
+	setVideo,
 );
 router.delete("/:id", verifyToken, requireSuperAdmin, removeVideo);
 

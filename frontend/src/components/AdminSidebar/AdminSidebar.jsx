@@ -21,28 +21,28 @@ function AdminSidebar() {
       </p>
 
       <div className="flex flex-col text-gray-100">
-        {userRole && userRole === "super admin" ? (
+        {userRole && userRole === "super_admin" ? (
           <SidebarButton link="/" name={t("admin_sidebar.overview")} />
         ) : null}
-        {userRole && ["super admin", "admin"].includes(userRole) ? (
+        {userRole && ["super_admin", "admin"].includes(userRole) ? (
           <SidebarButton link="/videos" name={t("admin_sidebar.videos")} />
         ) : null}
-        {userRole && userRole === "super admin" ? (
+        {userRole && userRole === "super_admin" ? (
           <SidebarButton link="/users" name={t("admin_sidebar.users")} />
         ) : null}
-        {userRole && userRole === "super admin" ? (
+        {userRole && userRole === "super_admin" ? (
           <SidebarButton link="/events" name={t("admin_sidebar.events")} />
         ) : null}
-        {userRole && userRole === "super admin" ? (
+        {userRole && userRole === "super_admin" ? (
           <SidebarButton link="/settings" name={t("admin_sidebar.settings")} />
         ) : null}
-        {userRole && userRole === "super admin" ? (
+        {userRole && userRole === "super_admin" ? (
           <SidebarButton link="/content" name={t("admin_sidebar.content")} />
         ) : null}
-        {userRole && userRole === "super admin" ? (
+        {userRole && userRole === "super_admin" ? (
           <SidebarButton link="/jury" name={t("admin_sidebar.jury")} />
         ) : null}
-        {userRole && userRole === "super admin" ? (
+        {userRole && userRole === "super_admin" ? (
           <SidebarButton link="/partners" name={t("admin_sidebar.partners")} />
         ) : null}
         {userRole ? (

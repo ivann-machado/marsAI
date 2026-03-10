@@ -22,7 +22,7 @@ function SponsorsPage() {
         );
         if (!response.ok) throw new Error("Erreur fetch JSON");
         let res = await response.json();
-        setSponsors(res);
+        setSponsors(res.data);
       } catch (err) {
         console.error(err);
       }

@@ -1,85 +1,96 @@
-import { pool } from "../config/db.js";
+import prisma from "../config/prisma.js";
 
 /**
  * Insert a new process queue item.
  * @param {Object} data - Process queue data (video_id, status, filename, type)
- * @param {import("mariadb").PoolConnection|null} [conn=null] - Optional transaction connection
- * @returns {Promise<Object>} raw MariaDB result
+ * @returns {Promise<Object>} raw result compatibility
  */
-export const insertProcessQueue = async ({ video_id, status = 'pending', filename, type }, conn = null) => {
-	const query = "INSERT INTO process_queue (video_id, status, filename, type) VALUES (?, ?, ?, ?)";
-	const db = conn || pool;
-	return db.query(query, [video_id, status, filename, type]);
+export const insertProcessQueue = async ({ video_id, status = 'pending', filename, type }) => {
+	const pq = await prisma.process_queue.create({
+		data: {
+			video_id: Number(video_id),
+			status,
+			filename,
+			type,
+		},
+	});
+	return { insertId: pq.id };
 };
 
 /**
  * Select a process queue item by ID.
  * @param {number} id
- * @param {import("mariadb").PoolConnection|null} [conn=null] - Optional transaction connection
  * @returns {Promise<Object[]>}
  */
-export const selectProcessQueueById = async (id, conn = null) => {
-	const query = "SELECT * FROM process_queue WHERE id = ?";
-	const db = conn || pool;
-	return db.query(query, [id]);
+export const selectProcessQueueById = async (id) => {
+	const pq = await prisma.process_queue.findUnique({
+		where: { id: Number(id) },
+	});
+	return pq ? [pq] : [];
 };
 
 /**
  * Select all process queue items.
- * @param {import("mariadb").PoolConnection|null} [conn=null] - Optional transaction connection
  * @returns {Promise<Object[]>}
  */
-export const selectAllProcessQueues = async (conn = null) => {
-	const query = "SELECT * FROM process_queue ORDER BY created_at ASC";
-	const db = conn || pool;
-	return db.query(query);
+export const selectAllProcessQueues = async () => {
+	return prisma.process_queue.findMany({
+		orderBy: { created_at: "asc" },
+	});
 };
 
 /**
  * Select all pending process queue items.
- * @param {import("mariadb").PoolConnection|null} [conn=null] - Optional transaction connection
  * @returns {Promise<Object[]>}
  */
-export const selectPendingProcessQueues = async (conn = null) => {
-	const query = "SELECT * FROM process_queue WHERE status = 'pending' ORDER BY created_at ASC";
-	const db = conn || pool;
-	return db.query(query);
+export const selectPendingProcessQueues = async () => {
+	return prisma.process_queue.findMany({
+		where: { status: "pending" },
+		orderBy: { created_at: "asc" },
+	});
 };
 
 /**
  * Update a process queue item by ID.
  * @param {number} id
  * @param {Object} data - Process queue data
- * @param {import("mariadb").PoolConnection|null} [conn=null] - Optional transaction connection
  * @returns {Promise<Object>}
  */
-export const updateProcessQueue = async (id, { video_id, status, filename, type }, conn = null) => {
-	const query = "UPDATE process_queue SET video_id = ?, status = ?, filename = ?, type = ? WHERE id = ?";
-	const db = conn || pool;
-	return db.query(query, [video_id, status, filename, type, id]);
+export const updateProcessQueue = async (id, { video_id, status, filename, type }) => {
+	await prisma.process_queue.update({
+		where: { id: Number(id) },
+		data: {
+			video_id: Number(video_id),
+			status,
+			filename,
+			type,
+		},
+	});
+	return { affectedRows: 1 };
 };
 
 /**
  * Update only the status of a process queue item.
  * @param {number} id
  * @param {string} status - Enum ('pending','done','failed','timeout')
- * @param {import("mariadb").PoolConnection|null} [conn=null] - Optional transaction connection
  * @returns {Promise<Object>}
  */
-export const updateProcessQueueStatus = async (id, status, conn = null) => {
-	const query = "UPDATE process_queue SET status = ? WHERE id = ?";
-	const db = conn || pool;
-	return db.query(query, [status, id]);
+export const updateProcessQueueStatus = async (id, status) => {
+	await prisma.process_queue.update({
+		where: { id: Number(id) },
+		data: { status },
+	});
+	return { affectedRows: 1 };
 };
 
 /**
  * Delete a process queue item by ID.
  * @param {number} id
- * @param {import("mariadb").PoolConnection|null} [conn=null] - Optional transaction connection
  * @returns {Promise<Object>}
  */
-export const deleteProcessQueue = async (id, conn = null) => {
-	const query = "DELETE FROM process_queue WHERE id = ?";
-	const db = conn || pool;
-	return db.query(query, [id]);
+export const deleteProcessQueue = async (id) => {
+	await prisma.process_queue.delete({
+		where: { id: Number(id) },
+	});
+	return { affectedRows: 1 };
 };

@@ -1,48 +1,47 @@
-import { pool } from "../config/db.js";
+import prisma from "../config/prisma.js";
 
 /**
  * Add a new email to the newsletter list.
  * @param {string} email
- * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
- * @returns {Promise<any>} Result.
+ * @returns {Promise<any>} raw MariaDB-like result for compatibility.
  */
-export const insertNewsletter = async (email, conn = null) => {
-	const query = "INSERT INTO newsletters (email) VALUES (?)";
-	const db = conn || pool;
-	return db.query(query, [email]);
+export const insertNewsletter = async (email) => {
+	const res = await prisma.newsletters.create({
+		data: { email },
+	});
+	return { insertId: res.id };
 };
 
 /**
  * Find a newsletter subscription by email.
  * @param {string} email
- * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
- * @returns {Promise<any>}
+ * @returns {Promise<Object[]>} Compatibility result (array of rows).
  */
-export const selectNewsletterByEmail = async (email, conn = null) => {
-	const query = "SELECT id FROM newsletters WHERE email = ?";
-	const db = conn || pool;
-	return db.query(query, [email]);
+export const selectNewsletterByEmail = async (email) => {
+	const sub = await prisma.newsletters.findUnique({
+		where: { email },
+	});
+	return sub ? [sub] : [];
 };
 
 /**
  * Get all newsletter subscriptions.
- * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
- * @returns {Promise<any[]>}
+ * @returns {Promise<Object[]>} Compliance result (array of rows).
  */
-export const selectAllNewsletters = async (conn = null) => {
-	const query = "SELECT * FROM newsletters ORDER BY created_at DESC";
-	const db = conn || pool;
-	return db.query(query);
+export const selectAllNewsletters = async () => {
+	return prisma.newsletters.findMany({
+		orderBy: { created_at: "desc" },
+	});
 };
 
 /**
  * Delete a newsletter entry by email.
  * @param {string} email
- * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
- * @returns {Promise<any>} Result.
+ * @returns {Promise<any>} raw MariaDB-like result for compatibility.
  */
-export const deleteNewsletterByEmail = async (email, conn = null) => {
-	const query = "DELETE FROM newsletters WHERE email = ?";
-	const db = conn || pool;
-	return db.query(query, [email]);
+export const deleteNewsletterByEmail = async (email) => {
+	await prisma.newsletters.delete({
+		where: { email },
+	});
+	return { affectedRows: 1 };
 };
