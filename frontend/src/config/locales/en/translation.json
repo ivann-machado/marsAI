@@ -22,12 +22,14 @@
     "contact": "Contact",
     "legal_notices": "Legal Notices",
     "stay_connected": "Stay Connected",
+    "subscription": "Subscribe to our newsletter.",
     "home": "Home",
     "participate": "Participate",
     "board": "Board",
     "about": "About",
     "subscription_success": "Succesfully subscribed to our Newsletter. Thank you!",
-    "email_error": "Invalid email"
+    "email_error": "Invalid email",
+    "bottom_message": "2026 MARS AI PROTOCOL"
   },
   "header": {
     "home": "Home",
