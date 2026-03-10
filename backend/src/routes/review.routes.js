@@ -9,7 +9,11 @@ import {
 	removeReview,
 } from "../controllers/review.controller.js";
 import { validate } from "../middlewares/validate.middleware.js";
-import { CreateReviewSchema, UpdateReviewSchema } from "../schemas/review.schema.js";
+import {
+	CreateReviewSchema,
+	UpdateReviewSchema,
+} from "../schemas/review.schema.js";
+import { verifyToken } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
@@ -19,6 +23,8 @@ const router = express.Router();
 // 4. GET /api/reviews/rest (vidéos non assignées à l'admin connecté)
 
 router.post("/", validate(CreateReviewSchema), createReview);
+router.get("/assigned", verifyToken, getAssignedReviews);
+router.get("/rest", verifyToken, getRestVideos);
 router.get("/", getAllReviews);
 router.get("/:id", getReviewById);
 router.put("/:id", validate(UpdateReviewSchema), setReview);
