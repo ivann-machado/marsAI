@@ -21,10 +21,19 @@ import reviewRoutes from "./routes/review.routes.js";
 
 const app = express();
 
+// Helmet for security
+app.use(helmet({
+	contentSecurityPolicy: false,
+	crossOriginEmbedderPolicy: false,
+	crossOriginOpenerPolicy: false,
+	crossOriginResourcePolicy: false,
+}));
+
 //  Middleware
 app.use(cors(CORS_OPTIONS));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
 // Logging
 app.use(morgan("dev")); // Log requests
 
