@@ -36,6 +36,7 @@ function App() {
 
   if (window.location.host.split(".")[0] == "admin")
     /* PAGES ADMIN */
+  
     return (
       <BrowserRouter>
         <FlashProvider>
