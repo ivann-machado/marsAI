@@ -110,13 +110,13 @@ function AdminEventCard(props) {
         <input
           value={event.name}
           onChange={(e) => updateEvent("name", e)}
-          className="bg-gray-700 text-center rounded-sm hover:ring-2 hover:ring-purple-800"
+          className="bg-gray-700 text-center rounded-sm hover:ring-2 hover:ring-purple-800 m-1"
         ></input>
         Type:
         <select
           value={event.type}
           onChange={(e) => updateEvent("type", e)}
-          className="bg-gray-700 text-center rounded-sm"
+          className="bg-gray-700 text-center rounded-sm m-1 p-1"
         >
           {eventTypes.map((eventType) => (
             <option key={eventType} value={eventType}>
@@ -126,12 +126,15 @@ function AdminEventCard(props) {
         </select>
       </h1>
       <div className="flex justify-center items-center">
-        <img src={event.cover_image} className="aspect-auto h-25"></img>
+        <img
+          src={event.cover_image}
+          className="aspect-auto h-25 rounded-sm m-1"
+        ></img>
         <input
           type="file"
           id=""
           onChange={(e) => updateEvent("cover_image", e)}
-          className="bg-gray-700"
+          className="bg-gray-700 p-1 rounded-sm"
         ></input>
       </div>
       <p>
@@ -140,13 +143,13 @@ function AdminEventCard(props) {
           type="datetime-local"
           value={formatForDatetimeLocal(event.date)}
           onChange={(e) => handleDateChange(e.target.value)}
-          className="bg-gray-700 text-center ml-2"
+          className="bg-gray-700 text-center m-2 rounded-sm"
         ></input>
         - Duration:
         <input
           value={event.duration}
           onChange={(e) => updateEvent("duration", e)}
-          className="bg-gray-700 text-center"
+          className="bg-gray-700 text-center rounded-sm m-2"
         ></input>
         minutes
       </p>
@@ -155,7 +158,7 @@ function AdminEventCard(props) {
         <input
           value={event.place}
           onChange={(e) => updateEvent("place", e)}
-          className="bg-gray-700 text-center"
+          className="bg-gray-700 text-center m-1 rounded-sm"
         ></input>
       </p>
       <p>
@@ -163,7 +166,7 @@ function AdminEventCard(props) {
         <input
           value={event.info}
           onChange={(e) => updateEvent("info", e)}
-          className="bg-gray-700 text-center"
+          className="bg-gray-700 text-center m-1 rounded-sm"
         ></input>
       </p>
       <p>
@@ -172,12 +175,12 @@ function AdminEventCard(props) {
           type="url"
           value={event.url}
           onChange={(e) => updateEvent("url", e)}
-          className="bg-gray-700 text-center"
+          className="bg-gray-700 text-center m-1 rounded-sm"
         ></input>
       </p>
       <div className="flex justify-around">
         <button
-          className="bg-gray-400 text-black text-center p-2 border-amber-50 rounded-xl  hover:bg-amber-200"
+          className="bg-gradient-to-b from-gray-500 to-gray-400 text-black text-center p-2 border-amber-50 rounded-xl hover:to-gray-300"
           onClick={() => {
             setIsOpen(!isOpen);
           }}
@@ -186,14 +189,14 @@ function AdminEventCard(props) {
         </button>
         {modified ? (
           <button
-            className="bg-green-700 text-black text-center p-2 border-amber-50 rounded-xl hover:bg-amber-200"
+            className="bg-gradient-to-b from-green-700 to-green-600 text-black text-center p-2 border-amber-50 rounded-xl hover:to-green-400"
             onClick={() => saveEvent()}
           >
             Sauvegarder
           </button>
         ) : null}
         <button
-          className="bg-red-700 text-white text-center p-2 border-amber-50 rounded-xl hover:bg-red-500"
+          className="bg-gradient-to-b from-red-800 to-red-700 text-white text-center p-2 border-amber-50 rounded-xl hover:to-red-500"
           onClick={() => deleteEvent()}
         >
           Supprimer evenement

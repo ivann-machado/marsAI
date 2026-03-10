@@ -27,7 +27,7 @@ function AdminUsersDash() {
   if (!users) return <Loading />;
 
   return (
-    <div className="w-4/5 bg-linear-to-br from-gray-950 to-gray-800  flex flex-col items-center">
+    <div className="w-4/5 bg-gradient-to-br from-gray-950 via-gray-800 to-gray-950  flex flex-col items-center">
       <h1 className="py-4 font-bold text-3xl text-white text-center">
         Gestion Utilisateurs
       </h1>
