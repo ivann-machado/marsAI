@@ -26,7 +26,7 @@ function AdminVideosDash() {
         /* Recuperation des vidéos assignées à l'admin (via reviews) */
         const assignedQuery = "/?page=" + videoQueuePage;
         let response = await fetch(
-          import.meta.env.VITE_API_URL + "/api/videos/assigned",
+          import.meta.env.VITE_API_URL + "/api/reviews/assigned",
           {
             method: "GET",
             headers: {
@@ -41,13 +41,16 @@ function AdminVideosDash() {
         setVideoQueue(res.data ?? res);
 
         /* Recuperation de toutes les videos non assignées à cet admin*/
-        response = await fetch(import.meta.env.VITE_API_URL + "/api/videos", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + authToken.token,
+        response = await fetch(
+          import.meta.env.VITE_API_URL + "/api/reviews/rest",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + authToken.token,
+            },
           },
-        });
+        );
         if (!response.ok) throw new Error("Erreur fetch rest videos");
         res = await response.json();
         setOtherVideo(res.data ?? res);
@@ -72,7 +75,7 @@ function AdminVideosDash() {
   if (!videoQueue || !otherVideo) return <Loading />;
 
   return (
-    <div className="w-4/5 bg-gray-950 px-4 font-inter">
+    <div className="w-4/5 bg-gradient-to-br from-gray-950 via-gray-800 to-gray-950 px-4 font-inter">
       <h1 className="py-2 font-bold text-3xl text-white text-center">
         Gestion des films
       </h1>
