@@ -104,19 +104,19 @@ function AdminEventCard(props) {
   if (!event) return <></>;
 
   return (
-    <div className="bg-gray-800 min-h-25 max-w-200 mx-auto border m-4 rounded-xl p-2 text-white">
+    <div className="bg-gradient-to-br from-gray-900 via-gray-800 tog-gray-900 min-h-25 max-w-200 mx-auto border m-4 rounded-xl p-2 text-white">
       <h1 className="font-bold text-xl text-center">
         Nom:
         <input
           value={event.name}
           onChange={(e) => updateEvent("name", e)}
-          className="bg-gray-700 text-center"
+          className="bg-gray-700 text-center rounded-sm hover:ring-2 hover:ring-purple-800"
         ></input>
         Type:
         <select
           value={event.type}
           onChange={(e) => updateEvent("type", e)}
-          className="bg-gray-700 text-center"
+          className="bg-gray-700 text-center rounded-sm"
         >
           {eventTypes.map((eventType) => (
             <option key={eventType} value={eventType}>
