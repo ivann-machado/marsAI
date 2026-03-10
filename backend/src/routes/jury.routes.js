@@ -1,6 +1,5 @@
 import express from "express";
 import { processAndUpload } from "../middlewares/upload.middleware.js";
-
 import {
 	createJury,
 	getAllJuries,
@@ -9,6 +8,7 @@ import {
 	removeJury,
 } from "../controllers/jury.controller.js";
 import { verifyToken, requireSuperAdmin } from "../middlewares/auth.middleware.js";
+import { CreateJurySchema, UpdateJurySchema } from "../schemas/jury.schema.js";
 
 const router = express.Router();
 
@@ -22,8 +22,8 @@ const router = express.Router();
  */
 router.get("/", getAllJuries);
 router.get("/:id", getJuryById);
-router.post("/", verifyToken, requireSuperAdmin, processAndUpload(), createJury);
-router.put("/:id", verifyToken, requireSuperAdmin, processAndUpload(), setJury);
+router.post("/", verifyToken, requireSuperAdmin, processAndUpload({ schema: CreateJurySchema, maxFiles: 1, maxSize: 5 * 1024 * 1024 }), createJury);
+router.put("/:id", verifyToken, requireSuperAdmin, processAndUpload({ schema: UpdateJurySchema, maxFiles: 1, maxSize: 5 * 1024 * 1024 }), setJury);
 router.delete("/:id", verifyToken, requireSuperAdmin, removeJury);
 
 export default router;
