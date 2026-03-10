@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
-import PhaseIndicator from "../../components/PhaseIndicator/PhaseIndicator";
-import PhaseNavigation from "../../components/PhaseNavigation/PhaseNavigation";
 
 const btn =
   "font-inter font-semibold text-sm tracking-wider uppercase rounded-full transition-all duration-300";
@@ -16,10 +14,26 @@ const h2Style =
   "font-orbitron font-black text-[clamp(36px,6vw,64px)] leading-tight mb-6 text-white";
 
 const stats = [
-  { number: "3,247", labelKey: "homepage.phase2_visitors", color: "text-[#10b981]" },
-  { number: "50", labelKey: "homepage.phase2_films_selection", color: "text-[#ec4899]" },
-  { number: "120", labelKey: "homepage.phase2_countries", color: "text-[#06b6d4]" },
-  { number: "60+", labelKey: "homepage.phase2_experts", color: "text-[#a855f7]" },
+  {
+    number: "3,247",
+    labelKey: "homepage.phase2_visitors",
+    color: "text-[#10b981]",
+  },
+  {
+    number: "50",
+    labelKey: "homepage.phase2_films_selection",
+    color: "text-[#ec4899]",
+  },
+  {
+    number: "120",
+    labelKey: "homepage.phase2_countries",
+    color: "text-[#06b6d4]",
+  },
+  {
+    number: "60+",
+    labelKey: "homepage.phase2_experts",
+    color: "text-[#a855f7]",
+  },
 ];
 
 const films = [
@@ -218,7 +232,6 @@ function HomepagePhase2() {
                 </div>
               ))}
             </div>
-
           </div>
         </section>
 
@@ -399,10 +412,6 @@ function HomepagePhase2() {
           </div>
         </section>
       </div>
-      {/* Navigation entre phases */}
-      <PhaseNavigation currentPhase={2} />
-
-      <PhaseIndicator currentPhase={2} />
       <Footer />
     </>
   );
