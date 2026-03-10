@@ -20,7 +20,7 @@ function AdminVideosDash() {
       try {
         /* Recuperation des vidéos assignées à l'admin (via reviews) */
         let response = await fetch(
-          import.meta.env.VITE_API_URL + "/api/videos/assigned",
+          import.meta.env.VITE_API_URL + "/api/reviews/assigned",
           {
             method: "GET",
             headers: {
@@ -33,12 +33,15 @@ function AdminVideosDash() {
         let res = await response.json();
         setVideoQueue(res.data ?? res);
 
-        /* Recuperation de toutes les videos */
-        response = await fetch(import.meta.env.VITE_API_URL + "/api/videos", {
+        /* Recuperation de toutes les videos non assignées à cet admin*/
+        response = await fetch(import.meta.env.VITE_API_URL + "/api/reviews/rest", {
           method: "GET",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + authToken.token,
+          },
         });
-        if (!response.ok) throw new Error("Erreur fetch JSON");
+        if (!response.ok) throw new Error("Erreur fetch rest videos");
         res = await response.json();
         setOtherVideo(res.data ?? res);
       } catch (err) {
