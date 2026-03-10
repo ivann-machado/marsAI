@@ -2,9 +2,12 @@ import Loading from "../Utils/Loading";
 import { useState, useEffect } from "react";
 import AdminUserCard from "./AdminUserCard.jsx";
 import AdminUserInviteForm from "./AdminUserInviteForm.jsx";
+import Pagination from "../Utils/Pagination.jsx";
 
 function AdminUsersDash() {
   const [users, setUsers] = useState(null);
+  const [userPage, setUserPage] = useState(1);
+  const [userPages, setUserPages] = useState(1);
 
   useEffect(() => {
     const fetchData = async () => {
