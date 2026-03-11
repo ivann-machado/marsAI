@@ -3,17 +3,19 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import rateLimit from "express-rate-limit";
-import { CORS_OPTIONS, JWT_SECRET } from "./config/index.js";
-import authRoutes from "./routes/auth.routes.js";
-import videoRoutes from "./routes/videos.routes.js";
+import debounce from "./middlewares/debounce.middleware.js";
+import { CORS_OPTIONS, JWT_SECRET, HELMET_CONFIG } from "./config/index.js";
 import jwt from "jsonwebtoken";
-import newsletterRoutes from "./routes/newsletter.routes.js";
+import MORGAN_FORMAT from "./config/morgan.config.js";
+// Routes imports
+import authRoutes from "./routes/auth.routes.js";
 import settingRoutes from "./routes/setting.routes.js";
-import reservationRoutes from "./routes/reservation.routes.js";
 import contentRoutes from "./routes/content.routes.js";
+import videoRoutes from "./routes/videos.routes.js";
+import newsletterRoutes from "./routes/newsletter.routes.js";
+import reservationRoutes from "./routes/reservation.routes.js";
 import eventRoutes from "./routes/event.routes.js";
 import contactRoutes from "./routes/contact.routes.js";
-
 import juryRoutes from "./routes/jury.routes.js";
 import sponsorRoutes from "./routes/sponsor.routes.js";
 import reviewRoutes from "./routes/review.routes.js";
@@ -21,19 +23,17 @@ import reviewRoutes from "./routes/review.routes.js";
 const app = express();
 
 // Helmet for security
-app.use(helmet({
-	contentSecurityPolicy: false,
-	crossOriginEmbedderPolicy: false,
-	crossOriginOpenerPolicy: false,
-	crossOriginResourcePolicy: false,
-}));
+app.use(helmet(HELMET_CONFIG));
 
 //  Middleware
 app.use(cors(CORS_OPTIONS));
 app.use(express.json());
 
 // Logging
-app.use(morgan("dev")); // Log requests
+app.use(morgan(MORGAN_FORMAT)); // Log requests
+
+// Debounce for deduplication
+app.use(debounce(500));
 
 // Rate Limiting
 const limiter = rateLimit({
