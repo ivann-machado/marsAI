@@ -60,3 +60,10 @@ export const CORS_OPTIONS = {
 	credentials: true,
 	methods: ["GET", "POST", "PUT", "DELETE"]
 };
+
+export const HELMET_CONFIG = {
+	contentSecurityPolicy: false,
+	crossOriginEmbedderPolicy: false,
+	crossOriginOpenerPolicy: false,
+	crossOriginResourcePolicy: false,
+};
