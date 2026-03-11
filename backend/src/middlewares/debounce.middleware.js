@@ -1,4 +1,4 @@
-import crypto from 'crypto';
+import crypto from 'node:crypto';
 
 /**
  * @description: Generates a unique fingerprint for the request.
