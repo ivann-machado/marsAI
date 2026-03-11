@@ -1,9 +1,15 @@
 import Loading from "../Utils/Loading";
 import { useState, useEffect } from "react";
+import { useauth } from "../../context/AuthContext";
+import { useSettings } from "../../context/SettingsContext";
+import { useFlash } from "../../context/FlashContext";
 
 function AdminOverview() {
   const [data, setData] = useState(null);
   let address = window.location.host.split(".").slice(1);
+  const authToken = useauth();
+  const settings = useSettings();
+  const { showFlash } = useFlash();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -18,20 +24,68 @@ function AdminOverview() {
     };
 
     fetchData();
+    /*   console.log(data);
+    setData((prev) => ({ ...prev, phase: settings.phase })); */
   }, []);
+  /* 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/data.json");
+        if (!response.ok) throw new Error("Erreur fetch JSON");
+        const json = await response.json();
+        setData(json.mockedData);
+      } catch (err) {
+        console.error(err);
+      }
+    };
 
-  function changePhase() {
+    fetchData();
+  }, []); */
+
+  /* function changePhase() {
     if (data.phase < 3) {
       setData((prev) => ({ ...prev, phase: prev.phase + 1 }));
       //fetch pour modifier phase en DB}
     }
-  }
+  } */
+
+  const changePhase = async () => {
+    if (data.phase < 3) {
+      setData((prev) => ({ ...prev, phase: prev.phase + 1 }));
+      try {
+        const response = await fetch(
+          import.meta.env.VITE_API_URL + "/api/content/",
+          {
+            method: "PUT",
+            headers: {
+              Authorization: "Bearer " + authToken.token,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name: "phase",
+              value: data.phase,
+            }),
+          },
+        );
+        if (!response.ok) throw new Error("Erreur fetch JSON");
+        // const json = await response.json();
+
+        showFlash("success", "La phase a été changée");
+      } catch (err) {
+        showFlash("error", "Erreur de mise à jour de la phase");
+        console.error(err);
+      }
+
+      // setModified(false);
+    }
+  };
 
   if (!data) return <Loading />;
 
   return (
     <>
-      <div className="text-gray-200 bg-gray-950 w-4/5">
+      <div className="bg-gradient-to-br from-gray-950 via-gray-800 to-gray-950 px-4 font-inter w-4/5 text-white">
         <h1 className="font-bold text-2xl m-4">Vue d'ensemble</h1>
         <p className="m-4 text-lg border-b">
           Informations generales sur le festival et le site web.
