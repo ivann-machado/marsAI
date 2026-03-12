@@ -6,6 +6,7 @@ import { useFlash } from "../../context/FlashContext";
 
 function AdminOverview() {
   const [data, setData] = useState(null);
+  const [content, setContent] = useState(null);
   let address = window.location.host.split(".").slice(1);
   const authToken = useauth();
   const settings = useSettings();
@@ -27,32 +28,39 @@ function AdminOverview() {
     /*   console.log(data);
     setData((prev) => ({ ...prev, phase: settings.phase })); */
   }, []);
-  /* 
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/data.json");
+        const response = await fetch(
+          import.meta.env.VITE_API_URL + "/api/content",
+          {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          },
+        );
         if (!response.ok) throw new Error("Erreur fetch JSON");
         const json = await response.json();
-        setData(json.mockedData);
+        setContent(
+          json.reduce((a, i) => {
+            a[i.name] = i.value;
+            return a;
+          }, {}),
+        );
       } catch (err) {
         console.error(err);
       }
     };
-
     fetchData();
-  }, []); */
-
-  /* function changePhase() {
-    if (data.phase < 3) {
-      setData((prev) => ({ ...prev, phase: prev.phase + 1 }));
-      //fetch pour modifier phase en DB}
-    }
-  } */
+  }, []);
 
   const changePhase = async () => {
-    if (data.phase < 3) {
-      setData((prev) => ({ ...prev, phase: prev.phase + 1 }));
+    console.log("ICI");
+    console.log(content);
+    if (content.phase < 3) {
+      console.log("Iin");
+
+      console.log(content);
       try {
         const response = await fetch(
           import.meta.env.VITE_API_URL + "/api/content/",
@@ -64,12 +72,16 @@ function AdminOverview() {
             },
             body: JSON.stringify({
               name: "phase",
-              value: data.phase,
+              value: String(Number(content.phase) + 1),
             }),
           },
         );
         if (!response.ok) throw new Error("Erreur fetch JSON");
         // const json = await response.json();
+        setContent((prev) => ({
+          ...prev,
+          phase: Number(prev.phase) + 1,
+        }));
 
         showFlash("success", "La phase a été changée");
       } catch (err) {
@@ -81,7 +93,7 @@ function AdminOverview() {
     }
   };
 
-  if (!data) return <Loading />;
+  if (!data || !content) return <Loading />;
 
   return (
     <>
@@ -118,8 +130,8 @@ function AdminOverview() {
             </div>
             <div className="p-4 bg-gray-800 border rounded-xl min-w-48 w-1/5 min-h-48">
               <p>Phase:</p>
-              <p>{data.phase}</p>
-              {data.phase < 3 ? (
+              <p>{content.phase}</p>
+              {content.phase < 3 ? (
                 <button
                   className="p-2 border bg-gray-400 hover:bg-amber-400"
                   onClick={() => {
