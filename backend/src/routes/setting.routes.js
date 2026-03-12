@@ -2,6 +2,7 @@ import express from "express";
 import { getSettings, setSetting } from "../controllers/setting.controller.js";
 import { verifyToken, requireSuperAdmin } from "../middlewares/auth.middleware.js";
 import { validate } from "../middlewares/validate.middleware.js";
+import { cache, clearCache } from "../middlewares/cache.middleware.js";
 import { UpdateSettingSchema } from "../schemas/setting.schema.js";
 
 const router = express.Router();
@@ -12,7 +13,7 @@ const router = express.Router();
  * - PUT  `/`  : update a setting (super admin only).
  */
 
-router.get("/", verifyToken, requireSuperAdmin, getSettings);
-router.put("/", verifyToken, requireSuperAdmin, validate(UpdateSettingSchema), setSetting);
+router.get("/", verifyToken, requireSuperAdmin, cache(0), getSettings);
+router.put("/", verifyToken, requireSuperAdmin, validate(UpdateSettingSchema), clearCache("settings"), setSetting);
 
 export default router;
