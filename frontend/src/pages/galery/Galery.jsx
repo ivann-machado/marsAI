@@ -134,7 +134,7 @@ function Gallery() {
       case "year":
         return a.year - b.year;
       case "country":
-        return a.country.localeCompare(b.country);
+        return a.country_id - b.country_id;
       default:
         return 0;
     }
