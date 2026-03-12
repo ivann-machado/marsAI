@@ -58,9 +58,12 @@ function UploadForm() {
     );
   }
   const movieTypeOption = [
-    { label: "--Select a type--", value: "" },
-    { label: "100% " + t("upload_form.production_type.ai"), value: "100%_ia" },
-    { label: t("upload_form.production_type.hybrid"), value: "hybride" },
+    { label: t("upload_form.production_type_select.label"), value: "" },
+    {
+      label: "100% " + t("upload_form.production_type_select.ai"),
+      value: "100% IA",
+    },
+    { label: t("upload_form.production_type_select.hybrid"), value: "hybride" },
   ];
   function handleSelect(event, key) {
     if (key === "country") SetCountryId(event.target.value);
@@ -87,22 +90,24 @@ function UploadForm() {
   const [tagError, SetTagError] = useState("");
   const [movieTypeError, SetMovieTypeError] = useState("");
   const [tiktokError, SetTiktokError] = useState("");
+  const [countryError, SetCountryError] = useState("");
+  const [subtitlesError, SetSubtitlesError] = useState("");
 
   /**
    * Vérification des champs du formulaire
    */
   function titleCheck() {
     if (title.current.value.trim() === "") {
-      SetTitleError("Champ vide");
+      SetTitleError(t("upload_form.errors.empty_field"));
       return false;
     } else if (title.current.value.length < 5) {
       //Taille temporaire (placeholder !!!!!!)
-      SetTitleError(t("upload_form.errors.test")); //"Ce champ doit être plus grand"
+      SetTitleError(t("upload_form.errors.short_field")); //"Ce champ doit être plus grand"
       // console.log("Input is too short");
       return false;
     } else if (title.current.value.length > 50) {
       //Taille temporaire (placeholder !!!!!!)
-      SetTitleError("Ce champ ne doit pas être supérieur à 50 caractères");
+      SetTitleError(t("upload_form.errors.field_max_length_short"));
       //console.log("Input is too long");
       return false;
     } else {
@@ -112,15 +117,15 @@ function UploadForm() {
   }
   function descCheck() {
     if (description.current.value.trim() === "") {
-      SetDescError("Champ vide");
+      SetDescError(t("upload_form.errors.empty_field"));
       return false;
     } else if (description.current.value.length < 10) {
       //Taille temporaire (placeholder !!!!!!)
-      SetDescError("Ce champ doit être plus grand");
+      SetDescError(t("upload_form.errors.field_min_length_medium"));
       return false;
     } else if (description.current.value.length > 300) {
       //Taille temporaire (placeholder !!!!!!)
-      SetDescError("Ce champ doit être plus petit");
+      SetDescError(t("upload_form.errors.field_max_length_long"));
       return false;
     } else {
       SetDescError("");
@@ -129,7 +134,7 @@ function UploadForm() {
   }
   function videoCheck() {
     if (video.current.value.trim() === "") {
-      SetVideoError("Champ vide");
+      SetVideoError(t("upload_form.errors.no_file"));
       return false;
     } else {
       SetVideoError("");
@@ -138,19 +143,28 @@ function UploadForm() {
   }
   function coverImageCheck() {
     if (coverImage.current.value.trim() === "") {
-      SetCoverImageError("Vous devez sélectionner une image de couverture");
+      SetCoverImageError(t("upload_form.errors.no_file"));
       return false;
     } else {
       SetCoverImageError("");
       return true;
     }
   }
+  function subtitlesCheck() {
+    if (subtitles.current.value.trim() === "") {
+      SetSubtitlesError(t("upload_form.errors.no_file"));
+      return false;
+    } else {
+      SetSubtitlesError("");
+      return true;
+    }
+  }
   function scenarioAiCheck() {
     if (scenario_ai.current.value.trim() === "") {
-      SetScenarioAiError("Champ vide");
+      SetScenarioAiError(t("upload_form.errors.empty_field"));
       return false;
     } else if (scenario_ai.current.value.length > 50) {
-      SetScenarioAiError("Ce champ ne doit pas être supérieur à 50 caractères");
+      SetScenarioAiError(t("upload_form.errors.field_max_length_short"));
       return false;
     } else {
       SetScenarioAiError("");
@@ -159,10 +173,10 @@ function UploadForm() {
   }
   function videoAiCheck() {
     if (video_ai.current.value.trim() === "") {
-      SetVideoAiError("Champ vide");
+      SetVideoAiError(t("upload_form.errors.empty_field"));
       return false;
     } else if (video_ai.current.value.length > 50) {
-      SetVideoAiError("Ce champ ne doit pas être supérieur à 50 caractères");
+      SetVideoAiError(t("upload_form.errors.field_max_length_short"));
       return false;
     } else {
       SetVideoAiError("");
@@ -171,10 +185,10 @@ function UploadForm() {
   }
   function soundAiCheck() {
     if (sound_ai.current.value.trim() === "") {
-      SetSoundAiError("Champ vide");
+      SetSoundAiError(t("upload_form.errors.empty_field"));
       return false;
     } else if (sound_ai.current.value.length > 50) {
-      SetSoundAiError("Ce champ ne doit pas être supérieur à 50 caractères");
+      SetSoundAiError(t("upload_form.errors.field_max_length_short"));
       return false;
     } else {
       SetSoundAiError("");
@@ -183,10 +197,10 @@ function UploadForm() {
   }
   function postProdAiCheck() {
     if (post_prod_ai.current.value.trim() === "") {
-      SetPostProdAiError("Champ vide");
+      SetPostProdAiError(t("upload_form.errors.empty_field"));
       return false;
     } else if (post_prod_ai.current.value.length > 50) {
-      SetPostProdAiError("Ce champ ne doit pas être supérieur à 50 caractères");
+      SetPostProdAiError(t("upload_form.errors.field_max_length_short"));
       return false;
     } else {
       SetPostProdAiError("");
@@ -195,10 +209,10 @@ function UploadForm() {
   }
   function producerCheck() {
     if (producer.current.value.trim() === "") {
-      SetProducerError("Champ vide");
+      SetProducerError(t("upload_form.errors.empty_field"));
       return false;
     } else if (producer.current.value.length > 50) {
-      SetProducerError("Ce champ ne doit pas être supérieur à 50 caractères");
+      SetProducerError(t("upload_form.errors.field_max_length_short"));
       return false;
     } else {
       SetProducerError("");
@@ -207,7 +221,7 @@ function UploadForm() {
   }
   function producerImageCheck() {
     if (producerImage.current.value.trim() === "") {
-      SetProducerImageError("Vous devez sélectionner une image de couverture");
+      SetProducerImageError(t("upload_form.errors.no_file"));
       return false;
     } else {
       SetProducerImageError("");
@@ -216,10 +230,10 @@ function UploadForm() {
   }
   function instagramCheck() {
     if (instagram.current.value.trim() === "") {
-      SetInstagramError("Champ vide");
+      SetInstagramError(t("upload_form.errors.empty_field"));
       return false;
     } else if (instagram.current.value.length > 50) {
-      SetInstagramError("Ce champ ne doit pas être supérieur à 50 caractères");
+      SetInstagramError(t("upload_form.errors.field_max_length_short"));
       return false;
     } else {
       SetInstagramError("");
@@ -228,10 +242,10 @@ function UploadForm() {
   }
   function linkedinCheck() {
     if (linkedin.current.value.trim() === "") {
-      SetLinkedinError("Champ vide");
+      SetLinkedinError(t("upload_form.errors.empty_field"));
       return false;
     } else if (linkedin.current.value.length > 50) {
-      SetLinkedinError("Ce champ ne doit pas être supérieur à 50 caractères");
+      SetLinkedinError(t("upload_form.errors.field_max_length_short"));
       return false;
     } else {
       SetLinkedinError("");
@@ -240,10 +254,10 @@ function UploadForm() {
   }
   function youtubeCheck() {
     if (youtube.current.value.trim() === "") {
-      SetYoutubeError("Champ vide");
+      SetYoutubeError(t("upload_form.errors.empty_field"));
       return false;
     } else if (youtube.current.value.length > 50) {
-      SetYoutubeError("Ce champ ne doit pas être supérieur à 50 caractères");
+      SetYoutubeError(t("upload_form.errors.field_max_length_short"));
       return false;
     } else {
       SetYoutubeError("");
@@ -253,13 +267,13 @@ function UploadForm() {
   function emailCheck() {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (email.current.value.trim() === "") {
-      SetEmailError("Champ vide");
+      SetEmailError(t("upload_form.errors.empty_field"));
       return false;
     } else if (!regex.test(email.current.value)) {
-      SetEmailError("Format d'email invalide");
+      SetEmailError(t("upload_form.errors.invalid_email"));
       return false;
     } else if (email.current.value.length > 50) {
-      SetEmailError("Ce champ ne doit pas être supérieur à 50 caractères");
+      SetEmailError(t("upload_form.errors.field_max_length_short"));
       return false;
     } else {
       SetEmailError("");
@@ -268,7 +282,7 @@ function UploadForm() {
   }
   function countrySelectcheck() {
     if (countryId <= 0) {
-      console.log("Erreur, pays invalide");
+      SetCountryError(t("upload_form.errors.invalid_country"));
 
       return false;
     } else {
@@ -276,9 +290,8 @@ function UploadForm() {
     }
   }
   function movieTypeCheck() {
-    console.log("Le type sera: " + movieType);
     if (movieType === "") {
-      SetMovieTypeError("Le type de production est incorrect");
+      SetMovieTypeError(t("upload_form.errors.invalid_movie_type"));
       return false;
     } else {
       SetMovieTypeError("");
@@ -301,14 +314,13 @@ function UploadForm() {
   function tagCheck() {
     const tagRegex = /^(#\w+,\s*)*$/;
     if (tags.current.value.trim() === "") {
-      SetTagError("Champ vide");
-      console.log("Input is empty");
+      SetTagError(t("upload_form.errors.empty_field"));
       return false;
     } else if (!tagRegex.test(tags.current.value)) {
-      SetTagError("Format de tag invalide");
+      SetTagError(t("upload_form.errors.invalid_tag"));
       return false;
     } else if (tags.current.value.length > 100) {
-      SetTagError("Ce champ ne doit pas être supérieur à 100 caractères");
+      SetTagError(t("upload_form.errors.field_max_length_medium"));
       return false;
     } else {
       SetTagError("");
@@ -317,10 +329,10 @@ function UploadForm() {
   }
   function tiktokCheck() {
     if (tiktok.current.value.trim() === "") {
-      SetTiktokError("Champ vide");
+      SetTiktokError(t("upload_form.errors.empty_field"));
       return false;
     } else if (tiktok.current.value.length > 50) {
-      SetTiktokError("Ce champ ne doit pas être supérieur à 50 caractères");
+      SetTiktokError(t("upload_form.errors.field_max_length_short"));
       return false;
     } else {
       SetTiktokError("");
@@ -341,25 +353,34 @@ function UploadForm() {
       cover_image: coverImage.current.files[0],
       subtitles: subtitles.current.files,
     };
-
+    videoCheck();
+    coverImageCheck();
+    subtitlesCheck();
     if (!titleCheck()) {
       showFlash(
         "error",
-        "Titre: " + (titleError != "" ? titleError : "Champ vide"),
+        "Titre: " +
+          (titleError != ""
+            ? titleError
+            : t("upload_form.errors.default_field_error")),
       );
       SetLoading(false);
       return;
     } else if (!descCheck()) {
       showFlash(
         "error",
-        "Description: " + (descError != "" ? descError : "Champ vide"),
+        "Description: " +
+          (descError != ""
+            ? descError
+            : t("upload_form.errors.default_field_error")),
       );
       SetLoading(false);
       return;
     } else if (!videoCheck()) {
       showFlash(
         "error",
-        "Vidéo: " + (videoError != "" ? videoError : "Champ vide"),
+        "Vidéo: " +
+          (videoError != "" ? videoError : t("upload_form.errors.no_file")),
       );
       SetLoading(false);
       return;
@@ -367,7 +388,19 @@ function UploadForm() {
       showFlash(
         "error",
         "Miniature du film: " +
-          (coverImageError != "" ? coverImageError : "Champ vide"),
+          (coverImageError != ""
+            ? coverImageError
+            : t("upload_form.errors.default_no_file")),
+      );
+      SetLoading(false);
+      return;
+    } else if (!subtitlesCheck) {
+      showFlash(
+        "error",
+        "Miniature du film: " +
+          (subtitlesError != ""
+            ? subtitlesError
+            : t("upload_form.errors.no_file")),
       );
       SetLoading(false);
       return;
@@ -390,14 +423,20 @@ function UploadForm() {
     if (!producerCheck()) {
       showFlash(
         "error",
-        "Producteur: " + (producerError != "" ? producerError : "Champ vide"),
+        "Producteur: " +
+          (producerError != ""
+            ? producerError
+            : t("upload_form.errors.default_field_error")),
       );
       SetLoading(false);
       return;
     } else if (!emailCheck()) {
       showFlash(
         "error",
-        "Email: " + (emailError != "" ? emailError : "Champ vide"),
+        "Email: " +
+          (emailError != ""
+            ? emailError
+            : t("upload_form.errors.default_field_error")),
       );
       SetLoading(false);
       return;
@@ -405,7 +444,9 @@ function UploadForm() {
       showFlash(
         "error",
         "Photo du producteur: " +
-          (producerImageError != "" ? producerImageError : "Champ vide"),
+          (producerImageError != ""
+            ? producerImageError
+            : t("upload_form.errors.no_file")),
       );
       SetLoading(false);
       return;
@@ -413,7 +454,9 @@ function UploadForm() {
       showFlash(
         "error",
         "Type de production:" +
-          (movieTypeError != "" ? movieTypeError : "champ incorrect"),
+          (movieTypeError != ""
+            ? movieTypeError
+            : t("upload_form.errors.default_field_error")),
       );
       SetLoading(false);
       return;
@@ -421,7 +464,9 @@ function UploadForm() {
       showFlash(
         "error",
         "IA scénario: " +
-          (scenarioAiError != "" ? scenarioAiError : "Champ non valide"),
+          (scenarioAiError != ""
+            ? scenarioAiError
+            : t("upload_form.errors.default_field_error")),
       );
       SetLoading(false);
       return;
@@ -429,7 +474,9 @@ function UploadForm() {
       showFlash(
         "error",
         "IA générative de vidéos: " +
-          (videoAiError != "" ? videoAiError : "Champ non valide"),
+          (videoAiError != ""
+            ? videoAiError
+            : t("upload_form.errors.default_field_error")),
       );
       SetLoading(false);
       return;
@@ -437,7 +484,9 @@ function UploadForm() {
       showFlash(
         "error",
         "IA sons et musiques: " +
-          (soundAiError != "" ? soundAiError : "Champ non valide"),
+          (soundAiError != ""
+            ? soundAiError
+            : t("upload_form.errors.default_field_error")),
       );
       SetLoading(false);
       return;
@@ -514,29 +563,172 @@ function UploadForm() {
     console.log(uploadData);
     console.log("formData est : ", formData);
     SetLoading(true);
-    if (!linkedinCheck()) {
+    if (!titleCheck()) {
       showFlash(
         "error",
-        "Linkedin: " + (linkedinError != "" ? linkedinError : "Champ vide"),
+        "Titre: " +
+          (titleError != ""
+            ? titleError
+            : t("upload_form.errors.default_field_error")),
+      );
+      SetLoading(false);
+      return;
+    } else if (!descCheck()) {
+      showFlash(
+        "error",
+        "Description: " +
+          (descError != ""
+            ? descError
+            : t("upload_form.errors.default_field_error")),
+      );
+      SetLoading(false);
+      return;
+    } else if (!videoCheck()) {
+      showFlash(
+        "error",
+        "Vidéo: " +
+          (videoError != "" ? videoError : t("upload_form.errors.no_file")),
+      );
+      SetLoading(false);
+      return;
+    } else if (!coverImageCheck()) {
+      showFlash(
+        "error",
+        "Miniature du film: " +
+          (coverImageError != ""
+            ? coverImageError
+            : t("upload_form.errors.no_file")),
+      );
+      SetLoading(false);
+      return;
+    } else if (!subtitlesCheck) {
+      showFlash(
+        "error",
+        "Miniature du film: " +
+          (subtitlesError != ""
+            ? subtitlesError
+            : t("upload_form.errors.no_file")),
+      );
+      SetLoading(false);
+      return;
+    } else if (!producerCheck()) {
+      showFlash(
+        "error",
+        "Producteur: " +
+          (producerError != ""
+            ? producerError
+            : t("upload_form.errors.default_field_error")),
+      );
+      SetLoading(false);
+      return;
+    } else if (!emailCheck()) {
+      showFlash(
+        "error",
+        "Email: " +
+          (emailError != ""
+            ? emailError
+            : t("upload_form.errors.default_field_error")),
+      );
+      SetLoading(false);
+      return;
+    } else if (!producerImageCheck()) {
+      showFlash(
+        "error",
+        "Photo du producteur: " +
+          (producerImageError != ""
+            ? producerImageError
+            : t("upload_form.errors.no_file")),
+      );
+      SetLoading(false);
+      return;
+    } else if (!movieTypeCheck()) {
+      showFlash(
+        "error",
+        "Type de production:" +
+          (movieTypeError != ""
+            ? movieTypeError
+            : t("upload_form.errors.default_field_error")),
+      );
+      SetLoading(false);
+      return;
+    } else if (!scenarioAiCheck()) {
+      showFlash(
+        "error",
+        "IA scénario: " +
+          (scenarioAiError != ""
+            ? scenarioAiError
+            : t("upload_form.errors.default_field_error")),
+      );
+      SetLoading(false);
+      return;
+    } else if (!videoAiCheck()) {
+      showFlash(
+        "error",
+        "IA générative de vidéos: " +
+          (videoAiError != ""
+            ? videoAiError
+            : t("upload_form.errors.default_field_error")),
+      );
+      SetLoading(false);
+      return;
+    } else if (!soundAiCheck()) {
+      showFlash(
+        "error",
+        "IA sons et musiques: " +
+          (soundAiError != ""
+            ? soundAiError
+            : t("upload_form.errors.default_field_error")),
+      );
+      SetLoading(false);
+      return;
+    } else if (!postProdAiCheck()) {
+      showFlash(
+        "error",
+        "IA post-production: " +
+          (postProdAiError != ""
+            ? postProdAiError
+            : t("upload_form.errors_default_field_error")),
+      );
+      SetLoading(false);
+      return;
+    } else if (!linkedinCheck()) {
+      showFlash(
+        "error",
+        "Linkedin: " +
+          (linkedinError != ""
+            ? linkedinError
+            : t("upload_form.errors.default_field_error")),
       );
       SetLoading(false);
       return;
     } else if (!youtubeCheck()) {
       showFlash(
         "error",
-        "Youtube: " + (youtubeError != "" ? youtubeError : "Champ vide"),
+        "Youtube: " +
+          (youtubeError != ""
+            ? youtubeError
+            : t("upload_form.errors.default_field_error")),
       );
       SetLoading(false);
       return;
     } else if (!instagramCheck()) {
       showFlash(
         "error",
-        "Instagram: " + (instagramError != "" ? instagramError : "Champ vide"),
+        "Instagram: " +
+          (instagramError != ""
+            ? instagramError
+            : t("upload_form.errors.default_field_error")),
       );
       SetLoading(false);
       return;
     } else if (!tagCheck()) {
-      showFlash("error", "tags: " + (tagError != "" ? tagError : "Champ vide"));
+      showFlash(
+        "error",
+        "tags: " +
+          (tagError != ""
+            ? tagError
+            : t("upload_form.errors.default_field_error")),
+      );
       SetLoading(false);
       return;
     } else if (!countrySelectcheck()) {
@@ -560,7 +752,7 @@ function UploadForm() {
     console.log(data);
     if (res.ok) {
       SetLoading(false);
-      showFlash("success", "Film envoyé avec succès.");
+      showFlash("success", t("upload_form.upload_success"));
       /**
        * Création d'un URL pour afficher les files
        */
@@ -570,7 +762,7 @@ function UploadForm() {
         setVideoURL(url);
       }
     } else {
-      showFlash("error", "Erreur lors de l'envoi du film.");
+      showFlash("error", t("upload_form.errors.upload_fail"));
       SetLoading(false);
     }
   };
@@ -683,7 +875,7 @@ function UploadForm() {
                 multiple
                 className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none pt-3 pb-2"
               />
-              <p className="text-white">{coverImageError}</p>
+              <p className="text-white">{subtitlesError}</p>
             </div>
 
             <div className="flex justify-end p-4">
@@ -768,7 +960,7 @@ function UploadForm() {
                   htmlFor="more_info"
                   className="text-sm text-white/70 mb-2 tracking-wide"
                 >
-                  Type de production :
+                  {t("upload_form.production_type")} :
                 </label>
                 <select
                   name="movieTypeSelect"
