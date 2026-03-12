@@ -62,9 +62,9 @@ function AdminEventForm() {
   };
 
   return (
-    <div className="mt-8 bg-gray-950 text-white border-t pt-4">
+    <div className="mt-8 bg-gradient-to-br from-gray-950 via-gray-800 to-gray-950 text-white border-t pt-4">
       <p className="text-4xl font-extrabold text-center my-8">
-        Ajouter un evenment
+        Ajouter un evenement
       </p>
       <form className="flex flex-wrap  items-center gap-4 p-8">
         <div className="w-2/5 flex justify-between">

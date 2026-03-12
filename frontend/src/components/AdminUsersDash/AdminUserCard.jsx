@@ -16,19 +16,23 @@ function AdminUserCard({ userData }) {
     setModified(true);
   }; */
 
+  console.log(userData);
+
   const updateRole = async (value) => {
     try {
       const response = await fetch(
-        import.meta.env.VITE_API_URL + "/api/auth/" + user.id,
+        import.meta.env.VITE_API_URL + "/api/admins/" + user.id,
         {
           method: "PUT",
           headers: {
+            "Content-Type": "application/json",
             Authorization: "Bearer " + authToken.token,
           },
           body: JSON.stringify({ role: value }),
         },
       );
       if (!response.ok) throw new Error("Erreur fetch JSON");
+      setUser((prev) => ({ ...prev, role: value }));
       showFlash(
         "success",
         "Utilisateur " + user.id + " a maintenant le role de " + value,
@@ -47,7 +51,7 @@ function AdminUserCard({ userData }) {
   const confirmDelete = async () => {
     try {
       const response = await fetch(
-        import.meta.env.VITE_API_URL + "/api/auth/" + user.id,
+        import.meta.env.VITE_API_URL + "/api/admins/" + user.id,
         {
           method: "DELETE",
           headers: {
@@ -65,54 +69,6 @@ function AdminUserCard({ userData }) {
     setUser(null);
   };
 
-  /* const saveUser = async () => {
-    try {
-      const response = await fetch(
-        import.meta.env.VITE_API_URL + "/api/users/" + user.id,
-        {
-          method: "PUT",
-          headers: {
-            Authorization: "Bearer " + authToken.token,
-          },
-          body: JSON.stringify({}),
-        },
-      );
-      if (!response.ok) throw new Error("Erreur fetch JSON");
-      const json = await response.json();
-      showFlash("success", "Sponsor mis a jour");
-    } catch (err) {
-      showFlash("error", "Erreur de mise à jour du sponsor");
-      console.error(err);
-    }
-
-    setModified(false);
-  }; */
-
-  // const deleteSponsor = async (key) => {
-  //   /* Suppresion dans la DB ici */
-  //   try {
-  //     const response = await fetch(
-  //       import.meta.env.VITE_API_URL + "/api/sponsors/" + sponsor.id,
-  //       {
-  //         method: "DELETE",
-  //         headers: { "Content-Type": "application/json" },
-  //       },
-  //     );
-  //     if (!response.ok) throw new Error("Erreur fetch JSON");
-
-  //     setSponsor(null);
-  //     setModified(false);
-  //     showFlash("success", "Sponsor supprimé");
-  //   } catch (err) {
-  //     console.error(err);
-  //     showFlash("error", "Erreur de suppresion du sponsor");
-  //   }
-
-  //   setModified(false);
-  // };
-
-  // if (!sponsor) return <></>;
-
   if (!user) return null;
 
   return (
@@ -124,14 +80,14 @@ function AdminUserCard({ userData }) {
         value={user.role}
         onChange={(e) => updateRole(e.target.value)}
         className={
-          (user.role === "Admin" ? "bg-amber-500" : "bg-red-700") +
+          (user.role === "admin" ? "bg-amber-500" : "bg-red-700") +
           " text-center"
         }
       >
         <option value="admin" className="text-black">
           Admin
         </option>
-        <option value="super admin" className="text-black">
+        <option value="super_admin" className="text-black">
           SuperAdmin
         </option>
       </select>

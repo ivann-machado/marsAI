@@ -48,10 +48,7 @@ function AdminContentCard({ name, value }) {
   };
 
   return (
-    <div
-      key={content.name}
-      className="grid grid-cols-3 p-2 bg-gray-900 text-gray-100 gap-2"
-    >
+    <div className="grid grid-cols-3 p-2 bg-gray-900 text-gray-100 gap-2">
       <div className="bg-gray-700 text-center col-span-1 p-2 rounded-lg hover:bg-gray-500">
         {content.name}
       </div>

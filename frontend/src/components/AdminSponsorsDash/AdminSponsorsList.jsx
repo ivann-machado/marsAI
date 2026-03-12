@@ -3,7 +3,9 @@ import AdminSponsorCard from "./AdminSponsorCard";
 function AdminSponsorList({ sponsor_list }) {
   return (
     <div className="flex flex-col mx-2 mb-8">
-      <h2 className="text-4xl font-extrabold m-8">Liste des Sponsors</h2>
+      <h2 className="text-4xl font-extrabold m-8 text-white">
+        Liste des Sponsors
+      </h2>
       <div className="grid grid-cols-7 p-2 bg-gray-900 text-gray-100 gap-2 px-6">
         <p className="text-center text-xl font-bold">Edition</p>
         <p className="text-center text-xl font-bold">Logo</p>
