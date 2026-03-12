@@ -14,6 +14,6 @@ const router = express.Router();
  */
 
 router.get("/", verifyToken, requireSuperAdmin, cache(0), getSettings);
-router.put("/", verifyToken, requireSuperAdmin, validate(UpdateSettingSchema), clearCache("settings"), setSetting);
+router.put("/", verifyToken, requireSuperAdmin, validate(UpdateSettingSchema), setSetting, clearCache("settings"));
 
 export default router;
