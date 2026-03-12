@@ -25,6 +25,7 @@ const cache = new Map();
  * @returns {function} - The middleware function.
 */
 const debounce = (ms = 500) => (req, res, next) => {
+	if (req.method === 'GET') return next();
 	const key = fingerprint(req);
 	if (cache.has(key)) return res.status(418).end();
 
