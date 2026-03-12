@@ -50,6 +50,7 @@
     "video": "Video",
     "image": "Movie cover image",
     "producer_cover": "Producer picture",
+    "production_type": "Production type",
     "production": "Production",
     "scenario_ai": "Scenario AI",
     "video_ai": "Video generation AI",
@@ -62,7 +63,30 @@
     "right_givaway": "By clicking here, I agree to transfer my property rights to the festival organizers and I hereby waive my copyright and ownership of the video that I am about to publish.",
     "submit_btn": "Finalize my submission",
     "majority_certification_flash": "You must be 18 or older",
-    "right_givaway_flash": "You must give your property rights"
+    "right_givaway_flash": "You must give your property rights",
+    "subtitles": "Subtitles",
+    "upload_success": "",
+    "production_type_select": {
+      "label": "--Select a type--",
+      "ai": "AI",
+      "hybrid": "hybrid"
+    },
+    "errors": {
+      "default_field_error": "This field is not valid",
+      "empty_field": "Empty field",
+      "short_field": "This field is too short",
+      "no_file": "Please select a file",
+      "invalid_email": "Invalid email format",
+      "invalid_movie_type": "Invalid production type selected",
+      "invalid_tag": "Invalid tag format",
+      "field_min_length_short": "This field must be longer than 5 characters",
+      "field_min_length_medium": "This field must be longer than 10 characters",
+      "field_max_length_short": "This field can't be longer than 50 characters",
+      "field_max_length_medium": "This field can't be longer than 100 characters",
+      "field_max_length_long": "This field can't be longer than 300 characters",
+      "invalid_country": "Invalid country selected",
+      "upload_fail": "Error sending the film."
+    }
   },
 
   "homepage": {
@@ -453,6 +477,9 @@
     "country_germany": "Germany",
     "country_spain": "Spain"
   },
+  "buttonsComponents": {
+    "back": "Back",
+    "next": "Next"},
   "phases": {
     "before_festival": "Before Festival",
     "during_festival": "Festival Live",
