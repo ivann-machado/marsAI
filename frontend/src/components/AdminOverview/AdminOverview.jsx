@@ -55,12 +55,7 @@ function AdminOverview() {
   }, []);
 
   const changePhase = async () => {
-    console.log("ICI");
-    console.log(content);
     if (content.phase < 3) {
-      console.log("Iin");
-
-      console.log(content);
       try {
         const response = await fetch(
           import.meta.env.VITE_API_URL + "/api/content/",
