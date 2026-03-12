@@ -160,10 +160,7 @@ function UploadForm() {
     }
   }
   function scenarioAiCheck() {
-    if (scenario_ai.current.value.trim() === "") {
-      SetScenarioAiError(t("upload_form.errors.empty_field"));
-      return false;
-    } else if (scenario_ai.current.value.length > 50) {
+    if (scenario_ai.current.value.length > 50) {
       SetScenarioAiError(t("upload_form.errors.field_max_length_short"));
       return false;
     } else {
@@ -172,10 +169,7 @@ function UploadForm() {
     }
   }
   function videoAiCheck() {
-    if (video_ai.current.value.trim() === "") {
-      SetVideoAiError(t("upload_form.errors.empty_field"));
-      return false;
-    } else if (video_ai.current.value.length > 50) {
+    if (video_ai.current.value.length > 50) {
       SetVideoAiError(t("upload_form.errors.field_max_length_short"));
       return false;
     } else {
@@ -184,10 +178,7 @@ function UploadForm() {
     }
   }
   function soundAiCheck() {
-    if (sound_ai.current.value.trim() === "") {
-      SetSoundAiError(t("upload_form.errors.empty_field"));
-      return false;
-    } else if (sound_ai.current.value.length > 50) {
+    if (sound_ai.current.value.length > 50) {
       SetSoundAiError(t("upload_form.errors.field_max_length_short"));
       return false;
     } else {
@@ -196,10 +187,7 @@ function UploadForm() {
     }
   }
   function postProdAiCheck() {
-    if (post_prod_ai.current.value.trim() === "") {
-      SetPostProdAiError(t("upload_form.errors.empty_field"));
-      return false;
-    } else if (post_prod_ai.current.value.length > 50) {
+    if (post_prod_ai.current.value.length > 50) {
       SetPostProdAiError(t("upload_form.errors.field_max_length_short"));
       return false;
     } else {
@@ -229,10 +217,7 @@ function UploadForm() {
     }
   }
   function instagramCheck() {
-    if (instagram.current.value.trim() === "") {
-      SetInstagramError(t("upload_form.errors.empty_field"));
-      return false;
-    } else if (instagram.current.value.length > 50) {
+    if (instagram.current.value.length > 50) {
       SetInstagramError(t("upload_form.errors.field_max_length_short"));
       return false;
     } else {
@@ -241,10 +226,7 @@ function UploadForm() {
     }
   }
   function linkedinCheck() {
-    if (linkedin.current.value.trim() === "") {
-      SetLinkedinError(t("upload_form.errors.empty_field"));
-      return false;
-    } else if (linkedin.current.value.length > 50) {
+    if (linkedin.current.value.length > 50) {
       SetLinkedinError(t("upload_form.errors.field_max_length_short"));
       return false;
     } else {
@@ -253,10 +235,7 @@ function UploadForm() {
     }
   }
   function youtubeCheck() {
-    if (youtube.current.value.trim() === "") {
-      SetYoutubeError(t("upload_form.errors.empty_field"));
-      return false;
-    } else if (youtube.current.value.length > 50) {
+    if (youtube.current.value.length > 50) {
       SetYoutubeError(t("upload_form.errors.field_max_length_short"));
       return false;
     } else {
@@ -312,11 +291,7 @@ function UploadForm() {
     }
   }
   function tagCheck() {
-    const tagRegex = /^(#\w+,\s*)*$/;
-    if (tags.current.value.trim() === "") {
-      SetTagError(t("upload_form.errors.empty_field"));
-      return false;
-    } else if (!tagRegex.test(tags.current.value)) {
+    if (!tagRegex.test(tags.current.value)) {
       SetTagError(t("upload_form.errors.invalid_tag"));
       return false;
     } else if (tags.current.value.length > 100) {
@@ -328,10 +303,7 @@ function UploadForm() {
     }
   }
   function tiktokCheck() {
-    if (tiktok.current.value.trim() === "") {
-      SetTiktokError(t("upload_form.errors.empty_field"));
-      return false;
-    } else if (tiktok.current.value.length > 50) {
+    if (tiktok.current.value.length > 50) {
       SetTiktokError(t("upload_form.errors.field_max_length_short"));
       return false;
     } else {
