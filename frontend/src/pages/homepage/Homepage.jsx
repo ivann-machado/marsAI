@@ -517,25 +517,29 @@ function Homepage() {
                 {
                   number: t("homepage.stats_countries"),
                   label: t("homepage.stats_countries_label"),
-                  borderGlow: "group-hover:shadow-[0_0_40px_rgba(168,85,247,0.3)]",
+                  borderGlow:
+                    "group-hover:shadow-[0_0_40px_rgba(168,85,247,0.3)]",
                   colors: "from-[#a855f7] to-[#ec4899]",
                 },
                 {
                   number: t("homepage.stats_films"),
                   label: t("homepage.stats_films_label"),
-                  borderGlow: "group-hover:shadow-[0_0_40px_rgba(236,72,153,0.3)]",
+                  borderGlow:
+                    "group-hover:shadow-[0_0_40px_rgba(236,72,153,0.3)]",
                   colors: "from-[#ec4899] to-[#f97316]",
                 },
                 {
                   number: t("homepage.stats_visitors"),
                   label: t("homepage.stats_visitors_label"),
-                  borderGlow: "group-hover:shadow-[0_0_40px_rgba(16,185,129,0.3)]",
+                  borderGlow:
+                    "group-hover:shadow-[0_0_40px_rgba(16,185,129,0.3)]",
                   colors: "from-[#10b981] to-[#06b6d4]",
                 },
                 {
                   number: t("homepage.stats_experts"),
                   label: t("homepage.stats_experts_label"),
-                  borderGlow: "group-hover:shadow-[0_0_40px_rgba(59,130,246,0.3)]",
+                  borderGlow:
+                    "group-hover:shadow-[0_0_40px_rgba(59,130,246,0.3)]",
                   colors: "from-[#3b82f6] to-[#a855f7]",
                 },
               ].map((stat, index) => (

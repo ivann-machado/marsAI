@@ -3,6 +3,11 @@ import { Link } from "react-router-dom";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
 import { useTranslation } from "react-i18next";
+import {
+  countryListEn,
+  countryListFr,
+} from "../../components/Utils/CountryList";
+import "flag-icons/css/flag-icons.min.css";
 
 const PlayIcon = ({ size = 5, className = "" }) => (
   <svg
@@ -22,34 +27,27 @@ const SkeletonCard = () => (
   </div>
 );
 
-/* const FILMS = [
-  { id: 1, title: "PROTOCOL ALPHA", director: "Jean Dupont", duration: "00:58", category: "selection", thumbnail: "/src/assets/robot.png", year: 2026, country: "France", description: "Une exploration visuelle des protocoles d'intelligence artificielle dans un futur dystopique." },
-  { id: 2, title: "NEURAL DREAM", director: "Marie Laurent", duration: "00:45", category: "selection", thumbnail: "/src/assets/neural.png", year: 2026, country: "Belgique", description: "Un voyage onirique à travers les réseaux neuronaux d'une IA consciente." },
-  { id: 3, title: "CYBER MARSEILLE", director: "Ahmed Karim", duration: "00:52", category: "hors-competition", thumbnail: "/src/assets/cyber.png", year: 2026, country: "France", description: "Marseille reimaginée dans un futur où l'IA transforme la ville portuaire." },
-  { id: 4, title: "DIGITAL HORIZON", director: "Sofia Chen", duration: "00:48", category: "selection", thumbnail: "/src/assets/robot2.png", year: 2026, country: "Chine", description: "Les frontières entre réalité et simulation s'estompent dans cette œuvre contemplative." },
-  { id: 5, title: "QUANTUM SOULS", director: "Marcus Brown", duration: "00:55", category: "selection", thumbnail: "/src/assets/cyber2.png", year: 2026, country: "USA", description: "Une méditation sur la conscience artificielle et l'âme humaine." },
-  { id: 6, title: "NEON GENESIS", director: "Yuki Tanaka", duration: "00:50", category: "selection", thumbnail: "/src/assets/planete.png", year: 2026, country: "Japon", description: "La naissance d'une nouvelle ère à travers les yeux d'une IA créative." },
-  { id: 7, title: "SYNTHETIC LOVE", director: "Emma Wilson", duration: "00:47", category: "hors-competition", thumbnail: "/src/assets/wall.png", year: 2026, country: "UK", description: "Une histoire d'amour impossible entre humain et intelligence artificielle." },
-  { id: 8, title: "CODE POETRY", director: "Lars Schmidt", duration: "00:43", category: "hors-competition", thumbnail: "/src/assets/temple.png", year: 2026, country: "Allemagne", description: "Le code informatique devient poésie visuelle dans cette expérience unique." },
-  { id: 9, title: "FUTURE MEMORIES", director: "Isabella Rodriguez", duration: "00:59", category: "hors-competition", thumbnail: "/src/assets/astro.png", year: 2026, country: "Espagne", description: "Des souvenirs du futur générés par une IA nostalgique." },
-];
- */
 function Gallery() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const language = i18n.language;
   const [category, setCategory] = useState("all");
   const [search, setSearch] = useState("");
   const [filmIndex, setFilmIndex] = useState(0);
   const [sortBy, setSortBy] = useState("title");
   const [loading, setLoading] = useState(true);
-  const [visibleCount, setVisibleCount] = useState(6);
+  const [visibleCount, setVisibleCount] = useState(50);
   const sliderRef = useRef(null);
   const loaderRef = useRef(null);
   const [FILMS, setFilms] = useState([]);
+  // const [filmsPage, setFilmsPage] = useState(1);
+  // const [filmsPages, setFilmsPages] = useState(1);
+  // const [filmsTotal, setFilmsTotal] = useState(0);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          import.meta.env.VITE_API_URL + "/api/videos",
+          import.meta.env.VITE_API_URL + "/api/videos/?limit=50",
           {
             method: "GET",
             headers: { "Content-Type": "application/json" },
@@ -58,6 +56,8 @@ function Gallery() {
         if (!response.ok) throw new Error("Erreur fetch JSON");
         let res = await response.json();
         setFilms(res.data);
+        // setFilmsPages(res.meta.totalPages);
+        // setFilmsTotal(res.meta.totalCount);
       } catch (err) {
         console.error(err);
       }
@@ -134,7 +134,7 @@ function Gallery() {
       case "year":
         return a.year - b.year;
       case "country":
-        return a.country.localeCompare(b.country);
+        return a.country_id - b.country_id;
       default:
         return 0;
     }
@@ -147,6 +147,8 @@ function Gallery() {
       left: dir === "left" ? -300 : 300,
       behavior: "smooth",
     });
+
+  // if (FILMS) console.log(FILMS);
   return (
     <>
       <Header />
@@ -288,9 +290,9 @@ function Gallery() {
                         <PlayIcon size={10} className="ml-1" />
                       </div>
                     </div>
-                    <div className="absolute top-4 right-4 px-4 py-2 bg-black/60 backdrop-blur-sm rounded-full text-white text-sm font-inter font-semibold">
+                    {/*  <div className="absolute top-4 right-4 px-4 py-2 bg-black/60 backdrop-blur-sm rounded-full text-white text-sm font-inter font-semibold">
                       {film.duration}
-                    </div>
+                    </div> */}
                     <div className="absolute top-4 left-4 px-4 py-2 bg-[#a855f7]/80 backdrop-blur-sm rounded-full text-white text-sm font-inter font-semibold uppercase">
                       {
                         categories
@@ -322,12 +324,23 @@ function Gallery() {
                           d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
                         />
                       </svg>
-                      {film.director}
+                      {film.producer}
                     </span>
                     <span>•</span>
-                    <span>{film.country}</span>
+                    <span
+                      className={`fi fi-2x fi-${
+                        language === "fr"
+                          ? countryListFr[film.country_id - 1].iso.toLowerCase()
+                          : countryListEn[film.country_id - 1].iso.toLowerCase()
+                      }`}
+                    ></span>
                     <span>•</span>
-                    <span>{film.year}</span>
+                    <span>
+                      {" "}
+                      {language === "fr"
+                        ? countryListFr[film.country_id - 1].label
+                        : countryListEn[film.country_id - 1].label}
+                    </span>
                   </div>
                   <p className="text-[#a0a0b8] text-lg leading-relaxed">
                     {film.description}
