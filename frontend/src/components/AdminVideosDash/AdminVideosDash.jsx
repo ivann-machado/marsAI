@@ -1,11 +1,16 @@
 import { useState, useEffect } from "react";
 import VideoList from "./VideoList.jsx";
 import Loading from "../Utils/Loading.jsx";
+import Pagination from "../Utils/Pagination.jsx";
 import { useauth } from "../../context/AuthContext";
 
 function AdminVideosDash() {
   const [videoQueue, setVideoQueue] = useState(null);
+  const [videoQueuePage, setVideoQueuePage] = useState(1);
+  const [videoQueuePages, setVideoQueuePages] = useState(1);
   const [otherVideo, setOtherVideo] = useState(null);
+  const [otherVideoPage, setOtherVideoPage] = useState(1);
+  const [otherVideoPages, setOtherVideoPages] = useState(1);
   const [filters, setFilters] = useState({
     title: "",
     producer: "",
@@ -19,8 +24,9 @@ function AdminVideosDash() {
     const fetchData = async () => {
       try {
         /* Recuperation des vidéos assignées à l'admin (via reviews) */
+        const assignedQuery = "/?page=" + videoQueuePage;
         let response = await fetch(
-          import.meta.env.VITE_API_URL + "/api/videos/assigned",
+          import.meta.env.VITE_API_URL + "/api/reviews/assigned",
           {
             method: "GET",
             headers: {
@@ -31,14 +37,21 @@ function AdminVideosDash() {
         );
         if (!response.ok) throw new Error("Erreur fetch assigned videos");
         let res = await response.json();
+        setVideoQueuePages(res.meta.totalPage);
         setVideoQueue(res.data ?? res);
 
-        /* Recuperation de toutes les videos */
-        response = await fetch(import.meta.env.VITE_API_URL + "/api/videos", {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-        });
-        if (!response.ok) throw new Error("Erreur fetch JSON");
+        /* Recuperation de toutes les videos non assignées à cet admin*/
+        response = await fetch(
+          import.meta.env.VITE_API_URL + "/api/reviews/rest",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + authToken.token,
+            },
+          },
+        );
+        if (!response.ok) throw new Error("Erreur fetch rest videos");
         res = await response.json();
         setOtherVideo(res.data ?? res);
       } catch (err) {
@@ -47,21 +60,22 @@ function AdminVideosDash() {
     };
 
     fetchData();
-  }, []);
+  }, [otherVideoPage]);
 
   const updateFilters = (key, value) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
   };
 
   const updateAppliedFilters = () => {
-    console.log("updates");
+    //console.log("updates");
+    // TODO make filters fetch data again
     setAppliedFilters(filters);
   };
 
   if (!videoQueue || !otherVideo) return <Loading />;
 
   return (
-    <div className="w-4/5 bg-gray-950 px-4 font-inter">
+    <div className="w-4/5 bg-gradient-to-br from-gray-950 via-gray-800 to-gray-950 px-4 font-inter">
       <h1 className="py-2 font-bold text-3xl text-white text-center">
         Gestion des films
       </h1>
@@ -69,6 +83,11 @@ function AdminVideosDash() {
       {/* MOVIE QUEUE */}
       <h2 className="text-2xl font-bold ml-8 text-white">Films attribuées:</h2>
       <VideoList videoList={videoQueue} type="queue" />
+      <Pagination
+        currentPage={videoQueuePage}
+        totalPages={videoQueuePages}
+        setPage={setVideoQueuePage}
+      />
 
       {/* SEARCH BAR */}
       <div className="w-full bg-gray-500 grid grid-cols-6">
@@ -114,6 +133,11 @@ function AdminVideosDash() {
 
       {/* OTHER MOVIES */}
       <VideoList videoList={otherVideo} filters={appliedFilters} />
+      <Pagination
+        currentPage={otherVideoPage}
+        totalPages={otherVideoPages}
+        setPage={setOtherVideoPage}
+      />
     </div>
   );
 }

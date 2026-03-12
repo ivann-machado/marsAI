@@ -265,7 +265,7 @@ export const getAssignedVideos = async (req, res) => {
 			include: {
 				...videoIncludes,
 				reviews: {
-					where: { admin_id: Number(adminId) },
+					where: { admin_id: Number(adminId), status: "assigned" },
 					select: {
 						id: true,
 						note: true,
@@ -295,20 +295,27 @@ export const getAssignedVideos = async (req, res) => {
 };
 
 /**
- * Return videos NOT assigned to any admin (no reviews).
+ * Return videos NOT assigned to the current admin (the rest).
+ * Excludes videos that have a review with status "assigned" for this admin.
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  */
 export const getUnassignedVideos = async (req, res) => {
 	try {
+		const adminId = req.user.id;
 		const { page, limit } = req.query;
 
 		const result = await paginate(prisma.videos, {
 			page,
 			limit,
 			where: {
-				reviews: {
-					none: {},
+				NOT: {
+					reviews: {
+						some: {
+							admin_id: Number(adminId),
+							status: "assigned",
+						},
+					},
 				},
 			},
 			include: videoIncludes,

@@ -21,6 +21,8 @@ import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.jsx";
 import JuryPage from "./pages/JuryPage/JuryPage.jsx";
 import SponsorsPage from "./pages/SponsorsPage/SponsorsPage.jsx";
 import Event from "./pages/Event/Event_page.jsx";
+import CguCgv from "./pages/CguCgv/CguCgv.jsx";
+import Faq from "./pages/Faq/Faq.jsx";
 // import { SettingsProvider } from "./context/SettingsContext.jsx";
 import { FlashProvider } from "./context/FlashContext.jsx";
 import NotFound from "./components/Utils/NotFound.jsx";
@@ -34,6 +36,7 @@ function App() {
 
   if (window.location.host.split(".")[0] == "admin")
     /* PAGES ADMIN */
+  
     return (
       <BrowserRouter>
         <FlashProvider>
@@ -139,6 +142,8 @@ function App() {
             <Route path="/jury" element={<JuryPage />} />
             <Route path="/partners" element={<SponsorsPage />} />
             <Route path="/Event" element={<Event />} />
+            <Route path="/CguCgv" element={<CguCgv />} />
+            <Route path="/Faq" element={<Faq />} />
             <Route path="*" element={<NotFound />}></Route>
           </Routes>
         </FlashProvider>
@@ -157,6 +162,8 @@ function App() {
             <Route path="/jury" element={<JuryPage />} />
             <Route path="/partners" element={<SponsorsPage />} />
             <Route path="/Event" element={<Event />} />
+            <Route path="/CguCgv" element={<CguCgv />} />
+            <Route path="/Faq" element={<Faq />} />
             <Route path="*" element={<NotFound />}></Route>
           </Routes>
         </FlashProvider>
@@ -175,6 +182,8 @@ function App() {
             <Route path="/jury" element={<JuryPage />} />
             <Route path="/partners" element={<SponsorsPage />} />
             <Route path="/Event" element={<Event />} />
+            <Route path="/CguCgv" element={<CguCgv />} />
+            <Route path="/Faq" element={<Faq />} />
             <Route path="*" element={<NotFound />}></Route>
           </Routes>
         </FlashProvider>

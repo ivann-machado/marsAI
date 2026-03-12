@@ -1,6 +1,6 @@
 import sharp from 'sharp';
-import path from 'path';
-import crypto from 'crypto';
+import path from 'node:path';
+import crypto from 'node:crypto';
 import { DEV_MODE } from '../config/index.js';
 
 /**
@@ -72,19 +72,21 @@ export const generateFilename = (file, buffer) => {
  * @param {Buffer} buffer - MP4 file buffer
  * @returns {number|null} Duration in seconds, or null if not found
  */
-export const getMp4Duration = (buffer) => {
+export const getMp4Metadata = (buffer) => {
 	try {
 		if (!buffer || buffer.length < 100) return null;
 
+		const result = { duration: null, width: null, height: null, aspectRatio: null };
 		let offset = 0;
+
 		while (offset < buffer.length - 8) {
 			const size = buffer.readUInt32BE(offset);
 			const type = buffer.toString('ascii', offset + 4, offset + 8);
 
-			if (size < 8) break; // Invalid box size
+			if (size < 8) break;
 
 			if (type === 'moov') {
-				offset += 8; // Enter moov box
+				offset += 8;
 				continue;
 			}
 
@@ -95,7 +97,9 @@ export const getMp4Duration = (buffer) => {
 				if (version === 1) {
 					// 64-bit values
 					timeScale = buffer.readUInt32BE(offset + 28);
-					duration = buffer.readUInt32BE(offset + 36);
+					const high = buffer.readUInt32BE(offset + 32);
+					const low = buffer.readUInt32BE(offset + 36);
+					duration = high * 0x100000000 + low;
 				} else {
 					// 32-bit values
 					timeScale = buffer.readUInt32BE(offset + 20);
@@ -103,14 +107,37 @@ export const getMp4Duration = (buffer) => {
 				}
 
 				if (timeScale > 0) {
-					return duration / timeScale;
+					result.duration = duration / timeScale;
 				}
-				return null;
+			}
+
+			if (type === 'trak') {
+				let trakOffset = offset + 8;
+				while (trakOffset < offset + size) {
+					const trakSize = buffer.readUInt32BE(trakOffset);
+					const trakType = buffer.toString('ascii', trakOffset + 4, trakOffset + 8);
+
+					if (trakType === 'tkhd') {
+						const version = buffer.readUInt8(trakOffset + 8);
+						const base = version === 1 ? trakOffset + 96 : trakOffset + 84;
+						const width = buffer.readUInt32BE(base) >> 16;
+						const height = buffer.readUInt32BE(base + 4) >> 16;
+						if (width > 0 && height > 0) {
+							result.width = width;
+							result.height = height;
+							const gcd = (a, b) => b === 0 ? a : gcd(b, a % b);
+							const divisor = gcd(width, height);
+							result.aspectRatio = `${width / divisor}:${height / divisor}`;
+						}
+					}
+
+					trakOffset += trakSize;
+				}
 			}
 
 			offset += size;
 		}
-		return null;
+		return result;
 	} catch (error) {
 		console.error("Error parsing MP4 duration:", error);
 		return null;

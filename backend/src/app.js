@@ -3,32 +3,40 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import rateLimit from "express-rate-limit";
-import { CORS_OPTIONS, JWT_SECRET } from "./config/index.js";
-import authRoutes from "./routes/auth.routes.js";
-import videoRoutes from "./routes/videos.routes.js";
+import debounce from "./middlewares/debounce.middleware.js";
+import { CORS_OPTIONS, JWT_SECRET, HELMET_CONFIG } from "./config/index.js";
 import jwt from "jsonwebtoken";
-import newsletterRoutes from "./routes/newsletter.routes.js";
+import MORGAN_FORMAT from "./config/morgan.config.js";
+// Routes imports
+import authRoutes from "./routes/auth.routes.js";
 import settingRoutes from "./routes/setting.routes.js";
-import reservationRoutes from "./routes/reservation.routes.js";
 import contentRoutes from "./routes/content.routes.js";
+import videoRoutes from "./routes/videos.routes.js";
+import newsletterRoutes from "./routes/newsletter.routes.js";
+import reservationRoutes from "./routes/reservation.routes.js";
 import eventRoutes from "./routes/event.routes.js";
 import contactRoutes from "./routes/contact.routes.js";
-import swaggerUi from "swagger-ui-express";
-import swaggerSpec from "./config/swagger.config.js";
 import juryRoutes from "./routes/jury.routes.js";
 import sponsorRoutes from "./routes/sponsor.routes.js";
 import reviewRoutes from "./routes/review.routes.js";
+import adminRoutes from "./routes/admin.routes.js";
 
 const app = express();
+
+// Helmet for security
+app.use(helmet(HELMET_CONFIG));
 
 //  Middleware
 app.use(cors(CORS_OPTIONS));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-// Logging
-app.use(morgan("dev")); // Log requests
 
-// Rate Limitingœ
+// Logging
+app.use(morgan(MORGAN_FORMAT)); // Log requests
+
+// Debounce for deduplication
+app.use(debounce(500));
+
+// Rate Limiting
 const limiter = rateLimit({
 	windowMs: 15 * 60 * 1000, // 15 minutes
 	max: 100, // Limit each IP to 100 requests per windowMs
@@ -43,7 +51,7 @@ const limiter = rateLimit({
 			if (!token) return false;
 
 			const decoded = jwt.verify(token, JWT_SECRET);
-			return decoded.role === "admin" || decoded.role === "super admin";
+			return decoded.role === "admin" || decoded.role === "super_admin";
 		} catch (error) {
 			return false;
 		}
@@ -65,10 +73,16 @@ app.use("/api/jury", juryRoutes);
 app.use("/api/sponsors", sponsorRoutes);
 app.use("/api/reviews", reviewRoutes);
 // Protected routes
+app.use("/api/admins", adminRoutes);
 app.use("/api/settings", settingRoutes);
 app.use("/api/content", contentRoutes);
+
 // API Documentation
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+if (process.env.DEV_MODE === "true") {
+	const { default: swaggerUi } = await import("swagger-ui-express");
+	const { default: swaggerSpec } = await import("./config/swagger.config.js");
+	app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+}
 
 // Global Error Handling Middleware
 app.use((err, req, res, next) => {
