@@ -35,19 +35,19 @@ function Gallery() {
   const [filmIndex, setFilmIndex] = useState(0);
   const [sortBy, setSortBy] = useState("title");
   const [loading, setLoading] = useState(true);
-  const [visibleCount, setVisibleCount] = useState(6);
+  const [visibleCount, setVisibleCount] = useState(50);
   const sliderRef = useRef(null);
   const loaderRef = useRef(null);
   const [FILMS, setFilms] = useState([]);
-  const [filmsPage, setFilmsPage] = useState(1);
-  const [filmsPages, setFilmsPages] = useState(1);
-  const [filmsTotal, setFilmsTotal] = useState(0);
+  // const [filmsPage, setFilmsPage] = useState(1);
+  // const [filmsPages, setFilmsPages] = useState(1);
+  // const [filmsTotal, setFilmsTotal] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          import.meta.env.VITE_API_URL + "/api/videos",
+          import.meta.env.VITE_API_URL + "/api/videos/?limit=50",
           {
             method: "GET",
             headers: { "Content-Type": "application/json" },
@@ -56,8 +56,8 @@ function Gallery() {
         if (!response.ok) throw new Error("Erreur fetch JSON");
         let res = await response.json();
         setFilms(res.data);
-        setFilmsPages(res.meta.totalPages);
-        setFilmsTotal(res.meta.totalCount);
+        // setFilmsPages(res.meta.totalPages);
+        // setFilmsTotal(res.meta.totalCount);
       } catch (err) {
         console.error(err);
       }
