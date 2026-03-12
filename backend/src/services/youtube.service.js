@@ -1,4 +1,4 @@
-import { Readable } from 'stream';
+import { Readable } from 'node:stream';
 import { getYouTubeClient } from '../config/youtube.js';
 import { DEV_MODE } from '../config/index.js';
 

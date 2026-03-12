@@ -1,6 +1,6 @@
 import sharp from 'sharp';
-import path from 'path';
-import crypto from 'crypto';
+import path from 'node:path';
+import crypto from 'node:crypto';
 import { DEV_MODE } from '../config/index.js';
 
 /**

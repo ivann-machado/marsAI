@@ -21,7 +21,7 @@
 		"prisma:generate": "prisma generate"
 	},
 	"dependencies": {
-		"@aws-sdk/client-s3": "^3.1004.0",
+		"@aws-sdk/client-s3": "^3.1006.0",
 		"@getbrevo/brevo": "^4.0.1",
 		"@prisma/adapter-mariadb": "^7.4.2",
 		"@prisma/client": "^7.4.2",
@@ -41,7 +41,7 @@
 		"zod": "^4.3.6"
 	},
 	"devDependencies": {
-		"jest": "^30.2.0",
+		"jest": "^30.3.0",
 		"jsdoc": "^4.0.5",
 		"jsdoc-to-markdown": "^9.1.3",
 		"nodemon": "^3.1.14",
