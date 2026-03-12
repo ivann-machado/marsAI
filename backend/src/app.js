@@ -72,8 +72,8 @@ app.use("/api/events", eventRoutes);
 app.use("/api/jury", juryRoutes);
 app.use("/api/sponsors", sponsorRoutes);
 app.use("/api/reviews", reviewRoutes);
-app.use("/api/admins", adminRoutes);
 // Protected routes
+app.use("/api/admins", adminRoutes);
 app.use("/api/settings", settingRoutes);
 app.use("/api/content", contentRoutes);
 
