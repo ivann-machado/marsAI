@@ -1,5 +1,5 @@
 import prisma from "../config/prisma.js";
-import { paginate } from "../utils/paginate.js";
+import { paginate } from "../utils/paginate.util.js";
 import { getFileUrl } from "../services/bucket.service.js";
 import { uploadVideo } from "../services/youtube.service.js";
 
