@@ -7,7 +7,7 @@ const store = new Map();
  * @param {number} ttl - The duration in seconds to cache the response.
  * @returns {function} - The middleware function.
  */
-export const cache = (ttl) => (req, res, next) => {
+export const cache = (ttl = 60 * 60 * 24) => (req, res, next) => {
 	const key = req.originalUrl;
 	const entry = store.get(key);
 
