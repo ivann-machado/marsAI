@@ -13,7 +13,7 @@ import { CreateSponsorSchema, UpdateSponsorSchema } from "../schemas/sponsor.sch
 
 const router = express.Router();
 
-router.get("/", cache(), getAllSponsors);
+router.get("/", cache({ ttl: 0 }), getAllSponsors);
 router.get("/:id", cache(), getSponsorById);
 router.post("/", verifyToken, requireSuperAdmin, processAndUpload({ schema: CreateSponsorSchema, maxFiles: 1, maxSize: 5 * 1024 * 1024 }), createSponsor, clearCache("sponsor"));
 router.put("/:id", verifyToken, requireSuperAdmin, processAndUpload({ schema: UpdateSponsorSchema, maxFiles: 1, maxSize: 5 * 1024 * 1024 }), updateSponsor, clearCache("sponsor"));

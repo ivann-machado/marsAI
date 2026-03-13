@@ -9,6 +9,7 @@ import {
 	verifyToken,
 	requireSuperAdmin,
 } from "../middlewares/auth.middleware.js";
+import { cache } from "../middlewares/cache.middleware.js";
 
 const router = express.Router();
 
@@ -19,8 +20,8 @@ const router = express.Router();
  * - PUT    /:id        → modifier le rôle d'un admin
  * - DELETE /:id        → supprimer un admin
  */
-router.get("/", verifyToken, requireSuperAdmin, getAllAdmins);
-router.get("/:id", verifyToken, requireSuperAdmin, getAdminById);
+router.get("/", verifyToken, requireSuperAdmin, cache({ etagOnly: true }), getAllAdmins);
+router.get("/:id", verifyToken, requireSuperAdmin, cache({ etagOnly: true }), getAdminById);
 router.put("/:id", verifyToken, requireSuperAdmin, setAdmin);
 router.delete("/:id", verifyToken, requireSuperAdmin, removeAdmin);
 

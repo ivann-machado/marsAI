@@ -13,7 +13,7 @@ const router = express.Router();
  * - PUT  `/`  : update a setting (super admin only).
  */
 
-router.get("/", verifyToken, requireSuperAdmin, cache(0), getSettings);
+router.get("/", verifyToken, requireSuperAdmin, cache({ ttl: 0 }), getSettings);
 router.put("/", verifyToken, requireSuperAdmin, validate(UpdateSettingSchema), setSetting, clearCache("settings"));
 
 export default router;

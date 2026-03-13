@@ -12,7 +12,7 @@ const router = express.Router();
  * - GET  `/`  : get all content.
  * - PUT  `/`  : update a content (super admin only).
  */
-router.get("/", cache(0), getAllContent);
+router.get("/", cache({ ttl: 0 }), getAllContent);
 router.put("/", verifyToken, requireSuperAdmin, validate(UpdateContentSchema), setContent, clearCache("content"));
 
 export default router;
