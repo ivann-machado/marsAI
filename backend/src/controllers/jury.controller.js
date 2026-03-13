@@ -6,8 +6,9 @@ import { deleteFile, getFileUrl } from "../services/bucket.service.js";
  * Create a new jury member.
  * @param {import("express").Request} req
  * @param {import("express").Response} res
+ * @param {import("express").NextFunction} next
  */
-export const createJury = async (req, res) => {
+export const createJury = async (req, res, next) => {
 	try {
 		const { edition_id, name, bio, profession } = req.body;
 
@@ -33,6 +34,7 @@ export const createJury = async (req, res) => {
 			message: "Jury member created",
 			id: jury.id.toString(),
 		});
+		next();
 	} catch (error) {
 		console.error("Create Jury Error:", error);
 		res.status(500).json({ message: "Server error" });
@@ -105,8 +107,9 @@ export const getJuryById = async (req, res) => {
  * Update a jury member by ID.
  * @param {import("express").Request} req
  * @param {import("express").Response} res
+ * @param {import("express").NextFunction} next
  */
-export const setJury = async (req, res) => {
+export const setJury = async (req, res, next) => {
 	try {
 		const { id } = req.params;
 		const { edition_id, name, bio, photo, profession, oldPhoto } = req.body;
@@ -135,6 +138,7 @@ export const setJury = async (req, res) => {
 		res.status(200).json({
 			message: "Jury updated",
 		});
+		next();
 	} catch (error) {
 		if (error.code === "P2025") {
 			return res.status(404).json({
@@ -150,8 +154,9 @@ export const setJury = async (req, res) => {
  * Remove a jury member by ID.
  * @param {import("express").Request} req
  * @param {import("express").Response} res
+ * @param {import("express").NextFunction} next
  */
-export const removeJury = async (req, res) => {
+export const removeJury = async (req, res, next) => {
 	try {
 		const { id } = req.params;
 
@@ -168,6 +173,7 @@ export const removeJury = async (req, res) => {
 		res.status(200).json({
 			message: "Jury deleted",
 		});
+		next();
 	} catch (error) {
 		if (error.code === "P2025") {
 			return res.status(404).json({
