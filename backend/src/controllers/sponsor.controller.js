@@ -1,13 +1,14 @@
 import prisma from "../config/prisma.js";
-import { paginate } from "../utils/paginate.js";
+import { paginate } from "../utils/paginate.util.js";
 import { deleteFile, getFileUrl } from "../services/bucket.service.js";
 
 /**
  * Create a new sponsor
  * @param {import("express").Request} req
  * @param {import("express").Response} res
+ * @param {import("express").NextFunction} next
  */
-export const createSponsor = async (req, res) => {
+export const createSponsor = async (req, res, next) => {
 	try {
 		const { edition_id, type, name, url, logo } = req.body;
 
@@ -31,6 +32,7 @@ export const createSponsor = async (req, res) => {
 			message: "Sponsor created",
 			id: sponsor.id.toString(),
 		});
+		next();
 	} catch (error) {
 		console.error("Create Sponsor Error:", error);
 		res.status(500).json({
@@ -109,8 +111,9 @@ export const getSponsorById = async (req, res) => {
  * Update sponsor
  * @param {import("express").Request} req
  * @param {import("express").Response} res
+ * @param {import("express").NextFunction} next
  */
-export const updateSponsor = async (req, res) => {
+export const updateSponsor = async (req, res, next) => {
 	try {
 		const { id } = req.params;
 		const { edition_id, type, name, url, logo, oldLogo } = req.body;
@@ -137,6 +140,7 @@ export const updateSponsor = async (req, res) => {
 		}
 
 		res.status(200).json({ message: "Sponsor updated" });
+		next();
 	} catch (error) {
 		if (error.code === "P2025") {
 			return res.status(404).json({
@@ -154,8 +158,9 @@ export const updateSponsor = async (req, res) => {
  * Delete sponsor
  * @param {import("express").Request} req
  * @param {import("express").Response} res
- */
-export const removeSponsor = async (req, res) => {
+ * @param {import("express").NextFunction} next
+*/
+export const removeSponsor = async (req, res, next) => {
 	try {
 		const { id } = req.params;
 
@@ -170,6 +175,7 @@ export const removeSponsor = async (req, res) => {
 		});
 
 		res.status(200).json({ message: "Sponsor deleted" });
+		next();
 	} catch (error) {
 		if (error.code === "P2025") {
 			return res.status(404).json({

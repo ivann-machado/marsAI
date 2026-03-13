@@ -1,4 +1,3 @@
-import * as Brevo from '@getbrevo/brevo';
 import { getBrevoClient } from '../config/brevo.js';
 import { DEV_MODE } from '../config/index.js';
 

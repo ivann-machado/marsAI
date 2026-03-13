@@ -1,5 +1,5 @@
 import prisma from "../config/prisma.js";
-import { paginate } from "../utils/paginate.js";
+import { paginate } from "../utils/paginate.util.js";
 import { getFileUrl } from "../services/bucket.service.js";
 
 /** Shared include object for eager-loading review relations. */
@@ -158,7 +158,7 @@ export const setReview = async (req, res) => {
 		if (!id)
 			return res.status(400).json({ message: "Review id is required" });
 
-		const review = await prisma.reviews.update({
+		await prisma.reviews.update({
 			where: { id: Number(id) },
 			data: {
 				note,

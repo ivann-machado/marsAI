@@ -9,11 +9,12 @@ import {
 	removeReview,
 } from "../controllers/review.controller.js";
 import { validate } from "../middlewares/validate.middleware.js";
+import { verifyToken } from "../middlewares/auth.middleware.js";
+import { cache } from "../middlewares/cache.middleware.js";
 import {
 	CreateReviewSchema,
 	UpdateReviewSchema,
 } from "../schemas/review.schema.js";
-import { verifyToken } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
@@ -25,8 +26,8 @@ const router = express.Router();
 router.post("/", validate(CreateReviewSchema), createReview);
 router.get("/assigned", verifyToken, getAssignedReviews);
 router.get("/rest", verifyToken, getRestVideos);
-router.get("/", getAllReviews);
-router.get("/:id", getReviewById);
+router.get("/", cache({ etagOnly: true }), getAllReviews);
+router.get("/:id", cache({ etagOnly: true }), getReviewById);
 router.put("/:id", validate(UpdateReviewSchema), setReview);
 router.delete("/:id", removeReview);
 
