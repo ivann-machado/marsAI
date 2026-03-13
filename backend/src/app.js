@@ -85,7 +85,7 @@ if (process.env.DEV_MODE === "true") {
 }
 
 // Global Error Handling Middleware
-app.use((err, req, res, next) => {
+app.use((err, _req, res, _next) => {
 	console.error(err.stack);
 	res.status(500).json({
 		status: "error",

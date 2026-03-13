@@ -120,7 +120,7 @@ export const setJury = async (req, res, next) => {
 			});
 		}
 
-		const jury = await prisma.jury.update({
+		await prisma.jury.update({
 			where: { id: Number(id) },
 			data: {
 				edition_id: edition_id ? Number(edition_id) : undefined,

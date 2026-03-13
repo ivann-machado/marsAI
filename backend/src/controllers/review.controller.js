@@ -158,7 +158,7 @@ export const setReview = async (req, res) => {
 		if (!id)
 			return res.status(400).json({ message: "Review id is required" });
 
-		const review = await prisma.reviews.update({
+		await prisma.reviews.update({
 			where: { id: Number(id) },
 			data: {
 				note,
