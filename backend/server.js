@@ -1,17 +1,21 @@
-import { PORT } from './src/config/index.js';
 import { performance } from 'perf_hooks';
+import prisma from './src/config/prisma.js';
 import { loadSettings } from './src/config/settings.js';
 import { createServer } from "http";
 import app from './src/app.js';
 
+const PORT = process.env.PORT || 3000;
 
+console.log(`Starting server in ${process.env.DEV_MODE ? 'development' : 'production'} mode at ${Math.round(Date.now() - performance.timeOrigin)}ms process time.`);
+console.log(`Process ID: ${process.pid}`);
+const settingStartTime = Date.now();
 await loadSettings();
-console.log(`Settings loaded in ${Math.round(Date.now() - performance.timeOrigin)}ms`);
+console.log(`Settings loaded in ${Date.now() - settingStartTime}ms at ${Math.round(Date.now() - performance.timeOrigin)}ms process time`);
 
 const server = createServer(app);
 
 server.on('listening', () => {
-	console.log(`Server started on http://localhost:${PORT} in ${Math.round(Date.now() - performance.timeOrigin)}ms`);
+	console.log(`Server started on http://localhost:${PORT} in ${Math.round(Date.now() - performance.timeOrigin)}ms process time.`);
 });
 
 const startServer = (port, retries = 20) => {
@@ -38,27 +42,26 @@ const startServer = (port, retries = 20) => {
 
 startServer(PORT);
 
-const gracefulShutdown = async () => {
+const gracefulShutdown = () => {
 	console.log('Received kill signal, shutting down gracefully');
 
-	server.close(() => {
-		console.log('Closed out remaining connections');
-
-		pool.end()
-			.then(() => {
-				console.log('Database pool closed');
-				process.exit(0);
-			})
-			.catch((err) => {
-				console.error('Error closing database pool', err);
-				process.exit(1);
-			});
-	});
-
-	setTimeout(() => {
+	const forceExit = setTimeout(() => {
 		console.error('Could not close connections in time, forcefully shutting down');
 		process.exit(1);
 	}, 10000);
+
+	server.close(async () => {
+		console.log('Closed out remaining connections');
+		try {
+			await prisma.$disconnect();
+			console.log('Database disconnected');
+			clearTimeout(forceExit);
+			process.exit(0);
+		} catch (err) {
+			console.error('Error disconnecting database', err);
+			process.exit(1);
+		}
+	});
 };
 
 // Listen for termination signals
