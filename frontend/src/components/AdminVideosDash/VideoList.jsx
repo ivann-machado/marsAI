@@ -99,8 +99,6 @@ function checkFilter(filter, video) {
 
 function VideoList(props) {
   const filters = props.filters;
-  const items_per_page = props.items_per_page;
-  const page = props.page;
 
   return (
     <div className="bg-gray-900 text-white">
@@ -113,13 +111,11 @@ function VideoList(props) {
         <p>Selection</p>
       </div>
 
-      {props.videoList
-        .slice((page - 1) * items_per_page, page * items_per_page)
-        .map((video) =>
-          checkFilter(filters, video) ? (
-            <VideoCard video={video} key={video.id} type={props.type} />
-          ) : null,
-        )}
+      {props.videoList.map((video) =>
+        checkFilter(filters, video) ? (
+          <VideoCard video={video} key={video.id} type={props.type} />
+        ) : null,
+      )}
     </div>
   );
 }

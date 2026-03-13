@@ -25,9 +25,13 @@ function AdminVideosDash() {
 
   useEffect(() => {
     const fetchData = async () => {
+      const pageQuery = "?page=" + videosPage;
+      console.log(
+        import.meta.env.VITE_API_URL + "/api/reviews/rest/" + offsetQuery,
+      );
       try {
         const response = await fetch(
-          import.meta.env.VITE_API_URL + "/api/reviews/rest",
+          import.meta.env.VITE_API_URL + "/api/reviews/rest/" + offsetQuery,
           {
             method: "GET",
             headers: {
@@ -38,6 +42,7 @@ function AdminVideosDash() {
         );
         if (!response.ok) throw new Error("Erreur fetch rest videos");
         const res = await response.json();
+        console.log(res);
         setVideosPages(res.meta.totalPages);
         setVideos(res.data ?? res);
       } catch (err) {
@@ -45,7 +50,7 @@ function AdminVideosDash() {
       }
     };
 
-    if (!videos) fetchData();
+    fetchData();
   }, [videosPage]);
 
   const updateFilters = (key, value) => {
@@ -59,6 +64,7 @@ function AdminVideosDash() {
   };
 
   if (!videos) return <Loading />;
+  console.log(videosPage);
 
   return (
     <div className="w-4/5 bg-gradient-to-br from-gray-950 via-gray-800 to-gray-950 px-4 font-inter">
