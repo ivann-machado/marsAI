@@ -150,15 +150,6 @@ function UploadForm() {
       return true;
     }
   }
-  function subtitlesCheck() {
-    if (subtitles.current.value.trim() === "") {
-      SetSubtitlesError(t("upload_form.errors.no_file"));
-      return false;
-    } else {
-      SetSubtitlesError("");
-      return true;
-    }
-  }
   function scenarioAiCheck() {
     if (scenario_ai.current.value.length > 50) {
       SetScenarioAiError(t("upload_form.errors.field_max_length_short"));
@@ -207,15 +198,15 @@ function UploadForm() {
       return true;
     }
   }
-  function producerImageCheck() {
-    if (producerImage.current.value.trim() === "") {
-      SetProducerImageError(t("upload_form.errors.no_file"));
-      return false;
-    } else {
-      SetProducerImageError("");
-      return true;
-    }
-  }
+  // function producerImageCheck() {
+  //   if (producerImage.current.value.trim() === "") {
+  //     SetProducerImageError(t("upload_form.errors.no_file"));
+  //     return false;
+  //   } else {
+  //     SetProducerImageError("");
+  //     return true;
+  //   }
+  // }
   function instagramCheck() {
     if (instagram.current.value.length > 50) {
       SetInstagramError(t("upload_form.errors.field_max_length_short"));
@@ -291,6 +282,7 @@ function UploadForm() {
     }
   }
   function tagCheck() {
+    const tagRegex = /^(#\w+(,\s`\w+)*){0,1}$/;
     if (!tagRegex.test(tags.current.value)) {
       SetTagError(t("upload_form.errors.invalid_tag"));
       return false;
@@ -327,7 +319,6 @@ function UploadForm() {
     };
     videoCheck();
     coverImageCheck();
-    subtitlesCheck();
     if (!titleCheck()) {
       showFlash(
         "error",
@@ -363,16 +354,6 @@ function UploadForm() {
           (coverImageError != ""
             ? coverImageError
             : t("upload_form.errors.default_no_file")),
-      );
-      SetLoading(false);
-      return;
-    } else if (!subtitlesCheck) {
-      showFlash(
-        "error",
-        "Miniature du film: " +
-          (subtitlesError != ""
-            ? subtitlesError
-            : t("upload_form.errors.no_file")),
       );
       SetLoading(false);
       return;
@@ -412,17 +393,19 @@ function UploadForm() {
       );
       SetLoading(false);
       return;
-    } else if (!producerImageCheck()) {
-      showFlash(
-        "error",
-        "Photo du producteur: " +
-          (producerImageError != ""
-            ? producerImageError
-            : t("upload_form.errors.no_file")),
-      );
-      SetLoading(false);
-      return;
-    } else if (!movieTypeCheck()) {
+    }
+    // else if (!producerImageCheck()) {
+    //   showFlash(
+    //     "error",
+    //     "Photo du producteur: " +
+    //       (producerImageError != ""
+    //         ? producerImageError
+    //         : t("upload_form.errors.no_file")),
+    //   );
+    //   SetLoading(false);
+    //   return;
+    // }
+    else if (!movieTypeCheck()) {
       showFlash(
         "error",
         "Type de production:" +
@@ -573,16 +556,6 @@ function UploadForm() {
       );
       SetLoading(false);
       return;
-    } else if (!subtitlesCheck) {
-      showFlash(
-        "error",
-        "Miniature du film: " +
-          (subtitlesError != ""
-            ? subtitlesError
-            : t("upload_form.errors.no_file")),
-      );
-      SetLoading(false);
-      return;
     } else if (!producerCheck()) {
       showFlash(
         "error",
@@ -603,17 +576,19 @@ function UploadForm() {
       );
       SetLoading(false);
       return;
-    } else if (!producerImageCheck()) {
-      showFlash(
-        "error",
-        "Photo du producteur: " +
-          (producerImageError != ""
-            ? producerImageError
-            : t("upload_form.errors.no_file")),
-      );
-      SetLoading(false);
-      return;
-    } else if (!movieTypeCheck()) {
+    }
+    //  else if (!producerImageCheck()) {
+    //   showFlash(
+    //     "error",
+    //     "Photo du producteur: " +
+    //       (producerImageError != ""
+    //         ? producerImageError
+    //         : t("upload_form.errors.no_file")),
+    //   );
+    //   SetLoading(false);
+    //   return;
+    // }
+    else if (!movieTypeCheck()) {
       showFlash(
         "error",
         "Type de production:" +
@@ -706,9 +681,9 @@ function UploadForm() {
     } else if (!countrySelectcheck()) {
       showFlash("error", "Pays invalide");
       SetLoading(false);
+      return;
     } else if (!majorityCertification) {
       SetLoading(false);
-
       return;
     } else if (rightGivaway === false) {
       SetLoading(false);
@@ -754,7 +729,13 @@ function UploadForm() {
             style={{ width: `${((step + 1) / 3) * 100}%` }}
           />
         </div>
-        <div> {/*Titre et Règlement du formulaire*/} </div>
+        <div>
+          {" "}
+          {/*Titre et Règlement du formulaire*/}{" "}
+          <p className="text-sm text-white/70 mb-2 tracking-wide">
+            Tous les Champs marqués d'un * sont obligatoires
+          </p>{" "}
+        </div>
         {/* Animated Container */}
         <div className="relative w-full overflow-hidden">
           {/* ================= STEP 1 ================= */}
@@ -765,17 +746,20 @@ function UploadForm() {
                 : "opacity-0 -translate-x-full absolute"
             }`}
           >
+            <div> {/*Titre et Règlement du formulaire*/} </div>
             <p className="text-3xl md:text-4xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-orange-300 text-center mb-8  pb-2 pt-2">
               {t("upload_form.global_infos")}
             </p>
 
             {/* TITLE */}
             <div className="flex flex-col p-4">
-              <label className="text-sm text-white/70 mb-2 tracking-wide">
+              <label className="text-sm text-white/70 mb-2 tracking-wide flex flex-row gap-2">
                 {t("upload_form.title")} :
+                <p className="text-sm text-red-500 mb-2 tracking-wide">*</p>
               </label>
               <input
                 type="text"
+                required
                 ref={title}
                 onChange={titleCheck}
                 className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
@@ -785,8 +769,9 @@ function UploadForm() {
 
             {/* DESCRIPTION */}
             <div className="flex flex-col p-4">
-              <label className="text-sm text-white/70 mb-2 tracking-wide">
+              <label className="text-sm text-white/70 mb-2 tracking-wide flex flex-row gap-2">
                 {t("upload_form.desc")} :
+                <p className="text-sm text-red-500 mb-2 tracking-wide">*</p>
               </label>
               <input
                 type="text"
@@ -800,9 +785,10 @@ function UploadForm() {
             <div className="flex flex-col p-4">
               <label
                 htmlFor="video"
-                className="text-sm text-white/70 mb-2 tracking-wide"
+                className="text-sm text-white/70 mb-2 tracking-wide flex flex-row gap-2"
               >
                 {t("upload_form.video")} :
+                <p className="text-sm text-red-500 mb-2 tracking-wide">*</p>
               </label>
               <input
                 type="file"
@@ -819,9 +805,10 @@ function UploadForm() {
             <div className="flex flex-col p-4">
               <label
                 htmlFor="image"
-                className="text-sm text-white/70 mb-2 tracking-wide "
+                className="text-sm text-white/70 mb-2 tracking-wide flex flex-row gap-2"
               >
                 {t("upload_form.image")} :
+                <p className="text-sm text-red-500 mb-2 tracking-wide">*</p>
               </label>
               <input
                 type="file"
@@ -873,9 +860,10 @@ function UploadForm() {
               <div className="flex flex-col md:w-full md:max-w-150">
                 <label
                   htmlFor="producer"
-                  className="text-sm text-white/70 mb-2 tracking-wide"
+                  className="text-sm text-white/70 mb-2 tracking-wide flex flex-row gap-2"
                 >
                   {t("upload_form.producer")} :
+                  <p className="text-sm text-red-500 mb-2 tracking-wide">*</p>
                 </label>
                 <input
                   type="text"
@@ -892,9 +880,10 @@ function UploadForm() {
               <div className="flex flex-col md:w-full md:max-w-150">
                 <label
                   htmlFor="email"
-                  className="text-sm text-white/70 mb-2 tracking-wide"
+                  className="text-sm text-white/70 mb-2 tracking-wide flex flex-row gap-2"
                 >
                   Email :
+                  <p className="text-sm text-red-500 mb-2 tracking-wide">*</p>
                 </label>
                 <input
                   type="text"
@@ -930,9 +919,10 @@ function UploadForm() {
               <div className="flex flex-col md:w-full md:max-w-150">
                 <label
                   htmlFor="more_info"
-                  className="text-sm text-white/70 mb-2 tracking-wide"
+                  className="text-sm text-white/70 mb-2 tracking-wide flex flex-row gap-2"
                 >
                   {t("upload_form.production_type")} :
+                  <p className="text-sm text-red-500 mb-2 tracking-wide">*</p>
                 </label>
                 <select
                   name="movieTypeSelect"
@@ -1156,9 +1146,10 @@ function UploadForm() {
               <div className="flex flex-col md:w-full md:max-w-150">
                 <label
                   htmlFor="countrySelect"
-                  className="text-sm text-white/70 mb-2 tracking-wide"
+                  className="text-sm text-white/70 mb-2 tracking-wide flex flex-row gap-2"
                 >
                   {t("upload_form.country")} :
+                  <p className="text-sm text-red-500 mb-2 tracking-wide">*</p>
                 </label>
                 <select
                   name="countrySelect"
@@ -1185,8 +1176,12 @@ function UploadForm() {
                   onChange={certficitationHandler}
                   className="bg-gray-700 border border-gray-500 rounded-lg"
                 />
-                <label htmlFor="majority_certification" className="text-white">
+                <label
+                  htmlFor="majority_certification"
+                  className="text-white flex flex-row gap-2"
+                >
                   {t("upload_form.majority_certification")}
+                  <p className="text-sm text-red-500 mb-2 tracking-wide">*</p>
                 </label>
               </div>
 
@@ -1199,8 +1194,12 @@ function UploadForm() {
                   onChange={rightGiveAwayHandler}
                   className="bg-gray-700 border border-gray-500 rounded-lg"
                 />
-                <label htmlFor="right_givaway" className="text-white">
+                <label
+                  htmlFor="right_givaway"
+                  className="text-white flex flex-row gap-2"
+                >
                   {t("upload_form.right_givaway")}
+                  <p className="text-sm text-red-500 mb-2 tracking-wide">*</p>
                 </label>
               </div>
             </div>
