@@ -69,20 +69,23 @@ const VideoSchema = videosSchema
       .or(z.literal("")),
     scenario_ai: z
       .string()
-      .optional()
-      .max(50, { error: "Scenario AI must be at most 50 characters" }),
+      .max(50, { error: "Scenario AI must be at most 50 characters" })
+      .optional(),
     video_gen_ai: z
       .string()
-      .optional()
-      .max(50, { error: "Video gen AI must be at most 50 characters" }),
+
+      .max(50, { error: "Video gen AI must be at most 50 characters" })
+      .optional(),
     sound_ai: z
       .string()
-      .optional()
-      .max(50, { error: "Sound AI must be at most 50 characters" }),
+
+      .max(50, { error: "Sound AI must be at most 50 characters" })
+      .optional(),
     postprod_ai: z
       .string()
-      .optional()
-      .max(50, { error: "Post-production AI must be at most 50 characters" }),
+
+      .max(50, { error: "Post-production AI must be at most 50 characters" })
+      .optional(),
     tags: z
       .string()
       .max(100, { error: "Tags must be at most 100 characters" })
