@@ -144,12 +144,14 @@ function Header() {
               </span>
             </button>
 
-            <Link
-              to="/participate"
-              className="px-6 py-2.5 bg-gradient-to-r from-[#a855f7] to-[#ec4899] text-white font-inter font-semibold text-sm tracking-wide rounded-full transition-all duration-300 hover:drop-shadow-[0_0_15px_rgba(236,72,153,0.8)]"
-            >
-              {t("header.participate")}
-            </Link>
+            {settings.phase === "1" ? (
+              <Link
+                to="/participate"
+                className="px-6 py-2.5 bg-gradient-to-r from-[#a855f7] to-[#ec4899] text-white font-inter font-semibold text-sm tracking-wide rounded-full transition-all duration-300 hover:drop-shadow-[0_0_15px_rgba(236,72,153,0.8)]"
+              >
+                {t("header.participate")}
+              </Link>
+            ) : null}
           </div>
 
           <button
