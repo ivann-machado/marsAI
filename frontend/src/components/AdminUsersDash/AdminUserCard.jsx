@@ -16,9 +16,11 @@ function AdminUserCard({ userData }) {
     setModified(true);
   }; */
 
-  console.log(userData);
-
   const updateRole = async (value) => {
+    if (user.id === authToken.id) {
+      showFlash("error", "On ne peut pas changer son propre role");
+      return;
+    }
     try {
       const response = await fetch(
         import.meta.env.VITE_API_URL + "/api/admins/" + user.id,
@@ -44,6 +46,10 @@ function AdminUserCard({ userData }) {
   };
 
   const deleteUser = () => {
+    if (user.id === authToken.id) {
+      showFlash("error", "On ne peut pas supprimer son propre compte");
+      return;
+    }
     if (!confirm) setConfirm(true);
     else setConfirm(false);
   };

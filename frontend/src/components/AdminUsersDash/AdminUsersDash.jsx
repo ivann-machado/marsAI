@@ -41,7 +41,6 @@ function AdminUsersDash() {
         );
         if (!response.ok) throw new Error("Erreur fetch JSON");
         const json = await response.json();
-        console.log(json);
         setUsers(json.data);
         setUserPages(json.meta.totalPages);
       } catch (err) {

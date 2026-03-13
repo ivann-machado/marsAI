@@ -57,13 +57,13 @@ function AdminVideo() {
             {video.title}
           </h2>
           <div className="flex flex-col items-center">
-            {/*  <iframe
+            <iframe
               className="min-w-200 w-9/10 aspect-video rounded-t-xl"
               // src="https://www.youtube.com/embed/_cPdvX-0kRA?si=MP3jAxInyj04TUlx"
               src={"https://www.youtube.com/embed/" + video.url}
               title="YouTube video player"
               loading="lazy"
-            ></iframe> */}
+            ></iframe>
 
             {/* ADMIN PANEL TO VOTE */}
             <AdminVideoPanel video_data={video} />
