@@ -327,7 +327,8 @@
   },
   "admin_sidebar": {
     "overview": "Overview",
-    "videos": "Manage movies",
+    "videos": "All videos",
+    "reviews": "Videos to review",
     "users": "Manage users",
     "events": "Manage events",
     "settings": "Manage settings",
@@ -479,7 +480,8 @@
   },
   "buttonsComponents": {
     "back": "Back",
-    "next": "Next"},
+    "next": "Next"
+  },
   "phases": {
     "before_festival": "Before Festival",
     "during_festival": "Festival Live",

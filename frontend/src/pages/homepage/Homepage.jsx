@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
 import { useTranslation } from "react-i18next";
+import { useSettings } from "../../context/SettingsContext";
 
 const btn =
   "font-inter font-semibold text-sm tracking-wider uppercase rounded-full transition-all duration-300";
@@ -16,6 +17,7 @@ const h2Style =
 
 function Homepage() {
   const { t } = useTranslation();
+  const settings = useSettings();
   const [scrollY, setScrollY] = useState(0);
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
@@ -31,7 +33,9 @@ function Homepage() {
   }, []);
 
   useEffect(() => {
-    const festivalDate = new Date("2026-06-12T09:00:00");
+    const festivalDate = new Date(
+      settings.phase_2_date ? settings.phase_2_date : "2026-06-12T09:00:00",
+    );
     const calculateTimeLeft = () => {
       const now = new Date();
       const difference = festivalDate - now;
