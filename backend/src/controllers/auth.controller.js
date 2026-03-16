@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import prisma from "../config/prisma.config.js";
-import { JWT_SECRET, JWT_EXPIRES_IN, DEV_MODE, FRONTEND_URL } from "../config/index.js";
+import { JWT_SECRET, JWT_EXPIRES_IN, NODE_ENV, FRONTEND_URL } from "../config/index.js";
 import { renderView } from "../utils/view.util.js";
 import { sendEmail } from "../services/brevo.service.js";
 
@@ -129,7 +129,7 @@ const validateInviteTokenRaw = async (token) => {
 		include: { admins: true },
 	});
 
-	if (DEV_MODE) {
+	if (NODE_ENV !== 'production') {
 		console.log("ValidateToken found:", existingToken);
 	}
 

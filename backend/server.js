@@ -7,7 +7,7 @@ import app from './src/app.js';
 
 const PORT = Number(process.env.PORT) || 3000;
 
-console.log(`Starting server in ${process.env.DEV_MODE ? 'development' : 'production'} mode at ${Math.round(Date.now() - performance.timeOrigin)}ms process time.`);
+console.log(`Starting server in ${process.env.NODE_ENV} mode at ${Math.round(Date.now() - performance.timeOrigin)}ms process time.`);
 console.log(`Process ID: ${process.pid}`);
 const settingStartTime = Date.now();
 await loadSettings();

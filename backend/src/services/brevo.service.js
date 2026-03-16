@@ -1,5 +1,5 @@
 import BrevoClient from '../config/brevo.config.js';
-import { DEV_MODE } from '../config/index.js';
+import { NODE_ENV } from '../config/index.js';
 
 /**
  * Helper to configure the base SMTP email object
@@ -40,7 +40,7 @@ const configureBaseEmail = (to, config, senderOverride = null) => {
  */
 export const sendEmail = async (to, subject, htmlContent, textContent = '', senderOverride = null) => {
 	try {
-		if (DEV_MODE) {
+		if (NODE_ENV !== 'production') {
 			console.log(`Preparing to send email to: ${to}`);
 		}
 
@@ -53,7 +53,7 @@ export const sendEmail = async (to, subject, htmlContent, textContent = '', send
 		const response = await BrevoClient.api.sendTransacEmail(sendSmtpEmail);
 
 		const messageId = response.messageId || response.body?.messageId;
-		if (DEV_MODE) {
+		if (NODE_ENV !== 'production') {
 			console.log(`Email sent successfully! Message ID: ${messageId}`);
 		}
 		return response;
@@ -76,7 +76,7 @@ export const sendEmail = async (to, subject, htmlContent, textContent = '', send
  */
 export const sendTemplateEmail = async (to, templateId, params = {}) => {
 	try {
-		if (DEV_MODE) {
+		if (NODE_ENV !== 'production') {
 			console.log(`Preparing to send template email (${templateId}) to: ${to}`);
 		}
 
@@ -88,7 +88,7 @@ export const sendTemplateEmail = async (to, templateId, params = {}) => {
 		const response = await BrevoClient.api.sendTransacEmail(sendSmtpEmail);
 
 		const messageId = response.body?.messageId || response.messageId;
-		if (DEV_MODE) {
+		if (NODE_ENV !== 'production') {
 			console.log(`Template email sent successfully! Message ID: ${messageId}`);
 		}
 		return response;

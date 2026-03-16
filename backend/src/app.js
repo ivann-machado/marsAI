@@ -80,7 +80,7 @@ app.use("/api/settings", settingRoutes);
 app.use("/api/content", contentRoutes);
 
 // API Documentation
-if (process.env.DEV_MODE === "true") {
+if (process.env.NODE_ENV !== "production") {
 	const { default: swaggerUi } = await import("swagger-ui-express");
 	const { default: swaggerSpec } = await import("./config/swagger.config.js");
 	app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
