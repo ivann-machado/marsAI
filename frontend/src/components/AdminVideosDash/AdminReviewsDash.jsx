@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import VideoList from "./VideoList.jsx";
 import Loading from "../Utils/Loading.jsx";
 import Pagination from "../Utils/Pagination.jsx";
-s;
 import { useauth } from "../../context/AuthContext.jsx";
 
 function AdminReviewsDash() {
@@ -51,7 +50,6 @@ function AdminReviewsDash() {
       {/* LISTE REVIEWS */}
       <VideoList
         videoList={videos}
-        filters={appliedFilters}
         page={videosPage}
         items_per_page={ITEMS_PER_PAGE}
       />
