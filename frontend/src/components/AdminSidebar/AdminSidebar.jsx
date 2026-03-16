@@ -27,6 +27,9 @@ function AdminSidebar() {
         {userRole && ["super_admin", "admin"].includes(userRole) ? (
           <SidebarButton link="/videos" name={t("admin_sidebar.videos")} />
         ) : null}
+        {userRole && ["super_admin", "admin"].includes(userRole) ? (
+          <SidebarButton link="/reviews" name={t("admin_sidebar.reviews")} />
+        ) : null}
         {userRole && userRole === "super_admin" ? (
           <SidebarButton link="/users" name={t("admin_sidebar.users")} />
         ) : null}

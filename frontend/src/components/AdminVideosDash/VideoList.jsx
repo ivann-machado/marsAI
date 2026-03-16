@@ -59,7 +59,7 @@ function VideoCard({ video, type }) {
           href={"/video/" + currVideo.id}
           className="bg-gray-700 p-2 rounded-md hover:ring-2 hover:ring-purple-600"
         >
-          {type === "queue" ? "Noter Film" : "Details"}
+          Noter Film
         </a>
       </div>
       {type != "queue" ? (
