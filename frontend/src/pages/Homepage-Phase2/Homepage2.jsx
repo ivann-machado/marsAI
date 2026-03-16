@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
+import { useSettings } from "../../context/SettingsContext";
 
 const btn =
   "font-inter font-semibold text-sm tracking-wider uppercase rounded-full transition-all duration-300";
@@ -65,6 +66,7 @@ const MAPS_URL =
 
 function HomepagePhase2() {
   const { t } = useTranslation();
+  const settings = useSettings();
   const [scrollY, setScrollY] = useState(0);
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
@@ -80,7 +82,9 @@ function HomepagePhase2() {
   }, []);
 
   useEffect(() => {
-    const target = new Date("2026-06-13T20:00:00").getTime();
+    const target = new Date(
+      settings.phase_3_date ? settings.phase_3_date : "2026-06-13T20:00:00",
+    ).getTime();
     const interval = setInterval(() => {
       const d = target - Date.now();
       if (d > 0)
