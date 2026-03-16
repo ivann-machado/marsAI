@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import prisma from "../config/prisma.js";
+import prisma from "../config/prisma.config.js";
 import { JWT_SECRET, JWT_EXPIRES_IN, DEV_MODE, FRONTEND_URL } from "../config/index.js";
 import { renderView } from "../utils/view.util.js";
 import { sendEmail } from "../services/brevo.service.js";

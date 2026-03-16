@@ -1,4 +1,4 @@
-import prisma from "../config/prisma.js";
+import prisma from "../config/prisma.config.js";
 import { paginate } from "../utils/paginate.util.js";
 import { deleteFile, getFileUrl } from "../services/s3.service.js";
 
