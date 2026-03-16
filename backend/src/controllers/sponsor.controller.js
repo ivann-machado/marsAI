@@ -1,6 +1,6 @@
 import prisma from "../config/prisma.js";
 import { paginate } from "../utils/paginate.util.js";
-import { deleteFile, getFileUrl } from "../services/bucket.service.js";
+import { deleteFile, getFileUrl } from "../services/s3.service.js";
 
 /**
  * Create a new sponsor

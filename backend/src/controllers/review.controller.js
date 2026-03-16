@@ -1,6 +1,6 @@
 import prisma from "../config/prisma.js";
 import { paginate } from "../utils/paginate.util.js";
-import { getFileUrl } from "../services/bucket.service.js";
+import { getFileUrl } from "../services/s3.service.js";
 
 /** Shared include object for eager-loading review relations. */
 const reviewIncludes = {
