@@ -5,7 +5,7 @@ import {
 	ListObjectsV2Command,
 	HeadObjectCommand
 } from '@aws-sdk/client-s3';
-import { getBucketClient } from '../config/s3.config.js';
+import { bucket } from '../config/s3.config.js';
 import { DEV_MODE } from '../config/index.js';
 
 /**
@@ -14,7 +14,7 @@ import { DEV_MODE } from '../config/index.js';
  * @returns {string}
  */
 const buildKey = (filename) => {
-	const { folder } = getBucketClient();
+	const { folder } = bucket;
 	const prefix = folder ? `${folder}/` : '';
 	return `${prefix}${filename}`;
 };
@@ -29,7 +29,7 @@ const buildKey = (filename) => {
  */
 export const uploadFile = async (filename, body, acl, contentType = 'application/octet-stream') => {
 	try {
-		const { client, bucketName } = getBucketClient();
+		const { client, bucketName } = bucket;
 		const key = buildKey(filename);
 
 		if (DEV_MODE) {
@@ -63,7 +63,7 @@ export const uploadFile = async (filename, body, acl, contentType = 'application
  */
 export const getFile = async (filename) => {
 	try {
-		const { client, bucketName } = getBucketClient();
+		const { client, bucketName } = bucket;
 		const key = buildKey(filename);
 
 		if (DEV_MODE) {
@@ -89,7 +89,7 @@ export const getFile = async (filename) => {
  */
 export const deleteFile = async (filename) => {
 	try {
-		const { client, bucketName } = getBucketClient();
+		const { client, bucketName } = bucket;
 		const key = buildKey(filename);
 
 		if (DEV_MODE) {
@@ -122,7 +122,7 @@ export const deleteFile = async (filename) => {
  */
 export const listFiles = async (prefix = '', maxKeys = 1000) => {
 	try {
-		const { client, bucketName, folder } = getBucketClient();
+		const { client, bucketName, folder } = bucket;
 		const folderPrefix = folder ? `${folder}/` : '';
 		const fullPrefix = `${folderPrefix}${prefix}`;
 
@@ -150,7 +150,7 @@ export const listFiles = async (prefix = '', maxKeys = 1000) => {
  */
 export const fileExists = async (filename) => {
 	try {
-		const { client, bucketName } = getBucketClient();
+		const { client, bucketName } = bucket;
 		const key = buildKey(filename);
 
 		const command = new HeadObjectCommand({
@@ -174,7 +174,7 @@ export const fileExists = async (filename) => {
  * @returns {string} - Public URL
  */
 export const getFileUrl = (filename) => {
-	const { endpoint, bucketName } = getBucketClient();
+	const { endpoint, bucketName } = bucket;
 	const key = buildKey(filename);
 	return `${endpoint}/${bucketName}/${key}`;
 };
@@ -185,7 +185,7 @@ export const getFileUrl = (filename) => {
  * @returns {string} - Filename
  */
 export const getFilename = (fileUrl) => {
-	const { endpoint, bucketName, folder } = getBucketClient();
+	const { endpoint, bucketName, folder } = bucket;
 	const prefix = folder ? `${folder}/` : '';
 	return fileUrl.replace(`${endpoint}/${bucketName}/${prefix}`, '');
 };
