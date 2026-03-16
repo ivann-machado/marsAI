@@ -15,7 +15,7 @@
 	"type": "module",
 	"main": "server.js",
 	"engines": {
-		"node": ">=23.6.0"
+		"node": ">=24.0"
 	},
 	"scripts": {
 		"start": "nodemon --env-file=.env server.js",
@@ -24,7 +24,7 @@
 		"prisma:generate": "prisma generate"
 	},
 	"dependencies": {
-		"@aws-sdk/client-s3": "^3.1007.0",
+		"@aws-sdk/client-s3": "^3.1009.0",
 		"@getbrevo/brevo": "^5.0.1",
 		"@prisma/adapter-mariadb": "^7.5.0",
 		"@prisma/client": "^7.5.0",
