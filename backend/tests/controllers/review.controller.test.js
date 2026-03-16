@@ -11,6 +11,10 @@ const mockPrisma = {
 		delete: jest.fn(),
 		count: jest.fn(),
 	},
+	videos: {
+		findMany: jest.fn(),
+		count: jest.fn(),
+	},
 	$transaction: jest.fn(),
 };
 
@@ -22,8 +26,19 @@ jest.unstable_mockModule("../../src/utils/paginate.js", () => ({
 	paginate: jest.fn(),
 }));
 
-const { createReview, getAllReviews, getReviewById, setReview, removeReview } =
-	await import("../../src/controllers/review.controller.js");
+jest.unstable_mockModule("../../src/services/bucket.service.js", () => ({
+	getFileUrl: jest.fn((filename) => `https://files.test/${filename}`),
+}));
+
+const {
+	createReview,
+	getAllReviews,
+	getAssignedReviews,
+	getRestVideos,
+	getReviewById,
+	setReview,
+	removeReview,
+} = await import("../../src/controllers/review.controller.js");
 const { paginate } = await import("../../src/utils/paginate.js");
 
 describe("Review Controller", () => {
@@ -40,6 +55,133 @@ describe("Review Controller", () => {
 			status: jest.fn().mockReturnThis(),
 			json: jest.fn(),
 		};
+	});
+
+	// ─── getAssignedReviews ───
+
+	describe("getAssignedReviews", () => {
+		it("should return unreviewed videos for the connected admin by default", async () => {
+			mockReq.user = { id: 7 };
+			mockReq.query = { page: "1", limit: "5" };
+
+			paginate.mockResolvedValueOnce({
+				data: [
+					{
+						id: 11,
+						note: "",
+						grade: 0,
+						status: "assigned",
+						admins: { login: "jury-1" },
+						videos: {
+							id: 3,
+							title: "Film A",
+							filename: "film-a.mp4",
+							cover_image: "film-a.jpg",
+							subtitles: [],
+						},
+					},
+				],
+				meta: {
+					totalCount: 1,
+					totalPages: 1,
+					currentPage: 1,
+					limit: 5,
+				},
+			});
+
+			await getAssignedReviews(mockReq, mockRes);
+
+			expect(paginate).toHaveBeenCalledWith(
+				mockPrisma.reviews,
+				expect.objectContaining({
+					where: { admin_id: 7, status: "assigned" },
+					orderBy: { id: "desc" },
+				}),
+			);
+			expect(mockRes.status).toHaveBeenCalledWith(200);
+			expect(mockRes.json).toHaveBeenCalledWith(
+				expect.objectContaining({
+					data: [
+						expect.objectContaining({
+							id: 3,
+							reviews: [
+								expect.objectContaining({
+									status: "assigned",
+									admin_login: "jury-1",
+								}),
+							],
+						}),
+					],
+				}),
+			);
+		});
+
+		it("should return reviewed videos sorted by grade when requested", async () => {
+			mockReq.user = { id: 7 };
+			mockReq.query = {
+				status: "done",
+				sortBy: "grade",
+				order: "asc",
+			};
+
+			paginate.mockResolvedValueOnce({
+				data: [],
+				meta: {
+					totalCount: 0,
+					totalPages: 0,
+					currentPage: 1,
+					limit: 10,
+				},
+			});
+
+			await getAssignedReviews(mockReq, mockRes);
+
+			expect(paginate).toHaveBeenCalledWith(
+				mockPrisma.reviews,
+				expect.objectContaining({
+					where: { admin_id: 7, status: "done" },
+					orderBy: [{ grade: "asc" }, { id: "desc" }],
+				}),
+			);
+			expect(mockRes.status).toHaveBeenCalledWith(200);
+		});
+	});
+
+	// ─── getRestVideos ───────────────────────────────────────────────
+
+	describe("getRestVideos", () => {
+		it("should exclude every video already reviewed by the connected admin", async () => {
+			mockReq.user = { id: 9 };
+			mockReq.query = { page: "1", limit: "10" };
+
+			paginate.mockResolvedValueOnce({
+				data: [],
+				meta: {
+					totalCount: 0,
+					totalPages: 0,
+					currentPage: 1,
+					limit: 10,
+				},
+			});
+
+			await getRestVideos(mockReq, mockRes);
+
+			expect(paginate).toHaveBeenCalledWith(
+				mockPrisma.videos,
+				expect.objectContaining({
+					where: {
+						NOT: {
+							reviews: {
+								some: {
+									admin_id: 9,
+								},
+							},
+						},
+					},
+				}),
+			);
+			expect(mockRes.status).toHaveBeenCalledWith(200);
+		});
 	});
 
 	// ─── createReview ────────────────────────────────────────────────
