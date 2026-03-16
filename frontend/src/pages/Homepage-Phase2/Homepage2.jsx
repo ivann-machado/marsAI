@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import { useSettings } from "../../context/SettingsContext";
+import { Link } from "react-router-dom";
 
 const btn =
   "font-inter font-semibold text-sm tracking-wider uppercase rounded-full transition-all duration-300";
@@ -37,7 +38,7 @@ const stats = [
   },
 ];
 
-const films = [
+let films = [
   { title: "PROTOCOL\nALPHA", country: "France" },
   { title: "NEURAL\nDREAM", country: "Belgique" },
   { title: "CYBER\nMARSEILLE", country: "France" },
@@ -82,6 +83,31 @@ function HomepagePhase2() {
   }, []);
 
   useEffect(() => {
+    /* FETCH LES FILMS EN BAS DE LA PAGE */
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          import.meta.env.VITE_API_URL + "/api/videos/?limit=3",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          },
+        );
+        if (!response.ok) throw new Error("Erreur fetch rest videos");
+        const res = await response.json();
+        films = res.data;
+        console.log(films);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
     const target = new Date(
       settings.phase_3_date ? settings.phase_3_date : "2026-06-13T20:00:00",
     ).getTime();
@@ -116,7 +142,8 @@ function HomepagePhase2() {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(236,72,153,0.15)_0%,transparent_50%),radial-gradient(circle_at_70%_50%,rgba(59,130,246,0.15)_0%,transparent_50%)] animate-pulse" />
 
           <div className="relative z-10 text-center px-4">
-            <div className="flex items-center justify-center gap-3 mb-8">
+            {/* COSMIN -> J'ai enlevé le LIVE dans le hero */}
+            {/* <div className="flex items-center justify-center gap-3 mb-8">
               <div className="flex items-center gap-2 px-6 py-3 bg-red-600/20 backdrop-blur-sm border border-red-500/50 rounded-full">
                 <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse" />
                 <span className="text-red-400 font-inter font-bold text-sm tracking-wider uppercase">
@@ -126,7 +153,7 @@ function HomepagePhase2() {
               <div className="text-[#06b6d4] text-xs tracking-[2px] uppercase font-inter">
                 {t("homepage.phase2_location")}
               </div>
-            </div>
+            </div> */}
 
             <h1 className="font-orbitron font-black text-[clamp(60px,12vw,140px)] leading-[0.9] mb-5 tracking-[-2px] uppercase">
               <span className="bg-gradient-to-br from-white to-[#e0e0ff] bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(168,85,247,0.5)]">
@@ -154,24 +181,28 @@ function HomepagePhase2() {
             </p>
 
             <div className="flex gap-5 justify-center flex-wrap mt-12">
-              <button
+              {/* <button
                 className={`px-9 py-4 bg-gradient-to-br from-[#10b981] to-[#059669] text-white ${btn} ${btnHover} shadow-[0_10px_30px_rgba(16,185,129,0.3)] hover:shadow-[0_15px_40px_rgba(16,185,129,0.5)]`}
               >
                 <span className="flex items-center gap-2">
                   <span className="w-2 h-2 bg-white rounded-full animate-pulse" />
                   {t("homepage.phase2_live_program")}
                 </span>
-              </button>
-              <button
-                className={`px-9 py-4 bg-gradient-to-br from-[#a855f7] to-[#ec4899] text-white ${btn} ${btnHover} shadow-[0_10px_30px_rgba(168,85,247,0.3)] hover:shadow-[0_15px_40px_rgba(168,85,247,0.5)]`}
-              >
-                {t("homepage.phase2_official_selection_btn")}
-              </button>
-              <button
-                className={`px-9 py-4 bg-transparent text-white ${btn} ${btnHover} border-2 border-[#06b6d4] hover:bg-[#06b6d4] hover:shadow-[0_10px_30px_rgba(6,182,212,0.3)]`}
-              >
-                {t("homepage.phase2_practical_info_btn")}
-              </button>
+              </button> */}
+              <Link to="/gallery">
+                <button
+                  className={`px-9 py-4 bg-gradient-to-br from-[#a855f7] to-[#ec4899] text-white ${btn} ${btnHover} shadow-[0_10px_30px_rgba(168,85,247,0.3)] hover:shadow-[0_15px_40px_rgba(168,85,247,0.5)]`}
+                >
+                  {t("homepage.phase2_official_selection_btn")}
+                </button>
+              </Link>
+              <Link to="/faq">
+                <button
+                  className={`px-9 py-4 bg-transparent text-white ${btn} ${btnHover} border-2 border-[#06b6d4] hover:bg-[#06b6d4] hover:shadow-[0_10px_30px_rgba(6,182,212,0.3)]`}
+                >
+                  {t("homepage.phase2_practical_info_btn")}
+                </button>
+              </Link>
             </div>
           </div>
         </section>
@@ -268,7 +299,11 @@ function HomepagePhase2() {
                   <div className="w-full aspect-video rounded-3xl mb-4 relative overflow-hidden group-hover:shadow-[0_30px_80px_rgba(168,85,247,0.4)] transition-all duration-300 group-hover:scale-[1.02]">
                     <iframe
                       className="w-full h-full rounded-3xl"
-                      src="https://www.youtube.com/embed/GwaRztMaoY0?si=lEsL-3XSi3un1keN"
+                      src={
+                        f.url
+                          ? "https://www.youtube.com/embed/" + f.url
+                          : "https://www.youtube.com/embed/GwaRztMaoY0?si=lEsL-3XSi3un1keN"
+                      }
                       title="Video"
                       frameBorder="0"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -288,11 +323,13 @@ function HomepagePhase2() {
             </div>
 
             <div className="text-center">
-              <button
-                className={`px-10 py-4 bg-gradient-to-r from-[#a855f7] to-[#ec4899] text-white ${btn} ${btnHover} hover:shadow-[0_15px_40px_rgba(168,85,247,0.5)]`}
-              >
-                {t("homepage.phase2_view_50_films")}
-              </button>
+              <Link to="/gallery">
+                <button
+                  className={`px-10 py-4 bg-gradient-to-r from-[#a855f7] to-[#ec4899] text-white ${btn} ${btnHover} hover:shadow-[0_15px_40px_rgba(168,85,247,0.5)]`}
+                >
+                  {t("homepage.phase2_view_50_films")}
+                </button>
+              </Link>
             </div>
           </div>
         </section>
