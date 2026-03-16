@@ -69,20 +69,26 @@ function VideoCard({ video, type }) {
       </div>
       {type != "queue" ? (
         <div className="flex justify-center items-center ">
-          <p
-            className={
-              "m-auto p-2 rounded-md cursor-pointer hover:ring-2 hover:ring-purple-600 " +
-              (currVideo.status !== "selected"
-                ? " bg-green-600 "
-                : " bg-red-700 ")
-            }
-            onClick={() => {
-              if (currVideo.status !== "selected") selectVideo("selected");
-              else selectVideo("verified");
-            }}
-          >
-            {currVideo.status === "selected" ? "Unselect" : "Select"}
-          </p>
+          {authToken.userRole === "super_admin" ? (
+            <p
+              className={
+                "m-auto p-2 rounded-md cursor-pointer hover:ring-2 hover:ring-purple-600 " +
+                (currVideo.status !== "selected"
+                  ? " bg-green-600 "
+                  : " bg-red-700 ")
+              }
+              onClick={() => {
+                if (currVideo.status !== "selected") selectVideo("selected");
+                else selectVideo("verified");
+              }}
+            >
+              {currVideo.status === "selected" ? "Unselect" : "Select"}
+            </p>
+          ) : (
+            <p className="m-auto p-2 rounded-md cursor-not-allowed bg-gray-300 text-black decoration-dashed">
+              {currVideo.status === "selected" ? "Unselect" : "Select"}
+            </p>
+          )}
         </div>
       ) : null}
     </div>
