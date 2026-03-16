@@ -1,5 +1,5 @@
 import { performance } from 'perf_hooks';
-import prisma from './src/config/prisma.js';
+import prisma from './src/config/prisma.config.js';
 import { loadSettings } from './src/config/settings.js';
 import { createServer } from "http";
 import app from './src/app.js';
