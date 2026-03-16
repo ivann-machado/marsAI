@@ -1,10 +1,11 @@
+// @ts-check
 import { performance } from 'perf_hooks';
 import prisma from './src/config/prisma.config.js';
 import { loadSettings } from './src/config/settings.js';
 import { createServer } from "http";
 import app from './src/app.js';
 
-const PORT = process.env.PORT || 3000;
+const PORT = Number(process.env.PORT) || 3000;
 
 console.log(`Starting server in ${process.env.DEV_MODE ? 'development' : 'production'} mode at ${Math.round(Date.now() - performance.timeOrigin)}ms process time.`);
 console.log(`Process ID: ${process.pid}`);
@@ -18,9 +19,13 @@ server.on('listening', () => {
 	console.log(`Server started on http://localhost:${PORT} in ${Math.round(Date.now() - performance.timeOrigin)}ms process time.`);
 });
 
+/**
+ * @param {number} port
+ * @param {number} [retries=20]
+ */
 const startServer = (port, retries = 20) => {
 	server.removeAllListeners('error');
-	server.on('error', (err) => {
+	server.on('error', (/** @type {NodeJS.ErrnoException} */err) => {
 		if (err.code === 'EADDRINUSE') {
 			if (retries > 0) {
 				console.log(`Port ${port} is in use, retrying in 1 second... (${retries} retries left)`);
