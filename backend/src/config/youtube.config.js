@@ -30,7 +30,7 @@ const getYouTubeCredentials = () => {
 /**
  * Get the YouTube API client
  */
-export const getYouTubeClient = () => {
+export default () => {
 	const { clientId, clientSecret, refreshToken } = getYouTubeCredentials();
 
 	const oauth2Client = new google.auth.OAuth2(clientId, clientSecret);

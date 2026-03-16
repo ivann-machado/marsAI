@@ -19,7 +19,7 @@ const client = new Brevo.BrevoClient({
 /**
  * Get Authenticated Brevo API Client
 */
-export const BrevoClient = {
+export default {
 	api: client.transactionalEmails,
 	config
 };

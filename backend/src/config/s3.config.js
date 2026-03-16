@@ -17,7 +17,7 @@ if (!config.endpoint || !config.bucketName || !config.region) {
 	throw new Error('Scaleway S3 configuration incomplete (endpoint, bucket name, or region missing)');
 }
 
-export const bucket = {
+export default {
 	client: new S3Client({
 		region: config.region,
 		endpoint: config.endpoint,
