@@ -1,4 +1,4 @@
-import { BrevoClient } from '../config/brevo.config.js';
+import BrevoClient from '../config/brevo.config.js';
 import { DEV_MODE } from '../config/index.js';
 
 /**
