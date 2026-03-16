@@ -4,9 +4,10 @@ import helmet from "helmet";
 import morgan from "morgan";
 import rateLimit from "express-rate-limit";
 import debounce from "./middlewares/debounce.middleware.js";
-import { CORS_OPTIONS, JWT_SECRET, HELMET_CONFIG } from "./config/index.js";
+import { CORS_OPTIONS, JWT_SECRET } from "./config/index.js";
 import jwt from "jsonwebtoken";
 import MORGAN_FORMAT from "./config/morgan.config.js";
+import HELMET_CONFIG from "./config/helmet.config.js";
 // Routes imports
 import authRoutes from "./routes/auth.routes.js";
 import settingRoutes from "./routes/setting.routes.js";
