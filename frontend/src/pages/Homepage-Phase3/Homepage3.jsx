@@ -96,7 +96,8 @@ function HomepagePhase3() {
   ];
 
   useEffect(() => {
-    /* FETCH LES FILMS GAGNANTS */
+    /* FETCH LES FILMS GAGNANTS */ $;
+    return; // TO IMPLEMENT
     const fetchData = async () => {
       try {
         const response = await fetch(
@@ -397,11 +398,11 @@ function HomepagePhase3() {
                   key={i}
                   className="group relative block"
                 >
-                  {i < 3 && (
+                  {/* {i < 3 && (
                     <div className="absolute -top-4 -left-4 z-10 w-12 h-12 bg-gradient-to-br from-[#fbbf24] to-[#f59e0b] rounded-full flex items-center justify-center font-orbitron font-black text-white text-lg shadow-[0_0_20px_rgba(251,191,36,0.6)]">
                       {i + 1}
                     </div>
-                  )}
+                  )} */}
                   <div className="bg-[#1a1a24] rounded-3xl border border-white/5 hover:border-[#fbbf24]/50 transition-all overflow-hidden group-hover:translate-y-[-10px]">
                     <div className="w-full aspect-video relative bg-[#2a1a34]">
                       <img
