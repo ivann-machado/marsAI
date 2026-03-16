@@ -62,7 +62,7 @@ const socials = [
   },
 ];
 
-const MAPS_URL =
+let MAPS_URL =
   "https://www.google.com/maps/place/École+La+Plateforme_+Marseille+-+Entrée+Sud/@43.3141763,5.3662017,17z";
 
 function HomepagePhase2() {
@@ -98,7 +98,6 @@ function HomepagePhase2() {
         if (!response.ok) throw new Error("Erreur fetch rest videos");
         const res = await response.json();
         films = res.data;
-        console.log(films);
       } catch (err) {
         console.error(err);
       }

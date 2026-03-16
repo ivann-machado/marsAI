@@ -1,61 +1,57 @@
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { useSettings } from "../../context/SettingsContext";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
+import { useEffect, useState } from "react";
 
 function HomepagePhase3() {
   const { t } = useTranslation();
-
-  const winners = [
+  const settings = useSettings();
+  const [winners, setWinners] = useState([
     {
-      category: "grand_prize",
       title: "NEURAL DREAM",
-      director: "Marie Laurent",
+      producer: "Marie Laurent",
       country: t("phase3.country_belgium"),
-      thumbnail: "/src/assets/neural.png",
+      cover_image: "/src/assets/neural.png",
       prize: t("phase3.prize_grand_prix"),
     },
     {
-      category: "jury_prize",
       title: "PROTOCOL ALPHA",
-      director: "Jean Dupont",
+      producer: "Jean Dupont",
       country: t("phase3.country_france"),
-      thumbnail: "/src/assets/robot.png",
+      cover_image: "/src/assets/robot.png",
       prize: t("phase3.prize_jury"),
     },
     {
-      category: "direction",
       title: "CYBER MARSEILLE",
-      director: "Ahmed Karim",
+      producer: "Ahmed Karim",
       country: t("phase3.country_france"),
-      thumbnail: "/src/assets/cyber.png",
+      cover_image: "/src/assets/cyber.png",
       prize: t("phase3.prize_direction"),
     },
     {
-      category: "innovation",
       title: "QUANTUM SOULS",
-      director: "Marcus Brown",
+      producer: "Marcus Brown",
       country: t("phase3.country_usa"),
-      thumbnail: "/src/assets/robot2.png",
+      cover_image: "/src/assets/robot2.png",
       prize: t("phase3.prize_innovation"),
     },
     {
-      category: "scenario",
       title: "CODE POETRY",
-      director: "Lars Schmidt",
+      producer: "Lars Schmidt",
       country: t("phase3.country_germany"),
-      thumbnail: "/src/assets/cyber2.png",
+      cover_image: "/src/assets/cyber2.png",
       prize: t("phase3.prize_scenario"),
     },
     {
-      category: "artistic",
       title: "FUTURE MEMORIES",
-      director: "Isabella Rodriguez",
+      producer: "Isabella Rodriguez",
       country: t("phase3.country_spain"),
-      thumbnail: "/src/assets/planete.png",
+      cover_image: "/src/assets/planete.png",
       prize: t("phase3.prize_artistic"),
     },
-  ];
+  ]);
 
   const stats = [
     {
@@ -98,6 +94,31 @@ function HomepagePhase3() {
       role: t("phase3.visitor"),
     },
   ];
+
+  useEffect(() => {
+    /* FETCH LES FILMS GAGNANTS */
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          import.meta.env.VITE_API_URL + "/api/prized_videos/",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          },
+        );
+        if (!response.ok) throw new Error("Erreur fetch rest videos");
+        const res = await response.json();
+        winners = res.data;
+        console.log(winners);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -245,7 +266,7 @@ function HomepagePhase3() {
         </section>
 
         {/* Podium Section */}
-        <section className="py-32 bg-gradient-to-b from-[#0a0a0f] to-[#1a0a2e] relative overflow-hidden">
+        {/* <section className="py-32 bg-gradient-to-b from-[#0a0a0f] to-[#1a0a2e] relative overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(251,191,36,0.1)_0%,transparent_70%)]"></div>
           <div className="max-w-6xl mx-auto px-10 relative z-10">
             <div className="text-center mb-16">
@@ -256,9 +277,7 @@ function HomepagePhase3() {
               </h2>
             </div>
 
-            {/* Podium */}
             <div className="flex items-end justify-center gap-4 md:gap-8">
-              {/* 2nd Place */}
               <div className="flex flex-col items-center">
                 <Link to="/video/2" className="group mb-4">
                   <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-2xl overflow-hidden border-4 border-[#c0c0c0] shadow-[0_0_30px_rgba(192,192,192,0.4)] group-hover:scale-105 transition-transform">
@@ -290,7 +309,6 @@ function HomepagePhase3() {
                 </div>
               </div>
 
-              {/* 1st Place */}
               <div className="flex flex-col items-center">
                 <Link to="/video/1" className="group mb-4">
                   <div className="relative w-40 h-40 md:w-52 md:h-52 rounded-2xl overflow-hidden border-4 border-[#fbbf24] shadow-[0_0_50px_rgba(251,191,36,0.5)] group-hover:scale-105 transition-transform">
@@ -323,7 +341,6 @@ function HomepagePhase3() {
                 </div>
               </div>
 
-              {/* 3rd Place */}
               <div className="flex flex-col items-center">
                 <Link to="/video/3" className="group mb-4">
                   <div className="relative w-28 h-28 md:w-36 md:h-36 rounded-2xl overflow-hidden border-4 border-[#cd7f32] shadow-[0_0_25px_rgba(205,127,50,0.4)] group-hover:scale-105 transition-transform">
@@ -356,10 +373,9 @@ function HomepagePhase3() {
               </div>
             </div>
 
-            {/* Podium Base */}
             <div className="max-w-2xl mx-auto h-4 bg-gradient-to-r from-transparent via-[#fbbf24]/30 to-transparent rounded-full mt-2"></div>
           </div>
-        </section>
+        </section> */}
 
         {/* Winners List */}
         <section id="palmares" className="py-32 bg-[#0a0a0f]">
