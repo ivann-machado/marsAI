@@ -36,7 +36,12 @@ function VideoCard({ video, type }) {
   };
 
   return (
-    <div className="grid grid-cols-6 w-full mx-4 my-2 text-center border-t p-1">
+    <div
+      className={
+        "grid w-full mx-4 my-2 text-center border-t p-1 " +
+        (type === "queue" ? "grid-cols-5" : "grid-cols-6")
+      }
+    >
       <img src={currVideo.cover_image} className="m-auto rounded-md "></img>
       <p className="flex justify-center items-center">{currVideo.title}</p>
       <p className="flex justify-center items-center">{currVideo.producer}</p>
@@ -64,20 +69,26 @@ function VideoCard({ video, type }) {
       </div>
       {type != "queue" ? (
         <div className="flex justify-center items-center ">
-          <p
-            className={
-              "m-auto p-2 rounded-md cursor-pointer hover:ring-2 hover:ring-purple-600 " +
-              (currVideo.status !== "selected"
-                ? " bg-green-600 "
-                : " bg-red-700 ")
-            }
-            onClick={() => {
-              if (currVideo.status !== "selected") selectVideo("selected");
-              else selectVideo("verified");
-            }}
-          >
-            {currVideo.status === "selected" ? "Unselect" : "Select"}
-          </p>
+          {authToken.userRole === "super_admin" ? (
+            <p
+              className={
+                "m-auto p-2 rounded-md cursor-pointer hover:ring-2 hover:ring-purple-600 " +
+                (currVideo.status !== "selected"
+                  ? " bg-green-600 "
+                  : " bg-red-700 ")
+              }
+              onClick={() => {
+                if (currVideo.status !== "selected") selectVideo("selected");
+                else selectVideo("verified");
+              }}
+            >
+              {currVideo.status === "selected" ? "Unselect" : "Select"}
+            </p>
+          ) : (
+            <p className="m-auto p-2 rounded-md cursor-not-allowed bg-gray-300 text-black decoration-dashed">
+              {currVideo.status === "selected" ? "Unselect" : "Select"}
+            </p>
+          )}
         </div>
       ) : null}
     </div>
@@ -102,13 +113,18 @@ function VideoList(props) {
 
   return (
     <div className="bg-gray-900 text-white">
-      <div className="grid grid-cols-6 w-full mx-4 my-2 text-center">
+      <div
+        className={
+          "grid w-full mx-4 my-2 text-center " +
+          (props.type === "queue" ? "grid-cols-5" : "grid-cols-6")
+        }
+      >
         <p>Cover</p>
         <p>Titre</p>
         <p>Realisateur</p>
         <p>Status</p>
         <p></p>
-        <p>Selection</p>
+        {props.type === "queue" ? null : <p>Selection</p>}
       </div>
 
       {props.videoList.map((video) =>

@@ -42,7 +42,7 @@ function AdminLogin() {
         console.log(login_info);
         if (login_info.role === "super admin")
           navigate("/", { replace: "true" });
-        else navigate("/videos", { replace: "true" });
+        else navigate("/reviews", { replace: "true" });
       }
     } catch (err) {
       showFlash("error", "Erreur de connexion. réesayez plus tard!");

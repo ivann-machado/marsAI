@@ -7,6 +7,7 @@ import HomepagePhase3 from "./pages/Homepage-Phase3/Homepage3.jsx";
 import UploadPage from "./pages/Upload_page";
 import Gallery from "./pages/galery/Galery.jsx";
 import AdminLogin from "./pages/AdminLogin/AdminLogin.jsx";
+import ReviewVideos from "./pages/AdminReviewVideos/AdminReviewVideos.jsx";
 import AdminVideos from "./pages/AdminVideos/AdminVideos.jsx";
 import AdminVideo from "./pages/AdminVideo/AdminVideo.jsx";
 import AdminDashboard from "./pages/AdminDashboard/AdminDashboard.jsx";
@@ -36,7 +37,7 @@ function App() {
 
   if (window.location.host.split(".")[0] == "admin")
     /* PAGES ADMIN */
-  
+
     return (
       <BrowserRouter>
         <FlashProvider>
@@ -57,6 +58,14 @@ function App() {
               element={
                 <ProtectedRoute requiredRole={"admin"}>
                   <AdminVideos />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/reviews"
+              element={
+                <ProtectedRoute requiredRole={"admin"}>
+                  <ReviewVideos />
                 </ProtectedRoute>
               }
             />

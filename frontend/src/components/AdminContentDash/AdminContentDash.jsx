@@ -33,7 +33,7 @@ function AdminSettingsDash() {
   if (!content) return <Loading />;
 
   return (
-    <div className="flex flex-col w-4/5  bg-gradient-to-br from-gray-950 via-gray-800 to-gray-950 relative">
+    <div className="flex flex-col w-full ml-64 min-h-screen  bg-gradient-to-br from-gray-950 via-gray-800 to-gray-950 relative">
       <div className="flex flex-col mx-2 mb-8">
         <h2 className="text-4xl font-extrabold m-8 text-white">
           Content Items

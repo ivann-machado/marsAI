@@ -94,7 +94,7 @@ function AdminJuryDash() {
   if (!jury) return <Loading />;
 
   return (
-    <div className="flex flex-col w-4/5  bg-gradient-to-br from-gray-950 via-gray-800 to-gray-950 relative">
+    <div className="flex flex-col w-full ml-64 min-h-screen  bg-gradient-to-br from-gray-950 via-gray-800 to-gray-950 relative">
       <AdminJuryList jury_list={jury} />
       <form className="flex flex-col mx-auto bg-gray-800 text-white p-4">
         <p>Ajouter membre jury:</p>
