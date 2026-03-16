@@ -62,7 +62,7 @@ function AdminVideosDash() {
   if (!videos) return <Loading />;
 
   return (
-    <div className="w-4/5 bg-gradient-to-br from-gray-950 via-gray-800 to-gray-950 px-4 font-inter">
+    <div className="w-full bg-gradient-to-br from-gray-950 via-gray-800 to-gray-950 px-4 font-inter ml-64">
       <h1 className="py-2 font-bold text-3xl text-white text-center">
         Gestion des films
       </h1>

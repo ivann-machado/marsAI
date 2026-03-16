@@ -36,7 +36,12 @@ function VideoCard({ video, type }) {
   };
 
   return (
-    <div className="grid grid-cols-6 w-full mx-4 my-2 text-center border-t p-1">
+    <div
+      className={
+        "grid w-full mx-4 my-2 text-center border-t p-1 " +
+        (type === "queue" ? "grid-cols-5" : "grid-cols-6")
+      }
+    >
       <img src={currVideo.cover_image} className="m-auto rounded-md "></img>
       <p className="flex justify-center items-center">{currVideo.title}</p>
       <p className="flex justify-center items-center">{currVideo.producer}</p>
@@ -59,7 +64,7 @@ function VideoCard({ video, type }) {
           href={"/video/" + currVideo.id}
           className="bg-gray-700 p-2 rounded-md hover:ring-2 hover:ring-purple-600"
         >
-          Noter Film
+          {type === "queue" ? "Noter Film" : "Details"}
         </a>
       </div>
       {type != "queue" ? (
@@ -102,13 +107,18 @@ function VideoList(props) {
 
   return (
     <div className="bg-gray-900 text-white">
-      <div className="grid grid-cols-6 w-full mx-4 my-2 text-center">
+      <div
+        className={
+          "grid w-full mx-4 my-2 text-center " +
+          (props.type === "queue" ? "grid-cols-5" : "grid-cols-6")
+        }
+      >
         <p>Cover</p>
         <p>Titre</p>
         <p>Realisateur</p>
         <p>Status</p>
         <p></p>
-        <p>Selection</p>
+        {props.type === "queue" ? null : <p>Selection</p>}
       </div>
 
       {props.videoList.map((video) =>
