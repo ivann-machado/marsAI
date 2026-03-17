@@ -14,18 +14,21 @@ function AdminPrizesDash() {
   const [prizes, setPrizes] = useState(mocked_prizes);
   const [prizesPage, setPrizesPage] = useState(1);
   const [prizesPages, setPrizesPages] = useState(1);
-  const [newPrize, setNewPrize] = useState({});
+  const [newPrize, setNewPrize] = useState({
+    video_id: -1,
+    prix: "",
+  });
   const [videos, setVideos] = useState(null);
   const authToken = useauth();
   const ITEMS_PER_PAGE = 10;
 
-  console.log(prizes);
+  /*  console.log(prizes); */
 
-  /*  useEffect(() => {
+  useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          import.meta.env.VITE_API_URL + "/api/prizes/",
+          import.meta.env.VITE_API_URL + "/api/prized-videos/",
           {
             method: "GET",
             headers: {
@@ -38,13 +41,13 @@ function AdminPrizesDash() {
         const json = await response.json();
         //console.log(json);
         setPrizesPages(Math.floor((json.length - 1) / ITEMS_PER_PAGE) + 1);
-        setPrizes(json);
+        setPrizes(json.data);
       } catch (err) {
         console.error(err);
       }
     };
     fetchData();
-  }, [prizesPage]); */
+  }, [prizesPage]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -61,7 +64,7 @@ function AdminPrizesDash() {
         );
         if (!response.ok) throw new Error("Erreur fetch JSON");
         const json = await response.json();
-        //console.log(json);
+        console.log(json.data);
         setVideos(json.data);
       } catch (err) {
         console.error(err);
@@ -72,7 +75,8 @@ function AdminPrizesDash() {
   }, []);
 
   const handleChange = (e) => {
-    setNewPrize((prev) => ({ ...prev, [e.name]: e.value }));
+    //console.log(e.target.name, e.target.value);
+    setNewPrize((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const addPrize = async () => {
@@ -80,17 +84,23 @@ function AdminPrizesDash() {
 
     try {
       const response = await fetch(
-        import.meta.env.VITE_API_URL + "/api/prizes",
+        import.meta.env.VITE_API_URL + "/api/prized-videos/",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + authToken.token,
           },
-          body: JSON.stringify(newPrize),
+          body: JSON.stringify({
+            prix: newPrize.prix,
+            video_id: Number(newPrize.video_id),
+          }),
         },
       );
-      if (!response.ok) throw new Error("Erreur fetch JSON");
+      if (!response.ok) {
+        console.log(response.json());
+        throw new Error("Erreur fetch JSON");
+      }
       const res = await response.json();
 
       setPrizes((prev) => [
@@ -98,9 +108,8 @@ function AdminPrizesDash() {
         { ...newPrize, id: res.id /* , logo: res.logo */ },
       ]);
       setNewPrize({
-        id: null,
         prix: "",
-        video_id: "",
+        video_id: -1,
       });
 
       // setSponsor(res);
@@ -112,13 +121,15 @@ function AdminPrizesDash() {
 
   if (!prizes || !videos) return <Loading />;
 
+  console.log(prizes);
+
   return (
     <div className="flex flex-col w-full ml-64 min-h-screen bg-gradient-to-br from-gray-950 via-gray-800 to-gray-950 relative">
       <div className="flex flex-col mx-2 mb-8">
         <h2 className="text-4xl text-white font-extrabold m-8">Prizes</h2>
-        <div className="grid grid-cols-5 p-2 bg-gray-900 text-gray-100 gap-2 px-6">
+        <div className="grid grid-cols-4 p-2 bg-gray-900 text-gray-100 gap-2 px-6">
           <p className="text-center text-xl font-bold">Prize</p>
-          <p className="text-center text-xl font-bold">Video Id</p>
+          <p className="text-center text-xl font-bold">Title</p>
           <p className="text-center text-xl font-bold">Producer</p>
         </div>
         {prizes
@@ -137,7 +148,7 @@ function AdminPrizesDash() {
         <label htmlFor="prix">Nom du prix</label>
         <input
           id="prix"
-          value={newPrize.name}
+          value={newPrize.prix}
           name="prix"
           className="bg-white text-black"
           onChange={(e) => handleChange(e)}
@@ -151,10 +162,10 @@ function AdminPrizesDash() {
         >
           <option value={-1}>Selectionnez un film pour decerner le prix</option>
           {videos.map((video) => (
-            <option value={video.id}>
-              <span className="text-purple-600">{video.title}</span> | Auteur
+            <option value={video.id} key={video.id}>
+              {video.id}. {video.title} | Auteur
               {": "}
-              <span className="text-amber-600">{video.producer}</span>
+              {video.producer}
             </option>
           ))}
         </select>
