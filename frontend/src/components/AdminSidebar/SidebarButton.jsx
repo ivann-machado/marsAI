@@ -1,6 +1,8 @@
+import { Link } from "react-router-dom";
+
 function SidebarButton({ link, name, clickAction, type }) {
   return (
-    <a href={link}>
+    <Link to={link}>
       <div
         onClick={clickAction}
         className={
@@ -11,7 +13,7 @@ function SidebarButton({ link, name, clickAction, type }) {
       >
         {name}
       </div>
-    </a>
+    </Link>
   );
 }
 
