@@ -39,8 +39,9 @@ export const login = async (req, res) => {
 			return res.status(401).json({ message: "Invalid credentials" });
 		}
 
+		const ipHash = crypto.createHash('sha256').update(req.ip).digest('hex');
 		const token = jwt.sign(
-			{ id: admin.id, login: admin.login, role: admin.role },
+			{ id: admin.id, login: admin.login, role: admin.role, ipHash },
 			JWT_SECRET,
 			{ expiresIn: JWT_EXPIRES_IN },
 		);
