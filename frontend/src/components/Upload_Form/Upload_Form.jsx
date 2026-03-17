@@ -729,13 +729,7 @@ function UploadForm() {
             style={{ width: `${((step + 1) / 3) * 100}%` }}
           />
         </div>
-        <div>
-          {" "}
-          {/*Titre et Règlement du formulaire*/}{" "}
-          <p className="text-sm text-white/70 mb-2 tracking-wide">
-            Tous les Champs marqués d'un * sont obligatoires
-          </p>{" "}
-        </div>
+
         {/* Animated Container */}
         <div className="relative w-full overflow-hidden">
           {/* ================= STEP 1 ================= */}
@@ -746,11 +740,18 @@ function UploadForm() {
                 : "opacity-0 -translate-x-full absolute"
             }`}
           >
-            <div> {/*Titre et Règlement du formulaire*/} </div>
             <p className="text-3xl md:text-4xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-orange-300 text-center mb-8  pb-2 pt-2">
               {t("upload_form.global_infos")}
             </p>
-
+            <div className="flex flex-col justify-center items-center">
+              {/*Titre et Règlement du formulaire*/}
+              <p className="text-sm text-white/70 mb-2 tracking-wide">
+                {t("upload_form.step1_rules")}
+              </p>
+              <p className="text-sm text-white/70 mb-2 tracking-wide">
+                {t("upload_form.required_fields")}
+              </p>
+            </div>
             {/* TITLE */}
             <div className="flex flex-col p-4">
               <label className="text-sm text-white/70 mb-2 tracking-wide flex flex-row gap-2">
@@ -781,7 +782,7 @@ function UploadForm() {
               />
               <p className="text-red-400">{descError}</p>
             </div>
-
+            {/* VIDEO */}
             <div className="flex flex-col p-4">
               <label
                 htmlFor="video"
@@ -855,7 +856,15 @@ function UploadForm() {
             <p className="text-3xl md:text-4xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-orange-300 text-center mb-8">
               {t("upload_form.production")}
             </p>
-
+            <div className="flex flex-col justify-center items-center">
+              {/*Titre et Règlement du formulaire*/}
+              <p className="text-sm text-white/70 mb-2 tracking-wide">
+                {t("upload_form.step2_rules")}
+              </p>
+              <p className="text-sm text-white/70 mb-2 tracking-wide">
+                {t("upload_form.required_fields")}
+              </p>
+            </div>
             <div className="flex flex-col md:flex-row md:justify-evenly md:p-4 md:gap-10 md:w-full">
               <div className="flex flex-col md:w-full md:max-w-150">
                 <label
@@ -1040,7 +1049,15 @@ function UploadForm() {
             <p className="text-3xl md:text-4xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-orange-300 text-center mb-8">
               {t("upload_form.more_info")}
             </p>
-
+            <div className="flex flex-col justify-center items-center">
+              {/*Titre et Règlement du formulaire*/}
+              <p className="text-sm text-white/70 mb-2 tracking-wide">
+                {t("upload_form.step3_rules")}
+              </p>
+              <p className="text-sm text-white/70 mb-2 tracking-wide">
+                {t("upload_form.required_fields")}
+              </p>
+            </div>
             <div className="flex flex-col md:flex-row md:justify-evenly md:p-4 md:gap-10 md:w-full">
               <div className="flex flex-col md:w-full md:max-w-150">
                 <label
