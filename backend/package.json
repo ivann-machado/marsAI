@@ -18,8 +18,8 @@
 		"node": ">=24.0"
 	},
 	"scripts": {
-		"start": "nodemon --env-file=.env server.js",
-		"dev": "nodemon --env-file=.env server.js",
+		"start": "nodemon --exec node --env-file=.env server.ts",
+		"dev": "nodemon --exec node --env-file=.env server.ts",
 		"test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles",
 		"prisma:generate": "prisma generate"
 	},
