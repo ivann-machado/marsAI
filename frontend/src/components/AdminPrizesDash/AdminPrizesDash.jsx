@@ -3,15 +3,10 @@ import Loading from "../Utils/Loading.jsx";
 import { useauth } from "../../context/AuthContext.jsx";
 import Pagination from "../Utils/Pagination.jsx";
 import AdminPrizeCard from "./AdminPrizeCard.jsx";
-
-const mocked_prizes = [
-  { id: 1, prix: "Grand Prix", video_id: 15 },
-  { id: 2, prix: "Grand Prix - 2eme place", video_id: 15 },
-  { id: 3, prix: "Grand Prix 3eme place", video_id: 15 },
-];
+import { useFlash } from "../../context/FlashContext.jsx";
 
 function AdminPrizesDash() {
-  const [prizes, setPrizes] = useState(mocked_prizes);
+  const [prizes, setPrizes] = useState([]);
   const [prizesPage, setPrizesPage] = useState(1);
   const [prizesPages, setPrizesPages] = useState(1);
   const [newPrize, setNewPrize] = useState({
@@ -21,9 +16,11 @@ function AdminPrizesDash() {
   const [videos, setVideos] = useState(null);
   const authToken = useauth();
   const ITEMS_PER_PAGE = 10;
+  const { showFlash } = useFlash();
 
   /*  console.log(prizes); */
 
+  // RECUPERATION  PRIX
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -39,7 +36,7 @@ function AdminPrizesDash() {
         );
         if (!response.ok) throw new Error("Erreur fetch JSON");
         const json = await response.json();
-        //console.log(json);
+        console.log(json.data);
         setPrizesPages(Math.floor((json.length - 1) / ITEMS_PER_PAGE) + 1);
         setPrizes(json.data);
       } catch (err) {
@@ -49,6 +46,7 @@ function AdminPrizesDash() {
     fetchData();
   }, [prizesPage]);
 
+  // RECUPERATION VIDEOS POUR SELECT
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -64,7 +62,7 @@ function AdminPrizesDash() {
         );
         if (!response.ok) throw new Error("Erreur fetch JSON");
         const json = await response.json();
-        console.log(json.data);
+        // console.log(json.data);
         setVideos(json.data);
       } catch (err) {
         console.error(err);
@@ -121,13 +119,12 @@ function AdminPrizesDash() {
 
   if (!prizes || !videos) return <Loading />;
 
-  console.log(prizes);
-
   return (
     <div className="flex flex-col w-full ml-64 min-h-screen bg-gradient-to-br from-gray-950 via-gray-800 to-gray-950 relative">
       <div className="flex flex-col mx-2 mb-8">
         <h2 className="text-4xl text-white font-extrabold m-8">Prizes</h2>
         <div className="grid grid-cols-4 p-2 bg-gray-900 text-gray-100 gap-2 px-6">
+          <p className="text-center text-xl font-bold">ID</p>
           <p className="text-center text-xl font-bold">Prize</p>
           <p className="text-center text-xl font-bold">Title</p>
           <p className="text-center text-xl font-bold">Producer</p>
