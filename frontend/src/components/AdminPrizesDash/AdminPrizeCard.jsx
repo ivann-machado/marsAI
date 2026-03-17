@@ -2,45 +2,39 @@ import { useState } from "react";
 import { useFlash } from "../../context/FlashContext";
 import { useauth } from "../../context/AuthContext";
 
-function AdminSettingCard({ name, value }) {
-  const [setting, setSetting] = useState({
-    name,
-    value,
-  });
+function AdminPrizeCard({ prize }) {
+  const [prize, setPrize] = useState(prize);
   const [modified, setModified] = useState(false);
   const { showFlash } = useFlash();
   const authToken = useauth();
 
-  const updateSetting = (key, value) => {
-    setSetting((prev) => ({
+  const updatePrize = (key, value) => {
+    setPrize((prev) => ({
       ...prev,
       [key]: value,
     }));
     setModified(true);
   };
 
-  const saveSetting = async () => {
+  const savePrize = async () => {
     try {
       const response = await fetch(
-        import.meta.env.VITE_API_URL + "/api/settings/",
+        import.meta.env.VITE_API_URL + "/api/prizes/",
         {
           method: "PUT",
           headers: {
             Authorization: "Bearer " + authToken.token,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            name: setting.name,
-            value: setting.value,
-          }),
+          body: JSON.stringify(prize),
         },
       );
 
       if (!response.ok) throw new Error("Erreur fetch JSON");
       // const json = await response.json();
-      showFlash("success", "Settings mis a jour");
+      showFlash("success", "Prix mis a jour");
     } catch (err) {
-      showFlash("error", "Erreur de mise à jour du settings");
+      showFlash("error", "Erreur de mise à jour du prix");
       console.error(err);
     }
 
@@ -54,7 +48,7 @@ function AdminSettingCard({ name, value }) {
       </div>
       <input
         value={setting.value}
-        onChange={(e) => updateSetting("value", e.target.value)}
+        onChange={(e) => updatePrize("prix", e.target.value)}
         className="text-center col-span-1 rounded-lg border border-gray-400 bg-gray-100 text-black p-1 hover:bg-white hover:border-blue-500"
       ></input>
       {modified ? (
