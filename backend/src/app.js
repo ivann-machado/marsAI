@@ -4,7 +4,8 @@ import helmet from "helmet";
 import morgan from "morgan";
 import rateLimit from "express-rate-limit";
 import debounce from "./middlewares/debounce.middleware.js";
-import { CORS_OPTIONS, JWT_SECRET } from "./config/index.js";
+import { JWT_SECRET } from "./config/index.js";
+import CORS_OPTIONS from "./config/cors.config.js";
 import jwt from "jsonwebtoken";
 import MORGAN_FORMAT from "./config/morgan.config.js";
 import HELMET_CONFIG from "./config/helmet.config.js";
@@ -20,6 +21,7 @@ import contactRoutes from "./routes/contact.routes.js";
 import juryRoutes from "./routes/jury.routes.js";
 import sponsorRoutes from "./routes/sponsor.routes.js";
 import reviewRoutes from "./routes/review.routes.js";
+import prizedRoutes from "./routes/prized.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 
 const app = express();
@@ -73,13 +75,14 @@ app.use("/api/events", eventRoutes);
 app.use("/api/jury", juryRoutes);
 app.use("/api/sponsors", sponsorRoutes);
 app.use("/api/reviews", reviewRoutes);
+app.use("/api/prized-videos", prizedRoutes);
 // Protected routes
 app.use("/api/admins", adminRoutes);
 app.use("/api/settings", settingRoutes);
 app.use("/api/content", contentRoutes);
 
 // API Documentation
-if (process.env.DEV_MODE === "true") {
+if (process.env.NODE_ENV !== "production") {
 	const { default: swaggerUi } = await import("swagger-ui-express");
 	const { default: swaggerSpec } = await import("./config/swagger.config.js");
 	app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));

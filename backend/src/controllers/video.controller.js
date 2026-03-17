@@ -48,6 +48,11 @@ const videoIncludes = {
 	editions: true,
 	countries: true,
 	subtitles: true,
+	prized_videos: {
+		select: {
+			prix: true,
+		},
+	},
 };
 
 /**
@@ -69,6 +74,8 @@ export const getAllVideos = async (req, res) => {
 
 		result.data = result.data.map((video) => ({
 			...video,
+			prix: video.prized_videos?.prix ?? null,
+			prized_videos: undefined,
 			filename: getFileUrl(video.filename),
 			cover_image: getFileUrl(video.cover_image),
 			subtitles: video.subtitles.map((sub) => ({
@@ -102,6 +109,8 @@ export const getVideoById = async (req, res) => {
 
 		res.status(200).json({
 			...video,
+			prix: video.prized_videos?.prix ?? null,
+			prized_videos: undefined,
 			filename: getFileUrl(video.filename),
 			producer_image: getFileUrl(video.producer_image),
 			cover_image: getFileUrl(video.cover_image),
@@ -279,6 +288,8 @@ export const getAssignedVideos = async (req, res) => {
 
 		result.data = result.data.map((video) => ({
 			...video,
+			prix: video.prized_videos?.prix ?? null,
+			prized_videos: undefined,
 			filename: getFileUrl(video.filename),
 			cover_image: getFileUrl(video.cover_image),
 			subtitles: video.subtitles.map((sub) => ({
@@ -324,6 +335,8 @@ export const getUnassignedVideos = async (req, res) => {
 
 		result.data = result.data.map((video) => ({
 			...video,
+			prix: video.prized_videos?.prix ?? null,
+			prized_videos: undefined,
 			filename: getFileUrl(video.filename),
 			cover_image: getFileUrl(video.cover_image),
 			subtitles: video.subtitles.map((sub) => ({
