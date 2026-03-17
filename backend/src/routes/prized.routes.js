@@ -26,8 +26,8 @@ router.post(
 	createPrizedVideo,
 	clearCache("prized"),
 );
-router.get("/", cache({ etagOnly: true }), getAllPrizedVideos);
-router.get("/:video_id", cache({ etagOnly: true }), getPrizedVideoByVideoId);
+router.get("/", cache(), getAllPrizedVideos);
+router.get("/:video_id", cache(), getPrizedVideoByVideoId);
 router.delete(
 	"/:video_id",
 	verifyToken,
