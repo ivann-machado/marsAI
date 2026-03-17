@@ -62,7 +62,7 @@ const limiter = rateLimit({
 app.use(limiter);
 
 // Public routes
-app.get("/", (req, res) => {
+app.get("/", (_req, res) => {
 	res.status(200).json({ message: "Welcome to MarsAI API" });
 });
 app.use("/api/auth", authRoutes);
