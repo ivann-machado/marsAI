@@ -5,6 +5,7 @@ const prizedIncludes = {
 	videos: {
 		select: {
 			title: true,
+			description: true,
 		},
 	},
 };
@@ -13,6 +14,7 @@ const mapPrizedVideo = (prizedVideo) => ({
 	video_id: prizedVideo.video_id,
 	prix: prizedVideo.prix,
 	title: prizedVideo.videos?.title,
+	description: prizedVideo.videos?.description,
 });
 
 export const createPrizedVideo = async (req, res) => {
@@ -93,7 +95,6 @@ export const getPrizedVideoByVideoId = async (req, res) => {
 		res.status(500).json({ message: "Server error" });
 	}
 };
-
 
 export const removePrizedVideo = async (req, res) => {
 	try {
