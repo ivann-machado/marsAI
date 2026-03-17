@@ -21,10 +21,10 @@ import AdminSponsors from "./pages/AdminSponsors/AdminSponsors.jsx";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.jsx";
 import JuryPage from "./pages/JuryPage/JuryPage.jsx";
 import SponsorsPage from "./pages/SponsorsPage/SponsorsPage.jsx";
+import AdminPrizes from "./pages/AdminPrizes/AdminPrizes.jsx";
 import Event from "./pages/Event/Event_page.jsx";
 import CguCgv from "./pages/CguCgv/CguCgv.jsx";
 import Faq from "./pages/Faq/Faq.jsx";
-// import { SettingsProvider } from "./context/SettingsContext.jsx";
 
 import NotFound from "./components/Utils/NotFound.jsx";
 import AdminRegister from "./pages/AdminRegister/AdminRegister.jsx";
@@ -124,6 +124,15 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/prizes"
+            element={
+              <ProtectedRoute requiredRole={"superadmin"}>
+                <AdminPrizes />
+              </ProtectedRoute>
+            }
+          />
+
           <Route
             path="*"
             element={

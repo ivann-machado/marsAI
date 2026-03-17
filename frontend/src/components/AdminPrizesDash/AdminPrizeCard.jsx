@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useFlash } from "../../context/FlashContext";
 import { useauth } from "../../context/AuthContext";
 
-function AdminPrizeCard({ prize }) {
-  const [prize, setPrize] = useState(prize);
+function AdminPrizeCard({ prize_data }) {
+  const [prize, setPrize] = useState(prize_data);
   const [modified, setModified] = useState(false);
   const { showFlash } = useFlash();
   const authToken = useauth();
@@ -44,10 +44,10 @@ function AdminPrizeCard({ prize }) {
   return (
     <div className="grid grid-cols-3 p-2 bg-gray-900 text-gray-100 gap-2">
       <div className="bg-gray-700 text-center col-span-1 p-2 rounded-lg hover:bg-gray-500">
-        {setting.name}
+        {prize.id}
       </div>
       <input
-        value={setting.value}
+        value={prize.prix}
         onChange={(e) => updatePrize("prix", e.target.value)}
         className="text-center col-span-1 rounded-lg border border-gray-400 bg-gray-100 text-black p-1 hover:bg-white hover:border-blue-500"
       ></input>
@@ -56,7 +56,7 @@ function AdminPrizeCard({ prize }) {
           type="button"
           value="Sauvegarder"
           className="col-span-1 p-2 bg-green-700 text-gray-100 rounded-lg -mr-2 hover:bg-green-500"
-          onClick={() => saveSetting()}
+          onClick={() => savePrize()}
         ></input>
       ) : (
         <input
@@ -69,4 +69,4 @@ function AdminPrizeCard({ prize }) {
   );
 }
 
-export default AdminSettingCard;
+export default AdminPrizeCard;

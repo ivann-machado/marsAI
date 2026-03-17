@@ -1,5 +1,5 @@
 import AdminSidebar from "../../components/AdminSidebar/AdminSidebar.jsx";
-import AdminSettingsDash from "../../components/AdminSettingsDash/AdminSettingtDash.jsx";
+import AdminPrizesDash from "../../components/AdminPrizesDash/AdminPrizesDash.jsx";
 
 function AdminPrizes() {
   return (
