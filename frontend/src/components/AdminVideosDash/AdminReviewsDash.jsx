@@ -19,7 +19,7 @@ function AdminReviewsDash() {
       const pageQuery = "?page=" + videosPage;
       try {
         const response = await fetch(
-          import.meta.env.VITE_API_URL + "/api/reviews/rest/" + pageQuery,
+          import.meta.env.VITE_API_URL + "/api/reviews/remaining/" + pageQuery,
           {
             method: "GET",
             headers: {

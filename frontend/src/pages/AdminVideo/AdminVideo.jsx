@@ -51,7 +51,7 @@ function AdminVideo() {
     return (
       <div className="flex">
         <AdminSidebar />
-        <section className="w-4/5 min-h-screen text-white bg-[#050508]">
+        <section className="w-full ml-64 min-h-screen text-white bg-[#050508]">
           {/* TITLE */}
           <h2 className="text-white font-extrabold text-4xl text-center mb-4 mt-4 md:mx-8 font-orbitron drop-shadow-xl/60 drop-shadow-purple-600">
             {video.title}

@@ -64,7 +64,6 @@ function AdminSponsorDash() {
     formData.append("url", newSponsor.url);
 
     try {
-      console.log(formData);
       const response = await fetch(
         import.meta.env.VITE_API_URL + "/api/sponsors",
         {
