@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import crypto from "node:crypto";
 import { JWT_SECRET } from "../config/index.js";
 
 export const verifyToken = (req, res, next) => {
@@ -11,6 +12,10 @@ export const verifyToken = (req, res, next) => {
 	jwt.verify(token, JWT_SECRET, (err, decoded) => {
 		if (err) {
 			return res.status(401).json({ message: "Unauthorized" });
+		}
+		const ipHash = crypto.createHash('sha256').update(req.ip).digest('hex');
+		if (decoded.ipHash !== ipHash) {
+			return res.status(401).json({ message: 'Token IP mismatch' });
 		}
 		req.user = decoded;
 		next();
