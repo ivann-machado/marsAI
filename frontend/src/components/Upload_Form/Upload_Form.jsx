@@ -94,6 +94,21 @@ function UploadForm() {
   const [subtitlesError, SetSubtitlesError] = useState("");
 
   /**
+   * Bloquage/Débloquage des étapes du formulaire affichées/non affichées
+   */
+  const [step1IsDisabled, SetStep1IsDisabled] = useState(false);
+  const step1Disable = () => {
+    SetStep1IsDisabled(!step1IsDisabled);
+  };
+  const [step2IsDisabled, SetStep2IsDisabled] = useState(true);
+  const step2Disable = () => {
+    SetStep2IsDisabled(!step2IsDisabled);
+  };
+  const [step3IsDisabled, SetStep3IsDisabled] = useState(true);
+  const step3Disable = () => {
+    SetStep3IsDisabled(!step3IsDisabled);
+  };
+  /**
    * Vérification des champs du formulaire
    */
   function titleCheck() {
@@ -309,6 +324,21 @@ function UploadForm() {
    */
   const [videoURL, setVideoURL] = useState(null);
 
+  /**
+   * Passage d'une étape à la précédente
+   */
+  const backToStep1 = async (e) => {
+    step1Disable();
+    prevStep();
+  };
+  const backToStep2 = async (e) => {
+    step2Disable();
+    prevStep();
+  };
+
+  /**
+   * Passage d'une étape à la suivante
+   */
   const handleStep1 = async (e) => {
     const step1Data = {
       title: title.current.value,
@@ -358,6 +388,7 @@ function UploadForm() {
       SetLoading(false);
       return;
     } else {
+      step1Disable();
       nextStep();
     }
   };
@@ -393,19 +424,7 @@ function UploadForm() {
       );
       SetLoading(false);
       return;
-    }
-    // else if (!producerImageCheck()) {
-    //   showFlash(
-    //     "error",
-    //     "Photo du producteur: " +
-    //       (producerImageError != ""
-    //         ? producerImageError
-    //         : t("upload_form.errors.no_file")),
-    //   );
-    //   SetLoading(false);
-    //   return;
-    // }
-    else if (!movieTypeCheck()) {
+    } else if (!movieTypeCheck()) {
       showFlash(
         "error",
         "Type de production:" +
@@ -456,6 +475,7 @@ function UploadForm() {
       SetLoading(false);
       return;
     } else {
+      step3Disable();
       nextStep();
     }
   };
@@ -763,6 +783,7 @@ function UploadForm() {
                 required
                 ref={title}
                 onChange={titleCheck}
+                tabIndex={step1IsDisabled ? -1 : 0}
                 className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
               />
               <p className="text-red-400">{titleError}</p>
@@ -778,6 +799,7 @@ function UploadForm() {
                 type="text"
                 ref={description}
                 onChange={descCheck}
+                tabIndex={step1IsDisabled ? -1 : 0}
                 className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
               />
               <p className="text-red-400">{descError}</p>
@@ -799,6 +821,7 @@ function UploadForm() {
                 onChange={() => {
                   videoCheck();
                 }}
+                tabIndex={step1IsDisabled ? -1 : 0}
                 className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none pt-3 pb-2"
               />
               <p className="text-white">{videoError}</p>
@@ -816,6 +839,7 @@ function UploadForm() {
                 name="cover-image"
                 id="cover-mage"
                 ref={coverImage}
+                tabIndex={step1IsDisabled ? -1 : 0}
                 className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none pt-3 pb-2"
               />
               <p className="text-white">{coverImageError}</p>
@@ -833,13 +857,17 @@ function UploadForm() {
                 id="subtitles"
                 ref={subtitles}
                 multiple
+                tabIndex={step1IsDisabled ? -1 : 0}
                 className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none pt-3 pb-2"
               />
               <p className="text-white">{subtitlesError}</p>
             </div>
 
             <div className="flex justify-end p-4">
-              <NextButton onClick={handleStep1} />
+              <NextButton
+                onClick={handleStep1}
+                tabIndex={step1IsDisabled ? -1 : 0}
+              />
             </div>
           </div>
 
@@ -882,6 +910,7 @@ function UploadForm() {
                   onChange={() => {
                     producerCheck();
                   }}
+                  disabled={step2IsDisabled}
                   className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{producerError}</p>
@@ -902,6 +931,7 @@ function UploadForm() {
                   onChange={() => {
                     emailCheck();
                   }}
+                  disabled={step2IsDisabled}
                   className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{emailError}</p>
@@ -921,6 +951,7 @@ function UploadForm() {
                   name="producerImage"
                   id="producerImage"
                   ref={producerImage}
+                  disabled={step2IsDisabled}
                   className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none pt-3 pb-2"
                 />
                 <p className="text-white">{coverImageError}</p>
@@ -937,6 +968,7 @@ function UploadForm() {
                   name="movieTypeSelect"
                   id="movieTypeSelect"
                   onChange={(e) => handleSelect(e, "movie_type")}
+                  disabled={step2IsDisabled}
                   className="bg-[#2D2738] border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 >
                   {movieTypeOption.map((option) => (
@@ -965,6 +997,7 @@ function UploadForm() {
                   onChange={() => {
                     scenarioAiCheck();
                   }}
+                  disabled={step2IsDisabled}
                   className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{scenarioAiError}</p>
@@ -984,6 +1017,7 @@ function UploadForm() {
                   onChange={() => {
                     videoAiCheck();
                   }}
+                  disabled={step2IsDisabled}
                   className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{videoAiError}</p>
@@ -1006,6 +1040,7 @@ function UploadForm() {
                   onChange={() => {
                     soundAiCheck();
                   }}
+                  disabled={step2IsDisabled}
                   className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{soundAiError}</p>
@@ -1025,6 +1060,7 @@ function UploadForm() {
                   onChange={() => {
                     postProdAiCheck();
                   }}
+                  disabled={step2IsDisabled}
                   className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{postProdAiError}</p>
@@ -1032,9 +1068,9 @@ function UploadForm() {
             </div>
 
             <div className="flex justify-between p-4">
-              <BackButton onClick={prevStep} />
+              <BackButton onClick={backToStep1} disabled={step2IsDisabled} />
 
-              <NextButton onClick={handleStep2} />
+              <NextButton onClick={handleStep2} disabled={step2IsDisabled} />
             </div>
           </div>
 
@@ -1074,6 +1110,7 @@ function UploadForm() {
                   onChange={() => {
                     linkedinCheck();
                   }}
+                  disabled={step3IsDisabled}
                   className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{linkedinError}</p>
@@ -1093,6 +1130,7 @@ function UploadForm() {
                   onChange={() => {
                     youtubeCheck();
                   }}
+                  disabled={step3IsDisabled}
                   className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{youtubeError}</p>
@@ -1115,6 +1153,7 @@ function UploadForm() {
                   onChange={() => {
                     tiktokCheck();
                   }}
+                  disabled={step3IsDisabled}
                   className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{tiktokError}</p>
@@ -1134,6 +1173,7 @@ function UploadForm() {
                   onChange={() => {
                     tagCheck();
                   }}
+                  disabled={step3IsDisabled}
                   className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{tagError}</p>
@@ -1156,6 +1196,7 @@ function UploadForm() {
                   onChange={() => {
                     instagramCheck();
                   }}
+                  disabled={step3IsDisabled}
                   className=" bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{instagramError}</p>
@@ -1172,6 +1213,7 @@ function UploadForm() {
                   name="countrySelect"
                   id="countrySelect"
                   onChange={(e) => handleSelect(e, "country")}
+                  disabled={step3IsDisabled}
                   className="bg-[#2D2738] border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 >
                   {countryOptions.map((option) => (
@@ -1191,6 +1233,7 @@ function UploadForm() {
                   id="majority_certification"
                   checked={majorityCertification}
                   onChange={certficitationHandler}
+                  disabled={step3IsDisabled}
                   className="bg-gray-700 border border-gray-500 rounded-lg"
                 />
                 <label
@@ -1209,6 +1252,7 @@ function UploadForm() {
                   id="right_givaway"
                   checked={rightGivaway}
                   onChange={rightGiveAwayHandler}
+                  disabled={step3IsDisabled}
                   className="bg-gray-700 border border-gray-500 rounded-lg"
                 />
                 <label
@@ -1222,8 +1266,12 @@ function UploadForm() {
             </div>
 
             <div className="flex justify-between p-4">
-              <BackButton onClick={prevStep} />
-              <LoadingButton type="submit" loading={loading}>
+              <BackButton onClick={backToStep2} disabled={step3IsDisabled} />
+              <LoadingButton
+                type="submit"
+                loading={loading}
+                disabled={step3IsDisabled}
+              >
                 {t("upload_form.submit_btn")} →
               </LoadingButton>
             </div>
