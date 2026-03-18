@@ -505,10 +505,16 @@ function UploadForm() {
       producerImage: producerImage.current.files[0],
       country: countryId,
       instagram: instagram.current.value,
-      linkedin: linkedin.current.value,
+
       youtube: youtube.current.value,
       tags: tags.current.value,
       tiktok: tiktok.current.value,
+      linkedin: linkedin.current.value,
+      allSocials: [
+        linkedin.current.value,
+        youtube.current.value,
+        tiktok.current.value,
+      ],
     };
     /**
      * Appel des vérifications non automatisées
@@ -516,6 +522,7 @@ function UploadForm() {
     movieTypeCheck();
     countrySelectcheck();
     majorityCheck();
+    console.log(uploadData);
     rightGiveAwayCheck();
     const formData = new FormData();
     formData.append("edition_id", 1);
