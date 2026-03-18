@@ -780,12 +780,17 @@ function UploadForm() {
             </div>
             {/* TITLE */}
             <div className="flex flex-col p-4">
-              <label className="text-sm text-white/70 mb-2 tracking-wide flex flex-row gap-2">
+              <label
+                htmlFor="title"
+                className="text-sm text-white/70 mb-2 tracking-wide flex flex-row gap-2"
+              >
                 {t("upload_form.title")} :
                 <p className="text-sm text-red-500 mb-2 tracking-wide">*</p>
               </label>
               <input
                 type="text"
+                name="title"
+                id="title"
                 required
                 ref={title}
                 onChange={titleCheck}
@@ -797,12 +802,17 @@ function UploadForm() {
 
             {/* DESCRIPTION */}
             <div className="flex flex-col p-4">
-              <label className="text-sm text-white/70 mb-2 tracking-wide flex flex-row gap-2">
+              <label
+                htmlFor="description"
+                className="text-sm text-white/70 mb-2 tracking-wide flex flex-row gap-2"
+              >
                 {t("upload_form.desc")} :
                 <p className="text-sm text-red-500 mb-2 tracking-wide">*</p>
               </label>
               <input
                 type="text"
+                name="description"
+                id="description"
                 ref={description}
                 onChange={descCheck}
                 tabIndex={step1IsDisabled ? -1 : 0}
@@ -834,7 +844,7 @@ function UploadForm() {
             </div>
             <div className="flex flex-col p-4">
               <label
-                htmlFor="image"
+                htmlFor="cover-image"
                 className="text-sm text-white/70 mb-2 tracking-wide flex flex-row gap-2"
               >
                 {t("upload_form.image")} :
@@ -843,7 +853,7 @@ function UploadForm() {
               <input
                 type="file"
                 name="cover-image"
-                id="cover-mage"
+                id="cover-image"
                 ref={coverImage}
                 tabIndex={step1IsDisabled ? -1 : 0}
                 className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none pt-3 pb-2"
@@ -852,7 +862,7 @@ function UploadForm() {
             </div>
             <div className="flex flex-col p-4">
               <label
-                htmlFor="image"
+                htmlFor="subtitles"
                 className="text-sm text-white/70 mb-2 tracking-wide "
               >
                 {t("upload_form.subtitles")} :
