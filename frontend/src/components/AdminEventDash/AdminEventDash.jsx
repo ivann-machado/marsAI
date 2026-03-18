@@ -28,7 +28,7 @@ function AdminEventDash() {
     fetchData();
   }, []);
 
-  if (!events) return <Loading />;
+  if (!events) return <Loading dashboard={true} />;
 
   return (
     <div className="w-full ml-64 min-h-screen bg-gray-950">

@@ -40,7 +40,7 @@ function AdminReviewsDash() {
     fetchData();
   }, [videosPage]);
 
-  if (!videos) return <Loading />;
+  if (!videos) return <Loading dashboard={true} />;
 
   return (
     <div className="w-full bg-gradient-to-br from-gray-950 via-gray-800 to-gray-950 px-4 font-inter ml-64">
