@@ -186,6 +186,24 @@ function AdminVideoPanel({ video_data }) {
         <option value="verified">Correspond à tous les critères</option>
         <option value="denied">Ne correspond pas aux critères</option>
       </select>
+
+      {/* Consignes */}
+      <div>
+        <h5>Consignes pour noter la video:</h5>
+        <ul>
+          <li>
+            Verifier que la video ne contient pas de contenu violent, explicite
+            ou sous copyright.
+          </li>
+          <li>Verifier que la video ne contient pas de sous-titre en dur</li>
+          <li>
+            Verifier que la video respecte le thème, le format et le durée.
+          </li>
+          <li>
+            Verifier les informations sur la video pour toute autre souci.
+          </li>
+        </ul>
+      </div>
     </div>
   );
 }

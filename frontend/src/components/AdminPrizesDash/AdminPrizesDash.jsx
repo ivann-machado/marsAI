@@ -39,6 +39,7 @@ function AdminPrizesDash() {
         console.log(json.data);
         setPrizesPages(Math.floor((json.length - 1) / ITEMS_PER_PAGE) + 1);
         setPrizes(json.data);
+        //console.log(json);
       } catch (err) {
         console.error(err);
       }
