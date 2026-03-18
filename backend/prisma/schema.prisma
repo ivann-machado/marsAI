@@ -78,9 +78,12 @@ model newsletters {
 }
 
 model prized_videos {
-    video_id Int    @id
+    id       Int    @id @default(autoincrement())
+    video_id Int
     prix     String @db.VarChar(50)
     videos   videos @relation(fields: [video_id], references: [id], onDelete: Cascade, map: "prized_videos_ibfk_1")
+
+    @@index([video_id], map: "video_id_2")
 }
 
 model process_queue {
@@ -91,7 +94,9 @@ model process_queue {
     filename   String               @db.VarChar(100)
     type       process_queue_type
     updated_at DateTime             @default(now()) @db.Timestamp(0)
-    video      videos               @relation(fields: [video_id], references: [id])
+    video      videos               @relation(fields: [video_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "process_queue_ibfk_1")
+
+    @@index([video_id], map: "video_id")
 }
 
 model reservations {
@@ -161,39 +166,35 @@ model tokens {
 }
 
 model videos {
-    id             Int             @id @default(autoincrement())
-    edition_id     Int
-    url            String          @db.VarChar(100)
-    filename       String          @db.VarChar(100)
-    email          String          @db.VarChar(50)
-    cover_image    String          @db.VarChar(100)
-    verified       Boolean
-    title          String          @db.VarChar(50)
-    description    String          @db.Text
-    status         videos_status   @default(unverified)
-    country_id     Int
-    producer       String          @db.VarChar(50)
-    producer_image String          @db.VarChar(100)
-    socials        Json
-    scenario_ai    String          @db.VarChar(50)
-    video_gen_ai   String          @db.VarChar(50)
-    sound_ai       String          @db.VarChar(50)
-    postprod_ai    String          @db.VarChar(50)
-    tags           String          @db.VarChar(100)
-    prized_videos  prized_videos?
-    reviews        reviews[]
-    subtitles      subtitles[]
-    editions       editions        @relation(fields: [edition_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "videos_ibfk_1")
-    countries      countries       @relation(fields: [country_id], references: [id], onUpdate: Restrict, map: "videos_ibfk_2")
-    processQueues  process_queue[]
+    id              Int                    @id @default(autoincrement())
+    edition_id      Int
+    url             String                 @db.VarChar(100)
+    filename        String                 @db.VarChar(100)
+    email           String                 @db.VarChar(50)
+    cover_image     String                 @db.VarChar(100)
+    verified        Boolean
+    title           String                 @db.VarChar(50)
+    description     String                 @db.Text
+    status          videos_status          @default(unverified)
+    country_id      Int
+    producer        String                 @db.VarChar(50)
+    producer_image  String                 @db.VarChar(100)
+    scenario_ai     String                 @db.VarChar(50)
+    video_gen_ai    String                 @db.VarChar(50)
+    sound_ai        String                 @db.VarChar(50)
+    postprod_ai     String                 @db.VarChar(50)
+    tags            String                 @db.VarChar(100)
+    production_type videos_production_type @default(ai_only)
+    socials         String?                @default("[]") @db.LongText
+    prized_videos   prized_videos[]
+    processQueues   process_queue[]
+    reviews         reviews[]
+    subtitles       subtitles[]
+    editions        editions               @relation(fields: [edition_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "videos_ibfk_1")
+    countries       countries              @relation(fields: [country_id], references: [id], onUpdate: Restrict, map: "videos_ibfk_2")
 
     @@index([country_id], map: "country_id")
     @@index([edition_id], map: "edition_id")
-}
-
-enum events_type {
-    atelier
-    EMPTY_ENUM_VALUE @map("")
 }
 
 enum sponsors_type {
@@ -203,12 +204,6 @@ enum sponsors_type {
     other
 }
 
-enum subtitles_language {
-    french
-    english
-    EMPTY_ENUM_VALUE @map("")
-}
-
 enum process_queue_status {
     pending
     done
@@ -216,22 +211,10 @@ enum process_queue_status {
     timeout
 }
 
-enum admins_role {
-    admin
-    super_admin      @map("super admin")
-    EMPTY_ENUM_VALUE @map("")
-}
-
 enum tokens_status {
     pending
     used
     revoked
-}
-
-enum reviews_status {
-    assigned
-    done
-    EMPTY_ENUM_VALUE @map("")
 }
 
 enum process_queue_type {
@@ -246,4 +229,33 @@ enum videos_status {
     verified
     selected
     denied
+}
+
+enum events_type {
+    atelier
+    EMPTY_ENUM_VALUE @map("")
+}
+
+enum subtitles_language {
+    french
+    english
+    EMPTY_ENUM_VALUE @map("")
+}
+
+enum admins_role {
+    admin
+    super_admin      @map("super admin")
+    EMPTY_ENUM_VALUE @map("")
+}
+
+enum reviews_status {
+    assigned
+    done
+    EMPTY_ENUM_VALUE @map("")
+}
+
+enum videos_production_type {
+    hybrid
+    ai_only
+    EMPTY_ENUM_VALUE @map("")
 }
