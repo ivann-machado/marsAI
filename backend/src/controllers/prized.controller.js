@@ -6,15 +6,18 @@ const prizedIncludes = {
 		select: {
 			title: true,
 			description: true,
+			producer: true,
 		},
 	},
 };
 
 const mapPrizedVideo = (prizedVideo) => ({
+	id: prizedVideo.video_id,
 	video_id: prizedVideo.video_id,
 	prix: prizedVideo.prix,
 	title: prizedVideo.videos?.title,
 	description: prizedVideo.videos?.description,
+	producer: prizedVideo.videos?.producer,
 });
 
 export const createPrizedVideo = async (req, res) => {
@@ -61,6 +64,11 @@ export const getAllPrizedVideos = async (req, res) => {
 		const result = await paginate(prisma.prized_videos, {
 			page,
 			limit,
+			where: {
+				prix: {
+					not: "",
+				},
+			},
 			include: prizedIncludes,
 			orderBy: { video_id: "desc" },
 		});
