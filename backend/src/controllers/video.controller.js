@@ -162,7 +162,7 @@ export const createVideo = async (req, res) => {
 				country_id: Number(body.country_id),
 				producer: body.producer ?? "",
 				producer_image: body.producer_image ?? "",
-				socials: body.socials ?? "",
+				socials: body.socials ?? [],
 				scenario_ai: body.scenario_ai ?? "",
 				video_gen_ai: body.video_gen_ai ?? "",
 				sound_ai: body.sound_ai ?? "",
