@@ -1,5 +1,5 @@
-import prisma from "../config/prisma.js";
-import { paginate } from "../utils/paginate.js";
+import prisma from "../config/prisma.config.js";
+import { paginate } from "../utils/paginate.util.js";
 
 /**
  * Create a new reservation.

@@ -1,6 +1,6 @@
-import prisma from "../config/prisma.js";
-import { paginate } from "../utils/paginate.js";
-import { getFileUrl } from "../services/bucket.service.js";
+import prisma from "../config/prisma.config.js";
+import { paginate } from "../utils/paginate.util.js";
+import { getFileUrl } from "../services/s3.service.js";
 
 /** Shared include object for eager-loading review relations. */
 const reviewIncludes = {
@@ -14,6 +14,74 @@ const reviewIncludes = {
 			title: true,
 		},
 	},
+};
+
+const reviewVideoIncludes = {
+	admins: { select: { login: true } },
+	videos: {
+		include: {
+			editions: true,
+			countries: true,
+			subtitles: true,
+		},
+	},
+};
+
+const getStatusFilter = ({ status, reviewed }) => {
+	if (status === "assigned" || status === "done") {
+		return status;
+	}
+
+	if (status === "all") {
+		return undefined;
+	}
+
+	if (reviewed === "true") {
+		return "done";
+	}
+
+	if (reviewed === "false") {
+		return "assigned";
+	}
+
+	return "assigned";
+};
+
+const getReviewOrderBy = ({ sortBy, order, direction, statusFilter }) => {
+	const sortOrder = order === "asc" || direction === "asc" ? "asc" : "desc";
+
+	if (sortBy === "grade" || sortBy === "note") {
+		return [{ grade: sortOrder }, { id: "desc" }];
+	}
+
+	if (statusFilter === "done") {
+		return [{ grade: "desc" }, { id: "desc" }];
+	}
+
+	return { id: "desc" };
+};
+
+const mapReviewVideo = (review) => {
+	const video = review.videos;
+
+	return {
+		...video,
+		filename: getFileUrl(video.filename),
+		cover_image: getFileUrl(video.cover_image),
+		subtitles: video.subtitles.map((sub) => ({
+			...sub,
+			filename: getFileUrl(sub.filename),
+		})),
+		reviews: [
+			{
+				id: review.id,
+				note: review.note,
+				grade: review.grade,
+				status: review.status,
+				admin_login: review.admins?.login,
+			},
+		],
+	};
 };
 
 /**
@@ -158,7 +226,7 @@ export const setReview = async (req, res) => {
 		if (!id)
 			return res.status(400).json({ message: "Review id is required" });
 
-		const review = await prisma.reviews.update({
+		await prisma.reviews.update({
 			where: { id: Number(id) },
 			data: {
 				note,
@@ -178,8 +246,8 @@ export const setReview = async (req, res) => {
 };
 
 /**
- * Get reviews assigned to the authenticated admin.
- * Returns reviews with status "assigned" including full video data.
+ * Get reviews for the authenticated admin.
+ * Defaults to unreviewed items, and also supports reviewed items with sorting.
  *
  * @route GET /reviews/assigned
  * @param {import("express").Request} req
@@ -189,49 +257,32 @@ export const setReview = async (req, res) => {
 export const getAssignedReviews = async (req, res) => {
 	try {
 		const adminId = req.user.id;
-		const { page, limit } = req.query;
+		const { page, limit, status, reviewed, sortBy, order, direction } =
+			req.query;
+		const statusFilter = getStatusFilter({ status, reviewed });
+
+		const where = {
+			admin_id: Number(adminId),
+		};
+
+		if (statusFilter) {
+			where.status = statusFilter;
+		}
 
 		const result = await paginate(prisma.reviews, {
 			page,
 			limit,
-			where: {
-				admin_id: Number(adminId),
-				status: "assigned",
-			},
-			include: {
-				admins: { select: { login: true } },
-				videos: {
-					include: {
-						editions: true,
-						countries: true,
-						subtitles: true,
-					},
-				},
-			},
-			orderBy: { id: "desc" },
+			where,
+			include: reviewVideoIncludes,
+			orderBy: getReviewOrderBy({
+				sortBy,
+				order,
+				direction,
+				statusFilter,
+			}),
 		});
 
-		// Flatten: return video data with review info attached
-		result.data = result.data.map((review) => {
-			const video = review.videos;
-			return {
-				...video,
-				filename: getFileUrl(video.filename),
-				cover_image: getFileUrl(video.cover_image),
-				subtitles: video.subtitles.map((sub) => ({
-					...sub,
-					filename: getFileUrl(sub.filename),
-				})),
-				reviews: [
-					{
-						id: review.id,
-						note: review.note,
-						grade: review.grade,
-						status: review.status,
-					},
-				],
-			};
-		});
+		result.data = result.data.map(mapReviewVideo);
 
 		res.status(200).json(result);
 	} catch (error) {
@@ -241,15 +292,15 @@ export const getAssignedReviews = async (req, res) => {
 };
 
 /**
- * Get videos NOT assigned to the authenticated admin.
- * Returns all videos that don't have a review with status "assigned" for this admin.
+ * Get videos not yet reviewed by the authenticated admin.
+ * Returns all videos that have no review at all for this admin.
  *
- * @route GET /reviews/rest
+ * @route GET /reviews/remaining
  * @param {import("express").Request} req
  * @param {import("express").Response} res
  * @returns {Promise<void>}
  */
-export const getRestVideos = async (req, res) => {
+export const getRemainingVideos = async (req, res) => {
 	try {
 		const adminId = req.user.id;
 		const { page, limit } = req.query;
@@ -262,7 +313,6 @@ export const getRestVideos = async (req, res) => {
 					reviews: {
 						some: {
 							admin_id: Number(adminId),
-							status: "assigned",
 						},
 					},
 				},
@@ -287,10 +337,12 @@ export const getRestVideos = async (req, res) => {
 
 		res.status(200).json(result);
 	} catch (error) {
-		console.error("Get Rest Videos Error:", error);
+		console.error("Get Remaining Videos Error:", error);
 		res.status(500).json({ message: "Failed to fetch rest videos" });
 	}
 };
+
+export const getRestVideos = getRemainingVideos;
 
 /**
  * Delete a review by ID

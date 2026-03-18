@@ -31,7 +31,7 @@ function AdminEventDash() {
   if (!events) return <Loading />;
 
   return (
-    <div className="w-4/5 bg-gray-950">
+    <div className="w-full ml-64 min-h-screen bg-gray-950">
       {events.map((event) => (
         <AdminEventCard event={event} key={event.id} />
       ))}

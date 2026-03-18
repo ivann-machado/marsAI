@@ -1,6 +1,6 @@
-import prisma from "../config/prisma.js";
-import { paginate } from "../utils/paginate.js";
-import { deleteFile, getFileUrl } from "../services/bucket.service.js";
+import prisma from "../config/prisma.config.js";
+import { paginate } from "../utils/paginate.util.js";
+import { getFileUrl } from "../services/s3.service.js";
 import { uploadVideo } from "../services/youtube.service.js";
 
 /**
@@ -48,6 +48,11 @@ const videoIncludes = {
 	editions: true,
 	countries: true,
 	subtitles: true,
+	prized_videos: {
+		select: {
+			prix: true,
+		},
+	},
 };
 
 /**
@@ -69,6 +74,8 @@ export const getAllVideos = async (req, res) => {
 
 		result.data = result.data.map((video) => ({
 			...video,
+			prix: video.prized_videos?.prix ?? null,
+			prized_videos: undefined,
 			filename: getFileUrl(video.filename),
 			cover_image: getFileUrl(video.cover_image),
 			subtitles: video.subtitles.map((sub) => ({
@@ -102,6 +109,8 @@ export const getVideoById = async (req, res) => {
 
 		res.status(200).json({
 			...video,
+			prix: video.prized_videos?.prix ?? null,
+			prized_videos: undefined,
 			filename: getFileUrl(video.filename),
 			producer_image: getFileUrl(video.producer_image),
 			cover_image: getFileUrl(video.cover_image),
@@ -153,8 +162,7 @@ export const createVideo = async (req, res) => {
 				country_id: Number(body.country_id),
 				producer: body.producer ?? "",
 				producer_image: body.producer_image ?? "",
-				linkedin_link: body.linkedin_link ?? "",
-				youtube_link: body.youtube_link ?? "",
+				socials: body.socials ?? [],
 				scenario_ai: body.scenario_ai ?? "",
 				video_gen_ai: body.video_gen_ai ?? "",
 				sound_ai: body.sound_ai ?? "",
@@ -279,6 +287,8 @@ export const getAssignedVideos = async (req, res) => {
 
 		result.data = result.data.map((video) => ({
 			...video,
+			prix: video.prized_videos?.prix ?? null,
+			prized_videos: undefined,
 			filename: getFileUrl(video.filename),
 			cover_image: getFileUrl(video.cover_image),
 			subtitles: video.subtitles.map((sub) => ({
@@ -324,6 +334,8 @@ export const getUnassignedVideos = async (req, res) => {
 
 		result.data = result.data.map((video) => ({
 			...video,
+			prix: video.prized_videos?.prix ?? null,
+			prized_videos: undefined,
 			filename: getFileUrl(video.filename),
 			cover_image: getFileUrl(video.cover_image),
 			subtitles: video.subtitles.map((sub) => ({

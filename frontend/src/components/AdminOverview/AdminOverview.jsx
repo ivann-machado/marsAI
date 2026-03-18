@@ -92,7 +92,7 @@ function AdminOverview() {
 
   return (
     <>
-      <div className="bg-gradient-to-br from-gray-950 via-gray-800 to-gray-950 px-4 font-inter w-4/5 text-white">
+      <div className="bg-gradient-to-br from-gray-950 via-gray-800 to-gray-950 px-4 font-inter w-full ml-64 text-white min-h-screen">
         <h1 className="font-bold text-2xl m-4">Vue d'ensemble</h1>
         <p className="m-4 text-lg border-b">
           Informations generales sur le festival et le site web.

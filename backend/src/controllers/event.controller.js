@@ -1,13 +1,14 @@
-import prisma from "../config/prisma.js";
-import { paginate } from "../utils/paginate.js";
-import { deleteFile, getFileUrl } from "../services/bucket.service.js";
+import prisma from "../config/prisma.config.js";
+import { paginate } from "../utils/paginate.util.js";
+import { deleteFile, getFileUrl } from "../services/s3.service.js";
 
 /**
  * Create a new event.
  * @param {import('express').Request} req
  * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
  */
-export const createEvent = async (req, res) => {
+export const createEvent = async (req, res, next) => {
 	try {
 		const {
 			type,
@@ -45,6 +46,7 @@ export const createEvent = async (req, res) => {
 			message: "Event created successfully",
 			id: event.id.toString(),
 		});
+		next();
 	} catch (error) {
 		console.error("Create Event Error:", error);
 		res.status(500).json({ message: "Server error" });
@@ -109,8 +111,9 @@ export const getEventById = async (req, res) => {
  * Update an event by ID.
  * @param {import('express').Request} req
  * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
  */
-export const setEvent = async (req, res) => {
+export const setEvent = async (req, res, next) => {
 	try {
 		const {
 			type,
@@ -149,6 +152,7 @@ export const setEvent = async (req, res) => {
 		}
 
 		res.status(200).json({ message: "Event updated successfully" });
+		next();
 	} catch (error) {
 		if (error.code === "P2025") {
 			return res.status(404).json({ message: "Event not found" });
@@ -162,14 +166,16 @@ export const setEvent = async (req, res) => {
  * Delete an event by ID.
  * @param {import('express').Request} req
  * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
  */
-export const removeEvent = async (req, res) => {
+export const removeEvent = async (req, res, next) => {
 	try {
 		await prisma.events.delete({
 			where: { id: Number(req.params.id) },
 		});
 
 		res.status(200).json({ message: "Event deleted successfully" });
+		next();
 	} catch (error) {
 		if (error.code === "P2025") {
 			return res.status(404).json({ message: "Event not found" });

@@ -1,5 +1,5 @@
-import prisma from "../config/prisma.js";
-import { paginate } from "../utils/paginate.js";
+import prisma from "../config/prisma.config.js";
+import { paginate } from "../utils/paginate.util.js";
 
 /**
  * Get all admins (paginated).
@@ -62,11 +62,9 @@ export const setAdmin = async (req, res) => {
 		const { role } = req.body;
 
 		if (role && !["admin", "super_admin"].includes(role)) {
-			return res
-				.status(400)
-				.json({
-					message: "Invalid role. Must be 'admin' or 'super_admin'",
-				});
+			return res.status(400).json({
+				message: "Invalid role. Must be 'admin' or 'super_admin'",
+			});
 		}
 
 		await prisma.admins.update({
@@ -100,6 +98,91 @@ export const removeAdmin = async (req, res) => {
 			return res.status(404).json({ message: "Admin not found" });
 		}
 		console.error("Delete Admin Error:", error);
+		res.status(500).json({ message: "Server error" });
+	}
+};
+
+/**
+ * Get dashboard overview with site statistics.
+ * @route GET /api/admins/dashboard/overview
+ */
+export const getOverview = async (req, res) => {
+	try {
+		// Fetch all statistics in parallel
+		const [
+			totalVideos,
+			videoStats,
+			totalEditions,
+			totalEvents,
+			totalSponsors,
+			totalJury,
+			totalReservations,
+			totalNewsletter,
+			prizedVideos,
+			youtubeVideos,
+		] = await Promise.all([
+			prisma.videos.count(),
+			prisma.videos.groupBy({
+				by: ["status"],
+				_count: true,
+			}),
+			prisma.editions.count(),
+			prisma.events.count(),
+			prisma.sponsors.count(),
+			prisma.jury.count(),
+			prisma.reservations.count(),
+			prisma.newsletters.count(),
+			prisma.prized_videos.count(),
+			prisma.videos.findMany({
+				where: {
+					youtube_link: {
+						not: "",
+					},
+				},
+				select: {
+					id: true,
+					title: true,
+					youtube_link: true,
+				},
+			}),
+		]);
+
+		// Build video status breakdown
+		const videoStatusMap = {
+			unverified: 0,
+			verified: 0,
+			selected: 0,
+			denied: 0,
+		};
+
+		videoStats.forEach((stat) => {
+			videoStatusMap[stat.status] = stat._count;
+		});
+
+		res.status(200).json({
+			festival: {
+				name: "MarsAI",
+				editions: totalEditions,
+				currentYear: new Date().getFullYear(),
+			},
+			videos: {
+				total: totalVideos,
+				unverified: videoStatusMap.unverified,
+				verified: videoStatusMap.verified,
+				selected: videoStatusMap.selected,
+				denied: videoStatusMap.denied,
+				youtube: youtubeVideos.length,
+				prized: prizedVideos,
+			},
+			events: totalEvents,
+			jury: totalJury,
+			sponsors: totalSponsors,
+			reservations: totalReservations,
+			newsletter: totalNewsletter,
+			youtubeChannels: youtubeVideos,
+		});
+	} catch (error) {
+		console.error("Get Overview Error:", error);
 		res.status(500).json({ message: "Server error" });
 	}
 };

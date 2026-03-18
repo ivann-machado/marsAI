@@ -331,13 +331,15 @@
   },
   "admin_sidebar": {
     "overview": "Overview",
-    "videos": "Manage movies",
+    "videos": "All videos",
+    "reviews": "Videos to review",
     "users": "Manage users",
     "events": "Manage events",
     "settings": "Manage settings",
     "content": "Manage content",
     "jury": "Manage jury",
-    "partners": "Manage partners"
+    "partners": "Manage partners",
+    "prizes": "Prizes"
   },
   "gallery": {
     "gallery_badge": "🎬 MARS.AI SELECTION 2026",
@@ -483,7 +485,8 @@
   },
   "buttonsComponents": {
     "back": "Back",
-    "next": "Next"},
+    "next": "Next"
+  },
   "phases": {
     "before_festival": "Before Festival",
     "during_festival": "Festival Live",

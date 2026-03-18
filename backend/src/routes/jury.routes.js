@@ -8,6 +8,7 @@ import {
 	removeJury,
 } from "../controllers/jury.controller.js";
 import { verifyToken, requireSuperAdmin } from "../middlewares/auth.middleware.js";
+import { cache, clearCache } from "../middlewares/cache.middleware.js";
 import { CreateJurySchema, UpdateJurySchema } from "../schemas/jury.schema.js";
 
 const router = express.Router();
@@ -20,10 +21,10 @@ const router = express.Router();
  * - PUT `/:id` : update a jury member (super admin only).
  * - DELETE `/:id` : delete a jury member (super admin only).
  */
-router.get("/", getAllJuries);
-router.get("/:id", getJuryById);
-router.post("/", verifyToken, requireSuperAdmin, processAndUpload({ schema: CreateJurySchema, maxFiles: 1, maxSize: 5 * 1024 * 1024 }), createJury);
-router.put("/:id", verifyToken, requireSuperAdmin, processAndUpload({ schema: UpdateJurySchema, maxFiles: 1, maxSize: 5 * 1024 * 1024 }), setJury);
-router.delete("/:id", verifyToken, requireSuperAdmin, removeJury);
+router.get("/", cache(), getAllJuries);
+router.get("/:id", cache(), getJuryById);
+router.post("/", verifyToken, requireSuperAdmin, processAndUpload({ schema: CreateJurySchema, maxFiles: 1, maxSize: 5 * 1024 * 1024 }), createJury, clearCache("jury"));
+router.put("/:id", verifyToken, requireSuperAdmin, processAndUpload({ schema: UpdateJurySchema, maxFiles: 1, maxSize: 5 * 1024 * 1024 }), setJury, clearCache("jury"));
+router.delete("/:id", verifyToken, requireSuperAdmin, removeJury, clearCache("jury"));
 
 export default router;

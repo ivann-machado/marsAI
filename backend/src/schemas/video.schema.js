@@ -45,56 +45,26 @@ const VideoSchema = videosSchema
       "image/gif",
       "image/avif",
       "image/svg+xml",
-    ]).optional(),
-    linkedin_link: z
-      .url({
-        error: "LinkedIn link must be a valid URL",
-        hostname: /^linkedin\.com/,
-      })
-      .optional()
-      .or(z.literal("")),
-    youtube_link: z
-      .url({
-        error: "YouTube link must be a valid URL",
-        hostname: /^youtube\.com/,
-      })
-      .optional()
-      .or(z.literal("")),
-    instagram_link: z
-      .url({
-        error: "Instagram link must be a valid URL",
-        hostname: /^instagram\.com/,
-      })
-      .optional()
-      .or(z.literal("")),
+    ]),
+    socials: z.array(z.url()).optional().or(z.literal("")),
     scenario_ai: z
       .string()
-      .max(50, { error: "Scenario AI must be at most 50 characters" })
-      .optional(),
+      .max(50, { error: "Scenario AI must be at most 50 characters" }),
     video_gen_ai: z
       .string()
-
-      .max(50, { error: "Video gen AI must be at most 50 characters" })
-      .optional(),
+      .max(50, { error: "Video gen AI must be at most 50 characters" }),
     sound_ai: z
       .string()
-
-      .max(50, { error: "Sound AI must be at most 50 characters" })
-      .optional(),
+      .max(50, { error: "Sound AI must be at most 50 characters" }),
     postprod_ai: z
       .string()
-
-      .max(50, { error: "Post-production AI must be at most 50 characters" })
-      .optional(),
+      .max(50, { error: "Post-production AI must be at most 50 characters" }),
     tags: z
       .string()
       .max(100, { error: "Tags must be at most 100 characters" })
       .optional()
       .default(""),
-    subtitle: fileSchema(2 * 1024 * 1024, [
-      "application/x-subrip",
-      "text/srt",
-    ]).optional(),
+    subtitle: fileSchema(2 * 1024 * 1024, ["application/x-subrip", "text/srt"]),
   });
 const videoRefinement = (schema) =>
   schema.superRefine((data, ctx) => {

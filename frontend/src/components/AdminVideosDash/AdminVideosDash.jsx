@@ -5,12 +5,12 @@ import Pagination from "../Utils/Pagination.jsx";
 import { useauth } from "../../context/AuthContext";
 
 function AdminVideosDash() {
-  const [videoQueue, setVideoQueue] = useState(null);
-  const [videoQueuePage, setVideoQueuePage] = useState(1);
-  const [videoQueuePages, setVideoQueuePages] = useState(1);
-  const [otherVideo, setOtherVideo] = useState(null);
-  const [otherVideoPage, setOtherVideoPage] = useState(1);
-  const [otherVideoPages, setOtherVideoPages] = useState(1);
+  // VIDEOS
+  const [videos, setVideos] = useState(null);
+  const [videosPage, setVideosPage] = useState(1);
+  const [videosPages, setVideosPages] = useState(1);
+
+  // FILTRES
   const [filters, setFilters] = useState({
     title: "",
     producer: "",
@@ -18,31 +18,17 @@ function AdminVideosDash() {
     selected: "",
   });
   const [appliedFilters, setAppliedFilters] = useState(null);
+
+  // MISC
   const authToken = useauth();
+  const ITEMS_PER_PAGE = 10;
 
   useEffect(() => {
     const fetchData = async () => {
+      const pageQuery = "?page=" + videosPage;
       try {
-        /* Recuperation des vidéos assignées à l'admin (via reviews) */
-        const assignedQuery = "/?page=" + videoQueuePage;
-        let response = await fetch(
-          import.meta.env.VITE_API_URL + "/api/reviews/assigned",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + authToken.token,
-            },
-          },
-        );
-        if (!response.ok) throw new Error("Erreur fetch assigned videos");
-        let res = await response.json();
-        setVideoQueuePages(res.meta.totalPage);
-        setVideoQueue(res.data ?? res);
-
-        /* Recuperation de toutes les videos non assignées à cet admin*/
-        response = await fetch(
-          import.meta.env.VITE_API_URL + "/api/reviews/rest",
+        const response = await fetch(
+          import.meta.env.VITE_API_URL + "/api/reviews/rest/" + pageQuery,
           {
             method: "GET",
             headers: {
@@ -52,15 +38,16 @@ function AdminVideosDash() {
           },
         );
         if (!response.ok) throw new Error("Erreur fetch rest videos");
-        res = await response.json();
-        setOtherVideo(res.data ?? res);
+        const res = await response.json();
+        setVideosPages(res.meta.totalPages);
+        setVideos(res.data ?? res);
       } catch (err) {
         console.error(err);
       }
     };
 
     fetchData();
-  }, [otherVideoPage]);
+  }, [videosPage]);
 
   const updateFilters = (key, value) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
@@ -68,26 +55,31 @@ function AdminVideosDash() {
 
   const updateAppliedFilters = () => {
     //console.log("updates");
-    // TODO make filters fetch data again
+    // TODO make filters fetch data agains
     setAppliedFilters(filters);
   };
 
-  if (!videoQueue || !otherVideo) return <Loading />;
+  if (!videos) return <Loading />;
 
   return (
-    <div className="w-4/5 bg-gradient-to-br from-gray-950 via-gray-800 to-gray-950 px-4 font-inter">
+    <div className="w-full bg-gradient-to-br from-gray-950 via-gray-800 to-gray-950 px-4 font-inter ml-64">
       <h1 className="py-2 font-bold text-3xl text-white text-center">
         Gestion des films
       </h1>
 
       {/* MOVIE QUEUE */}
-      <h2 className="text-2xl font-bold ml-8 text-white">Films attribuées:</h2>
-      <VideoList videoList={videoQueue} type="queue" />
+      {/* <h2 className="text-2xl font-bold ml-8 text-white">Films attribuées:</h2>
+      <VideoList
+        videoList={videoQueue}
+        type="queue"
+        page={videoQueuePage}
+        items_per_page={ITEMS_PER_PAGE}
+      />
       <Pagination
         currentPage={videoQueuePage}
         totalPages={videoQueuePages}
         setPage={setVideoQueuePage}
-      />
+      /> */}
 
       {/* SEARCH BAR */}
       <div className="w-full bg-gray-500 grid grid-cols-6">
@@ -132,11 +124,16 @@ function AdminVideosDash() {
       </div>
 
       {/* OTHER MOVIES */}
-      <VideoList videoList={otherVideo} filters={appliedFilters} />
+      <VideoList
+        videoList={videos}
+        filters={appliedFilters}
+        page={videosPage}
+        items_per_page={ITEMS_PER_PAGE}
+      />
       <Pagination
-        currentPage={otherVideoPage}
-        totalPages={otherVideoPages}
-        setPage={setOtherVideoPage}
+        currentPage={videosPage}
+        totalPages={videosPages}
+        setPage={setVideosPage}
       />
     </div>
   );
