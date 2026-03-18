@@ -34,16 +34,8 @@ const VideoSchema = videosSchema
 			.min(1, { error: "Producer name is required" })
 			.max(50, { error: "Producer name must be at most 50 characters" }),
 		producer_image: fileSchema(5 * 1024 * 1024, ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/avif', 'image/svg+xml']),
-		linkedin_link: z
-			.url({ error: "LinkedIn link must be a valid URL", hostname: /^linkedin\.com/ })
-			.optional()
-			.or(z.literal("")),
-		youtube_link: z
-			.url({ error: "YouTube link must be a valid URL", hostname: /^youtube\.com/ })
-			.optional()
-			.or(z.literal("")),
-		instagram_link: z
-			.url({ error: "Instagram link must be a valid URL", hostname: /^instagram\.com/ })
+		socials: z
+			.array(z.url())
 			.optional()
 			.or(z.literal("")),
 		scenario_ai: z

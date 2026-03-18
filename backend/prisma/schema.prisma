@@ -174,8 +174,7 @@ model videos {
     country_id     Int
     producer       String          @db.VarChar(50)
     producer_image String          @db.VarChar(100)
-    linkedin_link  String          @db.VarChar(50)
-    youtube_link   String          @db.VarChar(50)
+    socials        Json
     scenario_ai    String          @db.VarChar(50)
     video_gen_ai   String          @db.VarChar(50)
     sound_ai       String          @db.VarChar(50)
