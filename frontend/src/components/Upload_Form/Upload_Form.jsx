@@ -328,10 +328,13 @@ function UploadForm() {
    * Passage d'une étape à la précédente
    */
   const backToStep1 = async (e) => {
+    step2Disable();
     step1Disable();
+
     prevStep();
   };
   const backToStep2 = async (e) => {
+    step3Disable();
     step2Disable();
     prevStep();
   };
@@ -389,6 +392,7 @@ function UploadForm() {
       return;
     } else {
       step1Disable();
+      step2Disable();
       nextStep();
     }
   };
@@ -475,6 +479,7 @@ function UploadForm() {
       SetLoading(false);
       return;
     } else {
+      step2Disable();
       step3Disable();
       nextStep();
     }
@@ -735,6 +740,7 @@ function UploadForm() {
   };
 
   const formSubmit = useState(false);
+  console.log(step1IsDisabled, step2IsDisabled, step3IsDisabled);
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0f0f1a] via-[#1a1026] to-[#0f0f1a] p-6 font-inter">
       <form
@@ -866,7 +872,7 @@ function UploadForm() {
             <div className="flex justify-end p-4">
               <NextButton
                 onClick={handleStep1}
-                tabIndex={step1IsDisabled ? -1 : 0}
+                disabled={step1IsDisabled ? -1 : 0}
               />
             </div>
           </div>
@@ -910,7 +916,7 @@ function UploadForm() {
                   onChange={() => {
                     producerCheck();
                   }}
-                  disabled={step2IsDisabled}
+                  tabIndex={step2IsDisabled ? -1 : 0}
                   className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{producerError}</p>
@@ -931,7 +937,7 @@ function UploadForm() {
                   onChange={() => {
                     emailCheck();
                   }}
-                  disabled={step2IsDisabled}
+                  tabIndex={step2IsDisabled ? -1 : 0}
                   className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{emailError}</p>
@@ -951,14 +957,14 @@ function UploadForm() {
                   name="producerImage"
                   id="producerImage"
                   ref={producerImage}
-                  disabled={step2IsDisabled}
+                  tabIndex={step2IsDisabled ? -1 : 0}
                   className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none pt-3 pb-2"
                 />
                 <p className="text-white">{coverImageError}</p>
               </div>
               <div className="flex flex-col md:w-full md:max-w-150">
                 <label
-                  htmlFor="more_info"
+                  htmlFor="movieTypeSelect"
                   className="text-sm text-white/70 mb-2 tracking-wide flex flex-row gap-2"
                 >
                   {t("upload_form.production_type")} :
@@ -968,7 +974,7 @@ function UploadForm() {
                   name="movieTypeSelect"
                   id="movieTypeSelect"
                   onChange={(e) => handleSelect(e, "movie_type")}
-                  disabled={step2IsDisabled}
+                  tabIndex={step2IsDisabled ? -1 : 0}
                   className="bg-[#2D2738] border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 >
                   {movieTypeOption.map((option) => (
@@ -997,7 +1003,7 @@ function UploadForm() {
                   onChange={() => {
                     scenarioAiCheck();
                   }}
-                  disabled={step2IsDisabled}
+                  tabIndex={step2IsDisabled ? -1 : 0}
                   className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{scenarioAiError}</p>
@@ -1017,7 +1023,7 @@ function UploadForm() {
                   onChange={() => {
                     videoAiCheck();
                   }}
-                  disabled={step2IsDisabled}
+                  tabIndex={step2IsDisabled ? -1 : 0}
                   className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{videoAiError}</p>
@@ -1040,7 +1046,7 @@ function UploadForm() {
                   onChange={() => {
                     soundAiCheck();
                   }}
-                  disabled={step2IsDisabled}
+                  tabIndex={step2IsDisabled ? -1 : 0}
                   className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{soundAiError}</p>
@@ -1060,7 +1066,7 @@ function UploadForm() {
                   onChange={() => {
                     postProdAiCheck();
                   }}
-                  disabled={step2IsDisabled}
+                  tabIndex={step2IsDisabled ? -1 : 0}
                   className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{postProdAiError}</p>
@@ -1068,9 +1074,15 @@ function UploadForm() {
             </div>
 
             <div className="flex justify-between p-4">
-              <BackButton onClick={backToStep1} disabled={step2IsDisabled} />
+              <BackButton
+                onClick={backToStep1}
+                disabled={step2IsDisabled ? -1 : 0}
+              />
 
-              <NextButton onClick={handleStep2} disabled={step2IsDisabled} />
+              <NextButton
+                onClick={handleStep2}
+                disabled={step2IsDisabled ? -1 : 0}
+              />
             </div>
           </div>
 
@@ -1110,7 +1122,7 @@ function UploadForm() {
                   onChange={() => {
                     linkedinCheck();
                   }}
-                  disabled={step3IsDisabled}
+                  tabIndex={step3IsDisabled ? -1 : 0}
                   className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{linkedinError}</p>
@@ -1130,7 +1142,7 @@ function UploadForm() {
                   onChange={() => {
                     youtubeCheck();
                   }}
-                  disabled={step3IsDisabled}
+                  tabIndex={step3IsDisabled ? -1 : 0}
                   className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{youtubeError}</p>
@@ -1153,7 +1165,7 @@ function UploadForm() {
                   onChange={() => {
                     tiktokCheck();
                   }}
-                  disabled={step3IsDisabled}
+                  tabIndex={step3IsDisabled ? -1 : 0}
                   className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{tiktokError}</p>
@@ -1173,7 +1185,7 @@ function UploadForm() {
                   onChange={() => {
                     tagCheck();
                   }}
-                  disabled={step3IsDisabled}
+                  tabIndex={step3IsDisabled ? -1 : 0}
                   className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{tagError}</p>
@@ -1196,7 +1208,7 @@ function UploadForm() {
                   onChange={() => {
                     instagramCheck();
                   }}
-                  disabled={step3IsDisabled}
+                  tabIndex={step3IsDisabled ? -1 : 0}
                   className=" bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{instagramError}</p>
@@ -1213,7 +1225,7 @@ function UploadForm() {
                   name="countrySelect"
                   id="countrySelect"
                   onChange={(e) => handleSelect(e, "country")}
-                  disabled={step3IsDisabled}
+                  tabIndex={step3IsDisabled ? -1 : 0}
                   className="bg-[#2D2738] border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 >
                   {countryOptions.map((option) => (
@@ -1233,7 +1245,7 @@ function UploadForm() {
                   id="majority_certification"
                   checked={majorityCertification}
                   onChange={certficitationHandler}
-                  disabled={step3IsDisabled}
+                  tabIndex={step3IsDisabled ? -1 : 0}
                   className="bg-gray-700 border border-gray-500 rounded-lg"
                 />
                 <label
@@ -1252,7 +1264,7 @@ function UploadForm() {
                   id="right_givaway"
                   checked={rightGivaway}
                   onChange={rightGiveAwayHandler}
-                  disabled={step3IsDisabled}
+                  tabIndex={step3IsDisabled ? -1 : 0}
                   className="bg-gray-700 border border-gray-500 rounded-lg"
                 />
                 <label
@@ -1266,11 +1278,14 @@ function UploadForm() {
             </div>
 
             <div className="flex justify-between p-4">
-              <BackButton onClick={backToStep2} disabled={step3IsDisabled} />
+              <BackButton
+                onClick={backToStep2}
+                disabled={step3IsDisabled ? -1 : 0}
+              />
               <LoadingButton
                 type="submit"
                 loading={loading}
-                disabled={step3IsDisabled}
+                disabled={step3IsDisabled ? -1 : 0}
               >
                 {t("upload_form.submit_btn")} →
               </LoadingButton>
