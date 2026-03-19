@@ -188,7 +188,7 @@ export const getAllReviews = async (req, res) => {
 export const getReviewById = async (req, res) => {
 	try {
 		const { id } = req.params;
-		if (!id)
+		if (!id || isNaN(id))
 			return res.status(400).json({ message: "Review id is required" });
 
 		const review = await prisma.reviews.findUnique({
@@ -355,7 +355,7 @@ export const getRestVideos = getRemainingVideos;
 export const removeReview = async (req, res) => {
 	try {
 		const { id } = req.params;
-		if (!id)
+		if (!id || isNaN(id))
 			return res.status(400).json({ message: "Review id is required" });
 
 		await prisma.reviews.delete({
