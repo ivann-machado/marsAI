@@ -133,7 +133,18 @@ export const getOverview = async (req, res) => {
 			prisma.reservations.count(),
 			prisma.newsletters.count(),
 			prisma.prized_videos.count(),
-			prisma.videos.findMany
+			prisma.videos.findMany({
+				where: {
+					youtube_link: {
+						not: "",
+					},
+				},
+				select: {
+					id: true,
+					title: true,
+					youtube_link: true,
+				},
+			}),
 		]);
 
 		// Build video status breakdown
