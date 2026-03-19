@@ -297,7 +297,7 @@ function UploadForm() {
     }
   }
   function tagCheck() {
-    const tagRegex = /^(#\w+(,\s`\w+)*){0,1}$/;
+    const tagRegex = /^(#\w+,\s*)*$/;
     if (!tagRegex.test(tags.current.value)) {
       SetTagError(t("upload_form.errors.invalid_tag"));
       return false;
@@ -489,7 +489,19 @@ function UploadForm() {
    */
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const form = e.target;
+    // const form = e.target;
+    const socials = [
+      linkedin.current.value,
+      youtube.current.value,
+      tiktok.current.value,
+      instagram.current.value,
+    ]
+      .filter((e) => e)
+      .map((option) =>
+        option.startsWith("http") || option.startsWith("https")
+          ? option
+          : "https://" + option,
+      );
     const uploadData = {
       title: title.current.value,
       description: description.current.value,
@@ -510,12 +522,7 @@ function UploadForm() {
       tags: tags.current.value,
       tiktok: tiktok.current.value,
       linkedin: linkedin.current.value,
-      socials: JSON.stringify([
-        linkedin.current.value,
-        youtube.current.value,
-        tiktok.current.value,
-        instagram.current.value,
-      ]),
+      socials: socials,
     };
     /**
      * Appel des vérifications non automatisées
@@ -540,7 +547,10 @@ function UploadForm() {
       formData.append("producer_image", uploadData.producerImage); //null ?
     if (uploadData.movie_type)
       formData.append("production_type", uploadData.movie_type);
-    if (uploadData.socials) formData.append("socials", uploadData.socials); //null
+    if (uploadData.socials)
+      uploadData.socials.forEach((social) =>
+        formData.append("socials", social),
+      ); //null
     if (uploadData.scenario_ai)
       formData.append("scenario_ai", uploadData.scenario_ai); //null
     if (uploadData.video_ai)
