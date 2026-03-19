@@ -35,7 +35,6 @@ function UploadForm() {
   const tags = useRef(null);
   const tiktok = useRef(null);
   const [majorityCertification, SetMajorityCertification] = useState(false);
-  console.log({ majorityCertification });
   const certficitationHandler = () => {
     SetMajorityCertification(!majorityCertification);
   };
@@ -118,12 +117,10 @@ function UploadForm() {
     } else if (title.current.value.length < 5) {
       //Taille temporaire (placeholder !!!!!!)
       SetTitleError(t("upload_form.errors.short_field")); //"Ce champ doit être plus grand"
-      // console.log("Input is too short");
       return false;
     } else if (title.current.value.length > 50) {
       //Taille temporaire (placeholder !!!!!!)
       SetTitleError(t("upload_form.errors.field_max_length_short"));
-      //console.log("Input is too long");
       return false;
     } else {
       SetTitleError("");
@@ -530,8 +527,6 @@ function UploadForm() {
     movieTypeCheck();
     countrySelectcheck();
     majorityCheck();
-    console.log(uploadData);
-    console.log(movieType);
     rightGiveAwayCheck();
     const formData = new FormData();
     formData.append("edition_id", 1);
@@ -559,8 +554,6 @@ function UploadForm() {
     if (uploadData.post_prod_ai)
       formData.append("postprod_ai", uploadData.post_prod_ai); //null
     if (uploadData.tags) formData.append("tags", uploadData.tags); //null
-    console.log(uploadData);
-    console.log("formData est : ", formData);
     SetLoading(true);
     if (!titleCheck()) {
       showFlash(
@@ -740,26 +733,21 @@ function UploadForm() {
     });
 
     const data = await res.json().catch(() => ({}));
-    console.log(data);
+    // console.log(data);
     if (res.ok) {
       SetLoading(false);
       showFlash("success", t("upload_form.upload_success"));
-      /**
-       * Création d'un URL pour afficher les files
-       */
-      if (uploadData.video) {
-        const url = URL.createObjectURL(uploadData.video);
-        console.log({ url });
-        setVideoURL(url);
-      }
     } else {
-      showFlash("error", t("upload_form.errors.upload_fail"));
+      Object.entries(data.errors).forEach((key, value) =>
+        showFlash("error", key[1].join("&para")),
+      );
+      // data.errors.forEach((error) => showFlash("error", error.join("<br/>")));
       SetLoading(false);
+      // console.log(data.errors);
     }
   };
 
   const formSubmit = useState(false);
-  console.log(step1IsDisabled, step2IsDisabled, step3IsDisabled);
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0f0f1a] via-[#1a1026] to-[#0f0f1a] p-6 font-inter">
       <form
