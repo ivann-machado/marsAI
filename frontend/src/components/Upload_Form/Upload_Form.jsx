@@ -402,7 +402,7 @@ function UploadForm() {
       producer: producer.current.value,
       email: email.current.value,
       producer_image: producerImage.current.files[0],
-      movie_type: movieType.current.value,
+      movie_type: movieType,
       scenario_ai: scenario_ai.current.value,
       video_ai: video_ai.current.value,
       sound_ai: sound_ai.current.value,
@@ -505,7 +505,7 @@ function UploadForm() {
       producerImage: producerImage.current.files[0],
       country: countryId,
       instagram: instagram.current.value,
-
+      movie_type: movieType,
       youtube: youtube.current.value,
       tags: tags.current.value,
       tiktok: tiktok.current.value,
@@ -524,6 +524,7 @@ function UploadForm() {
     countrySelectcheck();
     majorityCheck();
     console.log(uploadData);
+    console.log(movieType);
     rightGiveAwayCheck();
     const formData = new FormData();
     formData.append("edition_id", 1);
@@ -537,6 +538,8 @@ function UploadForm() {
     if (uploadData.producer) formData.append("producer", uploadData.producer);
     if (uploadData.producerImage)
       formData.append("producer_image", uploadData.producerImage); //null ?
+    if (uploadData.movie_type)
+      formData.append("production_type", uploadData.movie_type);
     if (uploadData.socials) formData.append("socials", uploadData.socials); //null
     if (uploadData.scenario_ai)
       formData.append("scenario_ai", uploadData.scenario_ai); //null
