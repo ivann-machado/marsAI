@@ -61,9 +61,9 @@ function UploadForm() {
     { label: t("upload_form.production_type_select.label"), value: "" },
     {
       label: "100% " + t("upload_form.production_type_select.ai"),
-      value: "100% IA",
+      value: "ai_only",
     },
-    { label: t("upload_form.production_type_select.hybrid"), value: "hybride" },
+    { label: t("upload_form.production_type_select.hybrid"), value: "hybrid" },
   ];
   function handleSelect(event, key) {
     if (key === "country") SetCountryId(event.target.value);
@@ -510,11 +510,7 @@ function UploadForm() {
       tags: tags.current.value,
       tiktok: tiktok.current.value,
       linkedin: linkedin.current.value,
-      allSocials: [
-        linkedin.current.value,
-        youtube.current.value,
-        tiktok.current.value,
-      ],
+      socials: [linkedin, youtube, tiktok, instagram],
     };
     /**
      * Appel des vérifications non automatisées
@@ -536,9 +532,7 @@ function UploadForm() {
     if (uploadData.producer) formData.append("producer", uploadData.producer);
     if (uploadData.producerImage)
       formData.append("producer_image", uploadData.producerImage); //null ?
-    if (uploadData.linkedin)
-      formData.append("linkedin_link", uploadData.linkedin); //null
-    if (uploadData.youtube) formData.append("youtube_link", uploadData.youtube); //null
+    if (uploadData.socials) formData.append("socials", uploadData.socials); //null
     if (uploadData.scenario_ai)
       formData.append("scenario_ai", uploadData.scenario_ai); //null
     if (uploadData.video_ai)
@@ -1129,7 +1123,7 @@ function UploadForm() {
                   htmlFor="linkedin"
                   className="text-sm text-white/70 mb-2 tracking-wide"
                 >
-                  Linkedin :
+                  Url Linkedin :
                 </label>
                 <input
                   type="text"
@@ -1149,7 +1143,7 @@ function UploadForm() {
                   htmlFor="youtube"
                   className="text-sm text-white/70 mb-2 tracking-wide"
                 >
-                  Youtube :
+                  Url Youtube :
                 </label>
                 <input
                   type="text"
@@ -1172,7 +1166,7 @@ function UploadForm() {
                   htmlFor="tiktok"
                   className="text-sm text-white/70 mb-2 tracking-wide"
                 >
-                  TikTok :
+                  Url TikTok :
                 </label>
                 <input
                   type="text"
@@ -1215,7 +1209,7 @@ function UploadForm() {
                   htmlFor="instagram"
                   className="text-sm text-white/70 mb-2 tracking-wide"
                 >
-                  Instagram :
+                  Url Instagram :
                 </label>
                 <input
                   type="text"
