@@ -510,7 +510,12 @@ function UploadForm() {
       tags: tags.current.value,
       tiktok: tiktok.current.value,
       linkedin: linkedin.current.value,
-      socials: [linkedin, youtube, tiktok, instagram],
+      socials: JSON.stringify([
+        linkedin.current.value,
+        youtube.current.value,
+        tiktok.current.value,
+        instagram.current.value,
+      ]),
     };
     /**
      * Appel des vérifications non automatisées
