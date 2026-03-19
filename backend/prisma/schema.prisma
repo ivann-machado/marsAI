@@ -178,12 +178,12 @@ model videos {
     status          videos_status          @default(unverified)
     country_id      Int
     producer        String                 @db.VarChar(50)
-    producer_image  String                 @db.VarChar(100)
-    scenario_ai     String                 @db.VarChar(50)
-    video_gen_ai    String                 @db.VarChar(50)
-    sound_ai        String                 @db.VarChar(50)
-    postprod_ai     String                 @db.VarChar(50)
-    tags            String                 @db.VarChar(100)
+    producer_image  String?                @db.VarChar(100)
+    scenario_ai     String?                @db.VarChar(50)
+    video_gen_ai    String?                @db.VarChar(50)
+    sound_ai        String?                @db.VarChar(50)
+    postprod_ai     String?                @db.VarChar(50)
+    tags            String?                @db.VarChar(100)
     production_type videos_production_type @default(ai_only)
     socials         String?                @default("[]") @db.LongText
     prized_videos   prized_videos[]
