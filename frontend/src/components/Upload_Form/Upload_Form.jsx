@@ -94,6 +94,21 @@ function UploadForm() {
   const [subtitlesError, SetSubtitlesError] = useState("");
 
   /**
+   * Bloquage/Débloquage des étapes du formulaire affichées/non affichées
+   */
+  const [step1IsDisabled, SetStep1IsDisabled] = useState(false);
+  const step1Disable = () => {
+    SetStep1IsDisabled(!step1IsDisabled);
+  };
+  const [step2IsDisabled, SetStep2IsDisabled] = useState(true);
+  const step2Disable = () => {
+    SetStep2IsDisabled(!step2IsDisabled);
+  };
+  const [step3IsDisabled, SetStep3IsDisabled] = useState(true);
+  const step3Disable = () => {
+    SetStep3IsDisabled(!step3IsDisabled);
+  };
+  /**
    * Vérification des champs du formulaire
    */
   function titleCheck() {
@@ -309,6 +324,24 @@ function UploadForm() {
    */
   const [videoURL, setVideoURL] = useState(null);
 
+  /**
+   * Passage d'une étape à la précédente
+   */
+  const backToStep1 = async (e) => {
+    step2Disable();
+    step1Disable();
+
+    prevStep();
+  };
+  const backToStep2 = async (e) => {
+    step3Disable();
+    step2Disable();
+    prevStep();
+  };
+
+  /**
+   * Passage d'une étape à la suivante
+   */
   const handleStep1 = async (e) => {
     const step1Data = {
       title: title.current.value,
@@ -358,6 +391,8 @@ function UploadForm() {
       SetLoading(false);
       return;
     } else {
+      step1Disable();
+      step2Disable();
       nextStep();
     }
   };
@@ -393,19 +428,7 @@ function UploadForm() {
       );
       SetLoading(false);
       return;
-    }
-    // else if (!producerImageCheck()) {
-    //   showFlash(
-    //     "error",
-    //     "Photo du producteur: " +
-    //       (producerImageError != ""
-    //         ? producerImageError
-    //         : t("upload_form.errors.no_file")),
-    //   );
-    //   SetLoading(false);
-    //   return;
-    // }
-    else if (!movieTypeCheck()) {
+    } else if (!movieTypeCheck()) {
       showFlash(
         "error",
         "Type de production:" +
@@ -456,6 +479,8 @@ function UploadForm() {
       SetLoading(false);
       return;
     } else {
+      step2Disable();
+      step3Disable();
       nextStep();
     }
   };
@@ -480,10 +505,16 @@ function UploadForm() {
       producerImage: producerImage.current.files[0],
       country: countryId,
       instagram: instagram.current.value,
-      linkedin: linkedin.current.value,
+
       youtube: youtube.current.value,
       tags: tags.current.value,
       tiktok: tiktok.current.value,
+      linkedin: linkedin.current.value,
+      allSocials: [
+        linkedin.current.value,
+        youtube.current.value,
+        tiktok.current.value,
+      ],
     };
     /**
      * Appel des vérifications non automatisées
@@ -491,6 +522,7 @@ function UploadForm() {
     movieTypeCheck();
     countrySelectcheck();
     majorityCheck();
+    console.log(uploadData);
     rightGiveAwayCheck();
     const formData = new FormData();
     formData.append("edition_id", 1);
@@ -715,6 +747,7 @@ function UploadForm() {
   };
 
   const formSubmit = useState(false);
+  console.log(step1IsDisabled, step2IsDisabled, step3IsDisabled);
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0f0f1a] via-[#1a1026] to-[#0f0f1a] p-6 font-inter">
       <form
@@ -729,13 +762,7 @@ function UploadForm() {
             style={{ width: `${((step + 1) / 3) * 100}%` }}
           />
         </div>
-        <div>
-          {" "}
-          {/*Titre et Règlement du formulaire*/}{" "}
-          <p className="text-sm text-white/70 mb-2 tracking-wide">
-            Tous les Champs marqués d'un * sont obligatoires
-          </p>{" "}
-        </div>
+
         {/* Animated Container */}
         <div className="relative w-full overflow-hidden">
           {/* ================= STEP 1 ================= */}
@@ -746,22 +773,35 @@ function UploadForm() {
                 : "opacity-0 -translate-x-full absolute"
             }`}
           >
-            <div> {/*Titre et Règlement du formulaire*/} </div>
             <p className="text-3xl md:text-4xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-orange-300 text-center mb-8  pb-2 pt-2">
               {t("upload_form.global_infos")}
             </p>
-
+            <div className="flex flex-col justify-center items-center">
+              {/*Titre et Règlement du formulaire*/}
+              <p className="text-sm text-white/70 mb-2 tracking-wide">
+                {t("upload_form.step1_rules")}
+              </p>
+              <p className="text-sm text-white/70 mb-2 tracking-wide">
+                {t("upload_form.required_fields")}
+              </p>
+            </div>
             {/* TITLE */}
             <div className="flex flex-col p-4">
-              <label className="text-sm text-white/70 mb-2 tracking-wide flex flex-row gap-2">
+              <label
+                htmlFor="title"
+                className="text-sm text-white/70 mb-2 tracking-wide flex flex-row gap-2"
+              >
                 {t("upload_form.title")} :
                 <p className="text-sm text-red-500 mb-2 tracking-wide">*</p>
               </label>
               <input
                 type="text"
+                name="title"
+                id="title"
                 required
                 ref={title}
                 onChange={titleCheck}
+                tabIndex={step1IsDisabled ? -1 : 0}
                 className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
               />
               <p className="text-red-400">{titleError}</p>
@@ -769,19 +809,25 @@ function UploadForm() {
 
             {/* DESCRIPTION */}
             <div className="flex flex-col p-4">
-              <label className="text-sm text-white/70 mb-2 tracking-wide flex flex-row gap-2">
+              <label
+                htmlFor="description"
+                className="text-sm text-white/70 mb-2 tracking-wide flex flex-row gap-2"
+              >
                 {t("upload_form.desc")} :
                 <p className="text-sm text-red-500 mb-2 tracking-wide">*</p>
               </label>
               <input
                 type="text"
+                name="description"
+                id="description"
                 ref={description}
                 onChange={descCheck}
+                tabIndex={step1IsDisabled ? -1 : 0}
                 className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
               />
               <p className="text-red-400">{descError}</p>
             </div>
-
+            {/* VIDEO */}
             <div className="flex flex-col p-4">
               <label
                 htmlFor="video"
@@ -798,13 +844,14 @@ function UploadForm() {
                 onChange={() => {
                   videoCheck();
                 }}
+                tabIndex={step1IsDisabled ? -1 : 0}
                 className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none pt-3 pb-2"
               />
               <p className="text-white">{videoError}</p>
             </div>
             <div className="flex flex-col p-4">
               <label
-                htmlFor="image"
+                htmlFor="cover-image"
                 className="text-sm text-white/70 mb-2 tracking-wide flex flex-row gap-2"
               >
                 {t("upload_form.image")} :
@@ -813,15 +860,16 @@ function UploadForm() {
               <input
                 type="file"
                 name="cover-image"
-                id="cover-mage"
+                id="cover-image"
                 ref={coverImage}
+                tabIndex={step1IsDisabled ? -1 : 0}
                 className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none pt-3 pb-2"
               />
               <p className="text-white">{coverImageError}</p>
             </div>
             <div className="flex flex-col p-4">
               <label
-                htmlFor="image"
+                htmlFor="subtitles"
                 className="text-sm text-white/70 mb-2 tracking-wide "
               >
                 {t("upload_form.subtitles")} :
@@ -832,13 +880,17 @@ function UploadForm() {
                 id="subtitles"
                 ref={subtitles}
                 multiple
+                tabIndex={step1IsDisabled ? -1 : 0}
                 className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none pt-3 pb-2"
               />
               <p className="text-white">{subtitlesError}</p>
             </div>
 
             <div className="flex justify-end p-4">
-              <NextButton onClick={handleStep1} />
+              <NextButton
+                onClick={handleStep1}
+                disabled={step1IsDisabled ? -1 : 0}
+              />
             </div>
           </div>
 
@@ -855,7 +907,15 @@ function UploadForm() {
             <p className="text-3xl md:text-4xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-orange-300 text-center mb-8">
               {t("upload_form.production")}
             </p>
-
+            <div className="flex flex-col justify-center items-center">
+              {/*Titre et Règlement du formulaire*/}
+              <p className="text-sm text-white/70 mb-2 tracking-wide">
+                {t("upload_form.step2_rules")}
+              </p>
+              <p className="text-sm text-white/70 mb-2 tracking-wide">
+                {t("upload_form.required_fields")}
+              </p>
+            </div>
             <div className="flex flex-col md:flex-row md:justify-evenly md:p-4 md:gap-10 md:w-full">
               <div className="flex flex-col md:w-full md:max-w-150">
                 <label
@@ -873,6 +933,7 @@ function UploadForm() {
                   onChange={() => {
                     producerCheck();
                   }}
+                  tabIndex={step2IsDisabled ? -1 : 0}
                   className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{producerError}</p>
@@ -893,6 +954,7 @@ function UploadForm() {
                   onChange={() => {
                     emailCheck();
                   }}
+                  tabIndex={step2IsDisabled ? -1 : 0}
                   className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{emailError}</p>
@@ -912,13 +974,14 @@ function UploadForm() {
                   name="producerImage"
                   id="producerImage"
                   ref={producerImage}
+                  tabIndex={step2IsDisabled ? -1 : 0}
                   className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none pt-3 pb-2"
                 />
                 <p className="text-white">{coverImageError}</p>
               </div>
               <div className="flex flex-col md:w-full md:max-w-150">
                 <label
-                  htmlFor="more_info"
+                  htmlFor="movieTypeSelect"
                   className="text-sm text-white/70 mb-2 tracking-wide flex flex-row gap-2"
                 >
                   {t("upload_form.production_type")} :
@@ -928,6 +991,7 @@ function UploadForm() {
                   name="movieTypeSelect"
                   id="movieTypeSelect"
                   onChange={(e) => handleSelect(e, "movie_type")}
+                  tabIndex={step2IsDisabled ? -1 : 0}
                   className="bg-[#2D2738] border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 >
                   {movieTypeOption.map((option) => (
@@ -956,6 +1020,7 @@ function UploadForm() {
                   onChange={() => {
                     scenarioAiCheck();
                   }}
+                  tabIndex={step2IsDisabled ? -1 : 0}
                   className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{scenarioAiError}</p>
@@ -975,6 +1040,7 @@ function UploadForm() {
                   onChange={() => {
                     videoAiCheck();
                   }}
+                  tabIndex={step2IsDisabled ? -1 : 0}
                   className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{videoAiError}</p>
@@ -997,6 +1063,7 @@ function UploadForm() {
                   onChange={() => {
                     soundAiCheck();
                   }}
+                  tabIndex={step2IsDisabled ? -1 : 0}
                   className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{soundAiError}</p>
@@ -1016,6 +1083,7 @@ function UploadForm() {
                   onChange={() => {
                     postProdAiCheck();
                   }}
+                  tabIndex={step2IsDisabled ? -1 : 0}
                   className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{postProdAiError}</p>
@@ -1023,9 +1091,15 @@ function UploadForm() {
             </div>
 
             <div className="flex justify-between p-4">
-              <BackButton onClick={prevStep} />
+              <BackButton
+                onClick={backToStep1}
+                disabled={step2IsDisabled ? -1 : 0}
+              />
 
-              <NextButton onClick={handleStep2} />
+              <NextButton
+                onClick={handleStep2}
+                disabled={step2IsDisabled ? -1 : 0}
+              />
             </div>
           </div>
 
@@ -1040,7 +1114,15 @@ function UploadForm() {
             <p className="text-3xl md:text-4xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-orange-300 text-center mb-8">
               {t("upload_form.more_info")}
             </p>
-
+            <div className="flex flex-col justify-center items-center">
+              {/*Titre et Règlement du formulaire*/}
+              <p className="text-sm text-white/70 mb-2 tracking-wide">
+                {t("upload_form.step3_rules")}
+              </p>
+              <p className="text-sm text-white/70 mb-2 tracking-wide">
+                {t("upload_form.required_fields")}
+              </p>
+            </div>
             <div className="flex flex-col md:flex-row md:justify-evenly md:p-4 md:gap-10 md:w-full">
               <div className="flex flex-col md:w-full md:max-w-150">
                 <label
@@ -1057,6 +1139,7 @@ function UploadForm() {
                   onChange={() => {
                     linkedinCheck();
                   }}
+                  tabIndex={step3IsDisabled ? -1 : 0}
                   className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{linkedinError}</p>
@@ -1076,6 +1159,7 @@ function UploadForm() {
                   onChange={() => {
                     youtubeCheck();
                   }}
+                  tabIndex={step3IsDisabled ? -1 : 0}
                   className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{youtubeError}</p>
@@ -1098,6 +1182,7 @@ function UploadForm() {
                   onChange={() => {
                     tiktokCheck();
                   }}
+                  tabIndex={step3IsDisabled ? -1 : 0}
                   className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{tiktokError}</p>
@@ -1117,6 +1202,7 @@ function UploadForm() {
                   onChange={() => {
                     tagCheck();
                   }}
+                  tabIndex={step3IsDisabled ? -1 : 0}
                   className="bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{tagError}</p>
@@ -1139,6 +1225,7 @@ function UploadForm() {
                   onChange={() => {
                     instagramCheck();
                   }}
+                  tabIndex={step3IsDisabled ? -1 : 0}
                   className=" bg-white/5 border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 />
                 <p className="text-white">{instagramError}</p>
@@ -1155,6 +1242,7 @@ function UploadForm() {
                   name="countrySelect"
                   id="countrySelect"
                   onChange={(e) => handleSelect(e, "country")}
+                  tabIndex={step3IsDisabled ? -1 : 0}
                   className="bg-[#2D2738] border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 rounded-xl h-12 px-4 text-white placeholder-white/40 transition-all duration-300 outline-none"
                 >
                   {countryOptions.map((option) => (
@@ -1174,6 +1262,7 @@ function UploadForm() {
                   id="majority_certification"
                   checked={majorityCertification}
                   onChange={certficitationHandler}
+                  tabIndex={step3IsDisabled ? -1 : 0}
                   className="bg-gray-700 border border-gray-500 rounded-lg"
                 />
                 <label
@@ -1192,6 +1281,7 @@ function UploadForm() {
                   id="right_givaway"
                   checked={rightGivaway}
                   onChange={rightGiveAwayHandler}
+                  tabIndex={step3IsDisabled ? -1 : 0}
                   className="bg-gray-700 border border-gray-500 rounded-lg"
                 />
                 <label
@@ -1205,8 +1295,15 @@ function UploadForm() {
             </div>
 
             <div className="flex justify-between p-4">
-              <BackButton onClick={prevStep} />
-              <LoadingButton type="submit" loading={loading}>
+              <BackButton
+                onClick={backToStep2}
+                disabled={step3IsDisabled ? -1 : 0}
+              />
+              <LoadingButton
+                type="submit"
+                loading={loading}
+                disabled={step3IsDisabled ? -1 : 0}
+              >
                 {t("upload_form.submit_btn")} →
               </LoadingButton>
             </div>

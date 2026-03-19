@@ -66,6 +66,10 @@
     "right_givaway_flash": "Vous devez donner vos droits de propriété",
     "subtitles": "Sous-titres",
     "upload_success": "",
+    "required_fields": "Tous les Champs marqués d'un * sont obligatoires",
+    "step1_rules": "Pour passer la première étape d'inscription votre film doit  un titre (compris entre 5 et 50 caractères), d'une description (comprise entre 10 et 300 caractère), d'une vidéos (d'une durée d'environ une minutes, au format 16/9e et avec une taille de 300Mo max), d'une miniature (avec une une taille de 5Mo max), les sous-titres sont optionnels (2 Mo, * fichiers maximum). Les vidéos doivent être les vôtres et respecter les convention de Youtube. Toute film qui enfreindra les droits d'auteurs ou présentera un contenu choquant ou offensant (racisme, homophobie, ...) sera automatiquement disqualifié du festival et supprimé de Youtube.",
+    "step2_rules": "Pour passer la second étape d'inscription, vous devrez donner votre nom de producteur (50 caractères max), ajouter une adresse email valide (50 caractères max) et sélectionner si votre film est fait à 100% par IA, ou s'il y a de la production par IA et humaine (hybride). Vous pourrez également si vous le souhaitez ajouter votre photo (avec une taille maximale de 5Mo) et les IA utilisées durant les différentes étapes de production de votre film (50 caractères max).",
+    "step3_rules": "Pour la troisième étape d'inscription, vous devez sélectionner votre pays de résidence, accepter de céder vos droit de propriété sur votre film et attester que vous êtes âgé d'au moins 18 ans. Vous pouvez également ajouter des liens vers vos réseaux sociaux.",
     "production_type_select": {
       "label": "--Sélectionnez un type--",
       "ai": "IA",

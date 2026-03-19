@@ -4,6 +4,7 @@ import {
 	getAdminById,
 	setAdmin,
 	removeAdmin,
+	getOverview,
 } from "../controllers/admin.controller.js";
 import {
 	verifyToken,
@@ -15,13 +16,33 @@ const router = express.Router();
 
 /**
  * Admin routes (toutes protégées — super_admin uniquement)
+ * - GET    /dashboard/overview → aperçu du tableau de bord (stats site)
  * - GET    /           → liste de tous les admins
  * - GET    /:id        → un admin par ID
  * - PUT    /:id        → modifier le rôle d'un admin
  * - DELETE /:id        → supprimer un admin
  */
-router.get("/", verifyToken, requireSuperAdmin, cache({ etagOnly: true }), getAllAdmins);
-router.get("/:id", verifyToken, requireSuperAdmin, cache({ etagOnly: true }), getAdminById);
+router.get(
+	"/dashboard/overview",
+	verifyToken,
+	requireSuperAdmin,
+	cache({ etagOnly: true }),
+	getOverview,
+);
+router.get(
+	"/",
+	verifyToken,
+	requireSuperAdmin,
+	cache({ etagOnly: true }),
+	getAllAdmins,
+);
+router.get(
+	"/:id",
+	verifyToken,
+	requireSuperAdmin,
+	cache({ etagOnly: true }),
+	getAdminById,
+);
 router.put("/:id", verifyToken, requireSuperAdmin, setAdmin);
 router.delete("/:id", verifyToken, requireSuperAdmin, removeAdmin);
 
