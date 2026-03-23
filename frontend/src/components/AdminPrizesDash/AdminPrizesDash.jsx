@@ -21,29 +21,31 @@ function AdminPrizesDash() {
   /*  console.log(prizes); */
 
   // RECUPERATION  PRIX
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          import.meta.env.VITE_API_URL + "/api/prized-videos/",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + authToken.token,
-            },
+  const fetchPrizes = async () => {
+    try {
+      const response = await fetch(
+        import.meta.env.VITE_API_URL + "/api/prized-videos/",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + authToken.token,
           },
-        );
-        if (!response.ok) throw new Error("Erreur fetch JSON");
-        const json = await response.json();
-        console.log(json.data);
-        setPrizesPages(Math.floor((json.length - 1) / ITEMS_PER_PAGE) + 1);
-        setPrizes(json.data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    fetchData();
+        },
+      );
+      if (!response.ok) throw new Error("Erreur fetch JSON");
+      const json = await response.json();
+      console.log(json.data);
+      setPrizesPages(Math.floor((json.length - 1) / ITEMS_PER_PAGE) + 1);
+      setPrizes(json.data);
+      //console.log(json);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchPrizes();
   }, [prizesPage]);
 
   // RECUPERATION VIDEOS POUR SELECT
@@ -101,14 +103,16 @@ function AdminPrizesDash() {
       }
       const res = await response.json();
 
-      setPrizes((prev) => [
-        ...prev,
-        { ...newPrize, id: res.id /* , logo: res.logo */ },
-      ]);
-      setNewPrize({
-        prix: "",
-        video_id: -1,
-      });
+      // setPrizes((prev) => [
+      //   ...prev,
+      //   { ...newPrize, id: res.id /* , logo: res.logo */ },
+      // ]);
+      // setNewPrize({
+      //   prix: "",
+      //   video_id: -1,
+      // });
+
+      fetchPrizes();
 
       // setSponsor(res);
       showFlash("success", "Création du prix avec succes");
@@ -117,13 +121,13 @@ function AdminPrizesDash() {
     }
   };
 
-  if (!prizes || !videos) return <Loading />;
+  if (!prizes || !videos) return <Loading dashboard={true} />;
 
   return (
     <div className="flex flex-col w-full ml-64 min-h-screen bg-gradient-to-br from-gray-950 via-gray-800 to-gray-950 relative">
       <div className="flex flex-col mx-2 mb-8">
         <h2 className="text-4xl text-white font-extrabold m-8">Prizes</h2>
-        <div className="grid grid-cols-4 p-2 bg-gray-900 text-gray-100 gap-2 px-6">
+        <div className="grid grid-cols-5 p-2 bg-gray-900 text-gray-100 gap-2 px-6">
           <p className="text-center text-xl font-bold">ID</p>
           <p className="text-center text-xl font-bold">Prize</p>
           <p className="text-center text-xl font-bold">Title</p>
