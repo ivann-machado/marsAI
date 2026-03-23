@@ -33,29 +33,35 @@ const VideoSchema = videosSchema
 			.string()
 			.min(1, { error: "Producer name is required" })
 			.max(50, { error: "Producer name must be at most 50 characters" }),
-		producer_image: fileSchema(5 * 1024 * 1024, ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/avif', 'image/svg+xml']),
+		producer_image: fileSchema(5 * 1024 * 1024, ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/avif', 'image/svg+xml'])
+			.optional(),
 		socials: z
 			.array(z.url())
 			.optional()
 			.or(z.literal("")),
 		scenario_ai: z
 			.string()
-			.max(50, { error: "Scenario AI must be at most 50 characters" }),
+			.max(50, { error: "Scenario AI must be at most 50 characters" })
+			.optional(),
 		video_gen_ai: z
 			.string()
-			.max(50, { error: "Video gen AI must be at most 50 characters" }),
+			.max(50, { error: "Video gen AI must be at most 50 characters" })
+			.optional(),
 		sound_ai: z
 			.string()
-			.max(50, { error: "Sound AI must be at most 50 characters" }),
+			.max(50, { error: "Sound AI must be at most 50 characters" })
+			.optional(),
 		postprod_ai: z
 			.string()
-			.max(50, { error: "Post-production AI must be at most 50 characters" }),
+			.max(50, { error: "Post-production AI must be at most 50 characters" })
+			.optional(),
 		tags: z
 			.string()
 			.max(100, { error: "Tags must be at most 100 characters" })
 			.optional()
 			.default(""),
-		subtitle: fileSchema(2 * 1024 * 1024, ['application/x-subrip', 'text/srt']),
+		subtitle: fileSchema(2 * 1024 * 1024, ['application/x-subrip', 'text/srt'])
+			.optional(),
 	});
 const videoRefinement = (schema) => schema.superRefine((data, ctx) => {
 	if (!data.filename) return;
