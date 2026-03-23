@@ -186,7 +186,7 @@ model videos {
     postprod_ai     String?                @db.VarChar(50)
     tags            String?                @db.VarChar(100)
     production_type videos_production_type @default(ai_only)
-    socials         String?                @default("[]") @db.LongText
+    socials         Json?                  @default("[]")
     prized_videos   prized_videos[]
     processQueues   process_queue[]
     reviews         reviews[]
