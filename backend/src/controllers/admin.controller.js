@@ -62,11 +62,9 @@ export const setAdmin = async (req, res) => {
 		const { role } = req.body;
 
 		if (role && !["admin", "super_admin"].includes(role)) {
-			return res
-				.status(400)
-				.json({
-					message: "Invalid role. Must be 'admin' or 'super_admin'",
-				});
+			return res.status(400).json({
+				message: "Invalid role. Must be 'admin' or 'super_admin'",
+			});
 		}
 
 		await prisma.admins.update({

@@ -188,7 +188,7 @@ export const getAllReviews = async (req, res) => {
 export const getReviewById = async (req, res) => {
 	try {
 		const { id } = req.params;
-		if (!id)
+		if (!id || isNaN(id))
 			return res.status(400).json({ message: "Review id is required" });
 
 		const review = await prisma.reviews.findUnique({
@@ -295,12 +295,12 @@ export const getAssignedReviews = async (req, res) => {
  * Get videos not yet reviewed by the authenticated admin.
  * Returns all videos that have no review at all for this admin.
  *
- * @route GET /reviews/rest
+ * @route GET /reviews/remaining
  * @param {import("express").Request} req
  * @param {import("express").Response} res
  * @returns {Promise<void>}
  */
-export const getRestVideos = async (req, res) => {
+export const getRemainingVideos = async (req, res) => {
 	try {
 		const adminId = req.user.id;
 		const { page, limit } = req.query;
@@ -337,10 +337,12 @@ export const getRestVideos = async (req, res) => {
 
 		res.status(200).json(result);
 	} catch (error) {
-		console.error("Get Rest Videos Error:", error);
+		console.error("Get Remaining Videos Error:", error);
 		res.status(500).json({ message: "Failed to fetch rest videos" });
 	}
 };
+
+export const getRestVideos = getRemainingVideos;
 
 /**
  * Delete a review by ID
@@ -353,7 +355,7 @@ export const getRestVideos = async (req, res) => {
 export const removeReview = async (req, res) => {
 	try {
 		const { id } = req.params;
-		if (!id)
+		if (!id || isNaN(id))
 			return res.status(400).json({ message: "Review id is required" });
 
 		await prisma.reviews.delete({

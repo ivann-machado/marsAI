@@ -96,8 +96,7 @@ function HomepagePhase3() {
   ];
 
   useEffect(() => {
-    /* FETCH LES FILMS GAGNANTS */ $;
-    return; // TO IMPLEMENT
+    /* FETCH LES FILMS GAGNANTS */ return; // TO IMPLEMENT
     const fetchData = async () => {
       try {
         const response = await fetch(

@@ -12,6 +12,13 @@ morgan.token('date-custom', () => {
 	return `${dd}/${mm}/${yy} ${hh}:${min}:${ss}.${ms}`;
 });
 
+morgan.token('middleware-times', (req) => {
+	if (!req.middlewareTimes?.length) return '';
+	return '| ' + req.middlewareTimes
+		.map(m => `${m.isController ? 'C' : 'M'}${m.index}:${m.duration}ms`)
+		.join(', ');
+});
+
 morgan.format('dev-dated', (tokens, req, res) => {
 	const status = tokens.status(req, res);
 	const color = status >= 500 ? 31
@@ -28,6 +35,7 @@ morgan.format('dev-dated', (tokens, req, res) => {
 		tokens['response-time'](req, res) + 'ms',
 		'-',
 		tokens.res(req, res, 'content-length'),
+		'\x1b[36m' + tokens['middleware-times'](req, res) + '\x1b[0m',
 	].join(' ');
 });
 

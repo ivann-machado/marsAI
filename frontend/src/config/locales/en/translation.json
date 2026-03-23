@@ -66,6 +66,10 @@
     "right_givaway_flash": "You must give your property rights",
     "subtitles": "Subtitles",
     "upload_success": "",
+    "required_fields": "All fields marked with * are required",
+    "step1_rules": "To pass the first registration step, your film must have a title (between 5 and 50 characters), a description (between 10 and 300 characters), a video (lasting about one minute, in 16/9e format and with a maximum size of 300Mo), a miniature (with a maximum size of 5Mo), subtitles are optional (2 MB, * files maximum). The videos must be yours and respect YouTube’s conventions. Any film that infringes copyright or contains shocking or offensive content (racism, homophobia, ...) will be automatically disqualified from the festival and removed from YouTube.",
+    "step2_rules": "To complete the second registration step, you will need to provide your producer name (50 characters max), add a valid email address (50 characters max) and select if your film is 100% AI-made, or if there is both AI and human (hybrid) production. You can also if you wish to add your photo (with a maximum size of 5MB) and the AIs used during the different stages of production of your film (50 characters max).",
+    "step3_rules": "For the third registration step, you must select your country of residence, agree to transfer your ownership rights over your film and certify that you are at least 18 years old. You can also add links to your social networks.",
     "production_type_select": {
       "label": "--Select a type--",
       "ai": "AI",
@@ -334,7 +338,8 @@
     "settings": "Manage settings",
     "content": "Manage content",
     "jury": "Manage jury",
-    "partners": "Manage partners"
+    "partners": "Manage partners",
+    "prizes": "Prizes"
   },
   "gallery": {
     "gallery_badge": "🎬 MARS.AI SELECTION 2026",

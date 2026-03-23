@@ -25,7 +25,7 @@ import prizedRoutes from "./routes/prized.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 
 const app = express();
-
+app.set("trust proxy", true);
 // Helmet for security
 app.use(helmet(HELMET_CONFIG));
 
@@ -63,7 +63,7 @@ const limiter = rateLimit({
 app.use(limiter);
 
 // Public routes
-app.get("/", (req, res) => {
+app.get("/", (_req, res) => {
 	res.status(200).json({ message: "Welcome to MarsAI API" });
 });
 app.use("/api/auth", authRoutes);

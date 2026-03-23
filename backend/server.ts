@@ -1,31 +1,29 @@
-// @ts-check
 import { performance } from 'perf_hooks';
 import prisma from './src/config/prisma.config.js';
 import { loadSettings } from './src/config/settings.js';
-import { createServer } from "http";
+import { createServer } from 'http';
+import type { Server } from 'http';
+import type { RequestListener } from 'http';
 import app from './src/app.js';
 
-const PORT = Number(process.env.PORT) || 3000;
+const PORT: number = Number(process.env.PORT) || 3000;
 
 console.log(`Starting server in ${process.env.NODE_ENV} mode at ${Math.round(Date.now() - performance.timeOrigin)}ms process time.`);
 console.log(`Process ID: ${process.pid}`);
+
 const settingStartTime = Date.now();
 await loadSettings();
 console.log(`Settings loaded in ${Date.now() - settingStartTime}ms at ${Math.round(Date.now() - performance.timeOrigin)}ms process time`);
 
-const server = createServer(app);
+const server: Server = createServer(app as RequestListener);
 
 server.on('listening', () => {
 	console.log(`Server started on http://localhost:${PORT} in ${Math.round(Date.now() - performance.timeOrigin)}ms process time.`);
 });
 
-/**
- * @param {number} port
- * @param {number} [retries=20]
- */
-const startServer = (port, retries = 20) => {
+const startServer = (port: number, retries: number = 20): void => {
 	server.removeAllListeners('error');
-	server.on('error', (/** @type {NodeJS.ErrnoException} */err) => {
+	server.on('error', (err: NodeJS.ErrnoException) => {
 		if (err.code === 'EADDRINUSE') {
 			if (retries > 0) {
 				console.log(`Port ${port} is in use, retrying in 1 second... (${retries} retries left)`);
@@ -41,15 +39,13 @@ const startServer = (port, retries = 20) => {
 			throw err;
 		}
 	});
-
 	server.listen(port);
 };
 
 startServer(PORT);
 
-const gracefulShutdown = () => {
+const gracefulShutdown = (): void => {
 	console.log('Received kill signal, shutting down gracefully');
-
 	const forceExit = setTimeout(() => {
 		console.error('Could not close connections in time, forcefully shutting down');
 		process.exit(1);
@@ -69,7 +65,6 @@ const gracefulShutdown = () => {
 	});
 };
 
-// Listen for termination signals
 process.on('SIGTERM', gracefulShutdown);
 process.on('SIGINT', gracefulShutdown);
 process.on('SIGUSR2', gracefulShutdown);

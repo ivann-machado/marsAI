@@ -21,11 +21,11 @@ import AdminSponsors from "./pages/AdminSponsors/AdminSponsors.jsx";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.jsx";
 import JuryPage from "./pages/JuryPage/JuryPage.jsx";
 import SponsorsPage from "./pages/SponsorsPage/SponsorsPage.jsx";
+import AdminPrizes from "./pages/AdminPrizes/AdminPrizes.jsx";
 import Event from "./pages/Event/Event_page.jsx";
 import CguCgv from "./pages/CguCgv/CguCgv.jsx";
 import Faq from "./pages/Faq/Faq.jsx";
-// import { SettingsProvider } from "./context/SettingsContext.jsx";
-import { FlashProvider } from "./context/FlashContext.jsx";
+
 import NotFound from "./components/Utils/NotFound.jsx";
 import AdminRegister from "./pages/AdminRegister/AdminRegister.jsx";
 import { useSettings } from "./context/SettingsContext.jsx";
@@ -33,15 +33,17 @@ import Loading from "./components/Utils/Loading.jsx";
 
 function App() {
   const settings = useSettings();
+  const isAdmin = window.location.host.split(".")[0] == "admin";
+
   if (settings === null) return <Loading />;
 
-  if (window.location.host.split(".")[0] == "admin")
-    /* PAGES ADMIN */
+  /* PAGES ADMIN */
 
-    return (
-      <BrowserRouter>
-        <FlashProvider>
-          <Routes>
+  return (
+    <BrowserRouter>
+      <Routes>
+        {isAdmin ? (
+          <>
             <Route path="/login" element={<AdminLogin />} />
             <Route path="/register/:token" element={<AdminRegister />} />
             <Route path="/register" element={<AdminRegister />} />
@@ -126,6 +128,14 @@ function App() {
               }
             />
             <Route
+              path="/prizes"
+              element={
+                <ProtectedRoute requiredRole={"superadmin"}>
+                  <AdminPrizes />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="*"
               element={
                 <ProtectedRoute requiredRole={"admin"}>
@@ -133,16 +143,9 @@ function App() {
                 </ProtectedRoute>
               }
             />
-          </Routes>
-        </FlashProvider>
-      </BrowserRouter>
-    );
-  else if (settings.phase === "1")
-    /* PHASE 1 */
-    return (
-      <BrowserRouter>
-        <FlashProvider>
-          <Routes>
+          </>
+        ) : settings.phase === "1" ? (
+          <>
             <Route path="/" element={<Homepage />} />
             {/* <Route path="/video/:videoId" element={<VideoDetail />} /> */}
             {/* <Route path="/gallery" element={<Gallery />} /> */}
@@ -154,15 +157,9 @@ function App() {
             <Route path="/CguCgv" element={<CguCgv />} />
             <Route path="/Faq" element={<Faq />} />
             <Route path="*" element={<NotFound />}></Route>
-          </Routes>
-        </FlashProvider>
-      </BrowserRouter>
-    );
-  else if (settings.phase === "2")
-    return (
-      <BrowserRouter>
-        <FlashProvider>
-          <Routes>
+          </>
+        ) : settings.phase === "2" ? (
+          <>
             <Route path="/" element={<HomepagePhase2 />} />
             <Route path="/video/:videoId" element={<VideoDetail />} />
             <Route path="/gallery" element={<Gallery />} />
@@ -174,15 +171,9 @@ function App() {
             <Route path="/CguCgv" element={<CguCgv />} />
             <Route path="/Faq" element={<Faq />} />
             <Route path="*" element={<NotFound />}></Route>
-          </Routes>
-        </FlashProvider>
-      </BrowserRouter>
-    );
-  else if (settings.phase === "3")
-    return (
-      <BrowserRouter>
-        <FlashProvider>
-          <Routes>
+          </>
+        ) : (
+          <>
             <Route path="/" element={<HomepagePhase3 />} />
             <Route path="/video/:videoId" element={<VideoDetail />} />
             <Route path="/gallery" element={<Gallery />} />
@@ -194,10 +185,11 @@ function App() {
             <Route path="/CguCgv" element={<CguCgv />} />
             <Route path="/Faq" element={<Faq />} />
             <Route path="*" element={<NotFound />}></Route>
-          </Routes>
-        </FlashProvider>
-      </BrowserRouter>
-    );
+          </>
+        )}
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;
