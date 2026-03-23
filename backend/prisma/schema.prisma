@@ -4,8 +4,9 @@ generator client {
 }
 
 generator zod {
-    provider = "zod-prisma-types"
+    provider = "prisma-zod-generator"
     output   = "../src/generated/zod"
+    config   = "./zod.config.json"
 }
 
 datasource db {
@@ -184,7 +185,7 @@ model videos {
     postprod_ai     String?                @db.VarChar(50)
     tags            String?                @db.VarChar(100)
     production_type videos_production_type @default(ai_only)
-    socials         String?                @default("[]") @db.LongText
+    socials         Json?                  @default("[]")
     prized_videos   prized_videos[]
     processQueues   process_queue[]
     reviews         reviews[]
