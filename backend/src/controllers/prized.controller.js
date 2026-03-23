@@ -125,4 +125,4 @@ export const removePrizedVideo = async (req, res, next) => {
 		console.error("Delete Prized Video Error:", error);
 		res.status(500).json({ message: "Server error" });
 	}
-};
+}; 
