@@ -33,7 +33,7 @@ router.delete(
 	verifyToken,
 	requireSuperAdmin,
 	removePrizedVideo,
-	clearCache("prized"),
+	clearCache("prized")
 );
 
 export default router;
