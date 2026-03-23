@@ -12,7 +12,7 @@ const prizedIncludes = {
 };
 
 const mapPrizedVideo = (prizedVideo) => ({
-	id: prizedVideo.video_id,
+	id: prizedVideo.id ?? prizedVideo.video_id,
 	video_id: prizedVideo.video_id,
 	prix: prizedVideo.prix,
 	title: prizedVideo.videos?.title,
