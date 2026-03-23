@@ -22,18 +22,11 @@ const mapPrizedVideo = (prizedVideo) => ({
 
 export const createPrizedVideo = async (req, res, next) => {
 	try {
-		const { video_id, prix } = req.body;
-
-		if (!video_id || !prix) {
-			return res.status(400).json({
-				message: "video_id and prix are required",
-			});
-		}
 
 		const prizedVideo = await prisma.prized_videos.create({
 			data: {
-				video_id: Number(video_id),
-				prix,
+			video_id: Number(req.body.video_id),
+				prix: req.body.prix,
 			},
 			include: prizedIncludes,
 		});
