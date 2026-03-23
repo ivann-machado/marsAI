@@ -168,11 +168,10 @@ model tokens {
 model videos {
     id              Int                    @id @default(autoincrement())
     edition_id      Int
-    url             String                 @db.VarChar(100)
+    url             String?                @db.VarChar(100)
     filename        String                 @db.VarChar(100)
     email           String                 @db.VarChar(50)
     cover_image     String                 @db.VarChar(100)
-    verified        Boolean
     title           String                 @db.VarChar(50)
     description     String                 @db.Text
     status          videos_status          @default(unverified)

@@ -5,10 +5,10 @@ import { getMp4Metadata } from "../utils/file.util.js";
 
 /**
  * Base video schema.
- * System-managed fields (`id`, `url`, `verified`, `status`) are omitted.
+ * System-managed fields (`id`, `url`, `status`) are omitted.
  */
 const VideoSchema = videosSchema
-	.omit({ id: true, url: true, verified: true, status: true })
+	.omit({ id: true, url: true, status: true })
 	.extend({
 		edition_id: z
 			.coerce.number()
