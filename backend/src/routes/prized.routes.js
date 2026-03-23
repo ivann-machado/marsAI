@@ -29,7 +29,7 @@ router.post(
 router.get("/", cache(), getAllPrizedVideos);
 router.get("/:video_id", cache(), getPrizedVideoByVideoId);
 router.delete(
-	"/:video_id",
+	"/:id",
 	verifyToken,
 	requireSuperAdmin,
 	removePrizedVideo,
