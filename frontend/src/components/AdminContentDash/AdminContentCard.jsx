@@ -48,14 +48,14 @@ function AdminContentCard({ name, value }) {
   };
 
   return (
-    <div className="grid grid-cols-3 p-2 bg-gray-900 text-gray-100 gap-2">
-      <div className="bg-gray-700 text-center col-span-1 p-2 rounded-lg hover:bg-gray-500">
+    <div className="grid grid-cols-6 p-2 bg-gray-900 text-gray-100 gap-2">
+      <div className="bg-gray-700 text-center col-span-2 p-2 rounded-lg hover:bg-gray-500">
         {content.name}
       </div>
       <input
         value={content.value}
         onChange={(e) => updateContent("value", e.target.value)}
-        className="text-center col-span-1 rounded-lg border border-gray-400 bg-gray-100 text-black p-1 hover:bg-white hover:border-blue-500"
+        className="text-center col-span-3 rounded-lg border border-gray-400 bg-gray-100 text-black p-1 hover:bg-white hover:border-blue-500"
       ></input>
       {modified ? (
         <input
