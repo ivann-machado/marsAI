@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useauth } from "../../context/AuthContext";
 import { useTranslation } from "react-i18next";
 import { jwtDecode } from "jwt-decode";
@@ -12,6 +12,21 @@ function AdminLogin() {
   const { user, login } = useauth();
   const navigate = useNavigate();
   const { showFlash } = useFlash();
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Enter" && document.activeElement === document.body) {
+        alert("Toujours pas d'entree");
+        //submitLogin(e);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   const submitLogin = async (e) => {
     e.preventDefault();
