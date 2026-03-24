@@ -26,9 +26,10 @@ function AdminLogin() {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [email, password]);
 
   const submitLogin = async (e) => {
+    console.log(email, password);
     e.preventDefault();
     try {
       const response = await fetch(
