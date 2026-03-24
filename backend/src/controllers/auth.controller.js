@@ -1,9 +1,12 @@
+import crypto from "node:crypto";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import prisma from "../config/prisma.config.js";
 import { JWT_SECRET, JWT_EXPIRES_IN, NODE_ENV, FRONTEND_URL } from "../config/index.js";
 import { renderView } from "../utils/view.util.js";
 import { sendEmail } from "../services/brevo.service.js";
+import redis from "../config/redis.config.js";
+
 
 /**
  * Authenticate an admin and return a JWT token.
@@ -39,8 +42,9 @@ export const login = async (req, res) => {
 			return res.status(401).json({ message: "Invalid credentials" });
 		}
 
+		const ipHash = crypto.createHash('sha256').update(req.ip).digest('hex');
 		const token = jwt.sign(
-			{ id: admin.id, login: admin.login, role: admin.role },
+			{ id: admin.id, login: admin.login, role: admin.role, ipHash },
 			JWT_SECRET,
 			{ expiresIn: JWT_EXPIRES_IN },
 		);
@@ -105,11 +109,13 @@ export const inviteAdmin = async (req, res) => {
 };
 
 /**
- * Logout admin.
+ * Logout admin by blacklisting the token.
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  */
 export const logout = async (req, res) => {
+	const token = req.token;
+	await redis.set(`blacklist:${token}`, 'true', 'EX', req.user.exp - Math.floor(Date.now() / 1000));
 	return res.status(200).json({ message: "Logged out successfully" });
 };
 
