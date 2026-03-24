@@ -12,7 +12,7 @@ const prizedIncludes = {
 };
 
 const mapPrizedVideo = (prizedVideo) => ({
-	id: prizedVideo.video_id,
+	id: prizedVideo.id ?? prizedVideo.video_id,
 	video_id: prizedVideo.video_id,
 	prix: prizedVideo.prix,
 	title: prizedVideo.videos?.title,
@@ -20,25 +20,19 @@ const mapPrizedVideo = (prizedVideo) => ({
 	producer: prizedVideo.videos?.producer,
 });
 
-export const createPrizedVideo = async (req, res) => {
+export const createPrizedVideo = async (req, res, next) => {
 	try {
-		const { video_id, prix } = req.body;
-
-		if (!video_id || !prix) {
-			return res.status(400).json({
-				message: "video_id and prix are required",
-			});
-		}
 
 		const prizedVideo = await prisma.prized_videos.create({
 			data: {
-				video_id: Number(video_id),
-				prix,
+			video_id: Number(req.body.video_id),
+				prix: req.body.prix,
 			},
 			include: prizedIncludes,
 		});
 
 		res.status(201).json(mapPrizedVideo(prizedVideo));
+		next();
 	} catch (error) {
 		if (error.code === "P2002") {
 			return res.status(409).json({
@@ -104,15 +98,16 @@ export const getPrizedVideoByVideoId = async (req, res) => {
 	}
 };
 
-export const removePrizedVideo = async (req, res) => {
+export const removePrizedVideo = async (req, res, next) => {
 	try {
-		const { video_id } = req.params;
+		const { id } = req.params;
 
 		await prisma.prized_videos.delete({
-			where: { video_id: Number(video_id) },
+			where: { id: Number(id) },
 		});
 
 		res.status(200).json({ message: "Prize deleted", affectedRows: 1 });
+		next();
 	} catch (error) {
 		if (error.code === "P2025") {
 			return res
@@ -123,4 +118,4 @@ export const removePrizedVideo = async (req, res) => {
 		console.error("Delete Prized Video Error:", error);
 		res.status(500).json({ message: "Server error" });
 	}
-};
+}; 

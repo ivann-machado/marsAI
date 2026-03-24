@@ -25,7 +25,7 @@ import prizedRoutes from "./routes/prized.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 
 const app = express();
-
+app.set("trust proxy", Number(process.env.PROXY_TRUST) || 0);
 // Helmet for security
 app.use(helmet(HELMET_CONFIG));
 

@@ -7,6 +7,7 @@ const config = {
 	user: process.env.DB_USER,
 	database: process.env.DB_NAME,
 	password: process.env.DB_PASSWORD,
+	connectionLimit: 3,
 };
 
 if (!config.host || !config.user || !config.database || !config.password) {

@@ -88,7 +88,7 @@ function AdminOverview() {
     }
   };
 
-  if (!data || !content) return <Loading />;
+  if (!data || !content) return <Loading dashboard={true} />;
 
   return (
     <>

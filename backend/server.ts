@@ -44,8 +44,14 @@ const startServer = (port: number, retries: number = 20): void => {
 
 startServer(PORT);
 
-const gracefulShutdown = (): void => {
-	console.log('Received kill signal, shutting down gracefully');
+const gracefulShutdown = (err?: Error | any): void => {
+	const isSignal = typeof err === 'string' && err.startsWith('SIG');
+	if (err instanceof Error) {
+		console.error('Uncaught Exception or Rejection :', err);
+	}
+	else {
+		console.log(`Received kill signal ${isSignal ? `(${err}) ` : ''}shutting down gracefully`);
+	}
 	const forceExit = setTimeout(() => {
 		console.error('Could not close connections in time, forcefully shutting down');
 		process.exit(1);
@@ -57,9 +63,9 @@ const gracefulShutdown = (): void => {
 			await prisma.$disconnect();
 			console.log('Database disconnected');
 			clearTimeout(forceExit);
-			process.exit(0);
-		} catch (err) {
-			console.error('Error disconnecting database', err);
+			process.exit((!isSignal && err) ? 1 : 0);
+		} catch (dbErr) {
+			console.error('Error disconnecting database', dbErr);
 			process.exit(1);
 		}
 	});
@@ -68,3 +74,5 @@ const gracefulShutdown = (): void => {
 process.on('SIGTERM', gracefulShutdown);
 process.on('SIGINT', gracefulShutdown);
 process.on('SIGUSR2', gracefulShutdown);
+process.on('uncaughtException', gracefulShutdown);
+process.on('unhandledRejection', gracefulShutdown);

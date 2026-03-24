@@ -22,10 +22,10 @@
 		"dev": "node --watch --watch-preserve-output --env-file=.env server.ts",
 		"test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles",
 		"prisma:generate": "prisma generate",
-		"generate": "node -e \"const fs = require('fs'); fs.rmSync('./src/generated/zod', { recursive: true, force: true });\" && npx prisma generate"
+		"generate": "npx prisma generate"
 	},
 	"dependencies": {
-		"@aws-sdk/client-s3": "^3.1011.0",
+		"@aws-sdk/client-s3": "^3.1012.0",
 		"@getbrevo/brevo": "^5.0.1",
 		"@prisma/adapter-mariadb": "^7.5.0",
 		"@prisma/client": "^7.5.0",
@@ -49,7 +49,7 @@
 		"jsdoc": "^4.0.5",
 		"jsdoc-to-markdown": "^9.1.3",
 		"prisma": "^7.5.0",
-		"supertest": "^7.2.2",
-		"zod-prisma-types": "^3.3.11"
+		"prisma-zod-generator": "^2.1.4",
+		"supertest": "^7.2.2"
 	}
 }
