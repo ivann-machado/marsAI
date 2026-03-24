@@ -4,7 +4,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 import rateLimit from "express-rate-limit";
 import debounce from "./middlewares/debounce.middleware.js";
-import { JWT_SECRET } from "./config/index.js";
+import { JWT_SECRET } from "./config/index.ts";
 import CORS_OPTIONS from "./config/cors.config.js";
 import jwt from "jsonwebtoken";
 import MORGAN_FORMAT from "./config/morgan.config.js";

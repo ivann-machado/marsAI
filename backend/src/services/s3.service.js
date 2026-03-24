@@ -6,7 +6,7 @@ import {
 	HeadObjectCommand
 } from '@aws-sdk/client-s3';
 import bucket from '../config/s3.config.js';
-import { NODE_ENV } from '../config/index.js';
+import { NODE_ENV } from '../config/index.ts';
 
 /**
  * Build the full object key by prepending the configured folder prefix

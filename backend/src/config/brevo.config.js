@@ -1,5 +1,5 @@
 import { BrevoClient } from '@getbrevo/brevo';
-import { NODE_ENV } from './index.js';
+import { NODE_ENV } from './index.ts';
 
 const config = {
 	apiKey: process.env.BREVO_API_KEY,

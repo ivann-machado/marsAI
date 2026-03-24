@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import crypto from "node:crypto";
-import { JWT_SECRET } from "../config/index.js";
+import { JWT_SECRET } from "../config/index.ts";
 import redis from "../config/redis.config.ts";
 
 /**

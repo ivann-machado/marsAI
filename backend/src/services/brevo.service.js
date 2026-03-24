@@ -1,5 +1,5 @@
 import BrevoClient from '../config/brevo.config.js';
-import { NODE_ENV } from '../config/index.js';
+import { NODE_ENV } from '../config/index.ts';
 
 /**
  * Helper to configure the base SMTP email object

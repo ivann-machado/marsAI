@@ -1,6 +1,6 @@
 import { Readable } from 'node:stream';
 import getYouTubeClient from '../config/youtube.config.js';
-import { NODE_ENV } from '../config/index.js';
+import { NODE_ENV } from '../config/index.ts';
 
 /**
  * Upload a video to YouTube
