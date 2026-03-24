@@ -22,7 +22,7 @@
 		"dev": "node --watch --watch-preserve-output --env-file=.env server.ts",
 		"test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles",
 		"prisma:generate": "prisma generate",
-		"generate": "node -e \"const fs = require('fs'); fs.rmSync('./src/generated/zod', { recursive: true, force: true });\" && npx prisma generate"
+		"generate": "npx prisma generate"
 	},
 	"dependencies": {
 		"@aws-sdk/client-s3": "^3.1012.0",
