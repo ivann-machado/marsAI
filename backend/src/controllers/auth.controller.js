@@ -1,9 +1,12 @@
+import crypto from "node:crypto";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import prisma from "../config/prisma.config.js";
 import { JWT_SECRET, JWT_EXPIRES_IN, NODE_ENV, FRONTEND_URL } from "../config/index.js";
 import { renderView } from "../utils/view.util.js";
 import { sendEmail } from "../services/brevo.service.js";
+import redis from "../config/redis.config.js";
+
 
 /**
  * Authenticate an admin and return a JWT token.
@@ -111,6 +114,8 @@ export const inviteAdmin = async (req, res) => {
  * @param {import('express').Response} res
  */
 export const logout = async (req, res) => {
+	const token = req.token;
+	await redis.set(`blacklist:${token}`, 'true', 'EX', req.user.exp - Math.floor(Date.now() / 1000));
 	return res.status(200).json({ message: "Logged out successfully" });
 };
 

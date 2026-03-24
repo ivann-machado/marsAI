@@ -1,12 +1,17 @@
 import jwt from "jsonwebtoken";
 import crypto from "node:crypto";
 import { JWT_SECRET } from "../config/index.js";
+import redis from "../config/redis.config.js";
 
-export const verifyToken = (req, res, next) => {
-	const token = req.headers["authorization"]?.split(" ")[1];
+export const verifyToken = async (req, res, next) => {
+	const token = req.token = req.headers["authorization"]?.split(" ")[1];
 
 	if (!token) {
 		return res.status(403).json({ message: "No token provided" });
+	}
+
+	if (await redis.get(`blacklist:${token}`)) {
+		return res.status(401).json({ message: "Blacklisted Token" });
 	}
 
 	jwt.verify(token, JWT_SECRET, (err, decoded) => {
