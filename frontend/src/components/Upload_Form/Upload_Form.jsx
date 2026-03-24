@@ -738,11 +738,12 @@ function UploadForm() {
       SetLoading(false);
       showFlash("success", t("upload_form.upload_success"));
     } else {
+      SetLoading(false);
       Object.entries(data.errors).forEach((key, value) =>
         showFlash("error", key[1].join("&para")),
       );
       // data.errors.forEach((error) => showFlash("error", error.join("<br/>")));
-      SetLoading(false);
+
       // console.log(data.errors);
     }
   };
