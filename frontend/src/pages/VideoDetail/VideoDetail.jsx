@@ -49,7 +49,34 @@ function VideoDetail() {
 
   if (!video) return <Loading />;
 
-  // console.log(video);
+  const icons = {
+    facebook: "/src/assets/fb.svg",
+    linkedin: "/src/assets/linkedin.svg",
+    instagram: "/src/assets/insta.svg",
+    youtube: "/src/assets/youtube.svg",
+    twitter: "/src/assets/twitter.svg",
+    tiktok: "/src/assets/tiktok.svg",
+  };
+
+  const labels = {
+    facebook: "Facebook",
+    linkedin: "LinkedIn",
+    instagram: "Instagram",
+    youtube: "YouTube",
+    twitter: "Twitter/X",
+    tiktok: "TikTok",
+  };
+
+  const getTypeFromUrl = (url) => {
+    if (url.includes("facebook")) return "facebook";
+    if (url.includes("linkedin")) return "linkedin";
+    if (url.includes("instagram")) return "instagram";
+    if (url.includes("youtube")) return "youtube";
+    if (url.includes("youtu.be")) return "youtube";
+    if (url.includes("twitter") || url.includes("x.com")) return "twitter";
+    if (url.includes("tiktok")) return "tiktok";
+    return null;
+  };
 
   return (
     <>
@@ -158,85 +185,53 @@ function VideoDetail() {
           </div>
         </div>
 
-        {/* MEDIA SECTION */}
-        {video.facebook_link ||
-        video.linkedin_link ||
-        video.instagram_link ||
-        video.youtube_link ||
-        video.twitter_link ? (
+        {/* SOCIALS */}
+        {Array.isArray(video.socials) && video.socials.length > 0 && (
           <div className="mb-10">
             <h4 className="text-3xl font-bold m-4 drop-shadow-xl/60 drop-shadow-purple-600 font-orbitron text-center">
               {t("video_page.media_links")}
             </h4>
 
-            <div className="flex flex-wrap justify-around w-full gap-6">
-              {/* FB */}
-              {video.facebook_link ? (
-                <div className="w-1/3 md:w-1/6 hover:scale-110 transition">
-                  <a href={video.facebook_link ?? "http://facebook.com"}>
-                    <img
-                      src="../src/assets/fb.svg"
-                      className="w-12 h-12 mx-auto"
-                    ></img>
-                    <p className="text-center text-gray-300">Facebook</p>
-                  </a>
-                </div>
-              ) : null}
+            <div className="flex flex-wrap justify-center gap-8">
+              {video.socials
+                .filter(
+                  (url) => typeof url === "string" && url.startsWith("http"),
+                )
+                .slice(0, 4)
+                .map((url, index) => {
+                  const type = getTypeFromUrl(url);
 
-              {/* LINKEDIN */}
-              {video.linkedin_link ? (
-                <div className="w-1/3 md:w-1/6 hover:scale-110 transition">
-                  <a href={video.linkedin_link ?? "http://linkedin.com"}>
-                    <img
-                      src="../src/assets/linkedin.svg"
-                      className="w-12 h-12 mx-auto"
-                    ></img>
-                    <p className="text-center text-gray-300">Linkedin</p>
-                  </a>
-                </div>
-              ) : null}
+                  if (!type || !icons[type]) return null;
 
-              {/* INSTA */}
-              {video.instagram_link ? (
-                <div className="w-1/3 md:w-1/6 hover:scale-110 transition">
-                  <a href={video.instagram_link ?? "http://instagram.com"}>
-                    <img
-                      src="../src/assets/insta.svg"
-                      className="w-12 h-12 mx-auto"
-                    ></img>
-                    <p className="text-center text-gray-300">Instagram</p>
-                  </a>
-                </div>
-              ) : null}
+                  return (
+                    <div
+                      key={index}
+                      className="w-20 md:w-24 group hover:scale-110 transition duration-300"
+                    >
+                      <a
+                        href={url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex flex-col items-center"
+                      >
+                        <div className="p-3 rounded-xl bg-gray-900 border border-purple-500/20 group-hover:border-pink-500/40 transition">
+                          <img
+                            src={icons[type]}
+                            className="w-10 h-10"
+                            alt={labels[type]}
+                          />
+                        </div>
 
-              {/* YT */}
-              {video.youtube_link ? (
-                <div className="w-1/3 md:w-1/6 hover:scale-110 transition">
-                  <a href={video.youtube_link ?? "http://youtube.com"}>
-                    <img
-                      src="../src/assets/youtube.svg"
-                      className="w-12 h-12 mx-auto"
-                    ></img>
-                    <p className="text-center text-gray-300">Youtube</p>
-                  </a>
-                </div>
-              ) : null}
-
-              {/* TWITTER */}
-              {video.twitter_link ? (
-                <div className="w-1/3 md:w-1/6 hover:scale-110 transition">
-                  <a href={video.twitter_link ?? "http://x.com"}>
-                    <img
-                      src="../src/assets/twitter.svg"
-                      className="w-12 h-12 mx-auto"
-                    ></img>
-                    <p className="text-center text-gray-300">Twitter/X</p>
-                  </a>
-                </div>
-              ) : null}
+                        <p className="text-gray-300 mt-2 text-sm group-hover:text-white transition">
+                          {labels[type]}
+                        </p>
+                      </a>
+                    </div>
+                  );
+                })}
             </div>
           </div>
-        ) : null}
+        )}
       </section>
       <Footer />
     </>
