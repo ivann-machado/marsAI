@@ -38,9 +38,9 @@ function AdminSettingsDash() {
         <h2 className="text-4xl font-extrabold m-8 text-white">
           Content Items
         </h2>
-        <div className="grid grid-cols-4 p-2 bg-gray-900 text-gray-100 gap-2 px-6">
-          <p className="text-center text-xl font-bold">Content</p>
-          <p className="text-center text-xl font-bold">Value</p>
+        <div className="grid grid-cols-6 p-2 bg-gray-900 text-gray-100 gap-2 px-6">
+          <p className="text-center text-xl font-bold col-span-2">Content</p>
+          <p className="text-center text-xl font-bold col-span-3">Value</p>
         </div>
         {content
           .slice(
