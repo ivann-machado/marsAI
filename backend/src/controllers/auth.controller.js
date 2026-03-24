@@ -109,7 +109,7 @@ export const inviteAdmin = async (req, res) => {
 };
 
 /**
- * Logout admin.
+ * Logout admin by blacklisting the token.
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  */
