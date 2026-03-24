@@ -29,10 +29,13 @@ function Event() {
     const fetchEvents = async () => {
       try {
         setLoading(true);
-        const response = await fetch("http://localhost:3000/api/events", {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-        });
+        const response = await fetch(
+          import.meta.env.VITE_API_URL + "/api/events",
+          {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          },
+        );
         if (!response.ok) throw new Error("Failed to fetch events");
         const data = await response.json();
         setEvents(data.data);
