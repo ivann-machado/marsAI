@@ -1,6 +1,6 @@
 import {
 	getHighlights,
-	getHighlightById, // Ajouté ici
+	getHighlightById, 
 	createHighlight,
 	setHighlight,
 	removeHighlight,
