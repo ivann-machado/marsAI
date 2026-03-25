@@ -56,6 +56,7 @@ function VideoDetail() {
     youtube: "/src/assets/youtube.svg",
     twitter: "/src/assets/twitter.svg",
     tiktok: "/src/assets/tiktok.svg",
+    other: "/src/assets/other.svg",
   };
 
   const labels = {
@@ -65,6 +66,7 @@ function VideoDetail() {
     youtube: "YouTube",
     twitter: "Twitter/X",
     tiktok: "TikTok",
+    other: t("video_page.other_socials"),
   };
 
   const getTypeFromUrl = (url) => {
@@ -75,6 +77,7 @@ function VideoDetail() {
     if (url.includes("youtu.be")) return "youtube";
     if (url.includes("twitter") || url.includes("x.com")) return "twitter";
     if (url.includes("tiktok")) return "tiktok";
+    if (url.startsWith("http")) return "other";
     return null;
   };
 
@@ -222,7 +225,7 @@ function VideoDetail() {
                           />
                         </div>
 
-                        <p className="text-gray-300 mt-2 text-sm group-hover:text-white transition">
+                        <p className="text-gray-300 mt-2 text-sm group-hover:text-white transition text-center">
                           {labels[type]}
                         </p>
                       </a>
