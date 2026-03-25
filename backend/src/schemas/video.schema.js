@@ -5,10 +5,10 @@ import { getMp4Metadata } from "../utils/file.util.js";
 
 /**
  * Base video schema.
- * System-managed fields (`id`, `url`, `verified`, `status`) are omitted.
+ * System-managed fields (`id`, `url`, `status`) are omitted.
  */
 const VideoSchema = videosSchema
-	.omit({ id: true, url: true, verified: true, status: true })
+	.omit({ id: true, url: true, status: true })
 	.extend({
 		edition_id: z
 			.coerce.number()
@@ -33,37 +33,35 @@ const VideoSchema = videosSchema
 			.string()
 			.min(1, { error: "Producer name is required" })
 			.max(50, { error: "Producer name must be at most 50 characters" }),
-		producer_image: fileSchema(5 * 1024 * 1024, ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/avif', 'image/svg+xml']),
-		linkedin_link: z
-			.url({ error: "LinkedIn link must be a valid URL", hostname: /^linkedin\.com/ })
-			.optional()
-			.or(z.literal("")),
-		youtube_link: z
-			.url({ error: "YouTube link must be a valid URL", hostname: /^youtube\.com/ })
-			.optional()
-			.or(z.literal("")),
-		instagram_link: z
-			.url({ error: "Instagram link must be a valid URL", hostname: /^instagram\.com/ })
+		producer_image: fileSchema(5 * 1024 * 1024, ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/avif', 'image/svg+xml'])
+			.optional(),
+		socials: z
+			.array(z.url())
 			.optional()
 			.or(z.literal("")),
 		scenario_ai: z
 			.string()
-			.max(50, { error: "Scenario AI must be at most 50 characters" }),
+			.max(50, { error: "Scenario AI must be at most 50 characters" })
+			.optional(),
 		video_gen_ai: z
 			.string()
-			.max(50, { error: "Video gen AI must be at most 50 characters" }),
+			.max(50, { error: "Video gen AI must be at most 50 characters" })
+			.optional(),
 		sound_ai: z
 			.string()
-			.max(50, { error: "Sound AI must be at most 50 characters" }),
+			.max(50, { error: "Sound AI must be at most 50 characters" })
+			.optional(),
 		postprod_ai: z
 			.string()
-			.max(50, { error: "Post-production AI must be at most 50 characters" }),
+			.max(50, { error: "Post-production AI must be at most 50 characters" })
+			.optional(),
 		tags: z
 			.string()
 			.max(100, { error: "Tags must be at most 100 characters" })
 			.optional()
 			.default(""),
-		subtitle: fileSchema(2 * 1024 * 1024, ['application/x-subrip', 'text/srt']),
+		subtitle: fileSchema(2 * 1024 * 1024, ['application/x-subrip', 'text/srt'])
+			.optional(),
 	});
 const videoRefinement = (schema) => schema.superRefine((data, ctx) => {
 	if (!data.filename) return;

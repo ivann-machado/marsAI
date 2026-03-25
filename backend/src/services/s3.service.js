@@ -5,8 +5,8 @@ import {
 	ListObjectsV2Command,
 	HeadObjectCommand
 } from '@aws-sdk/client-s3';
-import { getBucketClient } from '../config/bucket.js';
-import { DEV_MODE } from '../config/index.js';
+import bucket from '../config/s3.config.js';
+import { NODE_ENV } from '../config/index.ts';
 
 /**
  * Build the full object key by prepending the configured folder prefix
@@ -14,7 +14,7 @@ import { DEV_MODE } from '../config/index.js';
  * @returns {string}
  */
 const buildKey = (filename) => {
-	const { folder } = getBucketClient();
+	const { folder } = bucket;
 	const prefix = folder ? `${folder}/` : '';
 	return `${prefix}${filename}`;
 };
@@ -29,10 +29,10 @@ const buildKey = (filename) => {
  */
 export const uploadFile = async (filename, body, acl, contentType = 'application/octet-stream') => {
 	try {
-		const { client, bucketName } = getBucketClient();
+		const { client, bucketName } = bucket;
 		const key = buildKey(filename);
 
-		if (DEV_MODE) {
+		if (NODE_ENV !== 'production') {
 			console.log(`Uploading file to bucket: ${bucketName}, key: ${key}`);
 		}
 		const command = new PutObjectCommand({
@@ -45,7 +45,7 @@ export const uploadFile = async (filename, body, acl, contentType = 'application
 
 		const response = await client.send(command);
 
-		if (DEV_MODE) {
+		if (NODE_ENV !== 'production') {
 			console.log(`File uploaded successfully: ${key}`);
 		}
 
@@ -63,10 +63,10 @@ export const uploadFile = async (filename, body, acl, contentType = 'application
  */
 export const getFile = async (filename) => {
 	try {
-		const { client, bucketName } = getBucketClient();
+		const { client, bucketName } = bucket;
 		const key = buildKey(filename);
 
-		if (DEV_MODE) {
+		if (NODE_ENV !== 'production') {
 			console.log(`Getting file from bucket: ${bucketName}, key: ${key}`);
 		}
 
@@ -89,10 +89,10 @@ export const getFile = async (filename) => {
  */
 export const deleteFile = async (filename) => {
 	try {
-		const { client, bucketName } = getBucketClient();
+		const { client, bucketName } = bucket;
 		const key = buildKey(filename);
 
-		if (DEV_MODE) {
+		if (NODE_ENV !== 'production') {
 			console.log(`Deleting file from bucket: ${bucketName}, key: ${key}`);
 		}
 
@@ -103,7 +103,7 @@ export const deleteFile = async (filename) => {
 
 		const response = await client.send(command);
 
-		if (DEV_MODE) {
+		if (NODE_ENV !== 'production') {
 			console.log(`File deleted successfully: ${key}`);
 		}
 
@@ -122,11 +122,11 @@ export const deleteFile = async (filename) => {
  */
 export const listFiles = async (prefix = '', maxKeys = 1000) => {
 	try {
-		const { client, bucketName, folder } = getBucketClient();
+		const { client, bucketName, folder } = bucket;
 		const folderPrefix = folder ? `${folder}/` : '';
 		const fullPrefix = `${folderPrefix}${prefix}`;
 
-		if (DEV_MODE) {
+		if (NODE_ENV !== 'production') {
 			console.log(`Listing files in bucket: ${bucketName}, prefix: ${fullPrefix}`);
 		}
 
@@ -150,7 +150,7 @@ export const listFiles = async (prefix = '', maxKeys = 1000) => {
  */
 export const fileExists = async (filename) => {
 	try {
-		const { client, bucketName } = getBucketClient();
+		const { client, bucketName } = bucket;
 		const key = buildKey(filename);
 
 		const command = new HeadObjectCommand({
@@ -174,7 +174,7 @@ export const fileExists = async (filename) => {
  * @returns {string} - Public URL
  */
 export const getFileUrl = (filename) => {
-	const { endpoint, bucketName } = getBucketClient();
+	const { endpoint, bucketName } = bucket;
 	const key = buildKey(filename);
 	return `${endpoint}/${bucketName}/${key}`;
 };
@@ -185,7 +185,7 @@ export const getFileUrl = (filename) => {
  * @returns {string} - Filename
  */
 export const getFilename = (fileUrl) => {
-	const { endpoint, bucketName, folder } = getBucketClient();
+	const { endpoint, bucketName, folder } = bucket;
 	const prefix = folder ? `${folder}/` : '';
 	return fileUrl.replace(`${endpoint}/${bucketName}/${prefix}`, '');
 };

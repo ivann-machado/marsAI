@@ -1,9 +1,16 @@
 import Loading from "../Utils/Loading";
 import { useState, useEffect } from "react";
+import { useauth } from "../../context/AuthContext";
+import { useSettings } from "../../context/SettingsContext";
+import { useFlash } from "../../context/FlashContext";
 
 function AdminOverview() {
   const [data, setData] = useState(null);
+  const [content, setContent] = useState(null);
   let address = window.location.host.split(".").slice(1);
+  const authToken = useauth();
+  const settings = useSettings();
+  const { showFlash } = useFlash();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -18,20 +25,74 @@ function AdminOverview() {
     };
 
     fetchData();
+    /*   console.log(data);
+    setData((prev) => ({ ...prev, phase: settings.phase })); */
   }, []);
 
-  function changePhase() {
-    if (data.phase < 3) {
-      setData((prev) => ({ ...prev, phase: prev.phase + 1 }));
-      //fetch pour modifier phase en DB}
-    }
-  }
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          import.meta.env.VITE_API_URL + "/api/content",
+          {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          },
+        );
+        if (!response.ok) throw new Error("Erreur fetch JSON");
+        const json = await response.json();
+        setContent(
+          json.reduce((a, i) => {
+            a[i.name] = i.value;
+            return a;
+          }, {}),
+        );
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchData();
+  }, []);
 
-  if (!data) return <Loading />;
+  const changePhase = async () => {
+    if (content.phase < 3) {
+      try {
+        const response = await fetch(
+          import.meta.env.VITE_API_URL + "/api/content/",
+          {
+            method: "PUT",
+            headers: {
+              Authorization: "Bearer " + authToken.token,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name: "phase",
+              value: String(Number(content.phase) + 1),
+            }),
+          },
+        );
+        if (!response.ok) throw new Error("Erreur fetch JSON");
+        // const json = await response.json();
+        setContent((prev) => ({
+          ...prev,
+          phase: Number(prev.phase) + 1,
+        }));
+
+        showFlash("success", "La phase a été changée");
+      } catch (err) {
+        showFlash("error", "Erreur de mise à jour de la phase");
+        console.error(err);
+      }
+
+      // setModified(false);
+    }
+  };
+
+  if (!data || !content) return <Loading dashboard={true} />;
 
   return (
     <>
-      <div className="text-gray-200 bg-gray-950 w-4/5">
+      <div className="bg-gradient-to-br from-gray-950 via-gray-800 to-gray-950 px-4 font-inter w-full ml-64 text-white min-h-screen">
         <h1 className="font-bold text-2xl m-4">Vue d'ensemble</h1>
         <p className="m-4 text-lg border-b">
           Informations generales sur le festival et le site web.
@@ -64,8 +125,8 @@ function AdminOverview() {
             </div>
             <div className="p-4 bg-gray-800 border rounded-xl min-w-48 w-1/5 min-h-48">
               <p>Phase:</p>
-              <p>{data.phase}</p>
-              {data.phase < 3 ? (
+              <p>{content.phase}</p>
+              {content.phase < 3 ? (
                 <button
                   className="p-2 border bg-gray-400 hover:bg-amber-400"
                   onClick={() => {

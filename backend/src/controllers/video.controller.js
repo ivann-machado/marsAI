@@ -1,6 +1,6 @@
-import prisma from "../config/prisma.js";
-import { paginate } from "../utils/paginate.js";
-import { deleteFile, getFileUrl } from "../services/bucket.service.js";
+import prisma from "../config/prisma.config.js";
+import { paginate } from "../utils/paginate.util.js";
+import { getFileUrl } from "../services/s3.service.js";
 import { uploadVideo } from "../services/youtube.service.js";
 
 /**
@@ -48,6 +48,11 @@ const videoIncludes = {
 	editions: true,
 	countries: true,
 	subtitles: true,
+	prized_videos: {
+		select: {
+			prix: true,
+		},
+	},
 };
 
 /**
@@ -69,6 +74,8 @@ export const getAllVideos = async (req, res) => {
 
 		result.data = result.data.map((video) => ({
 			...video,
+			prix: video.prized_videos?.prix ?? null,
+			prized_videos: undefined,
 			filename: getFileUrl(video.filename),
 			cover_image: getFileUrl(video.cover_image),
 			subtitles: video.subtitles.map((sub) => ({
@@ -102,6 +109,8 @@ export const getVideoById = async (req, res) => {
 
 		res.status(200).json({
 			...video,
+			prix: video.prized_videos?.prix ?? null,
+			prized_videos: undefined,
 			filename: getFileUrl(video.filename),
 			producer_image: getFileUrl(video.producer_image),
 			cover_image: getFileUrl(video.cover_image),
@@ -125,65 +134,16 @@ export const getVideoById = async (req, res) => {
 export const createVideo = async (req, res) => {
 	const body = req.body;
 	try {
-		if (!body.filename || body.filename === "undefined") {
-			return res.status(400).json({ message: "Video file is required" });
-		}
-
-		if (!body.country_id) {
-			return res.status(400).json({ message: "country_id is required" });
-		}
-
-		if (!body.edition_id) {
-			return res.status(400).json({ message: "edition_id is required" });
-		}
-
-		// Use a transaction: create video + auto-create review if admin_id is provided
-		const adminId = body.admin_id ? Number(body.admin_id) : null;
-
 		const video = await prisma.videos.create({
-			data: {
-				edition_id: Number(body.edition_id),
-				url: body.url ?? "",
-				filename: body.filename,
-				email: body.email,
-				cover_image: body.cover_image ?? "",
-				verified: false,
-				title: body.title,
-				description: body.description,
-				country_id: Number(body.country_id),
-				producer: body.producer ?? "",
-				producer_image: body.producer_image ?? "",
-				linkedin_link: body.linkedin_link ?? "",
-				youtube_link: body.youtube_link ?? "",
-				scenario_ai: body.scenario_ai ?? "",
-				video_gen_ai: body.video_gen_ai ?? "",
-				sound_ai: body.sound_ai ?? "",
-				postprod_ai: body.postprod_ai ?? "",
-				tags: body.tags ?? "",
-			},
+			data: body,
 		});
 
 		const videoId = video.id;
-
-		// Auto-create a review to link this video to an admin (the "bridge")
-		let review = null;
-		if (adminId) {
-			review = await prisma.reviews.create({
-				data: {
-					admin_id: adminId,
-					video_id: videoId,
-					status: "assigned",
-					note: "",
-				},
-			});
-		}
-
 		const videoBuffer = req.file?.buffer;
 
 		res.status(201).json({
 			message: "Video created",
 			id: videoId,
-			review_id: review?.id ?? null,
 		});
 
 		if (videoBuffer) {
@@ -279,6 +239,8 @@ export const getAssignedVideos = async (req, res) => {
 
 		result.data = result.data.map((video) => ({
 			...video,
+			prix: video.prized_videos?.prix ?? null,
+			prized_videos: undefined,
 			filename: getFileUrl(video.filename),
 			cover_image: getFileUrl(video.cover_image),
 			subtitles: video.subtitles.map((sub) => ({
@@ -324,6 +286,8 @@ export const getUnassignedVideos = async (req, res) => {
 
 		result.data = result.data.map((video) => ({
 			...video,
+			prix: video.prized_videos?.prix ?? null,
+			prized_videos: undefined,
 			filename: getFileUrl(video.filename),
 			cover_image: getFileUrl(video.cover_image),
 			subtitles: video.subtitles.map((sub) => ({

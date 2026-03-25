@@ -1,4 +1,4 @@
-import prisma from "../config/prisma.js";
+import prisma from "../config/prisma.config.js";
 
 /**
  * Get all settings.
@@ -19,8 +19,9 @@ export const getSettings = async (req, res) => {
  * Update a setting value by name.
  * @param {import('express').Request} req
  * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
  */
-export const setSetting = async (req, res) => {
+export const setSetting = async (req, res, next) => {
 	try {
 		const { name, value } = req.body;
 
@@ -34,6 +35,7 @@ export const setSetting = async (req, res) => {
 		});
 
 		res.status(200).json({ message: "Setting updated successfully" });
+		next();
 	} catch (error) {
 		if (error.code === "P2025") {
 			return res.status(404).json({ message: "Setting not found" });

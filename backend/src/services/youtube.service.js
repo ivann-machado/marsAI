@@ -1,6 +1,6 @@
-import { Readable } from 'stream';
-import { getYouTubeClient } from '../config/youtube.js';
-import { DEV_MODE } from '../config/index.js';
+import { Readable } from 'node:stream';
+import getYouTubeClient from '../config/youtube.config.js';
+import { NODE_ENV } from '../config/index.ts';
 
 /**
  * Upload a video to YouTube
@@ -10,7 +10,7 @@ import { DEV_MODE } from '../config/index.js';
  */
 export const uploadVideo = async ({ videoBuffer, metadata = {}, privacy = 'unlisted', callback }) => {
 	try {
-		if (DEV_MODE) {
+		if (NODE_ENV !== 'production') {
 			console.log('Starting YouTube video upload...');
 		}
 		if (!videoBuffer) {
@@ -42,7 +42,7 @@ export const uploadVideo = async ({ videoBuffer, metadata = {}, privacy = 'unlis
 		const mediaBody = {
 			body: Readable.from(videoBuffer)
 		};
-		if (DEV_MODE) {
+		if (NODE_ENV !== 'production') {
 			console.log(`Uploading video: ${title}`);
 		}
 
@@ -53,7 +53,7 @@ export const uploadVideo = async ({ videoBuffer, metadata = {}, privacy = 'unlis
 		});
 
 		const videoId = response.data.id;
-		if (DEV_MODE) {
+		if (NODE_ENV !== 'production') {
 			console.log(`Video uploaded successfully! Video ID: ${videoId}`);
 			console.log(`View at: https://www.youtube.com/watch?v=${videoId}`);
 		}
@@ -74,7 +74,7 @@ export const uploadVideo = async ({ videoBuffer, metadata = {}, privacy = 'unlis
  */
 export const checkVideoStatus = async (videoId) => {
 	try {
-		if (DEV_MODE) {
+		if (NODE_ENV !== 'production') {
 			console.log(`Checking status for video: ${videoId}`);
 		}
 
@@ -102,7 +102,7 @@ export const checkVideoStatus = async (videoId) => {
 			publishedAt: video.snippet.publishedAt
 		};
 
-		if (DEV_MODE) {
+		if (NODE_ENV !== 'production') {
 			console.log(`Video Status: ${statusInfo.uploadStatus}`);
 			console.log(`Processing: ${statusInfo.processingStatus || 'N/A'}`);
 		}
@@ -124,18 +124,18 @@ export const checkVideoStatus = async (videoId) => {
 export const scheduleStatusCheck = (videoId, callback, delayMinutes = 10) => {
 	const delayMs = delayMinutes * 60 * 1000;
 
-	if (DEV_MODE) {
+	if (NODE_ENV !== 'production') {
 		console.log(`Status check scheduled for video ${videoId} in ${delayMinutes} minutes`);
 	}
 
 	const timeout = setTimeout(async () => {
 		try {
-			if (DEV_MODE) {
+			if (NODE_ENV !== 'production') {
 				console.log(`\n Executing scheduled status check for video: ${videoId}`);
 			}
 			const status = await checkVideoStatus(videoId);
 
-			if (DEV_MODE) {
+			if (NODE_ENV !== 'production') {
 				console.log('\n Status Check Results:');
 				console.log(`Video ID: ${status.videoId}`);
 				console.log(`Title: ${status.title}`);

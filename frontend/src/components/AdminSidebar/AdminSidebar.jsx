@@ -7,7 +7,7 @@ function AdminSidebar() {
   const { user, userRole, logout } = useauth();
 
   return (
-    <div className="w-1/5 min-w-20 bg-linear-to-br from-gray-800 to-gray-900 min-h-screen">
+    <div className="w-64 bg-linear-to-br from-gray-800 to-gray-900 min-h-screen fixed">
       <div className="bg-linear-to-tr from-gray-900 to-gray-800">
         <p className="text-white p-3 text-center font-bold">
           Bienvenue <span className="text-amber-600">{user}</span>
@@ -27,6 +27,9 @@ function AdminSidebar() {
         {userRole && ["super_admin", "admin"].includes(userRole) ? (
           <SidebarButton link="/videos" name={t("admin_sidebar.videos")} />
         ) : null}
+        {userRole && ["super_admin", "admin"].includes(userRole) ? (
+          <SidebarButton link="/reviews" name={t("admin_sidebar.reviews")} />
+        ) : null}
         {userRole && userRole === "super_admin" ? (
           <SidebarButton link="/users" name={t("admin_sidebar.users")} />
         ) : null}
@@ -44,6 +47,9 @@ function AdminSidebar() {
         ) : null}
         {userRole && userRole === "super_admin" ? (
           <SidebarButton link="/partners" name={t("admin_sidebar.partners")} />
+        ) : null}
+        {userRole && userRole === "super_admin" ? (
+          <SidebarButton link="/prizes" name={t("admin_sidebar.prizes")} />
         ) : null}
         {userRole ? (
           <SidebarButton

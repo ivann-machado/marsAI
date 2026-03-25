@@ -1,6 +1,6 @@
 import multer from 'multer';
 import { convertToWebp, toWebpFilename, generateFilename } from '../utils/file.util.js';
-import { uploadFile } from '../services/bucket.service.js';
+import { uploadFile } from '../services/s3.service.js';
 
 // Configuration Limits
 const LIMITS = {

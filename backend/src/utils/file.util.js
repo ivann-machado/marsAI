@@ -1,7 +1,7 @@
 import sharp from 'sharp';
-import path from 'path';
-import crypto from 'crypto';
-import { DEV_MODE } from '../config/index.js';
+import path from 'node:path';
+import crypto from 'node:crypto';
+import { NODE_ENV } from '../config/index.ts';
 
 /**
  * Convert an image buffer to WebP format
@@ -17,7 +17,7 @@ export const convertToWebp = async (inputBuffer, { quality = 80, lossless = fals
 	try {
 		const metadata = await sharp(inputBuffer).metadata();
 		if (metadata.format === 'webp' || metadata.format === 'svg') {
-			if (DEV_MODE) {
+			if (NODE_ENV !== 'production') {
 				console.log(`Image is already ${metadata.format}, skipping conversion`);
 			}
 			return false;
@@ -33,7 +33,7 @@ export const convertToWebp = async (inputBuffer, { quality = 80, lossless = fals
 			.webp({ quality, lossless })
 			.toBuffer();
 
-		if (DEV_MODE) {
+		if (NODE_ENV !== 'production') {
 			console.log(`Image converted to WebP: ${inputBuffer.length} → ${outputBuffer.length} bytes`);
 		}
 

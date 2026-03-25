@@ -9,7 +9,8 @@ import { useSettings } from "../../context/SettingsContext";
 import { Link } from "react-router-dom";
 
 function Footer() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const language = i18n.language;
   const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterError, setNewsletterError] = useState(null);
   const [newsletterSuccess, setNewsletterSuccess] = useState(null);
@@ -28,7 +29,7 @@ function Footer() {
 
       try {
         const res = await fetch(
-          "http://localhost:3000/api/newsletter/subscribe",
+          import.meta.env.VITE_API_URL + "/api/newsletter/subscribe",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -57,6 +58,8 @@ function Footer() {
 
   if (!settings) return <Loading />;
 
+  //console.log(language);
+
   return (
     <footer className="bg-gray-900 text-gray-300 w-full px-6 py-20">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-16 mb-20">
@@ -67,12 +70,20 @@ function Footer() {
           </p>
 
           <p className="text-gray-400 mb-8 leading-relaxed">
-            {t("footer.footer_message")}
+            {language === "fr" && settings.footer_message_fr
+              ? settings.footer_message_fr
+              : language === "en" && settings.footer_message_en
+                ? settings.footer_message_en
+                : t("footer.footer_message")}
           </p>
 
           <div className="flex">
             <a
-              href="https://www.facebook.com/LaPlateformeIO/?locale=fr_FR"
+              href={
+                settings.fb_link
+                  ? settings.fb_link
+                  : "https://www.facebook.com/LaPlateformeIO/?locale=fr_FR"
+              }
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -84,7 +95,11 @@ function Footer() {
             </a>
 
             <a
-              href="https://www.instagram.com/laplateformeio/"
+              href={
+                settings.insta_link
+                  ? settings.insta_link
+                  : "https://www.instagram.com/laplateformeio/"
+              }
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -96,7 +111,11 @@ function Footer() {
             </a>
 
             <a
-              href="https://www.youtube.com/c/LaPlateformeIO"
+              href={
+                settings.youtube_link
+                  ? settings.youtube_link
+                  : "https://www.youtube.com/c/LaPlateformeIO"
+              }
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -108,7 +127,11 @@ function Footer() {
             </a>
 
             <a
-              href="https://x.com/LaPlateformeIO"
+              href={
+                settings.twitter_link
+                  ? settings.twitter_link
+                  : "https://x.com/LaPlateformeIO"
+              }
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -209,7 +232,13 @@ function Footer() {
 
       {/* BOTTOM */}
       <div className="border-t border-gray-800 pt-6 text-center text-gray-500 text-sm">
-        <p>{t("footer.bottom_message")}</p>
+        <p>
+          {language === "fr" && settings.footer_bottom_message_fr
+            ? settings.footer_bottom_message_fr
+            : language === "en" && settings.footer_bottom_message_en
+              ? settings.footer_bottom_message_en
+              : t("footer.bottom_message")}
+        </p>
       </div>
     </footer>
   );

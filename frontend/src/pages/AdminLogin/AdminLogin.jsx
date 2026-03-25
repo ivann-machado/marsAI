@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useauth } from "../../context/AuthContext";
 import { useTranslation } from "react-i18next";
 import { jwtDecode } from "jwt-decode";
@@ -13,16 +13,35 @@ function AdminLogin() {
   const navigate = useNavigate();
   const { showFlash } = useFlash();
 
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Enter" && document.activeElement === document.body) {
+        alert("Toujours pas d'entree");
+        //submitLogin(e);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [email, password]);
+
   const submitLogin = async (e) => {
+    console.log(email, password);
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:3000/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        import.meta.env.VITE_API_URL + "/api/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ login: email, password }),
         },
-        body: JSON.stringify({ login: email, password }),
-      });
+      );
 
       if (!response.ok) {
         showFlash("error", "Identifiant ou mot de passe erroné.");
@@ -42,7 +61,7 @@ function AdminLogin() {
         console.log(login_info);
         if (login_info.role === "super admin")
           navigate("/", { replace: "true" });
-        else navigate("/videos", { replace: "true" });
+        else navigate("/reviews", { replace: "true" });
       }
     } catch (err) {
       showFlash("error", "Erreur de connexion. réesayez plus tard!");

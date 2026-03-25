@@ -12,6 +12,7 @@ import {
 	requireSuperAdmin,
 } from "../middlewares/auth.middleware.js";
 import { validate } from "../middlewares/validate.middleware.js";
+import { cache } from "../middlewares/cache.middleware.js";
 import { CreateNewsletterSubscriptionSchema, SendNewsletterSchema } from "../schemas/newsletter.schema.js";
 
 const router = Router();
@@ -32,7 +33,7 @@ const router = Router();
 router.post("/", validate(CreateNewsletterSubscriptionSchema), createNewsletter);
 
 // Admin routes
-router.get("/", verifyToken, requireSuperAdmin, getAllNewsletters);
+router.get("/", verifyToken, requireSuperAdmin, cache({ etagOnly: true }), getAllNewsletters);
 
 router.delete("/:email", verifyToken, requireSuperAdmin, removeNewsletter);
 router.post("/send", verifyToken, requireSuperAdmin, validate(SendNewsletterSchema), sendNewsletter);

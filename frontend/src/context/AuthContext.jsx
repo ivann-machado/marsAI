@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { useFlash } from "./FlashContext.jsx";
 
 const AuthContext = createContext();
 
@@ -13,6 +14,7 @@ export const AuthProvider = ({ children }) => {
   const [sessionExpiration, setSessionExpiration] = useState(null);
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { showFlash } = useFlash();
 
   useEffect(() => {
     //check si user est logged in}
@@ -79,14 +81,37 @@ export const AuthProvider = ({ children }) => {
     //console.log(localStorage.getItem("auth"));
   };
 
-  const logout = () => {
-    setId(null);
-    setUser(null);
-    setUserRole(null);
-    setSessionExpiration(null);
-    setToken(null);
+  const logout = async () => {
+    // ENVOIE REQUETE LOGOUT ICI
+    try {
+      const response = await fetch(
+        import.meta.env.VITE_API_URL + "/api/auth/logout",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        },
+      );
 
-    localStorage.removeItem("auth");
+      if (!response.ok) {
+        showFlash("error", "Logout failed.");
+        //throw new Error("Erreur lors de la connexion");
+        return;
+      }
+
+      setId(null);
+      setUser(null);
+      setUserRole(null);
+      setSessionExpiration(null);
+      setToken(null);
+      localStorage.removeItem("auth");
+      showFlash("success", "Logged out.");
+    } catch (err) {
+      showFlash("error", "Logout failed!");
+      console.log(err);
+    }
   };
 
   return (
