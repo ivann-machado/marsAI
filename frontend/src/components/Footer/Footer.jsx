@@ -4,22 +4,28 @@ import twitterLogo from "../../assets/twitter.svg";
 import ytLogo from "../../assets/youtube.svg";
 import Loading from "../Utils/Loading";
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSettings } from "../../context/SettingsContext";
 import { Link } from "react-router-dom";
+import Editable from "../Utils/Editable";
 
 function Footer() {
   const { t, i18n } = useTranslation();
-  const language = i18n.language;
   const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterError, setNewsletterError] = useState(null);
   const [newsletterSuccess, setNewsletterSuccess] = useState(null);
   const settings = useSettings();
+  const [language, setLanguage] = useState(i18n.language);
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
+
+  useEffect(() => {
+    setLanguage(i18n.language);
+    console.log("effect", language);
+  }, [i18n.language]);
 
   const newsletterSubmit = async (e) => {
     e.preventDefault();
@@ -46,7 +52,7 @@ function Footer() {
 
         setNewsletterSuccess(t("footer.subscription_success"));
         const response = await res.json();
-        console.log(response);
+        //console.log(response);
       } catch (error) {
         console.error(error);
       }
@@ -58,7 +64,7 @@ function Footer() {
 
   if (!settings) return <Loading />;
 
-  //console.log(language);
+  //console.log("langue courante", language);
 
   return (
     <footer className="bg-gray-900 text-gray-300 w-full px-6 py-20">
@@ -233,11 +239,19 @@ function Footer() {
       {/* BOTTOM */}
       <div className="border-t border-gray-800 pt-6 text-center text-gray-500 text-sm">
         <p>
-          {language === "fr" && settings.footer_bottom_message_fr
-            ? settings.footer_bottom_message_fr
-            : language === "en" && settings.footer_bottom_message_en
-              ? settings.footer_bottom_message_en
-              : t("footer.bottom_message")}
+          {language === "fr" ? (
+            <Editable
+              initialValue={language}
+              content_key="footer_bottom_message_fr"
+            />
+          ) : language === "en" && settings.footer_bottom_message_en ? (
+            <Editable
+              initialValue={language}
+              content_key="footer_bottom_message_en"
+            />
+          ) : (
+            t("footer.bottom_message")
+          )}
         </p>
       </div>
     </footer>
