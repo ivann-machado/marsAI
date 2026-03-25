@@ -195,6 +195,24 @@ model videos {
 
     @@index([country_id], map: "country_id")
     @@index([edition_id], map: "edition_id")
+    highlights highlights[] @relation(map: "fk_highlights_video")
+}
+
+model highlights {
+    id          Int       @id @default(autoincrement())
+    video_id    Int?
+    title       String    @db.VarChar(100)
+    description String    @db.Text
+    image_url   String?   @db.VarChar(255)
+    video_url   String?   @db.VarChar(255)
+    link_url    String?   @db.VarChar(255)
+    is_active   Boolean   @default(true)
+    created_at  DateTime  @default(now()) @db.DateTime(0)
+    updated_at  DateTime  @default(now()) @updatedAt @db.DateTime(0)
+    videos      videos?   @relation(fields: [video_id], references: [id], onDelete: SetNull, onUpdate: Cascade, map: "fk_highlights_video")
+
+    @@index([is_active, created_at], map: "idx_highlights_active_created")
+    @@index([video_id], map: "idx_highlights_video_id")
 }
 
 enum sponsors_type {
@@ -259,3 +277,4 @@ enum videos_production_type {
     ai_only
     EMPTY_ENUM_VALUE @map("")
 }
+
