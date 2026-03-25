@@ -1,6 +1,6 @@
 import { performance as perf } from 'node:perf_hooks';
 import { createServer, type Server, type RequestListener } from 'node:http';
-import { loadSettings } from './src/config/settings.js';
+import { loadSettings } from './src/config/settings.ts';
 import { startServer, gracefulShutdown } from './src/utils/server.util.ts';
 import app from './src/app.js';
 

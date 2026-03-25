@@ -1,5 +1,5 @@
 import { google } from 'googleapis';
-import { SETTINGS } from './settings.js';
+import { SETTINGS } from './settings.ts';
 
 /**
  * Get YouTube credentials from environment variables or settings object

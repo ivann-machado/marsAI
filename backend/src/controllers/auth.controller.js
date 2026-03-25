@@ -1,7 +1,7 @@
 import crypto from "node:crypto";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import prisma from "../config/prisma.config.js";
+import prisma from "../config/prisma.config.ts";
 import { JWT_SECRET, JWT_EXPIRES_IN, NODE_ENV, FRONTEND_URL } from "../config/index.ts";
 import { renderView } from "../utils/view.util.js";
 import { sendEmail } from "../services/brevo.service.js";

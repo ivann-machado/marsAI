@@ -1,4 +1,4 @@
-import BrevoClient from '../config/brevo.config.js';
+import BrevoClient from '../config/brevo.config.ts';
 import { NODE_ENV } from '../config/index.ts';
 
 /**

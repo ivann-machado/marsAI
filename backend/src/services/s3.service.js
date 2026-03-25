@@ -5,7 +5,7 @@ import {
 	ListObjectsV2Command,
 	HeadObjectCommand
 } from '@aws-sdk/client-s3';
-import bucket from '../config/s3.config.js';
+import bucket from '../config/s3.config.ts';
 import { NODE_ENV } from '../config/index.ts';
 
 /**

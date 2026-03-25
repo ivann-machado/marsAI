@@ -1,5 +1,5 @@
 import { Readable } from 'node:stream';
-import getYouTubeClient from '../config/youtube.config.js';
+import getYouTubeClient from '../config/youtube.config.ts';
 import { NODE_ENV } from '../config/index.ts';
 
 /**

@@ -1,5 +1,5 @@
 import type { Server } from "node:http";
-import prisma from "../config/prisma.config.js";
+import prisma from "../config/prisma.config.ts";
 import redis from "../config/redis.config.ts";
 
 /**
