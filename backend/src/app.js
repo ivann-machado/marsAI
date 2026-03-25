@@ -4,11 +4,11 @@ import helmet from "helmet";
 import morgan from "morgan";
 import rateLimit from "express-rate-limit";
 import debounce from "./middlewares/debounce.middleware.js";
-import { JWT_SECRET } from "./config/index.js";
-import CORS_OPTIONS from "./config/cors.config.js";
+import { JWT_SECRET } from "./config/index.ts";
+import CORS_OPTIONS from "./config/cors.config.ts";
 import jwt from "jsonwebtoken";
-import MORGAN_FORMAT from "./config/morgan.config.js";
-import HELMET_CONFIG from "./config/helmet.config.js";
+import MORGAN_FORMAT from "./config/morgan.config.ts";
+import HELMET_CONFIG from "./config/helmet.config.ts";
 // Routes imports
 import authRoutes from "./routes/auth.routes.js";
 import settingRoutes from "./routes/setting.routes.js";
@@ -84,7 +84,7 @@ app.use("/api/content", contentRoutes);
 // API Documentation
 if (process.env.NODE_ENV !== "production") {
 	const { default: swaggerUi } = await import("swagger-ui-express");
-	const { default: swaggerSpec } = await import("./config/swagger.config.js");
+	const { default: swaggerSpec } = await import("./config/swagger.config.ts");
 	app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 }
 
