@@ -7,7 +7,7 @@ function UploadPage(props) {
     <>
       <meta
         name="description"
-        content="Contain the form to register and upload a movie for the MarsAi festival"
+        content="Grâce au formulaire présent sur cette page, vous pourrez ajouter votre film parmi les concurrents du festival et peut-être figuré parmi les vainqueurs du concours !"
       />
       <Header />
       <main>
