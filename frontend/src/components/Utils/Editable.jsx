@@ -19,7 +19,9 @@ function Editable({ initialValue, content_key, language }) {
   };
 
   const onSave = async (value) => {
-    // console.log(content_key, value);
+    let newValues = JSON.parse(initialValue);
+    newValues[languages[language]] = value;
+    newValues = JSON.stringify(newValues);
     try {
       const response = await fetch(
         import.meta.env.VITE_API_URL + "/api/content/",
@@ -31,7 +33,7 @@ function Editable({ initialValue, content_key, language }) {
           },
           body: JSON.stringify({
             name: content_key,
-            value: value,
+            value: newValues,
           }),
         },
       );
@@ -46,10 +48,6 @@ function Editable({ initialValue, content_key, language }) {
   };
 
   useEffect(() => {
-    // console.log(initialValue);
-    // console.log(JSON.parse(initialValue));
-    console.log("lang", language);
-
     initialValue
       ? setValue(getValue(JSON.parse(initialValue), language))
       : null;
