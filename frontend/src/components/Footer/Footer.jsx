@@ -74,11 +74,15 @@ function Footer() {
           </p>
 
           <p className="text-gray-400 mb-8 leading-relaxed">
-            {language === "fr" && settings.footer_message_fr
-              ? settings.footer_message_fr
-              : language === "en" && settings.footer_message_en
-                ? settings.footer_message_en
-                : t("footer.footer_message")}
+            {settings.footer_message ? (
+              <Editable
+                initialValue={settings.footer_message}
+                language={language}
+                content_key="footer_message"
+              />
+            ) : (
+              t("footer.footer_message")
+            )}
           </p>
 
           <div className="flex">
@@ -237,13 +241,7 @@ function Footer() {
       {/* BOTTOM */}
       <div className="border-t border-gray-800 pt-6 text-center text-gray-500 text-sm">
         <p>
-          {language === "fr" ? (
-            <Editable
-              initialValue={settings.footer_bottom_message}
-              content_key="footer_bottom_message"
-              language={language}
-            />
-          ) : language === "en" && settings.footer_bottom_message_en ? (
+          {settings.footer_bottom_message ? (
             <Editable
               initialValue={settings.footer_bottom_message}
               content_key="footer_bottom_message"
