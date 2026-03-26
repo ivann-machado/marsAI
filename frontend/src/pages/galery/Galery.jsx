@@ -192,6 +192,7 @@ function Gallery() {
             </div>
           </div>
         </section>
+        
 
         {/* Filtres */}
         <section className="py-12 bg-[#0a0a0f] sticky top-0 z-7 border-b border-white/5 backdrop-blur-lg">
