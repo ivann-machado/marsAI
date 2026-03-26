@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import crypto from "node:crypto";
-import { JWT_SECRET } from "../config/index.js";
-import redis from "../config/redis.config.js";
+import { JWT_SECRET } from "../config/index.ts";
+import redis from "../config/redis.config.ts";
 
 /**
  * Verify token and attach user to request.

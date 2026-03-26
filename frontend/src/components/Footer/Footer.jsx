@@ -4,22 +4,28 @@ import twitterLogo from "../../assets/twitter.svg";
 import ytLogo from "../../assets/youtube.svg";
 import Loading from "../Utils/Loading";
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSettings } from "../../context/SettingsContext";
 import { Link } from "react-router-dom";
+import Editable from "../Utils/Editable";
 
 function Footer() {
   const { t, i18n } = useTranslation();
-  const language = i18n.language;
   const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterError, setNewsletterError] = useState(null);
   const [newsletterSuccess, setNewsletterSuccess] = useState(null);
   const settings = useSettings();
+  const [language, setLanguage] = useState(i18n.language);
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
+
+  useEffect(() => {
+    setLanguage(i18n.language);
+    console.log("effect", language);
+  }, [i18n.language]);
 
   const newsletterSubmit = async (e) => {
     e.preventDefault();
@@ -46,7 +52,7 @@ function Footer() {
 
         setNewsletterSuccess(t("footer.subscription_success"));
         const response = await res.json();
-        console.log(response);
+        //console.log(response);
       } catch (error) {
         console.error(error);
       }
@@ -58,8 +64,6 @@ function Footer() {
 
   if (!settings) return <Loading />;
 
-  //console.log(language);
-
   return (
     <footer className="bg-gray-900 text-gray-300 w-full px-6 py-20">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-16 mb-20">
@@ -70,11 +74,15 @@ function Footer() {
           </p>
 
           <p className="text-gray-400 mb-8 leading-relaxed">
-            {language === "fr" && settings.footer_message_fr
-              ? settings.footer_message_fr
-              : language === "en" && settings.footer_message_en
-                ? settings.footer_message_en
-                : t("footer.footer_message")}
+            {settings.footer_message ? (
+              <Editable
+                initialValue={settings.footer_message}
+                language={language}
+                content_key="footer_message"
+              />
+            ) : (
+              t("footer.footer_message")
+            )}
           </p>
 
           <div className="flex">
@@ -233,11 +241,15 @@ function Footer() {
       {/* BOTTOM */}
       <div className="border-t border-gray-800 pt-6 text-center text-gray-500 text-sm">
         <p>
-          {language === "fr" && settings.footer_bottom_message_fr
-            ? settings.footer_bottom_message_fr
-            : language === "en" && settings.footer_bottom_message_en
-              ? settings.footer_bottom_message_en
-              : t("footer.bottom_message")}
+          {settings.footer_bottom_message ? (
+            <Editable
+              initialValue={settings.footer_bottom_message}
+              content_key="footer_bottom_message"
+              language={language}
+            />
+          ) : (
+            t("footer.bottom_message")
+          )}
         </p>
       </div>
     </footer>
