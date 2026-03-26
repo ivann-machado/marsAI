@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
 import { useTranslation } from "react-i18next";
+
 import { useSettings } from "../../context/SettingsContext";
+import Editable from "../../components/Utils/Editable";
 
 const btn =
   "font-inter font-semibold text-sm tracking-wider uppercase rounded-full transition-all duration-300";
@@ -16,7 +18,7 @@ const h2Style =
   "font-orbitron font-black text-[clamp(36px,6vw,64px)] leading-tight mb-6 text-white";
 
 function Homepage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const settings = useSettings();
   const [scrollY, setScrollY] = useState(0);
   const [timeLeft, setTimeLeft] = useState({
@@ -109,7 +111,15 @@ function Homepage() {
             <div
               className={`${badge} bg-white/10 border border-white/20 text-white mb-8`}
             >
-              {t("homepage.hero_badge")}
+              {settings.homepage_hero_badge ? (
+                <Editable
+                  initialValue={settings.homepage_hero_badge}
+                  contentKey={"homepage_hero_badge"}
+                  language={i18n.language}
+                />
+              ) : (
+                t("homepage.hero_badge")
+              )}
             </div>
             <h1 className="font-orbitron font-black text-[clamp(60px,12vw,140px)] leading-[0.9] mb-5 tracking-[-2px] uppercase">
               <span className="bg-gradient-to-br from-white to-[#e0e0ff] bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(168,85,247,0.5)]">
