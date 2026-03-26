@@ -1,15 +1,25 @@
 import { useEffect, useState } from "react";
 import { useFlash } from "../../context/FlashContext";
 import { useauth } from "../../context/AuthContext";
+const languages = { fr: 0, en: 1 };
 
-function Editable({ initialValue, content_key }) {
+function Editable({ initialValue, content_key, language }) {
   const [value, setValue] = useState("");
   const [editing, setEditing] = useState(false);
   const authToken = useauth();
   const { showFlash } = useFlash();
 
+  const isAdmin = window.location.host.split(".")[0] == "admin";
+
+  const getValue = (values, language) => {
+    // console.log(languages, language);
+    if (languages.hasOwnProperty(language))
+      return values[languages[language]] ?? "";
+    return "";
+  };
+
   const onSave = async (value) => {
-    console.log(content_key, value);
+    // console.log(content_key, value);
     try {
       const response = await fetch(
         import.meta.env.VITE_API_URL + "/api/content/",
@@ -36,15 +46,21 @@ function Editable({ initialValue, content_key }) {
   };
 
   useEffect(() => {
-    initialValue ? setValue(initialValue) : null;
-  }, [initialValue]);
+    // console.log(initialValue);
+    // console.log(JSON.parse(initialValue));
+    console.log("lang", language);
+
+    initialValue
+      ? setValue(getValue(JSON.parse(initialValue), language))
+      : null;
+  }, [initialValue, language]);
 
   const handleBlur = () => {
     setEditing(false);
     onSave(value);
   };
 
-  return editing ? (
+  return editing && isAdmin ? (
     <input
       value={value}
       onChange={(e) => setValue(e.target.value)}
@@ -55,10 +71,12 @@ function Editable({ initialValue, content_key }) {
       }}
       autoFocus
     />
-  ) : (
+  ) : isAdmin ? (
     <span onClick={() => setEditing(true)} style={{ cursor: "pointer" }}>
       {value || "Click to edit"}
     </span>
+  ) : (
+    <span>{value}</span>
   );
 }
 

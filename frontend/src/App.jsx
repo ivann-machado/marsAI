@@ -137,7 +137,7 @@ function App() {
               }
             />
             <Route
-              path="/edit/:nom_page"
+              path="/edit/:page"
               element={
                 <ProtectedRoute requiredRole={"superadmin"}>
                   <AdminEdit />

@@ -64,8 +64,6 @@ function Footer() {
 
   if (!settings) return <Loading />;
 
-  //console.log("langue courante", language);
-
   return (
     <footer className="bg-gray-900 text-gray-300 w-full px-6 py-20">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-16 mb-20">
@@ -241,13 +239,15 @@ function Footer() {
         <p>
           {language === "fr" ? (
             <Editable
-              initialValue={language}
-              content_key="footer_bottom_message_fr"
+              initialValue={settings.footer_bottom_message}
+              content_key="footer_bottom_message"
+              language={language}
             />
           ) : language === "en" && settings.footer_bottom_message_en ? (
             <Editable
-              initialValue={language}
-              content_key="footer_bottom_message_en"
+              initialValue={settings.footer_bottom_message}
+              content_key="footer_bottom_message"
+              language={language}
             />
           ) : (
             t("footer.bottom_message")
