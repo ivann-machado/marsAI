@@ -24,7 +24,6 @@ function Footer() {
 
   useEffect(() => {
     setLanguage(i18n.language);
-    console.log("effect", language);
   }, [i18n.language]);
 
   const newsletterSubmit = async (e) => {
@@ -52,7 +51,6 @@ function Footer() {
 
         setNewsletterSuccess(t("footer.subscription_success"));
         const response = await res.json();
-        //console.log(response);
       } catch (error) {
         console.error(error);
       }
@@ -78,7 +76,7 @@ function Footer() {
               <Editable
                 initialValue={settings.footer_message}
                 language={language}
-                content_key="footer_message"
+                contentKey="footer_message"
               />
             ) : (
               t("footer.footer_message")
@@ -244,7 +242,7 @@ function Footer() {
           {settings.footer_bottom_message ? (
             <Editable
               initialValue={settings.footer_bottom_message}
-              content_key="footer_bottom_message"
+              contentKey="footer_bottom_message"
               language={language}
             />
           ) : (
