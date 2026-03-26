@@ -41,9 +41,11 @@ function AdminEdit() {
           </Link>
           <button
             onClick={toggleLanguage}
-            className="relative flex items-center gap-1 px-3 py-2 rounded-full bg-white border border-white/10 hover:bg-white/10 transition-all"
+            className="relative flex items-center gap-1 px-3 py-2 rounded-full bg-gray-900 border border-white/10 hover:bg-white/10 transition-all"
             aria-label="Toggle language"
-          ></button>
+          >
+            Language
+          </button>
         </nav>
 
         {page === "homepage" ? <Homepage /> : null}
