@@ -5,6 +5,10 @@ import UploadForm from "../components/Upload_Form/Upload_Form";
 function UploadPage(props) {
   return (
     <>
+      <meta
+        name="description"
+        content="Contain the form to register and upload a movie for the MarsAi festival"
+      />
       <Header />
       <main>
         <UploadForm />
