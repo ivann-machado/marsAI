@@ -55,6 +55,10 @@ function Event() {
 
   return (
     <>
+      <meta
+        name="description"
+        content="Sur notre page évènements vous pourrez consulter tout les ateliers et interventions prévus pendant le festival, et vous pourrez si vous le souhaiter vous y inscrire"
+      />
       <Header />
       <div
         className="absolute inset-0"

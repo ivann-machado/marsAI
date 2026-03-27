@@ -22,6 +22,7 @@ import juryRoutes from "./routes/jury.routes.js";
 import sponsorRoutes from "./routes/sponsor.routes.js";
 import reviewRoutes from "./routes/review.routes.js";
 import prizedRoutes from "./routes/prized.routes.js";
+import highlightRoutes from "./routes/highlight.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 
 const app = express();
@@ -76,6 +77,7 @@ app.use("/api/jury", juryRoutes);
 app.use("/api/sponsors", sponsorRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/prized-videos", prizedRoutes);
+app.use("/api/highlights", highlightRoutes);
 // Protected routes
 app.use("/api/admins", adminRoutes);
 app.use("/api/settings", settingRoutes);

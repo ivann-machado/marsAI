@@ -118,7 +118,7 @@ function Gallery() {
       (category === "all" || f.category === category) &&
       (!search ||
         [f.title, f.director, f.country, f.description].some((s) =>
-          s.toLowerCase().includes(q),
+          (s || "").toLowerCase().includes(q),
         ))
     );
   }).sort((a, b) => {
@@ -151,6 +151,10 @@ function Gallery() {
   // if (FILMS) console.log(FILMS);
   return (
     <>
+      <meta
+        name="description"
+        content="Dans notre gallerie vous pourrez regarder tous les films qui ont été sélectionnés durant le festival aisément grâce à un système de filtrage et de recherche efficace"
+      />
       <Header />
       <div className="w-full overflow-hidden bg-[#050508] min-h-screen">
         {/* Hero */}
@@ -192,7 +196,6 @@ function Gallery() {
             </div>
           </div>
         </section>
-        
 
         {/* Filtres */}
         <section className="py-12 bg-[#0a0a0f] sticky top-0 z-7 border-b border-white/5 backdrop-blur-lg">

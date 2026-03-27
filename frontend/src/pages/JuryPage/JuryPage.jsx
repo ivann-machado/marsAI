@@ -35,6 +35,10 @@ function JuryPage() {
 
   return (
     <>
+      <meta
+        name="description"
+        content="Découvrez le jury composé pour sélectionner les meilleurs films du festival !"
+      />
       <Header />
       <div className="w-full min-h-screen text-white py-8 bg-[#050508] pt-30 font-inter">
         <div

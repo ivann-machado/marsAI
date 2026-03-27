@@ -121,6 +121,10 @@ function Contact() {
 
   return (
     <>
+      <meta
+        name="description"
+        content="Sur notre page Contact, vous pourrez nous envoyer vos question et impression via un court formulaire"
+      />
       <Header />
       <div
         className="absolute inset-0 pointer-events-none"
