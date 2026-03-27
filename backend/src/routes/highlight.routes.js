@@ -1,14 +1,16 @@
 import {
 	getHighlights,
-	getHighlightById, 
+	getHighlightById,
 	createHighlight,
 	setHighlight,
 	removeHighlight,
 } from "../controllers/highlight.controller.js";
-import { cache, clearCache } from "../middleware/cache.middleware.js";
-import { verifyToken } from "../middleware/auth.middleware.js";
-import { requireSuperAdmin } from "../middleware/role.middleware.js";
-import { validate } from "../middleware/validate.middleware.js";
+import { cache, clearCache } from "../middlewares/cache.middleware.js";
+import {
+	verifyToken,
+	requireSuperAdmin,
+} from "../middlewares/auth.middleware.js";
+import { validate } from "../middlewares/validate.middleware.js";
 import {
 	CreateHighlightSchema,
 	UpdateHighlightSchema,
