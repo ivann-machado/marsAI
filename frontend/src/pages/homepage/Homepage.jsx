@@ -304,7 +304,7 @@ function Homepage() {
                 t("homepage.objectives_title")
               )}{" "}
               <span className="text-[#ec4899] drop-shadow-[0_0_20px_rgba(236,72,153,0.5)]">
-                {settings.homepage_objectives_title_hightlight ? (
+                {settings.homepage_objectives_title_highlight ? (
                   <Editable
                     initialValue={settings.homepage_objectives_title_highlight}
                     contentKey={"homepage_objectives_title_highlight"}
