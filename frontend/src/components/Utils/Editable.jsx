@@ -3,7 +3,7 @@ import { useFlash } from "../../context/FlashContext";
 import { useauth } from "../../context/AuthContext";
 const languages = { fr: 0, en: 1 };
 
-function Editable({ initialValue, content_key, language }) {
+function Editable({ initialValue, contentKey, language }) {
   const [value, setValue] = useState("");
   const [editing, setEditing] = useState(false);
   const authToken = useauth();
@@ -12,7 +12,6 @@ function Editable({ initialValue, content_key, language }) {
   const isAdmin = window.location.host.split(".")[0] == "admin";
 
   const getValue = (values, language) => {
-    // console.log(languages, language);
     if (languages.hasOwnProperty(language))
       return values[languages[language]] ?? "";
     return "";
@@ -32,7 +31,7 @@ function Editable({ initialValue, content_key, language }) {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            name: content_key,
+            name: contentKey,
             value: newValues,
           }),
         },

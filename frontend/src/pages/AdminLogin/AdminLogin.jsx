@@ -103,9 +103,10 @@ function AdminLogin() {
           }}
         ></input>
         <input
-          type="submit"
+          type="button"
           value={t("admin_login.submit")}
           className="bg-white text-black p-2 rounded-xl hover:bg-gray-300 hover:ring-2 hover:ring-purple-500 transition-colors duration-400"
+          onClick={(e) => submitLogin(e)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               submitLogin(e);

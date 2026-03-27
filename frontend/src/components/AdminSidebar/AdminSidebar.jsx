@@ -51,6 +51,9 @@ function AdminSidebar() {
         {userRole && userRole === "super_admin" ? (
           <SidebarButton link="/prizes" name={t("admin_sidebar.prizes")} />
         ) : null}
+        {userRole && userRole === "super_admin" ? (
+          <SidebarButton link="/edit/default" name="Edit Pages" />
+        ) : null}
         {userRole ? (
           <SidebarButton
             name={t("Logout")}
