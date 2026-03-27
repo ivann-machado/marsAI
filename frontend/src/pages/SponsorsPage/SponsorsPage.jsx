@@ -35,6 +35,10 @@ function SponsorsPage() {
 
   return (
     <>
+      <meta
+        name="description"
+        content="Retrouvez les Sponsors qui se sont associés avec nous druant le festival Mar AI"
+      />
       <Header />
       <div className="bg-gray-900 text-white font-inter">
         <OfficialSponsors sponsors={sponsors} />

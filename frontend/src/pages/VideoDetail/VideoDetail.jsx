@@ -53,6 +53,10 @@ function VideoDetail() {
 
   return (
     <>
+      <meta
+        name="description"
+        content="Le film vous intéresse ? Alors ses détails vous intéresseront sûrement encore plus !"
+      />
       <Header />
       <section
         className="w-full min-h-screen bg-[#050508] text-white py-20

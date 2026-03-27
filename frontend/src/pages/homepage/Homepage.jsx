@@ -55,6 +55,10 @@ function Homepage() {
 
   return (
     <>
+      <meta
+        name="description"
+        content="Bienvenue sur notre page d'accueil, ici vous pourrez commencer l'exploration de notre site présentant le festival MarsAi"
+      />
       <Header />
       <div className="w-full overflow-hidden bg-[#050508]">
         {/* Hero Section */}
