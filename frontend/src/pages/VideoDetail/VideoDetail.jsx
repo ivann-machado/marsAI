@@ -98,6 +98,7 @@ function VideoDetail() {
           <div className="flex md:mx-16">
             <img
               className="w-32 h-32 object-cover rounded-full m-4 shadow-lg"
+              alt={t("video_page.producer_image_alt")}
               src={video.producer_image}
             ></img>
 

@@ -5,7 +5,8 @@
     "country_of_origin": "Pays",
     "media_links": "Liens Media",
     "synopsis": "Synopsis",
-    "ai_used": "IA utilisées"
+    "ai_used": "IA utilisées",
+    "producer_image_alt": "Photo du réalisateur"
   },
 
   "footer": {
