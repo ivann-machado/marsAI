@@ -14,6 +14,7 @@ function Loading({ dashboard }) {
       <img
         src={marsaiLogo}
         alt="MARS AI"
+        loading="lazy"
         className="w-16 h-16 object-contain opacity-90"
       />
 
