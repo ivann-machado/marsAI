@@ -1,4 +1,4 @@
-import marsaiLogo from "../../assets/marsai-logo.png";
+import marsaiLogo from "../../assets/marsai-logo.webp";
 
 function Loading({ dashboard }) {
   return (
