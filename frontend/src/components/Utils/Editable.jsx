@@ -69,7 +69,7 @@ function Editable({ initialValue, contentKey, language }) {
       autoFocus
     />
   ) : isAdmin ? (
-    <span onClick={() => setEditing(true)} style={{ cursor: "pointer" }}>
+    <span onClick={() => setEditing(true)} className="cursor-zoom-in">
       {value || "Click to edit"}
     </span>
   ) : (
