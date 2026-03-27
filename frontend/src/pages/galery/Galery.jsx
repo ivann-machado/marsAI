@@ -118,7 +118,7 @@ function Gallery() {
       (category === "all" || f.category === category) &&
       (!search ||
         [f.title, f.director, f.country, f.description].some((s) =>
-          s.toLowerCase().includes(q),
+          (s || "").toLowerCase().includes(q),
         ))
     );
   }).sort((a, b) => {
