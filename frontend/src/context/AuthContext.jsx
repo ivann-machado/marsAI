@@ -96,9 +96,10 @@ export const AuthProvider = ({ children }) => {
       );
 
       if (!response.ok) {
-        showFlash("error", "Logout failed.");
+        //showFlash("error", "Logout failed.");
         //throw new Error("Erreur lors de la connexion");
-        return;
+        //return;
+        console.error("Logout Failed");
       }
 
       setId(null);

@@ -1,4 +1,5 @@
 import morgan from 'morgan';
+import type { Request, Response } from 'express';
 
 morgan.token('date-custom', () => {
 	const now = new Date();
@@ -12,15 +13,15 @@ morgan.token('date-custom', () => {
 	return `${dd}/${mm}/${yy} ${hh}:${min}:${ss}.${ms}`;
 });
 
-morgan.token('middleware-times', (req) => {
+morgan.token('middleware-times', (req: Request) => {
 	if (!req.middlewareTimes?.length) return '';
 	return '| ' + req.middlewareTimes
 		.map(m => `${m.isController ? 'C' : 'M'}${m.index}:${m.duration}ms`)
 		.join(', ');
 });
 
-morgan.format('dev-dated', (tokens, req, res) => {
-	const status = tokens.status(req, res);
+morgan.format('dev-dated', (tokens, req: Request, res: Response) => {
+	const status: number = Number(tokens.status(req, res));
 	const color = status >= 500 ? 31
 		: status >= 400 ? 33
 			: status >= 300 ? 36

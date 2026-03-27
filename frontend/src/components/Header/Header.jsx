@@ -80,6 +80,8 @@ function Header() {
 
   if (!settings) return <Loading />;
 
+  if (window.location.host.split(".")[0] == "admin") return <></>;
+
   return (
     <>
       <header

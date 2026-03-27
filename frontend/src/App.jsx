@@ -26,6 +26,7 @@ import AdminPrizes from "./pages/AdminPrizes/AdminPrizes.jsx";
 import Event from "./pages/Event/Event_page.jsx";
 import CguCgv from "./pages/CguCgv/CguCgv.jsx";
 import Faq from "./pages/Faq/Faq.jsx";
+import AdminEdit from "./pages/AdminEdit/AdminEdit.jsx";
 
 import NotFound from "./components/Utils/NotFound.jsx";
 import AdminRegister from "./pages/AdminRegister/AdminRegister.jsx";
@@ -141,6 +142,14 @@ function AppContent() {
 							</ProtectedRoute>
 						}
 					/>
+            <Route
+              path="/edit/:page"
+              element={
+                <ProtectedRoute requiredRole={"superadmin"}>
+                  <AdminEdit />
+                </ProtectedRoute>
+              }
+            />
 					<Route
 						path="*"
 						element={

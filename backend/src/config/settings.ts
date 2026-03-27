@@ -1,13 +1,18 @@
 import { selectAllSettings } from '../models/setting.model.js';
+export interface SettingValue {
+	value: string;
+	updatedAt: Date;
+}
+type SettingsMap = Record<string, { value: string; updatedAt: Date }>
 
-export let SETTINGS = {};
+type SettingRow = { name: string; value: string; updated_at: Date };
+export let SETTINGS: Record<string, SettingValue> = {};
 
 export const loadSettings = async () => {
 	try {
 		console.log("Loading settings from database...");
 		const settingsList = await selectAllSettings();
-
-		SETTINGS = settingsList.reduce((acc, setting) => {
+		SETTINGS = (settingsList as SettingRow[]).reduce<SettingsMap>((acc, setting) => {
 			acc[setting.name] = {
 				value: setting.value,
 				updatedAt: setting.updated_at

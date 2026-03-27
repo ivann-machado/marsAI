@@ -1,4 +1,3 @@
-// @ts-check
 const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : ['http://localhost:5173'];
 const ALLOWED_ORIGIN_URLS = ALLOWED_ORIGINS.map((origin) => {
 	try {
@@ -14,7 +13,7 @@ const ALLOWED_ORIGIN_URLS = ALLOWED_ORIGINS.map((origin) => {
  * @param {string} origin
  * @param {(err: Error | null, allow?: boolean) => void} callback - The CORS callback.
  */
-const checkOrigin = (origin, callback) => {
+const checkOrigin = (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
 	if (!origin) return callback(null, true);
 
 	if (ALLOWED_ORIGINS.includes(origin)) {

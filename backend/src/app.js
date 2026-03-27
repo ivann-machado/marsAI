@@ -4,11 +4,11 @@ import helmet from "helmet";
 import morgan from "morgan";
 import rateLimit from "express-rate-limit";
 import debounce from "./middlewares/debounce.middleware.js";
-import { JWT_SECRET } from "./config/index.js";
-import CORS_OPTIONS from "./config/cors.config.js";
+import { JWT_SECRET } from "./config/index.ts";
+import CORS_OPTIONS from "./config/cors.config.ts";
 import jwt from "jsonwebtoken";
-import MORGAN_FORMAT from "./config/morgan.config.js";
-import HELMET_CONFIG from "./config/helmet.config.js";
+import MORGAN_FORMAT from "./config/morgan.config.ts";
+import HELMET_CONFIG from "./config/helmet.config.ts";
 // Routes imports
 import authRoutes from "./routes/auth.routes.js";
 import settingRoutes from "./routes/setting.routes.js";
@@ -22,6 +22,7 @@ import juryRoutes from "./routes/jury.routes.js";
 import sponsorRoutes from "./routes/sponsor.routes.js";
 import reviewRoutes from "./routes/review.routes.js";
 import prizedRoutes from "./routes/prized.routes.js";
+import highlightRoutes from "./routes/highlight.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 
 const app = express();
@@ -76,6 +77,7 @@ app.use("/api/jury", juryRoutes);
 app.use("/api/sponsors", sponsorRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/prized-videos", prizedRoutes);
+app.use("/api/highlights", highlightRoutes);
 // Protected routes
 app.use("/api/admins", adminRoutes);
 app.use("/api/settings", settingRoutes);
@@ -84,7 +86,7 @@ app.use("/api/content", contentRoutes);
 // API Documentation
 if (process.env.NODE_ENV !== "production") {
 	const { default: swaggerUi } = await import("swagger-ui-express");
-	const { default: swaggerSpec } = await import("./config/swagger.config.js");
+	const { default: swaggerSpec } = await import("./config/swagger.config.ts");
 	app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 }
 

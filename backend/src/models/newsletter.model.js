@@ -1,4 +1,4 @@
-import prisma from "../config/prisma.config.js";
+import prisma from "../config/prisma.config.ts";
 
 /**
  * Add a new email to the newsletter list.

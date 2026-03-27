@@ -1,7 +1,7 @@
 import sharp from 'sharp';
 import path from 'node:path';
 import crypto from 'node:crypto';
-import { NODE_ENV } from '../config/index.js';
+import { NODE_ENV } from '../config/index.ts';
 
 /**
  * Convert an image buffer to WebP format
