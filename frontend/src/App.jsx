@@ -1,5 +1,4 @@
 import "./App.css";
-import { useEffect } from "react";
 import VideoDetail from "./pages/VideoDetail/VideoDetail.jsx";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Homepage from "./pages/homepage/Homepage.jsx";
@@ -32,116 +31,111 @@ import NotFound from "./components/Utils/NotFound.jsx";
 import AdminRegister from "./pages/AdminRegister/AdminRegister.jsx";
 import { useSettings } from "./context/SettingsContext.jsx";
 import Loading from "./components/Utils/Loading.jsx";
-import { initializeGA } from "./config/analytics.js";
-import { usePageTracking } from "./hooks/usePageTracking.js";
 
-function AppContent() {
-	usePageTracking();
-	const settings = useSettings();
-	const isAdmin = window.location.host.split(".")[0] == "admin";
+function App() {
+  const settings = useSettings();
+  const isAdmin = window.location.host.split(".")[0] == "admin";
 
-	if (settings === null) return <Loading />;
+  if (settings === null) return <Loading />;
 
-	/* PAGES ADMIN */
+  /* PAGES ADMIN */
 
-	return (
-		<Routes>
-			{isAdmin ? (
-				<>
-					<Route path="/login" element={<AdminLogin />} />
-					<Route
-						path="/register/:token"
-						element={<AdminRegister />}
-					/>
-					<Route path="/register" element={<AdminRegister />} />
-					<Route
-						path="/"
-						element={
-							<ProtectedRoute requiredRole={"admin"}>
-								<AdminDashboard />
-							</ProtectedRoute>
-						}
-					/>
-					<Route
-						path="/videos"
-						element={
-							<ProtectedRoute requiredRole={"admin"}>
-								<AdminVideos />
-							</ProtectedRoute>
-						}
-					/>
-					<Route
-						path="/reviews"
-						element={
-							<ProtectedRoute requiredRole={"admin"}>
-								<ReviewVideos />
-							</ProtectedRoute>
-						}
-					/>
-					<Route
-						path="/video/:id"
-						element={
-							<ProtectedRoute requiredRole={"admin"}>
-								<AdminVideo />
-							</ProtectedRoute>
-						}
-					/>
-					<Route
-						path="/users"
-						element={
-							<ProtectedRoute requiredRole={"superadmin"}>
-								<AdminUsers />
-							</ProtectedRoute>
-						}
-					/>
-					<Route
-						path="/events"
-						element={
-							<ProtectedRoute requiredRole={"superadmin"}>
-								<AdminEvents />
-							</ProtectedRoute>
-						}
-					/>
-					<Route
-						path="/settings"
-						element={
-							<ProtectedRoute requiredRole={"superadmin"}>
-								<AdminSettings />
-							</ProtectedRoute>
-						}
-					/>
-					<Route
-						path="/content"
-						element={
-							<ProtectedRoute requiredRole={"superadmin"}>
-								<AdminContent />
-							</ProtectedRoute>
-						}
-					/>
-					<Route
-						path="/jury"
-						element={
-							<ProtectedRoute requiredRole={"superadmin"}>
-								<AdminJury />
-							</ProtectedRoute>
-						}
-					/>
-					<Route
-						path="/partners"
-						element={
-							<ProtectedRoute requiredRole={"superadmin"}>
-								<AdminSponsors />
-							</ProtectedRoute>
-						}
-					/>
-					<Route
-						path="/prizes"
-						element={
-							<ProtectedRoute requiredRole={"superadmin"}>
-								<AdminPrizes />
-							</ProtectedRoute>
-						}
-					/>
+  return (
+    <BrowserRouter>
+      <Routes>
+        {isAdmin ? (
+          <>
+            <Route path="/login" element={<AdminLogin />} />
+            <Route path="/register/:token" element={<AdminRegister />} />
+            <Route path="/register" element={<AdminRegister />} />
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute requiredRole={"admin"}>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/videos"
+              element={
+                <ProtectedRoute requiredRole={"admin"}>
+                  <AdminVideos />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/reviews"
+              element={
+                <ProtectedRoute requiredRole={"admin"}>
+                  <ReviewVideos />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/video/:id"
+              element={
+                <ProtectedRoute requiredRole={"admin"}>
+                  <AdminVideo />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/users"
+              element={
+                <ProtectedRoute requiredRole={"superadmin"}>
+                  <AdminUsers />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/events"
+              element={
+                <ProtectedRoute requiredRole={"superadmin"}>
+                  <AdminEvents />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/settings"
+              element={
+                <ProtectedRoute requiredRole={"superadmin"}>
+                  <AdminSettings />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/content"
+              element={
+                <ProtectedRoute requiredRole={"superadmin"}>
+                  <AdminContent />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/jury"
+              element={
+                <ProtectedRoute requiredRole={"superadmin"}>
+                  <AdminJury />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/partners"
+              element={
+                <ProtectedRoute requiredRole={"superadmin"}>
+                  <AdminSponsors />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/prizes"
+              element={
+                <ProtectedRoute requiredRole={"superadmin"}>
+                  <AdminPrizes />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/edit/:page"
               element={
@@ -150,72 +144,61 @@ function AppContent() {
                 </ProtectedRoute>
               }
             />
-					<Route
-						path="*"
-						element={
-							<ProtectedRoute requiredRole={"admin"}>
-								<AdminDashboard />
-							</ProtectedRoute>
-						}
-					/>
-				</>
-			) : settings.phase === "1" ? (
-				<>
-					<Route path="/" element={<Homepage />} />
-					{/* <Route path="/video/:videoId" element={<VideoDetail />} /> */}
-					{/* <Route path="/gallery" element={<Gallery />} /> */}
-					<Route path="/participate" element={<UploadPage />} />
-					<Route path="/contact" element={<Contact />} />
-					<Route path="/jury" element={<JuryPage />} />
-					<Route path="/partners" element={<SponsorsPage />} />
-					<Route path="/Event" element={<Event />} />
-					<Route path="/CguCgv" element={<CguCgv />} />
-					<Route path="/Faq" element={<Faq />} />
-					<Route path="*" element={<NotFound />}></Route>
-				</>
-			) : settings.phase === "2" ? (
-				<>
-					<Route path="/" element={<HomepagePhase2 />} />
-					<Route path="/video/:videoId" element={<VideoDetail />} />
-					<Route path="/gallery" element={<Gallery />} />
-					{/* <Route path="/participate" element={<UploadPage />} /> */}
-					<Route path="/contact" element={<Contact />} />
-					<Route path="/jury" element={<JuryPage />} />
-					<Route path="/partners" element={<SponsorsPage />} />
-					<Route path="/Event" element={<Event />} />
-					<Route path="/CguCgv" element={<CguCgv />} />
-					<Route path="/Faq" element={<Faq />} />
-					<Route path="*" element={<NotFound />}></Route>
-				</>
-			) : (
-				<>
-					<Route path="/" element={<HomepagePhase3 />} />
-					<Route path="/video/:videoId" element={<VideoDetail />} />
-					<Route path="/gallery" element={<Gallery />} />
-					{/* <Route path="/participate" element={<UploadPage />} /> */}
-					<Route path="/contact" element={<Contact />} />
-					<Route path="/jury" element={<JuryPage />} />
-					<Route path="/partners" element={<SponsorsPage />} />
-					<Route path="/Event" element={<Event />} />
-					<Route path="/CguCgv" element={<CguCgv />} />
-					<Route path="/Faq" element={<Faq />} />
-					<Route path="*" element={<NotFound />}></Route>
-				</>
-			)}
-		</Routes>
-	);
-}
-
-function App() {
-	useEffect(() => {
-		initializeGA();
-	}, []);
-
-	return (
-		<BrowserRouter>
-			<AppContent />
-		</BrowserRouter>
-	);
+            <Route
+              path="*"
+              element={
+                <ProtectedRoute requiredRole={"admin"}>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
+          </>
+        ) : settings.phase === "1" ? (
+          <>
+            <Route path="/" element={<Homepage />} />
+            {/* <Route path="/video/:videoId" element={<VideoDetail />} /> */}
+            {/* <Route path="/gallery" element={<Gallery />} /> */}
+            <Route path="/participate" element={<UploadPage />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/jury" element={<JuryPage />} />
+            <Route path="/partners" element={<SponsorsPage />} />
+            <Route path="/Event" element={<Event />} />
+            <Route path="/CguCgv" element={<CguCgv />} />
+            <Route path="/Faq" element={<Faq />} />
+            <Route path="*" element={<NotFound />}></Route>
+          </>
+        ) : settings.phase === "2" ? (
+          <>
+            <Route path="/" element={<HomepagePhase2 />} />
+            <Route path="/video/:videoId" element={<VideoDetail />} />
+            <Route path="/gallery" element={<Gallery />} />
+            {/* <Route path="/participate" element={<UploadPage />} /> */}
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/jury" element={<JuryPage />} />
+            <Route path="/partners" element={<SponsorsPage />} />
+            <Route path="/Event" element={<Event />} />
+            <Route path="/CguCgv" element={<CguCgv />} />
+            <Route path="/Faq" element={<Faq />} />
+            <Route path="*" element={<NotFound />}></Route>
+          </>
+        ) : (
+          <>
+            <Route path="/" element={<HomepagePhase3 />} />
+            <Route path="/video/:videoId" element={<VideoDetail />} />
+            <Route path="/gallery" element={<Gallery />} />
+            {/* <Route path="/participate" element={<UploadPage />} /> */}
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/jury" element={<JuryPage />} />
+            <Route path="/partners" element={<SponsorsPage />} />
+            <Route path="/Event" element={<Event />} />
+            <Route path="/CguCgv" element={<CguCgv />} />
+            <Route path="/Faq" element={<Faq />} />
+            <Route path="*" element={<NotFound />}></Route>
+          </>
+        )}
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;
