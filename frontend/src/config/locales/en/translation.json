@@ -373,7 +373,8 @@
     "gallery_filter_year": "Year",
     "gallery_filter_country": "Country",
     "gallery_watch_film": "WATCH",
-    "gallery_all_movie": "ALL FILMS"
+    "gallery_all_movie": "ALL FILMS",
+    "gallery_film_selected": "Selected Film"
   },
 
   "page_contact": {

@@ -308,7 +308,8 @@ function Gallery() {
                 </Link>
                 <div className="w-full lg:w-1/3 space-y-6">
                   <span className="text-[#a855f7] text-sm font-inter font-semibold uppercase tracking-wider">
-                    Film sélectionné • {filmIndex + 1}/{films.length}
+                    {t("gallery.gallery_film_selected")} • {filmIndex + 1}/
+                    {films.length}
                   </span>
                   <h2 className="font-orbitron font-black text-4xl lg:text-5xl text-white leading-tight">
                     {film.title}
