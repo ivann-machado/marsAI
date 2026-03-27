@@ -83,6 +83,10 @@ function Faq() {
 
   return (
     <>
+      <meta
+        name="description"
+        content="Vous avez une question ou une interrogation ? Alors n'attendez plus, notre Foire aux Questions est là pour ça !"
+      />
       <Header />
 
       <main className="w-full bg-[#050508] text-white overflow-hidden">
