@@ -1076,7 +1076,7 @@ function Homepage() {
 
                   <div className="relative z-10">
                     <div
-                      className={`font-orbitron font-black text-[clamp(40px,6vw,70px)] mb-2 bg-gradient-to-br ${stat.colors} bg-clip-text text-transparent`}
+                      className={`font-orbitron font-black text-[clamp(10px,6vw,70px)] mb-2 bg-gradient-to-br ${stat.colors} bg-clip-text text-transparent`}
                     >
                       {stat.number}
                     </div>
@@ -1098,7 +1098,15 @@ function Homepage() {
           <div className={container}>
             <div className="text-center">
               <p className="text-[#d1d5db] text-lg mb-6">
-                {t("homepage.partners_link_text")}
+                {settings.homepage_partners_link_text ? (
+                  <Editable
+                    initialValue={settings.homepage_partners_link_text}
+                    contentKey={"homepage_partners_link_text"}
+                    language={i18n.language}
+                  />
+                ) : (
+                  t("homepage.partners_link_text")
+                )}
               </p>
               <Link
                 to="/partners"
