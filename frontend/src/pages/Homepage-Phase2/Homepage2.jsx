@@ -4,6 +4,7 @@ import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import { useSettings } from "../../context/SettingsContext";
 import { Link } from "react-router-dom";
+import Editable from "../../components/Utils/Editable";
 
 const btn =
   "font-inter font-semibold text-sm tracking-wider uppercase rounded-full transition-all duration-300";
@@ -15,7 +16,7 @@ const container = "max-w-7xl mx-auto px-10";
 const h2Style =
   "font-orbitron font-black text-[clamp(36px,6vw,64px)] leading-tight mb-6 text-white";
 
-const stats = [
+let stats = [
   {
     number: "3,247",
     labelKey: "homepage.phase2_visitors",
@@ -44,7 +45,7 @@ let films = [
   { title: "CYBER\nMARSEILLE", country: "France" },
 ];
 
-const socials = [
+let socials = [
   {
     name: "Instagram",
     handle: "@marsai.festival",
@@ -66,7 +67,7 @@ let MAPS_URL =
   "https://www.google.com/maps/place/École+La+Plateforme_+Marseille+-+Entrée+Sud/@43.3141763,5.3662017,17z";
 
 function HomepagePhase2() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const settings = useSettings();
   const [scrollY, setScrollY] = useState(0);
   const [timeLeft, setTimeLeft] = useState({
@@ -75,6 +76,12 @@ function HomepagePhase2() {
     minutes: 0,
     seconds: 0,
   });
+
+  // LOAD SETTINGS
+  useEffect(() => {
+    if (settings.phase2_stats) stats = JSON.parse(settings.phase2_stats);
+    if (settings.phase2_socials) socials = JSON.parse(settings.phase2_socials);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -172,15 +179,47 @@ function HomepagePhase2() {
             </h1>
 
             <p className="font-orbitron font-semibold text-[clamp(20px,3vw,36px)] mb-6 text-white">
-              {t("homepage.phase2_event_ongoing")}{" "}
+              {settings.homepage_phase2_event_ongoing ? (
+                <Editable
+                  initialValue={settings.homepage_phase2_event_ongoing}
+                  contentKey={"homepage_phase2_event_ongoing"}
+                  language={i18n.language}
+                />
+              ) : (
+                t("homepage.phase2_event_ongoing")
+              )}{" "}
               <span className="text-[#10b981]">
-                {t("homepage.phase2_event_ongoing_status")}
+                {settings.homepage_phase2_event_ongoing_status ? (
+                  <Editable
+                    initialValue={settings.homepage_phase2_event_ongoing_status}
+                    contentKey={"homepage_phase2_event_ongoing_status"}
+                    language={i18n.language}
+                  />
+                ) : (
+                  t("homepage.phase2_event_ongoing_status")
+                )}
               </span>
             </p>
             <p className="text-[clamp(14px,2vw,18px)] text-[#a0a0b8] mb-3 max-w-3xl mx-auto">
-              {t("homepage.phase2_hero_description")}
+              {settings.homepage_phase2_hero_description ? (
+                <Editable
+                  initialValue={settings.homepage_phase2_hero_description}
+                  contentKey={"homepage_phase2_hero_description"}
+                  language={i18n.language}
+                />
+              ) : (
+                t("homepage.phase2_hero_description")
+              )}
               <br />
-              {t("homepage.phase2_hero_description_2")}
+              {settings.homepage_phase2_hero_description_2 ? (
+                <Editable
+                  initialValue={settings.homepage_phase2_hero_description_2}
+                  contentKey={"homepage_phase2_hero_description_2"}
+                  language={i18n.language}
+                />
+              ) : (
+                t("homepage.phase2_hero_description_2")
+              )}
             </p>
 
             <div className="flex gap-5 justify-center flex-wrap mt-12">
@@ -237,19 +276,59 @@ function HomepagePhase2() {
             <div
               className={`${badge} bg-[#ec4899]/20 border border-[#ec4899]/50 text-[#ec4899] mb-8`}
             >
-              {t("homepage.phase2_closing_ceremony")}
+              {settings.homepage_phase2_closing_ceremony ? (
+                <Editable
+                  initialValue={settings.homepage_phase2_closing_ceremony}
+                  contentKey={"homepage_phase2_closing_ceremony"}
+                  language={i18n.language}
+                />
+              ) : (
+                t("homepage.phase2_closing_ceremony")
+              )}
             </div>
             <h2 className="font-orbitron font-black text-[clamp(32px,6vw,56px)] leading-tight mb-6 text-white">
-              {t("homepage.night_title")}{" "}
+              {settings.homepage_night_title ? (
+                <Editable
+                  initialValue={settings.homepage_night_title}
+                  contentKey={"homepage_night_title"}
+                  language={i18n.language}
+                />
+              ) : (
+                t("homepage.night_title")
+              )}{" "}
               <span className="text-[#ec4899]">
-                {t("homepage.night_title_highlight")}
+                {settings.homepage_night_title_highlight ? (
+                  <Editable
+                    initialValue={settings.homepage_night_title_highlight}
+                    contentKey={"homepage_night_title_highlight"}
+                    language={i18n.language}
+                  />
+                ) : (
+                  t("homepage.night_title_highlight")
+                )}
               </span>
             </h2>
             <p className="text-[#a0a0b8] text-lg mb-12 max-w-2xl mx-auto">
-              {t("homepage.phase2_night_description")}
+              {settings.homepage_phase2_night_description ? (
+                <Editable
+                  initialValue={settings.homepage_phase2_night_description}
+                  contentKey={"homepage_phase2_night_description"}
+                  language={i18n.language}
+                />
+              ) : (
+                t("homepage.phase2_night_description")
+              )}
               <br />
               <span className="text-white font-semibold">
-                {t("homepage.phase2_night_date")}
+                {settings.homepage_phase2_night_date ? (
+                  <Editable
+                    initialValue={settings.homepage_phase2_night_date}
+                    contentKey={"homepage_phase2_night_date"}
+                    language={i18n.language}
+                  />
+                ) : (
+                  t("homepage.phase2_night_date")
+                )}
               </span>
             </p>
 
@@ -280,19 +359,65 @@ function HomepagePhase2() {
               <div
                 className={`${badge} bg-[#a855f7]/20 border border-[#a855f7]/50 text-[#a855f7] mb-6`}
               >
-                {t("homepage.phase2_finalists")}
+                {settings.homepage_phase2_finalists ? (
+                  <Editable
+                    initialValue={settings.homepage_phase2_finalists}
+                    contentKey={"homepage_phase2_finalists"}
+                    language={i18n.language}
+                  />
+                ) : (
+                  t("homepage.phase2_finalists")
+                )}
               </div>
               <h2 className={h2Style}>
-                {t("homepage.phase2_official_selection")}
+                {settings.homepage_phase2_official_selection ? (
+                  <Editable
+                    initialValue={settings.homepage_phase2_official_selection}
+                    contentKey={"homepage_phase2_official_selection"}
+                    language={i18n.language}
+                  />
+                ) : (
+                  t("homepage.phase2_official_selection")
+                )}
                 <br />
                 <span className="text-[#a855f7] drop-shadow-[0_0_20px_rgba(168,85,247,0.5)]">
-                  {t("homepage.phase2_official_selection_year")}
+                  {settings.homepage_phase2_official_selection_year ? (
+                    <Editable
+                      initialValue={
+                        settings.homepage_phase2_official_selection_year
+                      }
+                      contentKey={"homepage_phase2_official_selection_year"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.phase2_official_selection_year")
+                  )}
                 </span>
               </h2>
               <p className="text-[#a0a0b8] text-lg max-w-3xl mx-auto">
-                {t("homepage.phase2_selection_description")}
+                {settings.homepage_phase2_selection_description ? (
+                  <Editable
+                    initialValue={
+                      settings.homepage_phase2_selection_description
+                    }
+                    contentKey={"homepage_phase2_selection_description"}
+                    language={i18n.language}
+                  />
+                ) : (
+                  t("homepage.phase2_selection_description")
+                )}
                 <br />
-                {t("homepage.phase2_selection_description_2")}
+                {settings.homepage_phase2_selection_description_2 ? (
+                  <Editable
+                    initialValue={
+                      settings.homepage_phase2_selection_description_2
+                    }
+                    contentKey={"homepage_phase2_selection_description_2"}
+                    language={i18n.language}
+                  />
+                ) : (
+                  t("homepage.phase2_selection_description_2")
+                )}
               </p>
             </div>
 
@@ -341,26 +466,94 @@ function HomepagePhase2() {
         <section className="py-32 bg-[#0a0a0f]">
           <div className={container}>
             <h2 className={`${h2Style} text-center mb-16`}>
-              {t("homepage.phase2_practical_info")}
+              {settings.homepage_phase2_practical_info ? (
+                <Editable
+                  initialValue={settings.homepage_phase2_practical_info}
+                  contentKey={"homepage_phase2_practical_info"}
+                  language={i18n.language}
+                />
+              ) : (
+                t("homepage.phase2_practical_info")
+              )}
               <br />
               <span className="text-[#3b82f6] drop-shadow-[0_0_20px_rgba(59,130,246,0.5)]">
-                {t("homepage.phase2_practical_info_2")}
+                {settings.homepage_phase2_practical_info_2 ? (
+                  <Editable
+                    initialValue={settings.homepage_phase2_practical_info_2}
+                    contentKey={"homepage_phase2_practical_info_2"}
+                    language={i18n.language}
+                  />
+                ) : (
+                  t("homepage.phase2_practical_info_2")
+                )}
               </span>
             </h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
               <div className={`${card} p-10 border-white/5`}>
                 <h3 className="font-orbitron font-bold text-2xl mb-6 text-[#3b82f6]">
-                  {t("homepage.phase2_platform")}
+                  {settings.homepage_phase2_platform ? (
+                    <Editable
+                      initialValue={settings.homepage_phase2_platform}
+                      contentKey={"homepage_phase2_platform"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.phase2_platform")
+                  )}
                 </h3>
                 <div className="space-y-4 text-[#a0a0b8]">
-                  {[
+                  {/*  {[
                     "homepage.phase2_address",
                     "homepage.phase2_tram",
                     "homepage.phase2_parking",
                     "homepage.phase2_accessibility",
                   ].map((k) => (
                     <p key={k}>{t(k)}</p>
-                  ))}
+                  ))} */}
+                  <p>
+                    {settings.homepage_phase2_address ? (
+                      <Editable
+                        initialValue={settings.homepage_phase2_address}
+                        contentKey={"homepage_phase2_address"}
+                        language={i18n.language}
+                      />
+                    ) : (
+                      t("homepage.phase2_address")
+                    )}
+                  </p>
+                  <p>
+                    {settings.homepage_phase2_tram ? (
+                      <Editable
+                        initialValue={settings.homepage_phase2_tram}
+                        contentKey={"homepage_phase2_tram"}
+                        language={i18n.language}
+                      />
+                    ) : (
+                      t("homepage.phase2_tram")
+                    )}
+                  </p>
+                  <p>
+                    {settings.homepage_phase2_parking ? (
+                      <Editable
+                        initialValue={settings.homepage_phase2_parking}
+                        contentKey={"homepage_phase2_parking"}
+                        language={i18n.language}
+                      />
+                    ) : (
+                      t("homepage.phase2_parking")
+                    )}
+                  </p>
+                  <p>
+                    {settings.homepage_phase2_accessibility ? (
+                      <Editable
+                        initialValue={settings.homepage_phase2_accessibility}
+                        contentKey={"homepage_phase2_accessibility"}
+                        language={i18n.language}
+                      />
+                    ) : (
+                      t("homepage.phase2_accessibility")
+                    )}
+                  </p>
                 </div>
                 <div className="mt-6 flex flex-col gap-4">
                   <div className="w-full rounded-3xl overflow-hidden border border-[#3b82f6]/30">
@@ -386,7 +579,7 @@ function HomepagePhase2() {
                 </div>
               </div>
               <div className="space-y-6">
-                {[
+                {/*  {[
                   {
                     titleKey: "homepage.venue_room_1_title",
                     descKey: "homepage.phase2_sugar_hall_desc",
@@ -409,19 +602,135 @@ function HomepagePhase2() {
                     bg: "bg-gradient-to-r from-[#a855f7]/20 to-[#ec4899]/20 rounded-3xl border border-[#a855f7]/30",
                   },
                 ].map((r, i) => (
-                  <div key={i} className={`${r.bg} p-8`}>
+                  <div key={i} className={`${card} border-white/5 `}>
                     <h4
-                      className={`font-orbitron font-bold text-xl mb-3 ${r.color}`}
+                      className={`font-orbitron font-bold text-xl mb-3 text-[#10b981]`}
                     >
-                      {t(r.titleKey)}
+                      {t("homepage.venue_room_1_title")}
                     </h4>
                     <p className="text-sm text-[#a0a0b8] leading-relaxed">
-                      {t(r.descKey)}
+                      {t("homepage.phase2_sugar_hall_desc")}
                       <br />
-                      {t(r.capKey)}
+                      {t("homepage.phase2_sugar_hall_capacity")}
                     </p>
                   </div>
-                ))}
+                ))} */}
+                <div className={`${card} border-white/5 p-8`}>
+                  <h4
+                    className={`font-orbitron font-bold text-xl mb-3 text-[#10b981]`}
+                  >
+                    {settings.homepage_venue_room_1_title ? (
+                      <Editable
+                        initialValue={settings.homepage_venue_room_1_title}
+                        contentKey={"homepage_venue_room_1_title"}
+                        language={i18n.language}
+                      />
+                    ) : (
+                      t("homepage.venue_room_1_title")
+                    )}
+                  </h4>
+                  <p className="text-sm text-[#a0a0b8] leading-relaxed">
+                    {settings.homepage_phase2_sugar_hall_desc ? (
+                      <Editable
+                        initialValue={settings.homepage_phase2_sugar_hall_desc}
+                        contentKey={"homepage_phase2_sugar_hall_desc"}
+                        language={i18n.language}
+                      />
+                    ) : (
+                      t("homepage.phase2_sugar_hall_desc")
+                    )}
+                    <br />
+                    {settings.homepage_phase2_sugar_hall_capacity ? (
+                      <Editable
+                        initialValue={
+                          settings.homepage_phase2_sugar_hall_capacity
+                        }
+                        contentKey={"homepage_phase2_sugar_hall_capacity"}
+                        language={i18n.language}
+                      />
+                    ) : (
+                      t("homepage.phase2_sugar_hall_capacity")
+                    )}
+                  </p>
+                </div>
+                <div className={`${card} border-white/5 p-8`}>
+                  <h4
+                    className={`font-orbitron font-bold text-xl mb-3 text-[#ec4899]`}
+                  >
+                    {settings.homepage_venue_room_2_title ? (
+                      <Editable
+                        initialValue={settings.homepage_venue_room_2_title}
+                        contentKey={"homepage_venue_room_2_title"}
+                        language={i18n.language}
+                      />
+                    ) : (
+                      t("homepage.venue_room_2_title")
+                    )}
+                  </h4>
+                  <p className="text-sm text-[#a0a0b8] leading-relaxed">
+                    {settings.homepage_venue_room_2_title ? (
+                      <Editable
+                        initialValue={settings.homepage_venue_room_2_title}
+                        contentKey={"homepage_venue_room_2_title"}
+                        language={i18n.language}
+                      />
+                    ) : (
+                      t("homepage.phase2_plaza_hall_desc")
+                    )}
+                    <br />
+                    {settings.homepage_phase2_plaza_hall_capacity ? (
+                      <Editable
+                        initialValue={
+                          settings.homepage_phase2_plaza_hall_capacity
+                        }
+                        contentKey={"homepage_phase2_plaza_hall_capacity"}
+                        language={i18n.language}
+                      />
+                    ) : (
+                      t("homepage.phase2_plaza_hall_capacity")
+                    )}
+                  </p>
+                </div>
+                <div
+                  className={`bg-gradient-to-r from-[#a855f7]/20 to-[#ec4899]/20 rounded-3xl border border-[#a855f7]/30 p-8`}
+                >
+                  <h4
+                    className={`font-orbitron font-bold text-xl mb-3 "text-white`}
+                  >
+                    {settings.homepage_phase2_free_entry ? (
+                      <Editable
+                        initialValue={settings.homepage_phase2_free_entry}
+                        contentKey={"homepage_phase2_free_entry"}
+                        language={i18n.language}
+                      />
+                    ) : (
+                      t("homepage.phase2_free_entry")
+                    )}
+                  </h4>
+                  <p className="text-sm text-[#a0a0b8] leading-relaxed">
+                    {settings.homepage_phase2_free_entry_desc ? (
+                      <Editable
+                        initialValue={settings.homepage_phase2_free_entry_desc}
+                        contentKey={"homepage_phase2_free_entry_desc"}
+                        language={i18n.language}
+                      />
+                    ) : (
+                      t("homepage.phase2_free_entry_desc")
+                    )}
+                    <br />
+                    {settings.homepage_phase2_free_entry_desc_2 ? (
+                      <Editable
+                        initialValue={
+                          settings.homepage_phase2_free_entry_desc_2
+                        }
+                        contentKey={"homepage_phase2_free_entry_desc_2"}
+                        language={i18n.language}
+                      />
+                    ) : (
+                      t("homepage.phase2_free_entry_desc_2")
+                    )}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -432,13 +741,37 @@ function HomepagePhase2() {
           <div className={container}>
             <div className="text-center mb-12">
               <h2 className="font-orbitron font-black text-4xl mb-4 text-white">
-                {t("homepage.phase2_follow_live")}{" "}
+                {settings.homepage_phase2_follow_live ? (
+                  <Editable
+                    initialValue={settings.homepage_phase2_follow_live}
+                    contentKey={"homepage_phase2_follow_live"}
+                    language={i18n.language}
+                  />
+                ) : (
+                  t("homepage.phase2_follow_live")
+                )}{" "}
                 <span className="text-[#ec4899]">
-                  {t("homepage.phase2_follow_live_2")}
+                  {settings.homepage_phase2_follow_live_2 ? (
+                    <Editable
+                      initialValue={settings.homepage_phase2_follow_live_2}
+                      contentKey={"homepage_phase2_follow_live_2"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.phase2_follow_live_2")
+                  )}
                 </span>
               </h2>
               <p className="text-[#a0a0b8]">
-                {t("homepage.phase2_join_conversation")}
+                {settings.homepage_phase2_join_conversation ? (
+                  <Editable
+                    initialValue={settings.homepage_phase2_join_conversation}
+                    contentKey={"homepage_phase2_join_conversation"}
+                    language={i18n.language}
+                  />
+                ) : (
+                  t("homepage.phase2_join_conversation")
+                )}
               </p>
             </div>
             <div className="flex justify-center gap-6 flex-wrap">

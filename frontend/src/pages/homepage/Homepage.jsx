@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
 import { useTranslation } from "react-i18next";
-
 import { useSettings } from "../../context/SettingsContext";
 import Editable from "../../components/Utils/Editable";
 
