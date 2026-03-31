@@ -7,7 +7,7 @@ const prizedIncludes = {
 			title: true,
 			description: true,
 			producer: true,
-			cover_img: true,
+			cover_image: true,
 			country: true
 		},
 	},
@@ -20,7 +20,7 @@ const mapPrizedVideo = (prizedVideo) => ({
 	title: prizedVideo.videos?.title,
 	description: prizedVideo.videos?.description,
 	producer: prizedVideo.videos?.producer,
-	cover_img: prizedVideo.videos?.cover_img,
+	cover_image: prizedVideo.videos?.cover_image,
 	country: prizedVideo.videos?.country,
 });
 
