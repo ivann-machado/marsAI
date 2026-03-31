@@ -22,19 +22,21 @@
 		"dev": "node --watch --watch-preserve-output --env-file=.env server.ts",
 		"test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles",
 		"prisma:generate": "prisma generate",
-		"generate": "node -e \"const fs = require('fs'); fs.rmSync('./src/generated/zod', { recursive: true, force: true });\" && npx prisma generate"
+		"generate": "npx prisma generate"
 	},
 	"dependencies": {
-		"@aws-sdk/client-s3": "^3.1012.0",
-		"@getbrevo/brevo": "^5.0.1",
-		"@prisma/adapter-mariadb": "^7.5.0",
-		"@prisma/client": "^7.5.0",
+		"@aws-sdk/client-s3": "^3.1020.0",
+		"@getbrevo/brevo": "^5.0.3",
+		"@prisma/adapter-mariadb": "^7.6.0",
+		"@prisma/client": "^7.6.0",
 		"bcryptjs": "^3.0.3",
+		"bullmq": "^5.71.1",
 		"cors": "^2.8.6",
 		"express": "^5.2.1",
-		"express-rate-limit": "^8.3.1",
+		"express-rate-limit": "^8.3.2",
 		"googleapis": "^171.4.0",
 		"helmet": "^8.1.0",
+		"ioredis": "^5.10.1",
 		"jsonwebtoken": "^9.0.3",
 		"morgan": "^1.10.1",
 		"multer": "^2.1.1",
@@ -44,12 +46,15 @@
 		"zod": "^4.3.6"
 	},
 	"devDependencies": {
+		"@jest/globals": "^30.3.0",
+		"@types/morgan": "^1.9.10",
+		"@types/swagger-jsdoc": "^6.0.4",
 		"dotenv": "^17.3.1",
 		"jest": "^30.3.0",
 		"jsdoc": "^4.0.5",
 		"jsdoc-to-markdown": "^9.1.3",
-		"prisma": "^7.5.0",
-		"supertest": "^7.2.2",
-		"zod-prisma-types": "^3.3.11"
+		"prisma": "^7.6.0",
+		"prisma-zod-generator": "^2.1.4",
+		"supertest": "^7.2.2"
 	}
 }

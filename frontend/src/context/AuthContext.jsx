@@ -84,18 +84,22 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     // ENVOIE REQUETE LOGOUT ICI
     try {
-      const response = await fetch("http://localhost:3000/api/auth/logout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
+      const response = await fetch(
+        import.meta.env.VITE_API_URL + "/api/auth/logout",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
         },
-      });
+      );
 
       if (!response.ok) {
-        showFlash("error", "Logout failed.");
+        //showFlash("error", "Logout failed.");
         //throw new Error("Erreur lors de la connexion");
-        return;
+        //return;
+        console.error("Logout Failed");
       }
 
       setId(null);

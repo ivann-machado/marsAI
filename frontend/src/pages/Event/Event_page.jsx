@@ -29,10 +29,13 @@ function Event() {
     const fetchEvents = async () => {
       try {
         setLoading(true);
-        const response = await fetch("http://localhost:3000/api/events", {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-        });
+        const response = await fetch(
+          import.meta.env.VITE_API_URL + "/api/events",
+          {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          },
+        );
         if (!response.ok) throw new Error("Failed to fetch events");
         const data = await response.json();
         setEvents(data.data);
@@ -52,6 +55,10 @@ function Event() {
 
   return (
     <>
+      <meta
+        name="description"
+        content="Sur notre page évènements vous pourrez consulter tout les ateliers et interventions prévus pendant le festival, et vous pourrez si vous le souhaiter vous y inscrire"
+      />
       <Header />
       <div
         className="absolute inset-0"

@@ -36,7 +36,7 @@ function AdminSettingsDash() {
     fetchData();
   }, [settingsPage]);
 
-  if (!settings) return <Loading />;
+  if (!settings) return <Loading dashboard={true} />;
 
   return (
     <div className="flex flex-col w-full ml-64 min-h-screen bg-gradient-to-br from-gray-950 via-gray-800 to-gray-950 relative">

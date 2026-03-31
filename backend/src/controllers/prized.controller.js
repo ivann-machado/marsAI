@@ -1,4 +1,4 @@
-import prisma from "../config/prisma.config.js";
+import prisma from "../config/prisma.config.ts";
 import { paginate } from "../utils/paginate.util.js";
 
 const prizedIncludes = {
@@ -104,10 +104,10 @@ export const getPrizedVideoByVideoId = async (req, res) => {
 
 export const removePrizedVideo = async (req, res, next) => {
 	try {
-		const { video_id } = req.params;
+		const { id } = req.params;
 
 		await prisma.prized_videos.delete({
-			where: { video_id: Number(video_id) },
+			where: { id: Number(id) },
 		});
 
 		res.status(200).json({ message: "Prize deleted", affectedRows: 1 });
@@ -122,4 +122,4 @@ export const removePrizedVideo = async (req, res, next) => {
 		console.error("Delete Prized Video Error:", error);
 		res.status(500).json({ message: "Server error" });
 	}
-};
+}; 

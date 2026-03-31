@@ -33,6 +33,8 @@ function OfficialSponsors({ sponsors }) {
               </div>
               <img
                 src={sponsor.logo}
+                alt="sponsor_logo"
+                loading="lazy"
                 className="w-6/10 aspect-auto mx-auto md:w-80"
               ></img>
             </div>

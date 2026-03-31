@@ -50,7 +50,7 @@ function AdminUsersDash() {
     fetchData();
   }, []);
 
-  if (!users) return <Loading />;
+  if (!users) return <Loading dashboard={true} />;
 
   return (
     <div className="w-full ml-64 min-h-screen bg-gradient-to-br from-gray-950 via-gray-800 to-gray-950  flex flex-col items-center">

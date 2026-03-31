@@ -35,7 +35,6 @@ function UploadForm() {
   const tags = useRef(null);
   const tiktok = useRef(null);
   const [majorityCertification, SetMajorityCertification] = useState(false);
-  console.log({ majorityCertification });
   const certficitationHandler = () => {
     SetMajorityCertification(!majorityCertification);
   };
@@ -61,9 +60,9 @@ function UploadForm() {
     { label: t("upload_form.production_type_select.label"), value: "" },
     {
       label: "100% " + t("upload_form.production_type_select.ai"),
-      value: "100% IA",
+      value: "ai_only",
     },
-    { label: t("upload_form.production_type_select.hybrid"), value: "hybride" },
+    { label: t("upload_form.production_type_select.hybrid"), value: "hybrid" },
   ];
   function handleSelect(event, key) {
     if (key === "country") SetCountryId(event.target.value);
@@ -118,12 +117,10 @@ function UploadForm() {
     } else if (title.current.value.length < 5) {
       //Taille temporaire (placeholder !!!!!!)
       SetTitleError(t("upload_form.errors.short_field")); //"Ce champ doit être plus grand"
-      // console.log("Input is too short");
       return false;
     } else if (title.current.value.length > 50) {
       //Taille temporaire (placeholder !!!!!!)
       SetTitleError(t("upload_form.errors.field_max_length_short"));
-      //console.log("Input is too long");
       return false;
     } else {
       SetTitleError("");
@@ -297,7 +294,7 @@ function UploadForm() {
     }
   }
   function tagCheck() {
-    const tagRegex = /^(#\w+(,\s`\w+)*){0,1}$/;
+    const tagRegex = /^(#\w+,\s*)*$/;
     if (!tagRegex.test(tags.current.value)) {
       SetTagError(t("upload_form.errors.invalid_tag"));
       return false;
@@ -402,7 +399,7 @@ function UploadForm() {
       producer: producer.current.value,
       email: email.current.value,
       producer_image: producerImage.current.files[0],
-      movie_type: movieType.current.value,
+      movie_type: movieType,
       scenario_ai: scenario_ai.current.value,
       video_ai: video_ai.current.value,
       sound_ai: sound_ai.current.value,
@@ -489,7 +486,19 @@ function UploadForm() {
    */
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const form = e.target;
+    // const form = e.target;
+    const socials = [
+      linkedin.current.value,
+      youtube.current.value,
+      tiktok.current.value,
+      instagram.current.value,
+    ]
+      .filter((e) => e)
+      .map((option) =>
+        option.startsWith("http") || option.startsWith("https")
+          ? option
+          : "https://" + option,
+      );
     const uploadData = {
       title: title.current.value,
       description: description.current.value,
@@ -505,16 +514,12 @@ function UploadForm() {
       producerImage: producerImage.current.files[0],
       country: countryId,
       instagram: instagram.current.value,
-
+      movie_type: movieType,
       youtube: youtube.current.value,
       tags: tags.current.value,
       tiktok: tiktok.current.value,
       linkedin: linkedin.current.value,
-      allSocials: [
-        linkedin.current.value,
-        youtube.current.value,
-        tiktok.current.value,
-      ],
+      socials: socials,
     };
     /**
      * Appel des vérifications non automatisées
@@ -522,7 +527,6 @@ function UploadForm() {
     movieTypeCheck();
     countrySelectcheck();
     majorityCheck();
-    console.log(uploadData);
     rightGiveAwayCheck();
     const formData = new FormData();
     formData.append("edition_id", 1);
@@ -536,9 +540,12 @@ function UploadForm() {
     if (uploadData.producer) formData.append("producer", uploadData.producer);
     if (uploadData.producerImage)
       formData.append("producer_image", uploadData.producerImage); //null ?
-    if (uploadData.linkedin)
-      formData.append("linkedin_link", uploadData.linkedin); //null
-    if (uploadData.youtube) formData.append("youtube_link", uploadData.youtube); //null
+    if (uploadData.movie_type)
+      formData.append("production_type", uploadData.movie_type);
+    if (uploadData.socials)
+      uploadData.socials.forEach((social) =>
+        formData.append("socials", social),
+      ); //null
     if (uploadData.scenario_ai)
       formData.append("scenario_ai", uploadData.scenario_ai); //null
     if (uploadData.video_ai)
@@ -547,8 +554,6 @@ function UploadForm() {
     if (uploadData.post_prod_ai)
       formData.append("postprod_ai", uploadData.post_prod_ai); //null
     if (uploadData.tags) formData.append("tags", uploadData.tags); //null
-    console.log(uploadData);
-    console.log("formData est : ", formData);
     SetLoading(true);
     if (!titleCheck()) {
       showFlash(
@@ -728,26 +733,22 @@ function UploadForm() {
     });
 
     const data = await res.json().catch(() => ({}));
-    console.log(data);
+    // console.log(data);
     if (res.ok) {
       SetLoading(false);
       showFlash("success", t("upload_form.upload_success"));
-      /**
-       * Création d'un URL pour afficher les files
-       */
-      if (uploadData.video) {
-        const url = URL.createObjectURL(uploadData.video);
-        console.log({ url });
-        setVideoURL(url);
-      }
     } else {
-      showFlash("error", t("upload_form.errors.upload_fail"));
       SetLoading(false);
+      Object.entries(data.errors).forEach((key, value) =>
+        showFlash("error", key[1].join("&para")),
+      );
+      // data.errors.forEach((error) => showFlash("error", error.join("<br/>")));
+
+      // console.log(data.errors);
     }
   };
 
   const formSubmit = useState(false);
-  console.log(step1IsDisabled, step2IsDisabled, step3IsDisabled);
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0f0f1a] via-[#1a1026] to-[#0f0f1a] p-6 font-inter">
       <form
@@ -1129,7 +1130,7 @@ function UploadForm() {
                   htmlFor="linkedin"
                   className="text-sm text-white/70 mb-2 tracking-wide"
                 >
-                  Linkedin :
+                  Url Linkedin :
                 </label>
                 <input
                   type="text"
@@ -1149,7 +1150,7 @@ function UploadForm() {
                   htmlFor="youtube"
                   className="text-sm text-white/70 mb-2 tracking-wide"
                 >
-                  Youtube :
+                  Url Youtube :
                 </label>
                 <input
                   type="text"
@@ -1172,7 +1173,7 @@ function UploadForm() {
                   htmlFor="tiktok"
                   className="text-sm text-white/70 mb-2 tracking-wide"
                 >
-                  TikTok :
+                  Url TikTok :
                 </label>
                 <input
                   type="text"
@@ -1215,7 +1216,7 @@ function UploadForm() {
                   htmlFor="instagram"
                   className="text-sm text-white/70 mb-2 tracking-wide"
                 >
-                  Instagram :
+                  Url Instagram :
                 </label>
                 <input
                   type="text"

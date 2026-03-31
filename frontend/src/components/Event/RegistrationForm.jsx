@@ -24,16 +24,19 @@ function RegistrationForm({ selectedEvent, onSuccess }) {
       return;
     }
     try {
-      const res = await fetch("http://localhost:3000/api/reservations", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          firstname: formData.firstName,
-          lastname: formData.lastName,
-          email: formData.email,
-          event_id: selectedEvent?.id,
-        }),
-      });
+      const res = await fetch(
+        import.meta.env.VITE_API_URL + "/api/reservations",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            firstname: formData.firstName,
+            lastname: formData.lastName,
+            email: formData.email,
+            event_id: selectedEvent?.id,
+          }),
+        },
+      );
       if (res.ok) {
         const msg = "Inscription réussie !";
         setFormSuccess(msg);

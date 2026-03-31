@@ -16,6 +16,10 @@ function CguCgv() {
 
   return (
     <>
+      <meta
+        name="description"
+        content="Sur cette page, vous pourrez retrouver nos Conditions Générales d'Utilisation et nos Conditions Générales de Vente afin de savoir comment nous traiterons vos données"
+      />
       <Header />
 
       <main className="w-full bg-[#050508] text-white overflow-hidden">

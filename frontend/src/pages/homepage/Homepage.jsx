@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
 import { useTranslation } from "react-i18next";
+
 import { useSettings } from "../../context/SettingsContext";
+import Editable from "../../components/Utils/Editable";
 
 const btn =
   "font-inter font-semibold text-sm tracking-wider uppercase rounded-full transition-all duration-300";
@@ -16,7 +18,7 @@ const h2Style =
   "font-orbitron font-black text-[clamp(36px,6vw,64px)] leading-tight mb-6 text-white";
 
 function Homepage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const settings = useSettings();
   const [scrollY, setScrollY] = useState(0);
   const [timeLeft, setTimeLeft] = useState({
@@ -55,6 +57,10 @@ function Homepage() {
 
   return (
     <>
+      <meta
+        name="description"
+        content="Bienvenue sur notre page d'accueil, ici vous pourrez commencer l'exploration de notre site présentant le festival MarsAi"
+      />
       <Header />
       <div className="w-full overflow-hidden bg-[#050508]">
         {/* Hero Section */}
@@ -109,7 +115,15 @@ function Homepage() {
             <div
               className={`${badge} bg-white/10 border border-white/20 text-white mb-8`}
             >
-              {t("homepage.hero_badge")}
+              {settings.homepage_hero_badge ? (
+                <Editable
+                  initialValue={settings.homepage_hero_badge}
+                  contentKey={"homepage_hero_badge"}
+                  language={i18n.language}
+                />
+              ) : (
+                t("homepage.hero_badge")
+              )}
             </div>
             <h1 className="font-orbitron font-black text-[clamp(60px,12vw,140px)] leading-[0.9] mb-5 tracking-[-2px] uppercase">
               <span className="bg-gradient-to-br from-white to-[#e0e0ff] bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(168,85,247,0.5)]">
@@ -120,17 +134,57 @@ function Homepage() {
               </span>
             </h1>
             <p className="font-orbitron font-semibold text-[clamp(20px,3vw,36px)] mb-6 text-white">
-              {t("homepage.hero_tagline")}{" "}
+              {settings.homepage_hero_tagline ? (
+                <Editable
+                  initialValue={settings.homepage_hero_tagline}
+                  contentKey={"homepage_hero_tagline"}
+                  language={i18n.language}
+                />
+              ) : (
+                t("homepage.hero_tagline")
+              )}{" "}
               <span className="text-[#10b981]">
-                {t("homepage.hero_tagline_highlight")}
+                {settings.homepage_hero_tagline_highlight ? (
+                  <Editable
+                    initialValue={settings.homepage_hero_tagline_highlight}
+                    contentKey={"homepage_hero_tagline_highlight"}
+                    language={i18n.language}
+                  />
+                ) : (
+                  t("homepage.hero_tagline_highlight")
+                )}
               </span>{" "}
-              {t("homepage.hero_tagline_end")}
+              {settings.homepage_hero_tagline_end ? (
+                <Editable
+                  initialValue={settings.homepage_hero_tagline_end}
+                  contentKey={"homepage_hero_tagline_end"}
+                  language={i18n.language}
+                />
+              ) : (
+                t("homepage.hero_tagline_end")
+              )}
             </p>
             <p className="text-[clamp(14px,2vw,18px)] text-[#d1d5db] mb-3 max-w-3xl mx-auto">
-              {t("homepage.hero_description")}
+              {settings.homepage_hero_description ? (
+                <Editable
+                  initialValue={settings.homepage_hero_description}
+                  contentKey={"homepage_hero_description"}
+                  language={i18n.language}
+                />
+              ) : (
+                t("homepage.hero_description")
+              )}
             </p>
             <p className="text-[#b8b8d0] mb-8">
-              {t("homepage.hero_subdescription")}
+              {settings.homepage_hero_subdescription ? (
+                <Editable
+                  initialValue={settings.homepage_hero_subdescription}
+                  contentKey={"homepage_hero_subdescription"}
+                  language={i18n.language}
+                />
+              ) : (
+                t("homepage.hero_subdescription")
+              )}
             </p>
           </div>
         </section>
@@ -141,34 +195,98 @@ function Homepage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
               <div>
                 <h3 className="font-orbitron font-black text-2xl mb-1 text-white">
-                  {t("homepage.feature_1_title")}
+                  {settings.homepage_feature_1_title ? (
+                    <Editable
+                      initialValue={settings.homepage_feature_1_title}
+                      contentKey={"homepage_feature_1_title"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.feature_1_title")
+                  )}
                 </h3>
                 <p className="text-xs text-[#d1d5db] tracking-wider uppercase">
-                  {t("homepage.feature_1_desc")}
+                  {settings.homepage_feature_1_desc ? (
+                    <Editable
+                      initialValue={settings.homepage_feature_1_desc}
+                      contentKey={"homepage_feature_1_desc"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.feature_1_desc")
+                  )}
                 </p>
               </div>
               <div>
                 <h3 className="font-orbitron font-black text-2xl mb-1 text-[#10b981]">
-                  {t("homepage.feature_2_title")}
+                  {settings.homepage_feature_2_title ? (
+                    <Editable
+                      initialValue={settings.homepage_feature_2_title}
+                      contentKey={"homepage_feature_2_title"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.feature_2_title")
+                  )}
                 </h3>
                 <p className="text-xs text-[#d1d5db] tracking-wider uppercase">
-                  {t("homepage.feature_2_desc")}
+                  {settings.homepage_feature_2_desc ? (
+                    <Editable
+                      initialValue={settings.homepage_feature_2_desc}
+                      contentKey={"homepage_feature_2_desc"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.feature_2_desc")
+                  )}
                 </p>
               </div>
               <div>
                 <h3 className="font-orbitron font-black text-2xl mb-1 text-[#ec4899]">
-                  {t("homepage.feature_3_title")}
+                  {settings.homepage_feature_3_title ? (
+                    <Editable
+                      initialValue={settings.homepage_feature_3_title}
+                      contentKey={"homepage_feature_3_title"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.feature_3_title")
+                  )}
                 </h3>
                 <p className="text-xs text-[#d1d5db] tracking-wider uppercase">
-                  {t("homepage.feature_3_desc")}
+                  {settings.homepage_feature_3_desc ? (
+                    <Editable
+                      initialValue={settings.homepage_feature_3_desc}
+                      contentKey={"homepage_feature_3_desc"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.feature_3_desc")
+                  )}
                 </p>
               </div>
               <div>
                 <h3 className="font-orbitron font-black text-2xl mb-1 text-[#06b6d4]">
-                  {t("homepage.feature_4_title")}
+                  {settings.homepage_feature_4_title ? (
+                    <Editable
+                      initialValue={settings.homepage_feature_4_title}
+                      contentKey={"homepage_feature_4_title"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.feature_4_title")
+                  )}
                 </h3>
                 <p className="text-xs text-[#d1d5db] tracking-wider uppercase">
-                  {t("homepage.feature_4_desc")}
+                  {settings.homepage_feature_4_desc ? (
+                    <Editable
+                      initialValue={settings.homepage_feature_4_desc}
+                      contentKey={"homepage_feature_4_desc"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.feature_4_desc")
+                  )}
                 </p>
               </div>
             </div>
@@ -180,9 +298,25 @@ function Homepage() {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(16,185,129,0.1)_0%,transparent_50%)]" />
           <div className={`${container} relative z-10`}>
             <h2 className={`${h2Style} text-center mb-16`}>
-              {t("homepage.objectives_title")}{" "}
+              {settings.homepage_objectives_title ? (
+                <Editable
+                  initialValue={settings.homepage_objectives_title}
+                  contentKey={"homepage_objectives_title"}
+                  language={i18n.language}
+                />
+              ) : (
+                t("homepage.objectives_title")
+              )}{" "}
               <span className="text-[#ec4899] drop-shadow-[0_0_20px_rgba(236,72,153,0.5)]">
-                {t("homepage.objectives_title_highlight")}
+                {settings.homepage_objectives_title_highlight ? (
+                  <Editable
+                    initialValue={settings.homepage_objectives_title_highlight}
+                    contentKey={"homepage_objectives_title_highlight"}
+                    language={i18n.language}
+                  />
+                ) : (
+                  t("homepage.objectives_title_highlight")
+                )}
               </span>
             </h2>
 
@@ -204,10 +338,26 @@ function Homepage() {
                   </svg>
                 </div>
                 <h3 className="font-orbitron font-bold text-xl mb-4 text-[#10b981] whitespace-pre-line">
-                  {t("homepage.objective_1_title")}
+                  {settings.homepage_objective_1_title ? (
+                    <Editable
+                      initialValue={settings.homepage_objective_1_title}
+                      contentKey={"homepage_objective_1_title"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.objective_1_title")
+                  )}
                 </h3>
                 <p className="text-[#d1d5db] text-sm leading-relaxed">
-                  {t("homepage.objective_1_desc")}
+                  {settings.homepage_objective_1_desc ? (
+                    <Editable
+                      initialValue={settings.homepage_objective_1_desc}
+                      contentKey={"homepage_objective_1_desc"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.objective_1_desc")
+                  )}
                 </p>
               </div>
 
@@ -227,10 +377,26 @@ function Homepage() {
                   </svg>
                 </div>
                 <h3 className="font-orbitron font-bold text-xl mb-4 text-[#3b82f6] whitespace-pre-line">
-                  {t("homepage.objective_2_title")}
+                  {settings.homepage_objective_2_title ? (
+                    <Editable
+                      initialValue={settings.homepage_objective_2_title}
+                      contentKey={"homepage_objective_2_title"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.objective_2_title")
+                  )}
                 </h3>
                 <p className="text-[#d1d5db] text-sm leading-relaxed">
-                  {t("homepage.objective_2_desc")}
+                  {settings.homepage_objective_2_desc ? (
+                    <Editable
+                      initialValue={settings.homepage_objective_2_desc}
+                      contentKey={"homepage_objective_2_desc"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.objective_2_desc")
+                  )}
                 </p>
               </div>
 
@@ -251,10 +417,26 @@ function Homepage() {
                   </svg>
                 </div>
                 <h3 className="font-orbitron font-bold text-xl mb-4 text-[#a855f7] whitespace-pre-line">
-                  {t("homepage.objective_3_title")}
+                  {settings.homepage_objective_3_title ? (
+                    <Editable
+                      initialValue={settings.homepage_objective_3_title}
+                      contentKey={"homepage_objective_3_title"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.objective_3_title")
+                  )}
                 </h3>
                 <p className="text-[#d1d5db] text-sm leading-relaxed">
-                  {t("homepage.objective_3_desc")}
+                  {settings.homepage_objective_3_desc ? (
+                    <Editable
+                      initialValue={settings.homepage_objective_3_desc}
+                      contentKey={"homepage_objective_3_desc"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.objective_3_desc")
+                  )}
                 </p>
               </div>
             </div>
@@ -269,7 +451,15 @@ function Homepage() {
               <div
                 className={`${badge} bg-[#f97316]/20 border border-[#f97316]/50 text-[#f97316] mb-8`}
               >
-                {t("homepage.callforfilms_badge")}
+                {settings.homepage_callforfilms_badge ? (
+                  <Editable
+                    initialValue={settings.homepage_callforfilms_badge}
+                    contentKey={"homepage_callforfilms_badge"}
+                    language={i18n.language}
+                  />
+                ) : (
+                  t("homepage.callforfilms_badge")
+                )}
               </div>
               <h2 className={h2Style}>
                 {t("homepage.callforfilms_title")}{" "}

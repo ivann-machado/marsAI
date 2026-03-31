@@ -4,21 +4,27 @@ import twitterLogo from "../../assets/twitter.svg";
 import ytLogo from "../../assets/youtube.svg";
 import Loading from "../Utils/Loading";
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSettings } from "../../context/SettingsContext";
 import { Link } from "react-router-dom";
+import Editable from "../Utils/Editable";
 
 function Footer() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterError, setNewsletterError] = useState(null);
   const [newsletterSuccess, setNewsletterSuccess] = useState(null);
   const settings = useSettings();
+  const [language, setLanguage] = useState(i18n.language);
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
+
+  useEffect(() => {
+    setLanguage(i18n.language);
+  }, [i18n.language]);
 
   const newsletterSubmit = async (e) => {
     e.preventDefault();
@@ -28,7 +34,7 @@ function Footer() {
 
       try {
         const res = await fetch(
-          "http://localhost:3000/api/newsletter/subscribe",
+          import.meta.env.VITE_API_URL + "/api/newsletter/subscribe",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -45,7 +51,6 @@ function Footer() {
 
         setNewsletterSuccess(t("footer.subscription_success"));
         const response = await res.json();
-        console.log(response);
       } catch (error) {
         console.error(error);
       }
@@ -67,12 +72,24 @@ function Footer() {
           </p>
 
           <p className="text-gray-400 mb-8 leading-relaxed">
-            {t("footer.footer_message")}
+            {settings.footer_message ? (
+              <Editable
+                initialValue={settings.footer_message}
+                language={language}
+                contentKey="footer_message"
+              />
+            ) : (
+              t("footer.footer_message")
+            )}
           </p>
 
           <div className="flex">
             <a
-              href="https://www.facebook.com/LaPlateformeIO/?locale=fr_FR"
+              href={
+                settings.fb_link
+                  ? settings.fb_link
+                  : "https://www.facebook.com/LaPlateformeIO/?locale=fr_FR"
+              }
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -84,7 +101,11 @@ function Footer() {
             </a>
 
             <a
-              href="https://www.instagram.com/laplateformeio/"
+              href={
+                settings.insta_link
+                  ? settings.insta_link
+                  : "https://www.instagram.com/laplateformeio/"
+              }
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -96,7 +117,11 @@ function Footer() {
             </a>
 
             <a
-              href="https://www.youtube.com/c/LaPlateformeIO"
+              href={
+                settings.youtube_link
+                  ? settings.youtube_link
+                  : "https://www.youtube.com/c/LaPlateformeIO"
+              }
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -108,7 +133,11 @@ function Footer() {
             </a>
 
             <a
-              href="https://x.com/LaPlateformeIO"
+              href={
+                settings.twitter_link
+                  ? settings.twitter_link
+                  : "https://x.com/LaPlateformeIO"
+              }
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -209,7 +238,17 @@ function Footer() {
 
       {/* BOTTOM */}
       <div className="border-t border-gray-800 pt-6 text-center text-gray-500 text-sm">
-        <p>{t("footer.bottom_message")}</p>
+        <p>
+          {settings.footer_bottom_message ? (
+            <Editable
+              initialValue={settings.footer_bottom_message}
+              contentKey="footer_bottom_message"
+              language={language}
+            />
+          ) : (
+            t("footer.bottom_message")
+          )}
+        </p>
       </div>
     </footer>
   );

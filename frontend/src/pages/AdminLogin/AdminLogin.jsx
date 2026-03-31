@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useauth } from "../../context/AuthContext";
 import { useTranslation } from "react-i18next";
 import { jwtDecode } from "jwt-decode";
@@ -6,23 +6,41 @@ import { useNavigate } from "react-router-dom";
 import { useFlash } from "../../context/FlashContext";
 
 function AdminLogin() {
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { user, login } = useauth();
-  const navigate = useNavigate();
   const { showFlash } = useFlash();
 
+  /*  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Enter" && document.activeElement === document.body) {
+        alert("Toujours pas d'entree");
+        //submitLogin(e);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [email, password]);
+ */
   const submitLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:3000/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        import.meta.env.VITE_API_URL + "/api/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ login: email, password }),
         },
-        body: JSON.stringify({ login: email, password }),
-      });
+      );
 
       if (!response.ok) {
         showFlash("error", "Identifiant ou mot de passe erroné.");
@@ -39,7 +57,7 @@ function AdminLogin() {
           login_info.exp,
           loginResponse.token,
         );
-        console.log(login_info);
+        // console.log(login_info);
         if (login_info.role === "super admin")
           navigate("/", { replace: "true" });
         else navigate("/reviews", { replace: "true" });
@@ -64,6 +82,11 @@ function AdminLogin() {
           value={email}
           className="bg-gray-100  text-black p-2 rounded-md"
           onChange={(e) => setEmail(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              submitLogin(e);
+            }
+          }}
         ></input>
         <label htmlFor="password">Mot de passe:</label>
         <input
@@ -73,13 +96,21 @@ function AdminLogin() {
           value={password}
           className="bg-gray-100  text-black p-2 rounded-md"
           onChange={(e) => setPassword(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              submitLogin(e);
+            }
+          }}
         ></input>
         <input
           type="button"
           value={t("admin_login.submit")}
           className="bg-white text-black p-2 rounded-xl hover:bg-gray-300 hover:ring-2 hover:ring-purple-500 transition-colors duration-400"
-          onClick={(e) => {
-            submitLogin(e);
+          onClick={(e) => submitLogin(e)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              submitLogin(e);
+            }
           }}
         ></input>
       </form>
