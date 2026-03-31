@@ -13,50 +13,7 @@ import {
 function HomepagePhase3() {
   const { t, i18n } = useTranslation();
   const settings = useSettings();
-  const [winners, setWinners] = useState([
-    /*    {
-      title: "NEURAL DREAM",
-      producer: "Marie Laurent",
-      country: t("phase3.country_belgium"),
-      cover_image: "/src/assets/neural.png",
-      prize: t("phase3.prize_grand_prix"),
-    },
-    {
-      title: "PROTOCOL ALPHA",
-      producer: "Jean Dupont",
-      country: t("phase3.country_france"),
-      cover_image: "/src/assets/robot.png",
-      prize: t("phase3.prize_jury"),
-    },
-    {
-      title: "CYBER MARSEILLE",
-      producer: "Ahmed Karim",
-      country: t("phase3.country_france"),
-      cover_image: "/src/assets/cyber.png",
-      prize: t("phase3.prize_direction"),
-    },
-    {
-      title: "QUANTUM SOULS",
-      producer: "Marcus Brown",
-      country: t("phase3.country_usa"),
-      cover_image: "/src/assets/robot2.png",
-      prize: t("phase3.prize_innovation"),
-    },
-    {
-      title: "CODE POETRY",
-      producer: "Lars Schmidt",
-      country: t("phase3.country_germany"),
-      cover_image: "/src/assets/cyber2.png",
-      prize: t("phase3.prize_scenario"),
-    },
-    {
-      title: "FUTURE MEMORIES",
-      producer: "Isabella Rodriguez",
-      country: t("phase3.country_spain"),
-      cover_image: "/src/assets/planete.png",
-      prize: t("phase3.prize_artistic"),
-    }, */
-  ]);
+  const [winners, setWinners] = useState([]);
   let country_list = [];
   if (i18n.language === "fr") country_list = countryListFr;
   else country_list = countryListEn;
@@ -346,70 +303,65 @@ function HomepagePhase3() {
         <section className="py-32 bg-gradient-to-br from-[#050508] to-[#1a0a2e] relative overflow-hidden">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[radial-gradient(circle,rgba(251,191,36,0.15)_0%,transparent_70%)] blur-3xl"></div>
           <div className="max-w-6xl mx-auto px-10 relative z-10 text-center">
-            <div className="text-[#fbbf24] font-inter font-bold text-sm tracking-[3px] uppercase mb-6">
-              {settings.homepage_phase3_grand_prize ? (
-                <Editable
-                  initialValue={settings.homepage_phase3_grand_prize}
-                  contentKey={"homepage_phase3_grand_prize"}
-                  language={i18n.language}
-                />
-              ) : (
-                t("phase3.grand_prize")
-              )}
-            </div>
-            <h2 className="font-orbitron font-black text-[clamp(40px,8vw,80px)] mb-8">
-              <span className="bg-gradient-to-r from-[#fbbf24] to-[#f59e0b] bg-clip-text text-transparent">
-                NEURAL DREAM
-              </span>
-            </h2>
-            <div className="flex items-center justify-center gap-6 text-[#a0a0b8] mb-12 text-lg">
-              <span>Marie Laurent</span>
-              <span>•</span>
-              <span>Belgique</span>
-            </div>
             {winners.map((winner) => {
               if (winner.prix != "Grand Prix") return;
-
               return (
-                <Link
-                  to={"/video/" + winner.video_id}
-                  className="group cursor-pointer max-w-4xl mx-auto block"
-                >
-                  <div className="relative rounded-3xl overflow-hidden shadow-[0_0_100px_rgba(251,191,36,0.4)] border-4 border-[#fbbf24]/50 hover:border-[#fbbf24] transition-all">
-                    <div className="w-full aspect-video relative bg-[#2a1a34]">
-                      <img
-                        src={
-                          "https://s3.fr-par.scw.cloud/paris/grp1/" +
-                          winner.cover_image
-                        }
-                        alt={winner.title}
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          e.target.style.display = "none";
-                        }}
-                      />
-                      <div className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition-all flex items-center justify-center">
-                        <div className="w-24 h-24 rounded-full bg-[#fbbf24] flex items-center justify-center group-hover:scale-110 transition-transform">
-                          <svg
-                            className="w-10 h-10 text-white ml-1"
-                            fill="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path d="M8 5v14l11-7z" />
-                          </svg>
+                <div key={winner.id}>
+                  <div className="text-[#fbbf24] font-inter font-bold text-sm tracking-[3px] uppercase mb-6">
+                    {winner.prix}
+                  </div>
+                  <h2 className="font-orbitron font-black text-[clamp(40px,8vw,80px)] mb-8">
+                    <span className="bg-gradient-to-r from-[#fbbf24] to-[#f59e0b] bg-clip-text text-transparent">
+                      {winner.title}
+                    </span>
+                  </h2>
+                  <div className="flex items-center justify-center gap-6 text-[#a0a0b8] mb-12 text-lg">
+                    <span>{winner.producer}</span>
+                    <span>•</span>
+                    <span>
+                      {country_list[Number(winner.country_id) - 1].label}
+                    </span>
+                  </div>
+                  <Link
+                    to={"/video/" + winner.video_id}
+                    className="group cursor-pointer max-w-4xl mx-auto block"
+                  >
+                    <div className="relative rounded-3xl overflow-hidden shadow-[0_0_100px_rgba(251,191,36,0.4)] border-4 border-[#fbbf24]/50 hover:border-[#fbbf24] transition-all">
+                      <div className="w-full aspect-video relative bg-[#2a1a34]">
+                        <img
+                          src={
+                            "https://s3.fr-par.scw.cloud/paris/grp1/" +
+                            winner.cover_image
+                          }
+                          alt={winner.title}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            e.target.style.display = "none";
+                          }}
+                        />
+                        <div className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition-all flex items-center justify-center">
+                          <div className="w-24 h-24 rounded-full bg-[#fbbf24] flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <svg
+                              className="w-10 h-10 text-white ml-1"
+                              fill="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path d="M8 5v14l11-7z" />
+                            </svg>
+                          </div>
+                        </div>
+                        <div className="absolute top-6 left-6 px-6 py-3 bg-gradient-to-r from-[#fbbf24] to-[#f59e0b] rounded-full flex items-center gap-2">
+                          <span className="text-white font-inter font-bold text-sm uppercase">
+                            {t("phase3.grand_winner")}
+                          </span>
                         </div>
                       </div>
-                      <div className="absolute top-6 left-6 px-6 py-3 bg-gradient-to-r from-[#fbbf24] to-[#f59e0b] rounded-full flex items-center gap-2">
-                        <span className="text-white font-inter font-bold text-sm uppercase">
-                          {t("phase3.grand_winner")}
-                        </span>
-                      </div>
                     </div>
-                  </div>
-                  <p className="mt-8 text-lg text-[#a0a0b8] max-w-2xl mx-auto">
-                    "{t("phase3.winner_quote")}"
-                  </p>
-                </Link>
+                    <p className="mt-8 text-lg text-[#a0a0b8] max-w-2xl mx-auto">
+                      "{t("phase3.winner_quote")}"
+                    </p>
+                  </Link>{" "}
+                </div>
               );
             })}
           </div>
