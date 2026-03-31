@@ -1,5 +1,43 @@
-@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap");
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  background-color: #050508;
+}
 
+.loadingLogo {
+  object-fit: contain;
+  width: 4rem;
+  height: 4rem;
+  opacity: 0.9;
+}
+
+.loadingSpinner {
+  border-radius: 9999px;
+  border-width: 2px;
+  width: 2.5rem;
+  height: 2.5rem;
+  animation: spin 1s linear infinite;
+
+  border-top-color: #a855f7;
+}
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.loadingText {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  text-transform: uppercase;
+}
 .no-scroll {
   overflow: hidden;
 }
