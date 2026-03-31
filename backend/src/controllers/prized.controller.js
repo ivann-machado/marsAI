@@ -7,6 +7,8 @@ const prizedIncludes = {
 			title: true,
 			description: true,
 			producer: true,
+			cover_image: true,
+			country_id: true
 		},
 	},
 };
@@ -18,6 +20,8 @@ const mapPrizedVideo = (prizedVideo) => ({
 	title: prizedVideo.videos?.title,
 	description: prizedVideo.videos?.description,
 	producer: prizedVideo.videos?.producer,
+	cover_image: prizedVideo.videos?.cover_image,
+	country_id: prizedVideo.videos?.country_id,
 });
 
 export const createPrizedVideo = async (req, res, next) => {

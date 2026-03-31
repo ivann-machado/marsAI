@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
 import { useTranslation } from "react-i18next";
-
 import { useSettings } from "../../context/SettingsContext";
 import Editable from "../../components/Utils/Editable";
 
@@ -462,13 +461,39 @@ function Homepage() {
                 )}
               </div>
               <h2 className={h2Style}>
-                {t("homepage.callforfilms_title")}{" "}
+                {settings.homepage_callforfilms_title ? (
+                  <Editable
+                    initialValue={settings.homepage_callforfilms_title}
+                    contentKey={"homepage_callforfilms_title"}
+                    language={i18n.language}
+                  />
+                ) : (
+                  t("homepage.callforfilms_title")
+                )}{" "}
                 <span className="text-[#f97316] drop-shadow-[0_0_20px_rgba(249,115,22,0.5)]">
-                  {t("homepage.callforfilms_title_highlight")}
+                  {settings.homepage_callforfilms_title_highlight ? (
+                    <Editable
+                      initialValue={
+                        settings.homepage_callforfilms_title_highlight
+                      }
+                      contentKey={"homepage_callforfilms_title_highlight"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.callforfilms_title_highlight")
+                  )}
                 </span>
               </h2>
               <p className="text-[#d1d5db] text-lg max-w-3xl mx-auto">
-                {t("homepage.callforfilms_description")}
+                {settings.homepage_callforfilms_description ? (
+                  <Editable
+                    initialValue={settings.homepage_callforfilms_description}
+                    contentKey={"homepage_callforfilms_description"}
+                    language={i18n.language}
+                  />
+                ) : (
+                  t("homepage.callforfilms_description")
+                )}
               </p>
             </div>
 
@@ -477,39 +502,129 @@ function Homepage() {
                 className={`${card} p-8 text-center border-[#f97316]/30 hover:border-[#f97316]/50 transition-all duration-300`}
               >
                 <div className="font-orbitron font-black text-5xl text-[#f97316] mb-4">
-                  60s
+                  {settings.homepage_callforfilms_constraint_1_value ? (
+                    <Editable
+                      initialValue={
+                        settings.homepage_callforfilms_constraint_1_value
+                      }
+                      contentKey={"homepage_callforfilms_constraint_1_value"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.callforfilms_constraint_1_value")
+                  )}
                 </div>
                 <h3 className="font-orbitron font-bold text-lg mb-2 text-white">
-                  {t("homepage.callforfilms_constraint_1_title")}
+                  {settings.homepage_callforfilms_constraint_1_title ? (
+                    <Editable
+                      initialValue={
+                        settings.homepage_callforfilms_constraint_1_title
+                      }
+                      contentKey={"homepage_callforfilms_constraint_1_title"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.callforfilms_constraint_1_title")
+                  )}
                 </h3>
                 <p className="text-[#d1d5db] text-sm">
-                  {t("homepage.callforfilms_constraint_1_desc")}
+                  {settings.homepage_callforfilms_constraint_1_desc ? (
+                    <Editable
+                      initialValue={
+                        settings.homepage_callforfilms_constraint_1_desc
+                      }
+                      contentKey={"homepage_callforfilms_constraint_1_desc"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.callforfilms_constraint_1_desc")
+                  )}
                 </p>
               </div>
               <div
                 className={`${card} p-8 text-center border-[#10b981]/30 hover:border-[#10b981]/50 transition-all duration-300`}
               >
                 <div className="font-orbitron font-black text-5xl text-[#10b981] mb-4">
-                  IA
+                  {settings.homepage_callforfilms_constraint_2_value ? (
+                    <Editable
+                      initialValue={
+                        settings.homepage_callforfilms_constraint_2_value
+                      }
+                      contentKey={"homepage_callforfilms_constraint_2_value"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.callforfilms_constraint_2_value")
+                  )}
                 </div>
                 <h3 className="font-orbitron font-bold text-lg mb-2 text-white">
-                  {t("homepage.callforfilms_constraint_2_title")}
+                  {settings.homepage_callforfilms_constraint_2_title ? (
+                    <Editable
+                      initialValue={
+                        settings.homepage_callforfilms_constraint_2_title
+                      }
+                      contentKey={"homepage_callforfilms_constraint_2_title"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.callforfilms_constraint_2_title")
+                  )}
                 </h3>
                 <p className="text-[#d1d5db] text-sm">
-                  {t("homepage.callforfilms_constraint_2_desc")}
+                  {settings.homepage_callforfilms_constraint_2_desc ? (
+                    <Editable
+                      initialValue={
+                        settings.homepage_callforfilms_constraint_2_desc
+                      }
+                      contentKey={"homepage_callforfilms_constraint_2_desc"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.callforfilms_constraint_2_desc")
+                  )}
                 </p>
               </div>
               <div
                 className={`${card} p-8 text-center border-[#3b82f6]/30 hover:border-[#3b82f6]/50 transition-all duration-300`}
               >
                 <div className="font-orbitron font-black text-5xl text-[#3b82f6] mb-4">
-                  2
+                  {settings.homepage_callforfilms_constraint_3_value ? (
+                    <Editable
+                      initialValue={
+                        settings.homepage_callforfilms_constraint_3_value
+                      }
+                      contentKey={"homepage_callforfilms_constraint_3_value"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.callforfilms_constraint_3_value")
+                  )}
                 </div>
                 <h3 className="font-orbitron font-bold text-lg mb-2 text-white">
-                  {t("homepage.callforfilms_constraint_3_title")}
+                  {settings.homepage_callforfilms_constraint_3_title ? (
+                    <Editable
+                      initialValue={
+                        settings.homepage_callforfilms_constraint_3_title
+                      }
+                      contentKey={"homepage_callforfilms_constraint_3_title"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.callforfilms_constraint_3_title")
+                  )}
                 </h3>
                 <p className="text-[#d1d5db] text-sm">
-                  {t("homepage.callforfilms_constraint_3_desc")}
+                  {settings.homepage_callforfilms_constraint_3_desc ? (
+                    <Editable
+                      initialValue={
+                        settings.homepage_callforfilms_constraint_3_desc
+                      }
+                      contentKey={"homepage_callforfilms_constraint_3_desc"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.callforfilms_constraint_3_desc")
+                  )}
                 </p>
               </div>
             </div>
@@ -532,16 +647,48 @@ function Homepage() {
               <div
                 className={`${badge} bg-[#a855f7]/20 border border-[#a855f7]/50 text-[#a855f7] mb-8`}
               >
-                {t("homepage.aitools_badge")}
+                {settings.homepage_aitools_badge ? (
+                  <Editable
+                    initialValue={settings.homepage_aitools_badge}
+                    contentKey={"homepage_aitools_badge"}
+                    language={i18n.language}
+                  />
+                ) : (
+                  t("homepage.aitools_badge")
+                )}
               </div>
               <h2 className={h2Style}>
-                {t("homepage.aitools_title")}{" "}
+                {settings.homepage_aitools_title ? (
+                  <Editable
+                    initialValue={settings.homepage_aitools_title}
+                    contentKey={"homepage_aitools_title"}
+                    language={i18n.language}
+                  />
+                ) : (
+                  t("homepage.aitools_title")
+                )}{" "}
                 <span className="text-[#a855f7] drop-shadow-[0_0_20px_rgba(168,85,247,0.5)]">
-                  {t("homepage.aitools_title_highlight")}
+                  {settings.homepage_aitools_title_highlight ? (
+                    <Editable
+                      initialValue={settings.homepage_aitools_title_highlight}
+                      contentKey={"homepage_aitools_title_highlight"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.aitools_title_highlight")
+                  )}
                 </span>
               </h2>
               <p className="text-[#d1d5db] text-lg max-w-3xl mx-auto">
-                {t("homepage.aitools_description")}
+                {settings.homepage_aitools_description ? (
+                  <Editable
+                    initialValue={settings.homepage_aitools_description}
+                    contentKey={"homepage_aitools_description"}
+                    language={i18n.language}
+                  />
+                ) : (
+                  t("homepage.aitools_description")
+                )}
               </p>
             </div>
 
@@ -574,36 +721,100 @@ function Homepage() {
               <div
                 className={`${badge} bg-[#ec4899]/20 border border-[#ec4899]/50 text-[#ec4899] mb-8`}
               >
-                {t("homepage.protocol_badge")}
+                {settings.homepage_protocol_badge ? (
+                  <Editable
+                    initialValue={settings.homepage_protocol_badge}
+                    contentKey={"homepage_protocol_badge"}
+                    language={i18n.language}
+                  />
+                ) : (
+                  t("homepage.protocol_badge")
+                )}
               </div>
               <h2 className="font-orbitron font-black text-[clamp(32px,6vw,56px)] leading-tight mb-6 text-white whitespace-pre-line">
-                {t("homepage.protocol_title")}
+                {settings.homepage_protocol_title ? (
+                  <Editable
+                    initialValue={settings.homepage_protocol_title}
+                    contentKey={"homepage_protocol_title"}
+                    language={i18n.language}
+                  />
+                ) : (
+                  t("homepage.protocol_title")
+                )}
               </h2>
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-12">
               <div className={`${card} p-8 border-[#ec4899]/30`}>
                 <div className="font-orbitron font-black text-4xl text-[#ec4899] mb-2">
-                  {t("homepage.protocol_stat_1")}
+                  {settings.homepage_protocol_stat_1 ? (
+                    <Editable
+                      initialValue={settings.homepage_protocol_stat_1}
+                      contentKey={"homepage_protocol_stat_1"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.protocol_stat_1")
+                  )}
                 </div>
                 <div className="text-xs text-[#d1d5db] tracking-wider uppercase">
-                  {t("homepage.protocol_stat_1_label")}
+                  {settings.homepage_protocol_stat_1_label ? (
+                    <Editable
+                      initialValue={settings.homepage_protocol_stat_1_label}
+                      contentKey={"homepage_protocol_stat_1_label"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.protocol_stat_1_label")
+                  )}
                 </div>
               </div>
               <div className={`${card} p-8 border-[#10b981]/30`}>
                 <div className="font-orbitron font-black text-4xl text-[#10b981] mb-2">
-                  {t("homepage.protocol_stat_2")}
+                  {settings.homepage_protocol_stat_2 ? (
+                    <Editable
+                      initialValue={settings.homepage_protocol_stat_2}
+                      contentKey={"homepage_protocol_stat_2"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.protocol_stat_2")
+                  )}
                 </div>
                 <div className="text-xs text-[#d1d5db] tracking-wider uppercase">
-                  {t("homepage.protocol_stat_2_label")}
+                  {settings.homepage_protocol_stat_2_label ? (
+                    <Editable
+                      initialValue={settings.homepage_protocol_stat_2_label}
+                      contentKey={"homepage_protocol_stat_2_label"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.protocol_stat_2_label")
+                  )}
                 </div>
               </div>
               <div className={`${card} p-8 border-[#06b6d4]/30`}>
                 <div className="font-orbitron font-black text-4xl text-[#06b6d4] mb-2">
-                  {t("homepage.protocol_stat_4")}
+                  {settings.homepage_protocol_stat_4 ? (
+                    <Editable
+                      initialValue={settings.homepage_protocol_stat_4}
+                      contentKey={"homepage_protocol_stat_4"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.protocol_stat_4")
+                  )}
                 </div>
                 <div className="text-xs text-[#d1d5db] tracking-wider uppercase">
-                  {t("homepage.protocol_stat_4_label")}
+                  {settings.homepage_protocol_stat_4_label ? (
+                    <Editable
+                      initialValue={settings.homepage_protocol_stat_4_label}
+                      contentKey={"homepage_protocol_stat_4_label"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.protocol_stat_4_label")
+                  )}
                 </div>
               </div>
             </div>
@@ -617,22 +828,72 @@ function Homepage() {
               <div
                 className={`${badge} bg-[#3b82f6]/20 border border-[#3b82f6]/50 text-[#3b82f6] mb-8`}
               >
-                {t("homepage.venue_badge")}
+                {settings.homepage_venue_badge ? (
+                  <Editable
+                    initialValue={settings.homepage_venue_badge}
+                    contentKey={"homepage_venue_badge"}
+                    language={i18n.language}
+                  />
+                ) : (
+                  t("homepage.venue_badge")
+                )}
               </div>
               <h2 className={h2Style}>
-                {t("homepage.venue_title")}
+                {settings.homepage_venue_title ? (
+                  <Editable
+                    initialValue={settings.homepage_venue_title}
+                    contentKey={"homepage_venue_title"}
+                    language={i18n.language}
+                  />
+                ) : (
+                  t("homepage.venue_title")
+                )}
                 <span className="text-[#3b82f6] drop-shadow-[0_0_20px_rgba(59,130,246,0.5)]">
-                  {t("homepage.venue_title_highlight")}
+                  {settings.homepage_venue_title_highlight ? (
+                    <Editable
+                      initialValue={settings.homepage_venue_title_highlight}
+                      contentKey={"homepage_venue_title_highlight"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.venue_title_highlight")
+                  )}
                 </span>
               </h2>
               <div className="flex flex-col md:flex-row gap-8 text-[#d1d5db]">
                 <div className="whitespace-pre-line">
-                  {t("homepage.venue_location_1")}
+                  {settings.homepage_venue_location_1 ? (
+                    <Editable
+                      initialValue={settings.homepage_venue_location_1}
+                      contentKey={"homepage_venue_location_1"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.venue_location_1")
+                  )}
                 </div>
                 <div className="whitespace-pre-line">
-                  {t("homepage.venue_location_2")}
+                  {settings.homepage_venue_location_2 ? (
+                    <Editable
+                      initialValue={settings.homepage_venue_location_2}
+                      contentKey={"homepage_venue_location_2"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.venue_location_2")
+                  )}
                 </div>
-                <div>{t("homepage.venue_location_3")}</div>
+                <div>
+                  {settings.homepage_venue_location_3 ? (
+                    <Editable
+                      initialValue={settings.homepage_venue_location_3}
+                      contentKey={"homepage_venue_location_3"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.venue_location_3")
+                  )}
+                </div>
               </div>
             </div>
 
@@ -642,10 +903,26 @@ function Homepage() {
                   className={`${card} p-10 border-[#10b981]/30 hover:border-[#10b981]/50 transition-all duration-300 hover:translate-y-[-5px]`}
                 >
                   <h3 className="font-orbitron font-bold text-2xl mb-4 text-[#10b981]">
-                    {t("homepage.venue_room_1_title")}
+                    {settings.homepage_venue_room_1_title ? (
+                      <Editable
+                        initialValue={settings.homepage_venue_room_1_title}
+                        contentKey={"homepage_venue_room_1_title"}
+                        language={i18n.language}
+                      />
+                    ) : (
+                      t("homepage.venue_room_1_title")
+                    )}
                   </h3>
                   <p className="text-[#d1d5db] leading-relaxed">
-                    {t("homepage.venue_room_1_desc")}
+                    {settings.homepage_venue_room_1_desc ? (
+                      <Editable
+                        initialValue={settings.homepage_venue_room_1_desc}
+                        contentKey={"homepage_venue_room_1_desc"}
+                        language={i18n.language}
+                      />
+                    ) : (
+                      t("homepage.venue_room_1_desc")
+                    )}
                   </p>
                 </div>
 
@@ -653,10 +930,26 @@ function Homepage() {
                   className={`${card} p-10 border-[#ec4899]/30 hover:border-[#ec4899]/50 transition-all duration-300 hover:translate-y-[-5px]`}
                 >
                   <h3 className="font-orbitron font-bold text-2xl mb-4 text-[#ec4899]">
-                    {t("homepage.venue_room_2_title")}
+                    {settings.homepage_venue_room_2_title ? (
+                      <Editable
+                        initialValue={settings.homepage_venue_room_2_title}
+                        contentKey={"homepage_venue_room_2_title"}
+                        language={i18n.language}
+                      />
+                    ) : (
+                      t("homepage.venue_room_2_title")
+                    )}
                   </h3>
                   <p className="text-[#d1d5db] leading-relaxed">
-                    {t("homepage.venue_room_2_desc")}
+                    {settings.homepage_venue_room_2_desc ? (
+                      <Editable
+                        initialValue={settings.homepage_venue_room_2_desc}
+                        contentKey={"homepage_venue_room_2_desc"}
+                        language={i18n.language}
+                      />
+                    ) : (
+                      t("homepage.venue_room_2_desc")
+                    )}
                   </p>
                 </div>
               </div>
@@ -680,7 +973,15 @@ function Homepage() {
                   rel="noopener noreferrer"
                   className={`w-full text-center px-6 py-4 bg-[#3b82f6]/20 border border-[#3b82f6]/50 text-[#3b82f6] ${btn} hover:bg-[#3b82f6] hover:text-white transition-all duration-300`}
                 >
-                  {t("homepage.venue_view_map")}
+                  {settings.homepage_venue_view_map ? (
+                    <Editable
+                      initialValue={settings.homepage_venue_view_map}
+                      contentKey={"homepage_venue_view_map"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.venue_view_map")
+                  )}
                 </a>
               </div>
             </div>
@@ -695,14 +996,38 @@ function Homepage() {
           <div className="max-w-7xl mx-auto px-10 relative z-10">
             <div className="mb-20">
               <h2 className="font-orbitron font-black text-[clamp(36px,6vw,64px)] leading-tight mb-3 text-white">
-                {t("homepage.stats_title")}
+                {settings.homepage_stats_title ? (
+                  <Editable
+                    initialValue={settings.homepage_stats_title}
+                    contentKey={"homepage_stats_title"}
+                    language={i18n.language}
+                  />
+                ) : (
+                  t("homepage.stats_title")
+                )}
                 <br />
                 <span className="text-[#ec4899] drop-shadow-[0_0_20px_rgba(236,72,153,0.5)]">
-                  {t("homepage.stats_title_highlight")}
+                  {settings.homepage_stats_title_highlight ? (
+                    <Editable
+                      initialValue={settings.homepage_stats_title_highlight}
+                      contentKey={"homepage_stats_title_highlight"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.stats_title_highlight")
+                  )}
                 </span>
               </h2>
               <p className="text-sm text-[#d1d5db] tracking-[2px] uppercase">
-                {t("homepage.stats_subtitle")}
+                {settings.homepage_stats_subtitle ? (
+                  <Editable
+                    initialValue={settings.homepage_stats_subtitle}
+                    contentKey={"homepage_stats_subtitle"}
+                    language={i18n.language}
+                  />
+                ) : (
+                  t("homepage.stats_subtitle")
+                )}
               </p>
             </div>
 
@@ -750,7 +1075,7 @@ function Homepage() {
 
                   <div className="relative z-10">
                     <div
-                      className={`font-orbitron font-black text-[clamp(40px,6vw,70px)] mb-2 bg-gradient-to-br ${stat.colors} bg-clip-text text-transparent`}
+                      className={`font-orbitron font-black text-[clamp(10px,6vw,70px)] mb-2 bg-gradient-to-br ${stat.colors} bg-clip-text text-transparent`}
                     >
                       {stat.number}
                     </div>
@@ -772,7 +1097,15 @@ function Homepage() {
           <div className={container}>
             <div className="text-center">
               <p className="text-[#d1d5db] text-lg mb-6">
-                {t("homepage.partners_link_text")}
+                {settings.homepage_partners_link_text ? (
+                  <Editable
+                    initialValue={settings.homepage_partners_link_text}
+                    contentKey={"homepage_partners_link_text"}
+                    language={i18n.language}
+                  />
+                ) : (
+                  t("homepage.partners_link_text")
+                )}
               </p>
               <Link
                 to="/partners"
