@@ -4,9 +4,10 @@ import { useSettings } from "../../context/SettingsContext";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import { useEffect, useState } from "react";
+import Editable from "../../components/Utils/Editable";
 
 function HomepagePhase3() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const settings = useSettings();
   const [winners, setWinners] = useState([
     {
@@ -53,54 +54,12 @@ function HomepagePhase3() {
     },
   ]);
 
-  const stats = [
-    {
-      number: "3,892",
-      label: t("phase3.total_visitors"),
-      color: "text-[#10b981]",
-    },
-    {
-      number: "50",
-      label: t("phase3.finalist_films"),
-      color: "text-[#ec4899]",
-    },
-    { number: "120", label: t("phase3.countries"), color: "text-[#06b6d4]" },
-    {
-      number: "15",
-      label: t("phase3.conferences_workshops"),
-      color: "text-[#a855f7]",
-    },
-  ];
-
-  const testimonials = [
-    {
-      quote: t("phase3.testimonial_1"),
-      author: "Dr. Marie Laurent",
-      role: t("phase3.grand_winner"),
-    },
-    {
-      quote: t("phase3.testimonial_2"),
-      author: "Prof. Jean Martin",
-      role: t("phase3.jury_president"),
-    },
-    {
-      quote: t("phase3.testimonial_3"),
-      author: "Sophie Chen",
-      role: t("phase3.participant"),
-    },
-    {
-      quote: t("phase3.testimonial_4"),
-      author: "Marc Dubois",
-      role: t("phase3.visitor"),
-    },
-  ];
-
   useEffect(() => {
-    /* FETCH LES FILMS GAGNANTS */ return; // TO IMPLEMENT
+    /* FETCH LES FILMS GAGNANTS */
     const fetchData = async () => {
       try {
         const response = await fetch(
-          import.meta.env.VITE_API_URL + "/api/prized_videos/",
+          import.meta.env.VITE_API_URL + "/api/prized-videos/",
           {
             method: "GET",
             headers: {
@@ -110,8 +69,8 @@ function HomepagePhase3() {
         );
         if (!response.ok) throw new Error("Erreur fetch rest videos");
         const res = await response.json();
-        winners = res.data;
-        console.log(winners);
+        setWinners(res.data);
+        console.log(res.data);
       } catch (err) {
         console.error(err);
       }
@@ -144,7 +103,15 @@ function HomepagePhase3() {
               <div className="px-8 py-3 bg-gradient-to-r from-[#10b981]/20 to-[#059669]/20 backdrop-blur-sm border border-[#10b981]/50 rounded-full">
                 <span className="text-[#10b981] font-inter font-bold text-sm tracking-wider uppercase flex items-center gap-2">
                   <span className="text-xl">✓</span>
-                  {t("phase3.festival_completed")}
+                  {settings.homepage_phase3_festival_completed ? (
+                    <Editable
+                      initialValue={settings.homepage_phase3_festival_completed}
+                      contentKey={"homepage_phase3_festival_completed"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("phase3.festival_completed")
+                  )}
                 </span>
               </div>
             </div>
@@ -157,16 +124,48 @@ function HomepagePhase3() {
               </span>
               <br />
               <span className="text-[clamp(32px,6vw,64px)] bg-gradient-to-r from-[#fbbf24] to-[#f59e0b] bg-clip-text text-transparent">
-                {t("phase3.awards_2026")}
+                {settings.homepage_phase3_awards_2026 ? (
+                  <Editable
+                    initialValue={settings.homepage_phase3_awards_2026}
+                    contentKey={"homepage_phase3_awards_2026"}
+                    language={i18n.language}
+                  />
+                ) : (
+                  t("phase3.awards_2026")
+                )}
               </span>
             </h1>
             <p className="font-orbitron font-semibold text-[clamp(20px,3vw,36px)] mb-6 text-white">
-              {t("phase3.discover_winners")}
+              {settings.homepage_phase3_discover_winners ? (
+                <Editable
+                  initialValue={settings.homepage_phase3_discover_winners}
+                  contentKey={"homepage_phase3_discover_winners"}
+                  language={i18n.language}
+                />
+              ) : (
+                t("phase3.discover_winners")
+              )}
             </p>
             <p className="text-[clamp(14px,2vw,18px)] text-[#a0a0b8] mb-3 max-w-3xl mx-auto">
-              {t("phase3.hero_description")}
+              {settings.homepage_phase3_hero_description ? (
+                <Editable
+                  initialValue={settings.homepage_phase3_hero_description}
+                  contentKey={"homepage_phase3_hero_description"}
+                  language={i18n.language}
+                />
+              ) : (
+                t("phase3.hero_description")
+              )}
               <br />
-              {t("phase3.hero_description_2")}
+              {settings.homepage_phase3_hero_description_2 ? (
+                <Editable
+                  initialValue={settings.homepage_phase3_hero_description_2}
+                  contentKey={"homepage_phase3_hero_description_2"}
+                  language={i18n.language}
+                />
+              ) : (
+                t("phase3.hero_description_2")
+              )}
             </p>
             <div className="flex gap-5 justify-center flex-wrap mt-12">
               <a
@@ -175,12 +174,12 @@ function HomepagePhase3() {
               >
                 {t("phase3.see_palmares")}
               </a>
-              <a
+              {/*   <a
                 href="#highlights"
                 className="px-10 py-4 bg-gradient-to-br from-[#a855f7] to-[#ec4899] text-white font-inter font-semibold text-sm tracking-wider uppercase rounded-full shadow-[0_10px_30px_rgba(168,85,247,0.3)] hover:translate-y-[-3px] transition-all"
               >
                 {t("phase3.watch_highlights")}
-              </a>
+              </a> */}
             </div>
           </div>
         </section>
@@ -190,14 +189,30 @@ function HomepagePhase3() {
           <div className="max-w-7xl mx-auto px-10">
             <div className="text-center mb-8">
               <h3 className="font-orbitron font-bold text-2xl text-[#fbbf24] mb-2">
-                {t("phase3.final_results")}
+                {settings.homepage_phase3_final_results ? (
+                  <Editable
+                    initialValue={settings.homepage_phase3_final_results}
+                    contentKey={"homepage_phase3_final_results"}
+                    language={i18n.language}
+                  />
+                ) : (
+                  t("phase3.final_results")
+                )}
               </h3>
               <p className="text-sm text-[#a0a0b8]">
-                {t("phase3.festival_dates")}
+                {settings.homepage_phase3_festival_dates ? (
+                  <Editable
+                    initialValue={settings.homepage_phase3_festival_dates}
+                    contentKey={"homepage_phase3_festival_dates"}
+                    language={i18n.language}
+                  />
+                ) : (
+                  t("phase3.festival_dates")
+                )}
               </p>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-              {stats.map((stat, i) => (
+              {/*  {stats.map((stat, i) => (
                 <div key={i}>
                   <div
                     className={`font-orbitron font-black text-4xl mb-2 ${stat.color}`}
@@ -208,7 +223,115 @@ function HomepagePhase3() {
                     {stat.label}
                   </div>
                 </div>
-              ))}
+              ))} */}
+
+              <div>
+                <div
+                  className={`font-orbitron font-black text-4xl mb-2 ${t("phase3.stat_1_color")}`}
+                >
+                  {settings.phase3_stat_1_number ? (
+                    <Editable
+                      initialValue={settings.phase3_stat_1_number}
+                      contentKey={"phase3_stat_1_number"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("phase3.stat_1_number")
+                  )}
+                </div>
+                <div className="text-xs text-[#a0a0b8] tracking-wider uppercase">
+                  {settings.phase3_stat_1_label ? (
+                    <Editable
+                      initialValue={settings.phase3_stat_1_label}
+                      contentKey={"phase3_stat_1_label"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("phase3.stat_1_label")
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <div
+                  className={`font-orbitron font-black text-4xl mb-2 ${t("phase3.stat_2_color")}`}
+                >
+                  {settings.phase3_stat_2_number ? (
+                    <Editable
+                      initialValue={settings.phase3_stat_2_number}
+                      contentKey={"phase3_stat_2_number"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("phase3.stat_2_number")
+                  )}
+                </div>
+                <div className="text-xs text-[#a0a0b8] tracking-wider uppercase">
+                  {settings.phase3_stat_2_label ? (
+                    <Editable
+                      initialValue={settings.phase3_stat_2_label}
+                      contentKey={"phase3_stat_2_label"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("phase3.stat_2_label")
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <div
+                  className={`font-orbitron font-black text-4xl mb-2 ${t("phase3.stat_3_color")}`}
+                >
+                  {settings.phase3_stat_3_number ? (
+                    <Editable
+                      initialValue={settings.phase3_stat_3_number}
+                      contentKey={"phase3_stat_3_number"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("phase3.stat_3_number")
+                  )}
+                </div>
+                <div className="text-xs text-[#a0a0b8] tracking-wider uppercase">
+                  {settings.phase3_stat_3_label ? (
+                    <Editable
+                      initialValue={settings.phase3_stat_3_label}
+                      contentKey={"phase3_stat_3_label"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("phase3.stat_3_label")
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <div
+                  className={`font-orbitron font-black text-4xl mb-2 ${t("phase3.stat_4_color")}`}
+                >
+                  {settings.phase3_stat_4_number ? (
+                    <Editable
+                      initialValue={settings.phase3_stat_4_number}
+                      contentKey={"phase3_stat_4_number"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("phase3.stat_4_number")
+                  )}
+                </div>
+                <div className="text-xs text-[#a0a0b8] tracking-wider uppercase">
+                  {settings.phase3_stat_4_label ? (
+                    <Editable
+                      initialValue={settings.phase3_stat_4_label}
+                      contentKey={"phase3_stat_4_label"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("phase3.stat_4_label")
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -218,7 +341,15 @@ function HomepagePhase3() {
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[radial-gradient(circle,rgba(251,191,36,0.15)_0%,transparent_70%)] blur-3xl"></div>
           <div className="max-w-6xl mx-auto px-10 relative z-10 text-center">
             <div className="text-[#fbbf24] font-inter font-bold text-sm tracking-[3px] uppercase mb-6">
-              {t("phase3.grand_prize")}
+              {settings.homepage_phase3_grand_prize ? (
+                <Editable
+                  initialValue={settings.homepage_phase3_grand_prize}
+                  contentKey={"homepage_phase3_grand_prize"}
+                  language={i18n.language}
+                />
+              ) : (
+                t("phase3.grand_prize")
+              )}
             </div>
             <h2 className="font-orbitron font-black text-[clamp(40px,8vw,80px)] mb-8">
               <span className="bg-gradient-to-r from-[#fbbf24] to-[#f59e0b] bg-clip-text text-transparent">
@@ -268,118 +399,6 @@ function HomepagePhase3() {
             </Link>
           </div>
         </section>
-
-        {/* Podium Section */}
-        {/* <section className="py-32 bg-gradient-to-b from-[#0a0a0f] to-[#1a0a2e] relative overflow-hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(251,191,36,0.1)_0%,transparent_70%)]"></div>
-          <div className="max-w-6xl mx-auto px-10 relative z-10">
-            <div className="text-center mb-16">
-              <h2 className="font-orbitron font-black text-[clamp(36px,6vw,64px)] mb-6 text-white">
-                PODIUM
-                <br />
-                <span className="text-[#fbbf24]">TOP 3</span>
-              </h2>
-            </div>
-
-            <div className="flex items-end justify-center gap-4 md:gap-8">
-              <div className="flex flex-col items-center">
-                <Link to="/video/2" className="group mb-4">
-                  <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-2xl overflow-hidden border-4 border-[#c0c0c0] shadow-[0_0_30px_rgba(192,192,192,0.4)] group-hover:scale-105 transition-transform">
-                    <img
-                      src={winners[1].thumbnail}
-                      alt={winners[1].title}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                  </div>
-                  <div className="text-center mt-3">
-                    <div className="font-orbitron font-bold text-sm md:text-base text-white group-hover:text-[#c0c0c0] transition-colors">
-                      {winners[1].title}
-                    </div>
-                    <div className="text-xs text-[#a0a0b8]">
-                      {winners[1].director}
-                    </div>
-                  </div>
-                </Link>
-                <div className="w-32 md:w-40 h-32 md:h-40 bg-gradient-to-b from-[#e8e8e8] to-[#a0a0a0] rounded-t-xl flex flex-col items-center justify-center relative shadow-[inset_0_2px_10px_rgba(255,255,255,0.3),0_-5px_20px_rgba(192,192,192,0.3)]">
-                  <div className="absolute -top-6 w-12 h-12 bg-gradient-to-br from-[#e8e8e8] to-[#a0a0a0] rounded-full flex items-center justify-center shadow-lg">
-                    <span className="font-orbitron font-black text-2xl text-[#333]">
-                      2
-                    </span>
-                  </div>
-                  <span className="text-xs text-[#333] font-inter font-semibold uppercase tracking-wider mt-4">
-                    {t("phase3.prize_jury") || "Prix du Jury"}
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex flex-col items-center">
-                <Link to="/video/1" className="group mb-4">
-                  <div className="relative w-40 h-40 md:w-52 md:h-52 rounded-2xl overflow-hidden border-4 border-[#fbbf24] shadow-[0_0_50px_rgba(251,191,36,0.5)] group-hover:scale-105 transition-transform">
-                    <img
-                      src={winners[0].thumbnail}
-                      alt={winners[0].title}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                    <div className="absolute top-2 right-2 text-2xl">👑</div>
-                  </div>
-                  <div className="text-center mt-3">
-                    <div className="font-orbitron font-bold text-base md:text-lg text-[#fbbf24] group-hover:text-white transition-colors">
-                      {winners[0].title}
-                    </div>
-                    <div className="text-xs text-[#a0a0b8]">
-                      {winners[0].director}
-                    </div>
-                  </div>
-                </Link>
-                <div className="w-40 md:w-52 h-48 md:h-56 bg-gradient-to-b from-[#fbbf24] to-[#b8860b] rounded-t-xl flex flex-col items-center justify-center relative shadow-[inset_0_2px_10px_rgba(255,255,255,0.4),0_-5px_30px_rgba(251,191,36,0.4)]">
-                  <div className="absolute -top-6 w-14 h-14 bg-gradient-to-br from-[#fbbf24] to-[#f59e0b] rounded-full flex items-center justify-center shadow-lg animate-pulse">
-                    <span className="font-orbitron font-black text-3xl text-white">
-                      1
-                    </span>
-                  </div>
-                  <span className="text-xs text-white font-inter font-bold uppercase tracking-wider mt-4">
-                    {t("phase3.prize_grand_prix") || "Grand Prix"}
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex flex-col items-center">
-                <Link to="/video/3" className="group mb-4">
-                  <div className="relative w-28 h-28 md:w-36 md:h-36 rounded-2xl overflow-hidden border-4 border-[#cd7f32] shadow-[0_0_25px_rgba(205,127,50,0.4)] group-hover:scale-105 transition-transform">
-                    <img
-                      src={winners[2].thumbnail}
-                      alt={winners[2].title}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                  </div>
-                  <div className="text-center mt-3">
-                    <div className="font-orbitron font-bold text-sm text-white group-hover:text-[#cd7f32] transition-colors">
-                      {winners[2].title}
-                    </div>
-                    <div className="text-xs text-[#a0a0b8]">
-                      {winners[2].director}
-                    </div>
-                  </div>
-                </Link>
-                <div className="w-28 md:w-36 h-24 md:h-28 bg-gradient-to-b from-[#cd7f32] to-[#8b4513] rounded-t-xl flex flex-col items-center justify-center relative shadow-[inset_0_2px_10px_rgba(255,255,255,0.3),0_-5px_20px_rgba(205,127,50,0.3)]">
-                  <div className="absolute -top-5 w-10 h-10 bg-gradient-to-br from-[#cd7f32] to-[#8b4513] rounded-full flex items-center justify-center shadow-lg">
-                    <span className="font-orbitron font-black text-xl text-white">
-                      3
-                    </span>
-                  </div>
-                  <span className="text-[10px] md:text-xs text-white font-inter font-semibold uppercase tracking-wider mt-3">
-                    {t("phase3.prize_direction") || "Réalisation"}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <div className="max-w-2xl mx-auto h-4 bg-gradient-to-r from-transparent via-[#fbbf24]/30 to-transparent rounded-full mt-2"></div>
-          </div>
-        </section> */}
 
         {/* Winners List */}
         <section id="palmares" className="py-32 bg-[#0a0a0f]">
@@ -448,62 +467,185 @@ function HomepagePhase3() {
           </div>
         </section>
 
-        {/* Gallery */}
-        <section
-          id="highlights"
-          className="py-32 bg-gradient-to-br from-[#050508] via-[#0a0a0f] to-[#1a0a2e]"
-        >
-          <div className="max-w-7xl mx-auto px-10">
-            <div className="text-center mb-20">
-              <h2 className="font-orbitron font-black text-[clamp(36px,6vw,64px)] mb-6 text-white">
-                {t("phase3.festival_highlights")}
-                <br />
-                <span className="text-[#ec4899]">
-                  {t("phase3.best_moments")}
-                </span>
-              </h2>
-              <p className="text-[#a0a0b8] text-lg">
-                {t("phase3.highlights_description")}
-              </p>
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {[...Array(6)].map((_, i) => (
-                <div
-                  key={i}
-                  className="group relative aspect-square bg-gradient-to-br from-[#1a1a24] to-[#2a1a34] rounded-2xl overflow-hidden cursor-pointer hover:scale-105 transition-transform"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#a855f7]/20 to-[#ec4899]/20 group-hover:from-[#a855f7]/40 group-hover:to-[#ec4899]/40 transition-all flex items-center justify-center"></div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* Testimonials */}
         <section className="py-32 bg-[#0a0a0f]">
           <div className="max-w-6xl mx-auto px-10">
             <div className="text-center mb-20">
               <h2 className="font-orbitron font-black text-[clamp(36px,6vw,64px)] mb-6 text-white">
-                {t("phase3.testimonials")}
+                {settings.phase3_testimonials ? (
+                  <Editable
+                    initialValue={settings.phase3_testimonials}
+                    contentKey={"phase3_testimonials"}
+                    language={i18n.language}
+                  />
+                ) : (
+                  t("phase3.testimonials")
+                )}
                 <br />
-                <span className="text-[#06b6d4]">{t("phase3.reactions")}</span>
+                <span className="text-[#06b6d4]">
+                  {settings.phase3_reactions ? (
+                    <Editable
+                      initialValue={settings.phase3_reactions}
+                      contentKey={"phase3_reactions"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("phase3.reactions")
+                  )}
+                </span>
               </h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {testimonials.map((item, i) => (
-                <div
-                  key={i}
-                  className="bg-gradient-to-br from-[#1a1a24] to-[#2a1a34] p-8 rounded-3xl border border-white/5 hover:border-[#06b6d4]/50 transition-all"
-                >
-                  <p className="text-[#a0a0b8] mb-6 text-lg italic">
-                    "{item.quote}"
-                  </p>
-                  <div className="font-orbitron font-bold text-white">
-                    {item.author}
-                  </div>
-                  <div className="text-sm text-[#6b6b85]">{item.role}</div>
+              <div className="bg-gradient-to-br from-[#1a1a24] to-[#2a1a34] p-8 rounded-3xl border border-white/5 hover:border-[#06b6d4]/50 transition-all">
+                <p className="text-[#a0a0b8] mb-6 text-lg italic">
+                  "
+                  {settings.phase3_testimonial_1_quote ? (
+                    <Editable
+                      initialValue={settings.phase3_testimonial_1_quote}
+                      contentKey={"phase3_testimonial_1_quote"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("phase3.testimonial_1_quote")
+                  )}
+                  "
+                </p>
+                <div className="font-orbitron font-bold text-white">
+                  {settings.phase3_testimonial_1_author ? (
+                    <Editable
+                      initialValue={settings.phase3_testimonial_1_author}
+                      contentKey={"phase3_testimonial_1_author"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("phase3.testimonial_1_author")
+                  )}
                 </div>
-              ))}
+                <div className="text-sm text-[#6b6b85]">
+                  {settings.phase3_testimonial_1_role ? (
+                    <Editable
+                      initialValue={settings.phase3_testimonial_1_role}
+                      contentKey={"phase3_testimonial_1_role"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("phase3.testimonial_1_role")
+                  )}
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-br from-[#1a1a24] to-[#2a1a34] p-8 rounded-3xl border border-white/5 hover:border-[#06b6d4]/50 transition-all">
+                <p className="text-[#a0a0b8] mb-6 text-lg italic">
+                  "
+                  {settings.phase3_testimonial_2_quote ? (
+                    <Editable
+                      initialValue={settings.phase3_testimonial_2_quote}
+                      contentKey={"phase3_testimonial_2_quote"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("phase3.testimonial_2_quote")
+                  )}
+                  "
+                </p>
+                <div className="font-orbitron font-bold text-white">
+                  {settings.phase3_testimonial_2_author ? (
+                    <Editable
+                      initialValue={settings.phase3_testimonial_2_author}
+                      contentKey={"phase3_testimonial_2_author"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("phase3.testimonial_2_author")
+                  )}
+                </div>
+                <div className="text-sm text-[#6b6b85]">
+                  {settings.phase3_testimonial_2_role ? (
+                    <Editable
+                      initialValue={settings.phase3_testimonial_2_role}
+                      contentKey={"phase3_testimonial_2_role"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("phase3.testimonial_2_role")
+                  )}
+                </div>
+              </div>
+              <div className="bg-gradient-to-br from-[#1a1a24] to-[#2a1a34] p-8 rounded-3xl border border-white/5 hover:border-[#06b6d4]/50 transition-all">
+                <p className="text-[#a0a0b8] mb-6 text-lg italic">
+                  "
+                  {settings.phase3_testimonial_3_quote ? (
+                    <Editable
+                      initialValue={settings.phase3_testimonial_3_quote}
+                      contentKey={"phase3_testimonial_3_quote"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("phase3.testimonial_3_quote")
+                  )}
+                  "
+                </p>
+                <div className="font-orbitron font-bold text-white">
+                  {settings.phase3_testimonial_3_author ? (
+                    <Editable
+                      initialValue={settings.phase3_testimonial_3_author}
+                      contentKey={"phase3_testimonial_3_author"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("phase3.testimonial_3_author")
+                  )}
+                </div>
+                <div className="text-sm text-[#6b6b85]">
+                  {settings.phase3_testimonial_3_role ? (
+                    <Editable
+                      initialValue={settings.phase3_testimonial_3_role}
+                      contentKey={"phase3_testimonial_3_role"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("phase3.testimonial_3_role")
+                  )}
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-br from-[#1a1a24] to-[#2a1a34] p-8 rounded-3xl border border-white/5 hover:border-[#06b6d4]/50 transition-all">
+                <p className="text-[#a0a0b8] mb-6 text-lg italic">
+                  "
+                  {settings.phase3_testimonial_4_quote ? (
+                    <Editable
+                      initialValue={settings.phase3_testimonial_4_quote}
+                      contentKey={"phase3_testimonial_4_quote"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("phase3.testimonial_4_quote")
+                  )}
+                  "
+                </p>
+                <div className="font-orbitron font-bold text-white">
+                  {settings.phase3_testimonial_4_author ? (
+                    <Editable
+                      initialValue={settings.phase3_testimonial_4_author}
+                      contentKey={"phase3_testimonial_4_author"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("phase3.testimonial_4_author")
+                  )}
+                </div>
+                <div className="text-sm text-[#6b6b85]">
+                  {settings.phase3_testimonial_4_role ? (
+                    <Editable
+                      initialValue={settings.phase3_testimonial_4_role}
+                      contentKey={"phase3_testimonial_4_role"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("phase3.testimonial_4_role")
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         </section>
