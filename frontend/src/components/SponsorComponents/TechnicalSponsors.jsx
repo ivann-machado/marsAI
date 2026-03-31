@@ -26,6 +26,8 @@ function TechnicalSponsors({ sponsors }) {
               </div>
               <img
                 src={sponsor.logo}
+                alt="sponsor_logo"
+                loading="lazy"
                 className="w-5/10 aspect-auto mx-auto md:w-50"
               ></img>
             </div>
