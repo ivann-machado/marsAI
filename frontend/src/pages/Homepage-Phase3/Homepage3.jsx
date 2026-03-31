@@ -5,12 +5,16 @@ import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import { useEffect, useState } from "react";
 import Editable from "../../components/Utils/Editable";
+import {
+  countryListFr,
+  countryListEn,
+} from "../../components/Utils/CountryList.jsx";
 
 function HomepagePhase3() {
   const { t, i18n } = useTranslation();
   const settings = useSettings();
   const [winners, setWinners] = useState([
-    {
+    /*    {
       title: "NEURAL DREAM",
       producer: "Marie Laurent",
       country: t("phase3.country_belgium"),
@@ -51,8 +55,11 @@ function HomepagePhase3() {
       country: t("phase3.country_spain"),
       cover_image: "/src/assets/planete.png",
       prize: t("phase3.prize_artistic"),
-    },
+    }, */
   ]);
+  let country_list = [];
+  if (i18n.language === "fr") country_list = countryListFr;
+  else country_list = countryListEn;
 
   useEffect(() => {
     /* FETCH LES FILMS GAGNANTS */
@@ -70,7 +77,6 @@ function HomepagePhase3() {
         if (!response.ok) throw new Error("Erreur fetch rest videos");
         const res = await response.json();
         setWinners(res.data);
-        console.log(res.data);
       } catch (err) {
         console.error(err);
       }
@@ -361,42 +367,51 @@ function HomepagePhase3() {
               <span>•</span>
               <span>Belgique</span>
             </div>
-            <Link
-              to="/video/1"
-              className="group cursor-pointer max-w-4xl mx-auto block"
-            >
-              <div className="relative rounded-3xl overflow-hidden shadow-[0_0_100px_rgba(251,191,36,0.4)] border-4 border-[#fbbf24]/50 hover:border-[#fbbf24] transition-all">
-                <div className="w-full aspect-video relative bg-[#2a1a34]">
-                  <img
-                    src="/src/assets/neural.png"
-                    alt="NEURAL DREAM"
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      e.target.style.display = "none";
-                    }}
-                  />
-                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition-all flex items-center justify-center">
-                    <div className="w-24 h-24 rounded-full bg-[#fbbf24] flex items-center justify-center group-hover:scale-110 transition-transform">
-                      <svg
-                        className="w-10 h-10 text-white ml-1"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M8 5v14l11-7z" />
-                      </svg>
+            {winners.map((winner) => {
+              if (winner.prix != "Grand Prix") return;
+
+              return (
+                <Link
+                  to={"/video/" + winner.video_id}
+                  className="group cursor-pointer max-w-4xl mx-auto block"
+                >
+                  <div className="relative rounded-3xl overflow-hidden shadow-[0_0_100px_rgba(251,191,36,0.4)] border-4 border-[#fbbf24]/50 hover:border-[#fbbf24] transition-all">
+                    <div className="w-full aspect-video relative bg-[#2a1a34]">
+                      <img
+                        src={
+                          "https://s3.fr-par.scw.cloud/paris/grp1/" +
+                          winner.cover_image
+                        }
+                        alt={winner.title}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.target.style.display = "none";
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition-all flex items-center justify-center">
+                        <div className="w-24 h-24 rounded-full bg-[#fbbf24] flex items-center justify-center group-hover:scale-110 transition-transform">
+                          <svg
+                            className="w-10 h-10 text-white ml-1"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M8 5v14l11-7z" />
+                          </svg>
+                        </div>
+                      </div>
+                      <div className="absolute top-6 left-6 px-6 py-3 bg-gradient-to-r from-[#fbbf24] to-[#f59e0b] rounded-full flex items-center gap-2">
+                        <span className="text-white font-inter font-bold text-sm uppercase">
+                          {t("phase3.grand_winner")}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                  <div className="absolute top-6 left-6 px-6 py-3 bg-gradient-to-r from-[#fbbf24] to-[#f59e0b] rounded-full flex items-center gap-2">
-                    <span className="text-white font-inter font-bold text-sm uppercase">
-                      {t("phase3.grand_winner")}
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <p className="mt-8 text-lg text-[#a0a0b8] max-w-2xl mx-auto">
-                "{t("phase3.winner_quote")}"
-              </p>
-            </Link>
+                  <p className="mt-8 text-lg text-[#a0a0b8] max-w-2xl mx-auto">
+                    "{t("phase3.winner_quote")}"
+                  </p>
+                </Link>
+              );
+            })}
           </div>
         </section>
 
@@ -414,55 +429,58 @@ function HomepagePhase3() {
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {winners.map((winner, i) => (
-                <Link
-                  to={`/video/${i + 1}`}
-                  key={i}
-                  className="group relative block"
-                >
-                  {/* {i < 3 && (
-                    <div className="absolute -top-4 -left-4 z-10 w-12 h-12 bg-gradient-to-br from-[#fbbf24] to-[#f59e0b] rounded-full flex items-center justify-center font-orbitron font-black text-white text-lg shadow-[0_0_20px_rgba(251,191,36,0.6)]">
-                      {i + 1}
-                    </div>
-                  )} */}
-                  <div className="bg-[#1a1a24] rounded-3xl border border-white/5 hover:border-[#fbbf24]/50 transition-all overflow-hidden group-hover:translate-y-[-10px]">
-                    <div className="w-full aspect-video relative bg-[#2a1a34]">
-                      <img
-                        src={winner.thumbnail}
-                        alt={winner.title}
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          e.target.style.display = "none";
-                        }}
-                      />
-                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                        <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border-2 border-white/40">
-                          <svg
-                            className="w-6 h-6 text-white ml-1"
-                            fill="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path d="M8 5v14l11-7z" />
-                          </svg>
+              {winners.map((winner, i) => {
+                if (winner.prix === "Grand Prix") return;
+                return (
+                  <Link
+                    to={`/video/${i + 1}`}
+                    key={i}
+                    className="group relative block"
+                  >
+                    <div className="bg-[#1a1a24] rounded-3xl border border-white/5 hover:border-[#fbbf24]/50 transition-all overflow-hidden group-hover:translate-y-[-10px]">
+                      <div className="w-full aspect-video relative bg-[#2a1a34]">
+                        <img
+                          src={
+                            "https://s3.fr-par.scw.cloud/paris/grp1/" +
+                            winner.cover_image
+                          }
+                          alt={winner.title}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            e.target.style.display = "none";
+                          }}
+                        />
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                          <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border-2 border-white/40">
+                            <svg
+                              className="w-6 h-6 text-white ml-1"
+                              fill="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path d="M8 5v14l11-7z" />
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="p-6">
+                        <div className="text-xs text-[#fbbf24] font-inter font-semibold uppercase tracking-wider mb-3">
+                          {winner.prix}
+                        </div>
+                        <h3 className="font-orbitron font-bold text-2xl mb-3 text-white group-hover:text-[#fbbf24] transition-colors">
+                          {winner.title}
+                        </h3>
+                        <div className="flex items-center gap-3 text-sm text-[#a0a0b8]">
+                          <span>{winner.producer}</span>
+                          <span>•</span>
+                          <span>
+                            {country_list[Number(winner.country_id) - 1].label}
+                          </span>
                         </div>
                       </div>
                     </div>
-                    <div className="p-6">
-                      <div className="text-xs text-[#fbbf24] font-inter font-semibold uppercase tracking-wider mb-3">
-                        {winner.prize}
-                      </div>
-                      <h3 className="font-orbitron font-bold text-2xl mb-3 text-white group-hover:text-[#fbbf24] transition-colors">
-                        {winner.title}
-                      </h3>
-                      <div className="flex items-center gap-3 text-sm text-[#a0a0b8]">
-                        <span>{winner.director}</span>
-                        <span>•</span>
-                        <span>{winner.country}</span>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              ))}
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </section>
