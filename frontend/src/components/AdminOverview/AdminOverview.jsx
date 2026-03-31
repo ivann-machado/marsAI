@@ -141,7 +141,7 @@ function AdminOverview() {
               )}
             </div>
           </div>
-          <div>
+          {/* <div>
             <h4 className="text-xl font-bold m-4">Top Films:</h4>
             {data.top_videos.map((video) => (
               <a
@@ -159,7 +159,7 @@ function AdminOverview() {
                 </div>
               </a>
             ))}
-          </div>
+          </div> */}
           <a href="/videos">Acceder à la liste des films</a>
         </div>
       </div>
