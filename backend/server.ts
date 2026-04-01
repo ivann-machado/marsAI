@@ -2,6 +2,7 @@ import { performance as perf } from 'node:perf_hooks';
 import { createServer, type Server, type RequestListener } from 'node:http';
 import { loadSettings } from './src/config/settings.ts';
 import { startServer, gracefulShutdown } from './src/utils/server.util.ts';
+import { startVideoWorker } from './src/workers/video.worker.ts';
 import app from './src/app.js';
 
 const PORT: number = Number(process.env.PORT) || 3000;
@@ -19,8 +20,10 @@ server.on('listening', () => console.log(`Server started on http://localhost:${P
 
 startServer(server, PORT);
 
-process.on('SIGTERM', (signal: string) => gracefulShutdown(server, signal))
-	.on('SIGINT', (signal: string) => gracefulShutdown(server, signal))
-	.on('SIGUSR2', (signal: string) => gracefulShutdown(server, signal))
-	.on('uncaughtException', (err: Error) => gracefulShutdown(server, err))
-	.on('unhandledRejection', (err: Error) => gracefulShutdown(server, err));
+const videoWorker = startVideoWorker();
+
+process.on('SIGTERM', (signal: string) => gracefulShutdown(server, signal, videoWorker))
+	.on('SIGINT', (signal: string) => gracefulShutdown(server, signal, videoWorker))
+	.on('SIGUSR2', (signal: string) => gracefulShutdown(server, signal, videoWorker))
+	.on('uncaughtException', (err: Error) => gracefulShutdown(server, err, videoWorker))
+	.on('unhandledRejection', (err: Error) => gracefulShutdown(server, err, videoWorker));
