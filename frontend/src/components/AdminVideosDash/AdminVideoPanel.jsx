@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { useFlash } from "../../context/FlashContext";
 import Loading from "../Utils/Loading";
-import { useauth } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 function AdminVideoPanel({ video_data }) {
   const [review, setReview] = useState(null);
   const [video, setVideo] = useState(video_data);
   const { showFlash } = useFlash();
-  const authToken = useauth();
+  const authToken = useAuth();
 
   const handleGrade = (value) => {
     setReview((prev) => ({ ...prev, grade: value, status: "done" }));

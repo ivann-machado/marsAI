@@ -1,15 +1,12 @@
 import Loading from "../Utils/Loading";
 import { useState, useEffect } from "react";
-import { useauth } from "../../context/AuthContext";
-import { useSettings } from "../../context/SettingsContext";
+import { useAuth } from "../../context/AuthContext";
 import { useFlash } from "../../context/FlashContext";
 
 function AdminOverview() {
   const [data, setData] = useState(null);
   const [content, setContent] = useState(null);
-  let address = window.location.host.split(".").slice(1);
-  const authToken = useauth();
-  const settings = useSettings();
+  const authToken = useAuth();
   const { showFlash } = useFlash();
 
   useEffect(() => {

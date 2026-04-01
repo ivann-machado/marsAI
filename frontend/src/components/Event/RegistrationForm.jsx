@@ -45,6 +45,7 @@ function RegistrationForm({ selectedEvent, onSuccess }) {
         setFormError("Erreur lors de l'inscription.");
       }
     } catch (error) {
+      String(error);
       setFormError("Erreur réseau.");
     }
   };

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import AdminJuryCard from "./AdminJuryCard";
 
 function AdminJuryList({ jury_list }) {

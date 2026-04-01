@@ -1,8 +1,8 @@
-import { useauth } from "../../context/AuthContext.jsx";
+import { useAuth } from "../../context/AuthContext.jsx";
 import { Navigate } from "react-router-dom";
 
 const ProtectedRoute = ({ requiredRole, children }) => {
-  const { user, userRole, login, logout } = useauth();
+  const { user, userRole } = useAuth();
 
   if (!user || (userRole !== "super admin" && requiredRole === "super admin")) {
     //console.log("protected ", user, userRole);

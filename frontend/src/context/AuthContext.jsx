@@ -3,7 +3,7 @@ import { useFlash } from "./FlashContext.jsx";
 
 const AuthContext = createContext();
 
-export function useauth() {
+export function useAuth() {
   return useContext(AuthContext);
 }
 

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import VideoList from "./VideoList.jsx";
 import Loading from "../Utils/Loading.jsx";
 import Pagination from "../Utils/Pagination.jsx";
-import { useauth } from "../../context/AuthContext.jsx";
+import { useAuth } from "../../context/AuthContext.jsx";
 
 function AdminReviewsDash() {
   // VIDEOS
@@ -11,7 +11,7 @@ function AdminReviewsDash() {
   const [videosPages, setVideosPages] = useState(1);
 
   // MISC
-  const authToken = useauth();
+  const authToken = useAuth();
   const ITEMS_PER_PAGE = 10;
 
   useEffect(() => {

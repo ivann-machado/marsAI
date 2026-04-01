@@ -2,7 +2,7 @@ import AdminSponsorList from "./AdminSponsorsList";
 import Loading from "../Utils/Loading";
 import { useEffect, useState } from "react";
 import { useFlash } from "../../context/FlashContext";
-import { useauth } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 function AdminSponsorDash() {
   const [sponsor, setSponsor] = useState(null);
@@ -15,7 +15,7 @@ function AdminSponsorDash() {
     type: "other",
   });
   const { showFlash } = useFlash();
-  const authToken = useauth();
+  const authToken = useAuth();
 
   useEffect(() => {
     const fetchData = async () => {

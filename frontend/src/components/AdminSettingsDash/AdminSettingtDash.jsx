@@ -1,14 +1,14 @@
 import AdminSettingCard from "./AdminSettingCard.jsx";
 import { useState, useEffect } from "react";
 import Loading from "../../components/Utils/Loading.jsx";
-import { useauth } from "../../context/AuthContext.jsx";
+import { useAuth } from "../../context/AuthContext.jsx";
 import Pagination from "../Utils/Pagination.jsx";
 
 function AdminSettingsDash() {
   const [settings, setSettings] = useState(null);
   const [settingsPage, setSettingsPage] = useState(1);
   const [settingsPages, setSettingsPages] = useState(1);
-  const authToken = useauth();
+  const authToken = useAuth();
   const ITEMS_PER_PAGE = 15;
 
   useEffect(() => {

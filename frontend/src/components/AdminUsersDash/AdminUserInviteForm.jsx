@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useFlash } from "../../context/FlashContext.jsx";
-import { useauth } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 function AdminUserInviteForm() {
   const [email, setEmail] = useState("");
   const { showFlash } = useFlash();
-  const authToken = useauth();
+  const authToken = useAuth();
 
   const sendInvite = async (e) => {
     e.preventDefault();

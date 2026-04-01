@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useFlash } from "../../context/FlashContext";
-import { useauth } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 function VideoCard({ video, type }) {
   const [currVideo, setCurrVideo] = useState(video);
   const { showFlash } = useFlash();
-  const authToken = useauth();
+  const authToken = useAuth();
 
   const selectVideo = async (operation) => {
     // selected ou verified

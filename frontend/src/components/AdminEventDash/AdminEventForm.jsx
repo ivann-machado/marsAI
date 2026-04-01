@@ -1,9 +1,9 @@
-import { useauth } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import { useState } from "react";
 import { useFlash } from "../../context/FlashContext";
 
 function AdminEventForm() {
-  const authToken = useauth();
+  const authToken = useAuth();
   const [type, setType] = useState("atelier");
   const [name, setName] = useState("");
   const [url, setUrl] = useState("");

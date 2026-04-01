@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import "../Upload_Form/upload.css";
 import { useFlash } from "../../context/FlashContext";
@@ -81,7 +81,6 @@ function UploadForm() {
   const [soundAiError, SetSoundAiError] = useState("");
   const [postProdAiError, SetPostProdAiError] = useState("");
   const [producerError, SetProducerError] = useState("");
-  const [producerImageError, SetProducerImageError] = useState("");
   const [instagramError, SetInstagramError] = useState("");
   const [linkedinError, SetLinkedinError] = useState("");
   const [youtubeError, SetYoutubeError] = useState("");
@@ -317,20 +316,15 @@ function UploadForm() {
   }
 
   /**
-   * Récupération des données envoyées
-   */
-  const [videoURL, setVideoURL] = useState(null);
-
-  /**
    * Passage d'une étape à la précédente
    */
-  const backToStep1 = async (e) => {
+  const backToStep1 = async () => {
     step2Disable();
     step1Disable();
 
     prevStep();
   };
-  const backToStep2 = async (e) => {
+  const backToStep2 = async () => {
     step3Disable();
     step2Disable();
     prevStep();
@@ -339,14 +333,7 @@ function UploadForm() {
   /**
    * Passage d'une étape à la suivante
    */
-  const handleStep1 = async (e) => {
-    const step1Data = {
-      title: title.current.value,
-      description: description.current.value,
-      video: video.current.files[0],
-      cover_image: coverImage.current.files[0],
-      subtitles: subtitles.current.files,
-    };
+  const handleStep1 = async () => {
     videoCheck();
     coverImageCheck();
     if (!titleCheck()) {
@@ -394,17 +381,7 @@ function UploadForm() {
     }
   };
 
-  const handleStep2 = async (e) => {
-    const step2Data = {
-      producer: producer.current.value,
-      email: email.current.value,
-      producer_image: producerImage.current.files[0],
-      movie_type: movieType,
-      scenario_ai: scenario_ai.current.value,
-      video_ai: video_ai.current.value,
-      sound_ai: sound_ai.current.value,
-      post_prod_ai: post_prod_ai.current.value,
-    };
+  const handleStep2 = async () => {
     if (!producerCheck()) {
       showFlash(
         "error",
@@ -725,21 +702,21 @@ function UploadForm() {
     } else if (rightGivaway === false) {
       SetLoading(false);
       return;
-    } else {
     }
+
     const res = await fetch(import.meta.env.VITE_API_URL + "/api/videos", {
       method: "POST",
       body: formData,
     });
 
-    const data = await res.json().catch(() => ({}));
+    const data = await res.json().catch();
     // console.log(data);
     if (res.ok) {
       SetLoading(false);
       showFlash("success", t("upload_form.upload_success"));
     } else {
       SetLoading(false);
-      Object.entries(data.errors).forEach((key, value) =>
+      Object.entries(data.errors).forEach((key) =>
         showFlash("error", key[1].join("&para")),
       );
       // data.errors.forEach((error) => showFlash("error", error.join("<br/>")));
@@ -748,7 +725,6 @@ function UploadForm() {
     }
   };
 
-  const formSubmit = useState(false);
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0f0f1a] via-[#1a1026] to-[#0f0f1a] p-6 font-inter">
       <form
