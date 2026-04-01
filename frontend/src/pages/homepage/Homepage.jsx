@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
-import Cookie from "../../components/Cookie/Cookie";
 import { useTranslation } from "react-i18next";
 import { useSettings } from "../../context/SettingsContext";
 import Editable from "../../components/Utils/Editable";
@@ -62,7 +61,6 @@ function Homepage() {
         content="Bienvenue sur notre page d'accueil, ici vous pourrez commencer l'exploration de notre site présentant le festival MarsAi"
       />
       <Header />
-      <Cookie />
       <div className="w-full overflow-hidden bg-[#050508]">
         {/* Hero Section */}
         <section className="relative min-h-screen flex items-center justify-center overflow-hidden">

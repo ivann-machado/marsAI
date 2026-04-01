@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useSettings } from "./context/SettingsContext.jsx";
 import Loading from "./components/Utils/Loading.jsx";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.jsx";
+import Cookie from "./components/Cookie/Cookie.jsx";
 
 // Public pages
 const Homepage = lazy(() => import("./pages/homepage/Homepage.jsx"));
@@ -122,6 +123,7 @@ function App() {
 					)}
 				</Routes>
 			</Suspense>
+			<Cookie />
 		</BrowserRouter>
 	);
 }

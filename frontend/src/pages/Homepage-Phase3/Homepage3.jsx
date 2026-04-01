@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { useSettings } from "../../context/SettingsContext";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
-import Cookie from "../../components/Cookie/Cookie";
 import { useEffect, useState } from "react";
 import Editable from "../../components/Utils/Editable";
 import {
@@ -50,7 +49,6 @@ function HomepagePhase3() {
         content="Bienvenue sur notre page d'accueil, ici vous pourrez commencer l'exploration de notre site présentant le festival MarsAi"
       />
       <Header />
-      <Cookie />
 
       <div className="w-full overflow-hidden bg-[#050508]">
         {/* Hero Section */}
