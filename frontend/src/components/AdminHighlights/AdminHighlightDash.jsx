@@ -2,7 +2,7 @@ import AdminJuryList from "./AdminJuryList";
 import Loading from "../Utils/Loading";
 import { useEffect, useState } from "react";
 import { useFlash } from "../../context/FlashContext";
-import { useauth } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 function AdminJuryDash() {
   const [jury, setJury] = useState(null);
@@ -15,7 +15,7 @@ function AdminJuryDash() {
     photo: "",
   });
   const { showFlash } = useFlash();
-  const authToken = useauth();
+  const authToken = useAuth();
 
   useEffect(() => {
     const fetchData = async () => {

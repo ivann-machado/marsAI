@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Footer from "../../components/Footer/Footer.jsx";
 import Header from "../../components/Header/Header.jsx";
 import { useFlash } from "../../context/FlashContext.jsx";

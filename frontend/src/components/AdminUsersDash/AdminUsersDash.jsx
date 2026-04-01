@@ -3,13 +3,13 @@ import { useState, useEffect } from "react";
 import AdminUserCard from "./AdminUserCard.jsx";
 import AdminUserInviteForm from "./AdminUserInviteForm.jsx";
 import Pagination from "../Utils/Pagination.jsx";
-import { useauth } from "../../context/AuthContext.jsx";
+import { useAuth } from "../../context/AuthContext.jsx";
 
 function AdminUsersDash() {
   const [users, setUsers] = useState(null);
   const [userPage, setUserPage] = useState(1);
   const [userPages, setUserPages] = useState(1);
-  const authContext = useauth();
+  const authContext = useAuth();
 
   // useEffect(() => {
   //   const fetchData = async () => {

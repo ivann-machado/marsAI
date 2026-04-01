@@ -1,19 +1,18 @@
 import { useEffect, useState } from "react";
 import { useFlash } from "../../context/FlashContext";
-import { useauth } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 const languages = { fr: 0, en: 1 };
 
 function Editable({ initialValue, contentKey, language }) {
   const [value, setValue] = useState("");
   const [editing, setEditing] = useState(false);
-  const authToken = useauth();
+  const authToken = useAuth();
   const { showFlash } = useFlash();
 
   const isAdmin = window.location.host.split(".")[0] == "admin";
 
   const getValue = (values, language) => {
-    if (languages.hasOwnProperty(language))
-      return values[languages[language]] ?? "";
+    if (language in languages) return values[languages[language]] ?? "";
     return "";
   };
 

@@ -580,5 +580,14 @@
     "faq_a13": "Si vous avez des problèmes techniques, consultez d'abord notre page de troubleshooting ou contactez-nous directement via le formulaire de contact. Notre équipe support répondra à votre question dans les 24 heures.",
     "faq_q14": "Mon film a été rejeté, puis-je connaître le motif ?",
     "faq_a14": "Malheureusement, nous ne pouvons pas fournir des retours détaillés sur chaque soumission en raison du grand nombre de films reçus. Si vous avez des questions spécifiques, n'hésitez pas à nous contacter directement."
+  },
+  "cookie": {
+    "title": "Nous utilisons des cookies",
+    "description": "Ce site utilise des cookies pour améliorer l'expérience, y compris Google Analytics.",
+    "accept": "Accepter",
+    "decline": "Refuser",
+    "refuse_confirm_title": "Confirmation du refus",
+    "refuse_confirm_description": "Vous avez choisi de refuser les cookies. Appuyez sur OK pour confirmer et fermer cette fenêtre.",
+    "refuse_confirm_button": "OK"
   }
 }

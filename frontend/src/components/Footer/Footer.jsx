@@ -4,7 +4,7 @@ import twitterLogo from "../../assets/twitter.svg";
 import ytLogo from "../../assets/youtube.svg";
 import Loading from "../Utils/Loading";
 import { useTranslation } from "react-i18next";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSettings } from "../../context/SettingsContext";
 import { Link } from "react-router-dom";
 import Editable from "../Utils/Editable";
@@ -15,16 +15,11 @@ function Footer() {
   const [newsletterError, setNewsletterError] = useState(null);
   const [newsletterSuccess, setNewsletterSuccess] = useState(null);
   const settings = useSettings();
-  const [language, setLanguage] = useState(i18n.language);
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
-
-  useEffect(() => {
-    setLanguage(i18n.language);
-  }, [i18n.language]);
 
   const newsletterSubmit = async (e) => {
     e.preventDefault();
@@ -50,7 +45,7 @@ function Footer() {
         }
 
         setNewsletterSuccess(t("footer.subscription_success"));
-        const response = await res.json();
+        //const response = await res.json();
       } catch (error) {
         console.error(error);
       }
@@ -75,7 +70,7 @@ function Footer() {
             {settings.footer_message ? (
               <Editable
                 initialValue={settings.footer_message}
-                language={language}
+                language={i18n.language}
                 contentKey="footer_message"
               />
             ) : (
@@ -193,7 +188,7 @@ function Footer() {
 
         {/* NEWSLETTER */}
         <div className="md:w-2/6">
-          <form className="rounded-2xl border border-indigo-500/30 bg-indigo-500/10 p-8 shadow-lg backdrop-blur-sm">
+          <form className="rounded-2xl border border-indigo-500/30 bg-indigo-500/10 p-4 sm:p-6 md:p-8 shadow-lg backdrop-blur-sm">
             <h3 className="text-white text-2xl font-bold mb-1">
               {t("footer.stay_connected")}
             </h3>
@@ -202,19 +197,21 @@ function Footer() {
               {t("footer.subscription")}
             </p>
 
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-1 sm:gap-2">
               <input
                 type="text"
+                name="email"
+                autoComplete="true"
                 value={newsletterEmail}
                 onChange={(e) => setNewsletterEmail(e.target.value)}
                 placeholder="Email"
                 className="flex-1 bg-gray-700/70 rounded-md h-12 px-3 text-white
-                           focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                           focus:outline-none focus:ring-2 focus:ring-indigo-400 min-w-0"
               />
 
               <button
                 onClick={(e) => newsletterSubmit(e)}
-                className="bg-indigo-500 text-white font-bold px-4 rounded-md
+                className="bg-indigo-500 text-white font-bold px-2 sm:px-3 md:px-4 rounded-md h-12
                            hover:bg-indigo-600 transition"
               >
                 OK
@@ -243,7 +240,7 @@ function Footer() {
             <Editable
               initialValue={settings.footer_bottom_message}
               contentKey="footer_bottom_message"
-              language={language}
+              language={i18n.language}
             />
           ) : (
             t("footer.bottom_message")

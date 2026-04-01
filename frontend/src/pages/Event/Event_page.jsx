@@ -17,8 +17,6 @@ function Event() {
     lastName: "",
     email: "",
   });
-  const [formError, setFormError] = useState("");
-  const [formSuccess, setFormSuccess] = useState("");
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;

@@ -50,8 +50,17 @@ function SelectedEvent({ selectedEvent }) {
           )}
 
           <p className="mb-2">
-            <span className="font-semibold">Date:</span> {selectedEvent.date} -{" "}
-            <span className="font-semibold">Duration:</span>{" "}
+            <span className="font-semibold">Date:</span>{" "}
+            {selectedEvent.date
+              ? new Date(selectedEvent.date).toLocaleDateString(undefined, {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })
+              : "N/A"}{" "}
+            - <span className="font-semibold">Duration:</span>{" "}
             {selectedEvent.duration} minutes
           </p>
 
