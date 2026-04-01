@@ -51,13 +51,13 @@ function Cookie() {
             <div className="flex flex-col sm:flex-row gap-3">
               <button
                 onClick={acceptCookies}
-                className="w-full sm:w-auto bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-lg font-semibold"
+                className="w-full sm:w-auto bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg font-semibold"
               >
                 {t("cookie.accept")}
               </button>
               <button
                 onClick={refuseCookies}
-                className="w-full sm:w-auto bg-violet-500 hover:bg-violet-600 text-white px-4 py-2 rounded-lg font-semibold"
+                className="w-full sm:w-auto bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded-lg font-semibold"
               >
                 {t("cookie.decline")}
               </button>
@@ -77,7 +77,7 @@ function Cookie() {
             </p>
             <button
               onClick={confirmRefusal}
-              className="w-full bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg font-semibold"
+              className="w-full bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg font-semibold"
             >
               {t("cookie.refuse_confirm_button")}
             </button>
