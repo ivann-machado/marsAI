@@ -200,6 +200,7 @@ function Footer() {
             <div className="flex gap-2">
               <input
                 type="text"
+                name="email"
                 value={newsletterEmail}
                 onChange={(e) => setNewsletterEmail(e.target.value)}
                 placeholder="Email"
