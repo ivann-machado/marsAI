@@ -1077,7 +1077,7 @@ function Homepage() {
 
                   <div className="relative z-10">
                     <div
-                      className={`font-orbitron font-black text-[clamp(10px,6vw,70px)] mb-2 bg-gradient-to-br ${stat.colors} bg-clip-text text-transparent`}
+                      className={`font-orbitron font-black text-[clamp(10px,3vw,70px)] mb-2 bg-gradient-to-br ${stat.colors} bg-clip-text text-transparent`}
                     >
                       {stat.number}
                     </div>
