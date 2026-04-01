@@ -11,14 +11,17 @@ export default defineConfig({
     }),
   ],
   build: {
+    cssCodeSplit: true,
     assetsInlineLimit: 0,
     sourcemap: "hidden",
     rollupOptions: {
-      treeshake: {
-        moduleSideEffects: false,
-      },
       output: {
-        preserveModules: true,
+        manualChunks(id) {
+          if (id.includes("react-dom")) return "react-dom";
+          if (id.includes("react-router-dom")) return "router";
+          if (id.includes("react")) return "react";
+          if (id.includes("i18next")) return "i18n";
+        },
       },
     },
   },
