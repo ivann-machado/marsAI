@@ -201,6 +201,7 @@ function Footer() {
               <input
                 type="text"
                 name="email"
+                autoComplete="true"
                 value={newsletterEmail}
                 onChange={(e) => setNewsletterEmail(e.target.value)}
                 placeholder="Email"
