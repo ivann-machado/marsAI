@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useFlash } from "../../context/FlashContext";
-import { useauth } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 function AdminUserCard({ userData }) {
   const [user, setUser] = useState(userData);
   const [confirm, setConfirm] = useState(false);
   const { showFlash } = useFlash();
-  const authToken = useauth();
+  const authToken = useAuth();
 
   /* const updateUser = (key, value) => {
     setUser((prev) => ({

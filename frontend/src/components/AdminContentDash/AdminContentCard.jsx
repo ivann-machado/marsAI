@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useFlash } from "../../context/FlashContext";
-import { useauth } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 function AdminContentCard({ name, value }) {
   const [content, setContent] = useState({
@@ -9,7 +9,7 @@ function AdminContentCard({ name, value }) {
   });
   const [modified, setModified] = useState(false);
   const { showFlash } = useFlash();
-  const authToken = useauth();
+  const authToken = useAuth();
 
   const updateContent = (key, value) => {
     setContent((prev) => ({

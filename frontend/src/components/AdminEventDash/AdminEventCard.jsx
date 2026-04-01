@@ -1,18 +1,18 @@
 import { useState } from "react";
 import AdminEventParticipants from "./AdminEventParticipants.jsx";
 import { useFlash } from "../../context/FlashContext.jsx";
-import { useauth } from "../../context/AuthContext.jsx";
+import { useAuth } from "../../context/AuthContext.jsx";
 
 function AdminEventCard(props) {
   const [isOpen, setIsOpen] = useState(false);
   const [event, setEvent] = useState(props.event);
   const [modified, setModified] = useState(false);
   const { showFlash } = useFlash();
-  const authToken = useauth();
+  const authToken = useAuth();
   const eventTypes = props.eventTypes ?? ["atelier"]; // à recuperer dans la DB
 
   const updateEvent = (key, e) => {
-    const { name, value, files, type } = e.target;
+    const { value, files, type } = e.target;
 
     setEvent((prev) => ({
       ...prev,
@@ -50,7 +50,7 @@ function AdminEventCard(props) {
         },
       );
       if (!response.ok) throw new Error("Erreur fetch JSON");
-      const json = await response.json();
+      //const json = await response.json();
       showFlash("success", "Event mis a jour");
     } catch (err) {
       showFlash("error", "Erreur de mise à jour du event");

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Loading from "../Utils/Loading.jsx";
-import { useauth } from "../../context/AuthContext.jsx";
+import { useAuth } from "../../context/AuthContext.jsx";
 import Pagination from "../Utils/Pagination.jsx";
 import AdminPrizeCard from "./AdminPrizeCard.jsx";
 import { useFlash } from "../../context/FlashContext.jsx";
@@ -14,7 +14,7 @@ function AdminPrizesDash() {
     prix: "",
   });
   const [videos, setVideos] = useState(null);
-  const authToken = useauth();
+  const authToken = useAuth();
   const ITEMS_PER_PAGE = 10;
   const { showFlash } = useFlash();
 
@@ -101,20 +101,8 @@ function AdminPrizesDash() {
         console.log(response.json());
         throw new Error("Erreur fetch JSON");
       }
-      const res = await response.json();
-
-      // setPrizes((prev) => [
-      //   ...prev,
-      //   { ...newPrize, id: res.id /* , logo: res.logo */ },
-      // ]);
-      // setNewPrize({
-      //   prix: "",
-      //   video_id: -1,
-      // });
-
+      //const res = await response.json();
       fetchPrizes();
-
-      // setSponsor(res);
       showFlash("success", "Création du prix avec succes");
     } catch (err) {
       console.error(err);

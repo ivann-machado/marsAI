@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useauth } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import { useFlash } from "../../context/FlashContext";
 
 function AdminHighlightCard({ id, edition_id, description, photo }) {
@@ -11,7 +11,7 @@ function AdminHighlightCard({ id, edition_id, description, photo }) {
   });
   const [modified, setModified] = useState(false);
   const { showFlash } = useFlash();
-  const authToken = useauth();
+  const authToken = useAuth();
 
   //console.log(authToken.token);
 
@@ -43,7 +43,7 @@ function AdminHighlightCard({ id, edition_id, description, photo }) {
         },
       );
       if (!response.ok) throw new Error("Erreur fetch JSON");
-      const json = await response.json();
+      //const json = await response.json();
       showFlash("success", "Jury updated");
     } catch (err) {
       showFlash("error", "Jury update failed");
@@ -53,7 +53,7 @@ function AdminHighlightCard({ id, edition_id, description, photo }) {
     setModified(false);
   };
 
-  const deleteJury = async (key) => {
+  const deleteJury = async () => {
     /* Suppresion dans la DB ici */
     try {
       const response = await fetch(
@@ -133,10 +133,10 @@ function AdminHighlightCard({ id, edition_id, description, photo }) {
         type="button"
         value="Supprimer"
         className="col-span-1 p-2 bg-red-700 rounded-r-lg hover:bg-red-500"
-        onClick={(e) => deleteJury()}
+        onClick={() => deleteJury()}
       ></input>
     </div>
   );
 }
 
-export default AdminJuryCard;
+export default AdminHighlightCard;

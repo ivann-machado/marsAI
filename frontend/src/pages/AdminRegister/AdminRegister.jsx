@@ -49,7 +49,7 @@ function AdminRegister() {
         },
       );
       if (!response.ok) throw new Error("Erreur fetch JSON");
-      let res = await response.json();
+      //let res = await response.json();
       showFlash("success", "Utilisateur crée!");
     } catch (err) {
       showFlash("error", "Echec lors de la création de l'utilisateur");

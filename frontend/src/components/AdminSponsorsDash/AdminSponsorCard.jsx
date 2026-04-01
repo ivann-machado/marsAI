@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useauth } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import { useFlash } from "../../context/FlashContext";
 
 function AdminSponsorCard({ id, edition_id, type, name, url, logo }) {
@@ -13,7 +13,7 @@ function AdminSponsorCard({ id, edition_id, type, name, url, logo }) {
   });
   const [modified, setModified] = useState(false);
   const { showFlash } = useFlash();
-  const authToken = useauth();
+  const authToken = useAuth();
 
   //console.log(authToken.token);
 
@@ -45,7 +45,7 @@ function AdminSponsorCard({ id, edition_id, type, name, url, logo }) {
         },
       );
       if (!response.ok) throw new Error("Erreur fetch JSON");
-      const json = await response.json();
+      //const json = await response.json();
       showFlash("success", "Sponsor mis a jour");
     } catch (err) {
       showFlash("error", "Erreur de mise à jour du sponsor");
@@ -55,7 +55,7 @@ function AdminSponsorCard({ id, edition_id, type, name, url, logo }) {
     setModified(false);
   };
 
-  const deleteSponsor = async (key) => {
+  const deleteSponsor = async () => {
     /* Suppresion dans la DB ici */
     try {
       const response = await fetch(
@@ -141,7 +141,7 @@ function AdminSponsorCard({ id, edition_id, type, name, url, logo }) {
         type="button"
         value="Supprimer"
         className="col-span-1 p-2 bg-red-700 rounded-r-lg hover:bg-red-500"
-        onClick={(e) => deleteSponsor()}
+        onClick={() => deleteSponsor()}
       ></input>
     </div>
   );

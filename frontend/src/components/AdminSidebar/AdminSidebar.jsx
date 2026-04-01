@@ -1,10 +1,10 @@
 import SidebarButton from "./SidebarButton";
 import { useTranslation } from "react-i18next";
-import { useauth } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 function AdminSidebar() {
   const { t } = useTranslation();
-  const { user, userRole, logout } = useauth();
+  const { user, userRole, logout } = useAuth();
 
   return (
     <div className="w-64 bg-linear-to-br from-gray-800 to-gray-900 min-h-screen fixed">

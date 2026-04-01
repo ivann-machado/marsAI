@@ -4,7 +4,7 @@ import twitterLogo from "../../assets/twitter.svg";
 import ytLogo from "../../assets/youtube.svg";
 import Loading from "../Utils/Loading";
 import { useTranslation } from "react-i18next";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSettings } from "../../context/SettingsContext";
 import { Link } from "react-router-dom";
 import Editable from "../Utils/Editable";
@@ -15,16 +15,11 @@ function Footer() {
   const [newsletterError, setNewsletterError] = useState(null);
   const [newsletterSuccess, setNewsletterSuccess] = useState(null);
   const settings = useSettings();
-  const [language, setLanguage] = useState(i18n.language);
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
-
-  useEffect(() => {
-    setLanguage(i18n.language);
-  }, [i18n.language]);
 
   const newsletterSubmit = async (e) => {
     e.preventDefault();
@@ -50,7 +45,7 @@ function Footer() {
         }
 
         setNewsletterSuccess(t("footer.subscription_success"));
-        const response = await res.json();
+        //const response = await res.json();
       } catch (error) {
         console.error(error);
       }
@@ -75,7 +70,7 @@ function Footer() {
             {settings.footer_message ? (
               <Editable
                 initialValue={settings.footer_message}
-                language={language}
+                language={i18n.language}
                 contentKey="footer_message"
               />
             ) : (
@@ -243,7 +238,7 @@ function Footer() {
             <Editable
               initialValue={settings.footer_bottom_message}
               contentKey="footer_bottom_message"
-              language={language}
+              language={i18n.language}
             />
           ) : (
             t("footer.bottom_message")

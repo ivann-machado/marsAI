@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useFlash } from "../../context/FlashContext";
-import { useauth } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 function AdminPrizeCard({ prize_data }) {
   const [prize, setPrize] = useState(prize_data);
   const [confirm, setConfirm] = useState(false);
   const { showFlash } = useFlash();
-  const authToken = useauth();
+  const authToken = useAuth();
 
   // console.log(prize);
 

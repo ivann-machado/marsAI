@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useauth } from "../../context/AuthContext";
+import { useState } from "react";
+import { useAuth } from "../../context/AuthContext";
 import { useTranslation } from "react-i18next";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +10,7 @@ function AdminLogin() {
   const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { user, login } = useauth();
+  const { login } = useAuth();
   const { showFlash } = useFlash();
 
   /*  useEffect(() => {
