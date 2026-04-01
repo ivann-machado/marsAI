@@ -594,5 +594,14 @@
     "faq_a13": "If you have technical issues, first check our troubleshooting page or contact us directly through the contact form. Our support team will respond to your question within 24 hours.",
     "faq_q14": "My film was rejected, can I know why?",
     "faq_a14": "Unfortunately, we cannot provide detailed feedback on each submission due to the large number of films received. If you have specific questions, feel free to contact us directly."
+  },
+  "cookie": {
+    "title": "We use cookies",
+    "description": "This website uses cookies to enhance your experience. This include google analytics.",
+    "accept": "Accept",
+    "decline": "Declined",
+    "refuse_confirm_title": "Confirmation of refusal",
+    "refuse_confirm_description": "You have chosen to refuse cookies. Press OK to confirm and close this window.",
+    "refuse_confirm_button": "OK"
   }
 }
