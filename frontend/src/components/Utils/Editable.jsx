@@ -12,8 +12,7 @@ function Editable({ initialValue, contentKey, language }) {
   const isAdmin = window.location.host.split(".")[0] == "admin";
 
   const getValue = (values, language) => {
-    if (languages.hasOwnProperty(language))
-      return values[languages[language]] ?? "";
+    if (language in languages) return values[languages[language]] ?? "";
     return "";
   };
 
