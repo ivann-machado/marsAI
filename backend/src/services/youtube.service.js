@@ -70,7 +70,7 @@ export const uploadVideo = async ({ videoBuffer, metadata = {}, privacy = 'unlis
 /**
  * Check the processing status of a YouTube video
  * @param {string} videoId - The YouTube video ID
- * @returns {Promise<{videoId: string, status: string, details: object}>}
+ * @returns {Promise<{videoId: string, uploadStatus: string, privacyStatus: string, processingStatus: string, processingProgress: any, title: string, publishedAt: string}>}
  */
 export const checkVideoStatus = async (videoId) => {
 	try {
