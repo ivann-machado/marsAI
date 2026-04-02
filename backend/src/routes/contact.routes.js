@@ -1,7 +1,7 @@
 import express from "express";
-import { contact } from "../controllers/contact.controller.js";
-import { validate } from "../middlewares/validate.middleware.js";
-import { ContactSchema } from "../schemas/contact.schema.ts";
+import { contact } from "#controllers";
+import { validate } from "#middlewares";
+import { ContactSchema } from "#schemas";
 
 const router = express.Router();
 

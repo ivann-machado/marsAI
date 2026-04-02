@@ -4,17 +4,18 @@ import {
 	getAllPrizedVideos,
 	getPrizedVideoByVideoId,
 	removePrizedVideo,
-} from "../controllers/prized.controller.js";
-import { validate } from "../middlewares/validate.middleware.js";
+} from "#controllers";
 import {
+	validate,
 	verifyToken,
 	requireSuperAdmin,
-} from "../middlewares/auth.middleware.js";
-import { cache, clearCache } from "../middlewares/cache.middleware.js";
+	cache,
+	clearCache
+} from "#middlewares";
 import {
 	CreatePrizedVideoSchema,
 	UpdatePrizedVideoSchema,
-} from "../schemas/prized.schema.ts";
+} from "#schemas";
 
 const router = express.Router();
 

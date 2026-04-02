@@ -4,12 +4,12 @@ import {
 	getAdminById,
 	setAdmin,
 	removeAdmin,
-} from "../controllers/admin.controller.js";
+} from "#controllers";
 import {
 	verifyToken,
 	requireSuperAdmin,
-} from "../middlewares/auth.middleware.js";
-import { cache } from "../middlewares/cache.middleware.js";
+	cache
+} from "#middlewares";
 
 const router = express.Router();
 

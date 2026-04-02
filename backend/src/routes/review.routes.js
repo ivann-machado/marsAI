@@ -7,14 +7,12 @@ import {
 	getReviewById,
 	setReview,
 	removeReview,
-} from "../controllers/review.controller.js";
-import { validate } from "../middlewares/validate.middleware.js";
-import { verifyToken } from "../middlewares/auth.middleware.js";
-import { cache } from "../middlewares/cache.middleware.js";
+} from "#controllers";
+import { validate, verifyToken, cache } from "#middlewares";
 import {
 	CreateReviewSchema,
 	UpdateReviewSchema,
-} from "../schemas/review.schema.ts";
+} from "#schemas";
 
 const router = express.Router();
 

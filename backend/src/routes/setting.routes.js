@@ -1,9 +1,13 @@
 import express from "express";
-import { getSettings, setSetting } from "../controllers/setting.controller.js";
-import { verifyToken, requireSuperAdmin } from "../middlewares/auth.middleware.js";
-import { validate } from "../middlewares/validate.middleware.js";
-import { cache, clearCache } from "../middlewares/cache.middleware.js";
-import { UpdateSettingSchema } from "../schemas/setting.schema.ts";
+import { getSettings, setSetting } from "#controllers";
+import {
+	verifyToken,
+	requireSuperAdmin,
+	validate,
+	cache,
+	clearCache
+} from "#middlewares";
+import { UpdateSettingSchema } from "#schemas";
 
 const router = express.Router();
 

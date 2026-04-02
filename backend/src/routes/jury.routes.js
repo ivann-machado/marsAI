@@ -1,15 +1,19 @@
 import express from "express";
-import { processAndUpload } from "../middlewares/upload.middleware.ts";
 import {
 	createJury,
 	getAllJuries,
 	getJuryById,
 	setJury,
 	removeJury,
-} from "../controllers/jury.controller.js";
-import { verifyToken, requireSuperAdmin } from "../middlewares/auth.middleware.js";
-import { cache, clearCache } from "../middlewares/cache.middleware.js";
-import { CreateJurySchema, UpdateJurySchema } from "../schemas/jury.schema.ts";
+} from "#controllers";
+import {
+	verifyToken,
+	requireSuperAdmin,
+	cache,
+	clearCache,
+	processAndUpload
+} from "#middlewares";
+import { CreateJurySchema, UpdateJurySchema } from "#schemas";
 
 const router = express.Router();
 

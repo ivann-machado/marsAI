@@ -5,14 +5,14 @@ import {
 	verifyInvite,
 	acceptInvite,
 	inviteAdmin,
-} from "../controllers/auth.controller.js";
+} from "#controllers";
 import {
 	verifyToken,
 	requireSuperAdmin,
 	requireGuest,
-} from "../middlewares/auth.middleware.js";
-import { validate } from "../middlewares/validate.middleware.js";
-import { LoginSchema, InviteAdminSchema, InviteTokenSchema, AcceptInviteSchema } from "../schemas/admin.schema.ts";
+	validate
+} from "#middlewares";
+import { LoginSchema, InviteAdminSchema, InviteTokenSchema, AcceptInviteSchema } from "#schemas";
 
 const router = express.Router();
 /**
