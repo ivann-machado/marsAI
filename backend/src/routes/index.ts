@@ -1,0 +1,14 @@
+export { default as adminRoutes } from './admin.routes.js';
+export { default as authRoutes } from './auth.routes.js';
+export { default as contactRoutes } from './contact.routes.js';
+export { default as contentRoutes } from './content.routes.js';
+export { default as eventRoutes } from './event.routes.js';
+export { default as highlightRoutes } from './highlight.routes.js';
+export { default as juryRoutes } from './jury.routes.js';
+export { default as newsletterRoutes } from './newsletter.routes.js';
+export { default as prizedRoutes } from './prized.routes.js';
+export { default as reservationRoutes } from './reservation.routes.js';
+export { default as reviewRoutes } from './review.routes.js';
+export { default as settingRoutes } from './setting.routes.js';
+export { default as sponsorRoutes } from './sponsor.routes.js';
+export { default as videoRoutes } from './videos.routes.js';
