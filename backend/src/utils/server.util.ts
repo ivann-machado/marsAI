@@ -1,7 +1,6 @@
 import type { Server } from "node:http";
 import type { Worker } from "bullmq";
-import prisma from "../config/prisma.config.ts";
-import redis from "../config/redis.config.ts";
+import { prisma, redis } from "#config";
 
 /**
  * Start the server with retry logic for port binding.
