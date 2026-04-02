@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { videosSchema } from "../generated/zod/index.ts";
 import { fileSchema } from "./file.schema.ts";
-import { getMp4Metadata } from "../utils/file.util.ts";
+import { getMp4Metadata } from "#utils";
 
 /**
  * Base video schema.
