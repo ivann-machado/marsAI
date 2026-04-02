@@ -27,6 +27,7 @@ export const CreateEventSchema = eventsSchema
 			.optional()
 			.default(""),
 		duration: z
+			.coerce.number()
 			.int({ error: "Duration must be a whole number" })
 			.min(0, { error: "Duration must be 0 or greater" })
 			.optional()
