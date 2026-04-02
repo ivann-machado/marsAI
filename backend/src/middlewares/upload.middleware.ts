@@ -1,6 +1,10 @@
 import multer from 'multer';
-import { convertToWebp, toWebpFilename, generateFilename } from '../utils/file.util.js';
-import { uploadFile } from '../services/s3.service.js';
+import os from 'node:os';
+import fs from 'node:fs';
+import { convertToWebp, toWebpFilename, generateFilename } from '#utils';
+import { uploadFile } from '#services';
+import type { Request, Response, NextFunction } from 'express';
+import { z } from 'zod';
 
 // Configuration Limits
 const LIMITS = {
@@ -29,57 +33,65 @@ const ALLOWED_MIME_TYPES = [
 /**
  * File filter: allow images, video (MP4) and subtitles (SRT/VTT)
  */
-const fileFilter = (_req, file, callback) => {
+const fileFilter = (_req: Request, file: Express.Multer.File, callback: multer.FileFilterCallback) => {
 	if (ALLOWED_MIME_TYPES.includes(file.mimetype)) {
 		callback(null, true);
 	} else {
-		callback(new Error(`Unsupported file type: ${file.mimetype}`), false);
+		callback(new Error(`Unsupported file type: ${file.mimetype}`));
 	}
 };
 
-
+interface ProcessOptions {
+	acl?: string;
+	quality?: number;
+	maxFiles?: number;
+	maxSize?: number;
+	schema?: z.ZodTypeAny;
+}
 
 /**
- * Helper to process a single Multer file (Buffer -> WebP optimization -> SHA1 naming -> S3 Upload)
+ * Helper to process a single Multer disk file (Stream -> WebP optimization -> SHA1 naming -> S3 Upload)
  * @private
  */
-const handleProcessedFileUpload = async (file, { acl, quality }) => {
+const handleProcessedFileUpload = async (file: Express.Multer.File, { acl, quality }: { acl: string, quality: number }) => {
 	const isImage = file.mimetype.startsWith('image/');
-	let outputBuffer, wasConverted, contentType;
+	let uploadTarget: string | Buffer;
+	let wasConverted = false;
+	let contentType = file.mimetype;
 
 	if (isImage) {
-		const convertedBuffer = await convertToWebp(file.buffer, { quality });
-		wasConverted = !!convertedBuffer;
-		outputBuffer = wasConverted ? convertedBuffer : file.buffer;
-		contentType = wasConverted ? 'image/webp' : file.mimetype;
+		const convertedBuffer = await convertToWebp(file.path, { quality });
+		if (convertedBuffer) {
+			wasConverted = true;
+			uploadTarget = convertedBuffer;
+			contentType = 'image/webp';
+		} else {
+			uploadTarget = file.path;
+		}
 	} else {
-		outputBuffer = file.buffer;
-		wasConverted = false;
-		contentType = file.mimetype;
+		uploadTarget = file.path;
 	}
 
-	const filename = generateFilename(file, outputBuffer);
+	const filename = await generateFilename(file.originalname, uploadTarget);
 	const finalName = (isImage && wasConverted) ? toWebpFilename(filename) : filename;
 
-	await uploadFile(finalName, outputBuffer, acl, contentType);
+	const bodyToUpload = typeof uploadTarget === 'string' ? fs.createReadStream(uploadTarget) : uploadTarget;
 
-	file.buffer = outputBuffer;
-	file.mimetype = contentType;
-	file.size = outputBuffer.length;
-	file.location = finalName;
+	await uploadFile(finalName, bodyToUpload, acl, contentType);
+
+	await fs.promises.unlink(file.path).catch(err => console.error("Could not remove tmp file", err));
+
+	(file as any).mimetype = contentType;
+	(file as any).location = finalName;
 
 	return file;
 };
 
 /**
- * Receive any files in memory, enforce type limits, optimize images, and upload to S3.
- * @param {object} [options]
- * @param {string} [options.acl='public-read'] - S3 ACL
- * @param {number} [options.quality=80] - WebP image quality
- * @param {object} [options.schema=null] - Optional Zod schema for validation
- * @returns {Array} Express middleware array
+ * Receive any files via Disk Streams, enforce type limits, optimize images, and stream upload to S3.
+ * Prevents MASSIVE Node RAM spikes on 300MB video uploads by completely skipping `multer.memoryStorage()`!
  */
-export const processAndUpload = (options = {}) => {
+export const processAndUpload = (options: ProcessOptions = {}) => {
 	const {
 		acl = 'public-read',
 		quality = 80,
@@ -89,7 +101,7 @@ export const processAndUpload = (options = {}) => {
 	} = options;
 
 	const receive = multer({
-		storage: multer.memoryStorage(),
+		storage: multer.diskStorage({ destination: os.tmpdir() }),
 		fileFilter: fileFilter,
 		limits: {
 			fileSize: maxSize,
@@ -97,56 +109,49 @@ export const processAndUpload = (options = {}) => {
 		}
 	}).any();
 
-	const process = async (req, res, next) => {
+	const process = async (req: Request, res: Response, next: NextFunction) => {
 		try {
 			if (schema) {
-				const filesForZod = {};
+				const filesForZod: Record<string, any> = {};
 				if (req.files) {
-					req.files.forEach(file => {
-						filesForZod[file.fieldname] = file;
-					});
+					if (Array.isArray(req.files)) {
+						req.files.forEach(file => filesForZod[file.fieldname] = file);
+					}
 				}
-				const validatedData = schema.parse({ ...req.body, ...filesForZod });
-				req.body = { ...req.body, ...validatedData };
+				const payload = Object.assign({}, req.body || {}, filesForZod);
+				const validatedData = await schema.parseAsync(payload);
+				req.body = Object.assign({}, req.body || {}, validatedData);
 			}
 
-			if (!req.files || req.files.length === 0) return next();
+			if (!req.files || (Array.isArray(req.files) && req.files.length === 0)) {
+				return next();
+			}
 
-			// for (const file of req.files) {
-			// 	if (file.mimetype.startsWith('image/') && file.size > LIMITS.IMAGE) {
-			// 		return res.status(400).json({ message: `Image file too large. Maximum size is ${LIMITS.IMAGE / (1024 * 1024)}Mo.` });
-			// 	}
-			// 	if ((file.mimetype === 'text/srt' || file.mimetype === 'application/x-subrip') && file.size > LIMITS.SUBTITLE) {
-			// 		return res.status(400).json({ message: `Subtitle file too large. Maximum size is ${LIMITS.SUBTITLE / (1024 * 1024)}Mo.` });
-			// 	}
-			// 	if (file.mimetype.startsWith('video/')) {
-			// 		if (file.size > LIMITS.VIDEO) {
-			// 			return res.status(400).json({ message: `Video file too large. Maximum size is ${LIMITS.VIDEO / (1024 * 1024)}Mo.` });
-			// 		}
+			const filesArr = Array.isArray(req.files) ? req.files : [];
 
-			// 		const duration = getMp4Duration(file.buffer);
-			// 		if (duration !== null && duration > LIMITS.VIDEO_DURATION_SEC) {
-			// 			return res.status(400).json({ message: `Video duration exceeds maximum allowed time (${LIMITS.VIDEO_DURATION_SEC} seconds).` });
-			// 		}
-			// 	}
-			// }
-
-			const processingTasks = req.files.map(file =>
+			const processingTasks = filesArr.map(file =>
 				handleProcessedFileUpload(file, { acl, quality })
 			);
 
 			await Promise.all(processingTasks);
-			req.files.forEach(file => {
+
+			filesArr.forEach(file => {
 				if (file.fieldname === 'video') {
-					req.body.filename = file.location;
+					req.body.filename = (file as any).location;
 				} else {
-					req.body[file.fieldname] = file.location;
+					req.body[file.fieldname] = (file as any).location;
 				}
 			});
-			req.file = req.files[0];
+			req.file = filesArr[0];
 
 			next();
-		} catch (error) {
+		} catch (error: any) {
+			if (req.files && Array.isArray(req.files)) {
+				for (const f of req.files) {
+					await fs.promises.unlink(f.path).catch(() => { });
+				}
+			}
+
 			if (error.name === 'ZodError') {
 				return res.status(400).json({
 					message: "Validation failed",
@@ -159,12 +164,12 @@ export const processAndUpload = (options = {}) => {
 	};
 
 	// Multer error handling wrapper
-	const wrappedReceive = (req, res, next) => {
-		receive(req, res, function (err) {
+	const wrappedReceive = (req: Request, res: Response, next: NextFunction) => {
+		receive(req, res, function (err: any) {
 			if (err instanceof multer.MulterError) {
 				return res.status(400).json({ message: `File upload error: ${err.message}` });
 			} else if (err) {
-				if (err.message.includes('Unsupported file type')) {
+				if (err.message && err.message.includes('Unsupported file type')) {
 					return res.status(400).json({ message: err.message });
 				}
 				return res.status(400).json({ message: err.message });
