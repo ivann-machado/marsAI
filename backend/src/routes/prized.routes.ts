@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Router } from "express";
 import {
 	createPrizedVideo,
 	getAllPrizedVideos,
@@ -17,7 +17,7 @@ import {
 	UpdatePrizedVideoSchema,
 } from "#schemas";
 
-const router = express.Router();
+const router: Router = express.Router();
 
 router.post(
 	"/",

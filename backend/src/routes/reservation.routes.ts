@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Router } from "express";
 import {
 	createReservation,
 	getAllReservations,
@@ -8,7 +8,7 @@ import {
 import { validate, cache } from "#middlewares";
 import { CreateReservationSchema } from "#schemas";
 
-const router = express.Router();
+const router: Router = express.Router();
 
 /**
  * Reservation routes

@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Router } from "express";
 import {
 	createReview,
 	getAllReviews,
@@ -14,7 +14,7 @@ import {
 	UpdateReviewSchema,
 } from "#schemas";
 
-const router = express.Router();
+const router: Router = express.Router();
 
 // 1. GET /api/reviews (toutes les reviews)
 // 2. GET /api/reviews?admin_id=1&video_id=30 (une review précise)

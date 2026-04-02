@@ -1,3 +1,4 @@
+import express, { Router } from "express";
 import {
 	getHighlights,
 	getHighlightById,
@@ -16,9 +17,8 @@ import {
 	CreateHighlightSchema,
 	UpdateHighlightSchema,
 } from "#schemas";
-import express from "express";
 
-const router = express.Router();
+const router: Router = express.Router();
 
 router.get("/", cache(), getHighlights);
 router.get("/:id", cache(), getHighlightById);

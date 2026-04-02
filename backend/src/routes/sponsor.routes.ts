@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Router } from "express";
 import {
 	createSponsor,
 	getAllSponsors,
@@ -15,7 +15,7 @@ import {
 } from "#middlewares";
 import { CreateSponsorSchema, UpdateSponsorSchema } from "#schemas";
 
-const router = express.Router();
+const router: Router = express.Router();
 
 router.get("/", cache({ ttl: 0 }), getAllSponsors);
 router.get("/:id", cache(), getSponsorById);

@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Router } from "express";
 import {
 	getAllVideos,
 	getVideoById,
@@ -15,7 +15,7 @@ import {
 } from "#middlewares";
 import { CreateVideoSchema, UpdateVideoSchema } from "#schemas";
 
-const router = express.Router();
+const router: Router = express.Router();
 
 /**
  * Videos routes

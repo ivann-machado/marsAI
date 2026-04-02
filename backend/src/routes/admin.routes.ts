@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Router } from "express";
 import {
 	getAllAdmins,
 	getAdminById,
@@ -11,7 +11,7 @@ import {
 	cache
 } from "#middlewares";
 
-const router = express.Router();
+const router: Router = express.Router();
 
 /**
  * Admin routes (toutes protégées — super_admin uniquement)

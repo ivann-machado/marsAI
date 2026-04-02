@@ -15,7 +15,7 @@ import {
 } from "#middlewares";
 import { CreateNewsletterSubscriptionSchema, SendNewsletterSchema } from "#schemas";
 
-const router = Router();
+const router: Router = Router();
 
 /**
  * Newsletter routes

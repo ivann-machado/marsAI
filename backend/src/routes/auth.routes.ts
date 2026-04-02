@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Router } from "express";
 import {
 	login,
 	logout,
@@ -14,7 +14,7 @@ import {
 } from "#middlewares";
 import { LoginSchema, InviteAdminSchema, InviteTokenSchema, AcceptInviteSchema } from "#schemas";
 
-const router = express.Router();
+const router: Router = express.Router();
 /**
  * Auth routes
  * - POST `/login` : authenticate and get a JWT token.

@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Router } from "express";
 import {
 	createEvent,
 	getAllEvents,
@@ -15,7 +15,7 @@ import {
 } from "#middlewares";
 import { CreateEventSchema, UpdateEventSchema } from "#schemas";
 
-const router = express.Router();
+const router: Router = express.Router();
 
 /**
  * Event routes

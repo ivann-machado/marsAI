@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Router } from "express";
 import { getSettings, setSetting } from "#controllers";
 import {
 	verifyToken,
@@ -9,7 +9,7 @@ import {
 } from "#middlewares";
 import { UpdateSettingSchema } from "#schemas";
 
-const router = express.Router();
+const router: Router = express.Router();
 
 /**
  * Setting routes
