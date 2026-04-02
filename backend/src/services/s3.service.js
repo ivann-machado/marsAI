@@ -22,7 +22,7 @@ const buildKey = (filename) => {
 /**
  * Upload a file to the S3 bucket
  * @param {string} filename - Name / path of the object in the bucket
- * @param {Buffer|ReadableStream|string} body - File content
+ * @param {Buffer|import('stream').Readable|string} body - File content
  * @param {string} acl - ACL of the object : public-read or private.
  * @param {string} [contentType='application/octet-stream'] - MIME type
  * @returns {Promise<object>} - S3 response
