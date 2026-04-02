@@ -10,7 +10,67 @@
 		"esModuleInterop": true,
 		"resolveJsonModule": true,
 		"strict": true,
-		"skipLibCheck": true
+		"skipLibCheck": true,
+		"baseUrl": ".",
+		"paths": {
+			"#controllers": [
+				"./src/controllers/index.ts"
+			],
+			"#controllers/*": [
+				"./src/controllers/*.ts",
+				"./src/controllers/*.js"
+			],
+			"#routes": [
+				"./src/routes/index.ts"
+			],
+			"#routes/*": [
+				"./src/routes/*.ts",
+				"./src/routes/*.js"
+			],
+			"#models": [
+				"./src/models/index.ts"
+			],
+			"#models/*": [
+				"./src/models/*.ts",
+				"./src/models/*.js"
+			],
+			"#middlewares": [
+				"./src/middlewares/index.ts"
+			],
+			"#middlewares/*": [
+				"./src/middlewares/*.ts"
+			],
+			"#services": [
+				"./src/services/index.ts"
+			],
+			"#services/*": [
+				"./src/services/*.ts"
+			],
+			"#utils": [
+				"./src/utils/index.ts"
+			],
+			"#utils/*": [
+				"./src/utils/*.ts"
+			],
+			"#config": [
+				"./src/config/index.ts"
+			],
+			"#config/*": [
+				"./src/config/*.ts"
+			],
+			"#schemas": [
+				"./src/schemas/index.ts"
+			],
+			"#schemas/*": [
+				"./src/schemas/*.ts"
+			],
+			"#types": [
+				"./src/types/index.ts"
+			],
+			"#types/*": [
+				"./src/types/*.ts"
+			]
+		}
 	},
 	"include": [
 		"src/**/*",
