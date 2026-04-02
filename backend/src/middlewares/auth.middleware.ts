@@ -1,15 +1,17 @@
 import jwt from "jsonwebtoken";
 import crypto from "node:crypto";
-import { JWT_SECRET } from "../config/index.ts";
-import redis from "../config/redis.config.ts";
+import { JWT_SECRET, redis } from "#config";
+import type { Request, Response, NextFunction } from "express";
+
+export interface AuthRequest extends Request {
+	token?: string;
+	user?: any;
+}
 
 /**
  * Verify token and attach user to request.
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- * @param {import('express').NextFunction} next
  */
-export const verifyToken = async (req, res, next) => {
+export const verifyToken = async (req: AuthRequest, res: Response, next: NextFunction) => {
 	const token = req.token = req.headers["authorization"]?.split(" ")[1];
 
 	if (!token) {
@@ -20,26 +22,24 @@ export const verifyToken = async (req, res, next) => {
 		return res.status(403).json({ message: "Blacklisted Token", action: "destroy" });
 	}
 
-	jwt.verify(token, JWT_SECRET, (err, decoded) => {
+	jwt.verify(token, JWT_SECRET as string, (err, decoded) => {
 		if (err) {
 			return res.status(401).json({ message: "Invalid Token", action: "destroy" });
 		}
-		const ipHash = crypto.createHash('sha256').update(req.ip).digest('hex');
-		if (decoded.ipHash !== ipHash) {
+		const decodedData = decoded as any;
+		const ipHash = crypto.createHash('sha256').update(req.ip as string).digest('hex');
+		if (decodedData.ipHash !== ipHash) {
 			return res.status(403).json({ message: 'Token IP mismatch', action: "destroy" });
 		}
-		req.user = decoded;
+		req.user = decodedData;
 		next();
 	});
 };
 
 /**
  * Require super admin role.
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- * @param {import('express').NextFunction} next
  */
-export const requireSuperAdmin = (req, res, next) => {
+export const requireSuperAdmin = (req: AuthRequest, res: Response, next: NextFunction) => {
 	if (req.user && req.user.role === "super_admin") {
 		next();
 	} else {
@@ -49,18 +49,15 @@ export const requireSuperAdmin = (req, res, next) => {
 
 /**
  * Require unauthenticated user.
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- * @param {import('express').NextFunction} next
  */
-export const requireGuest = (req, res, next) => {
+export const requireGuest = (req: Request, res: Response, next: NextFunction) => {
 	const token = req.headers['authorization']?.split(' ')[1];
 
 	if (!token) {
 		return next();
 	}
 
-	jwt.verify(token, JWT_SECRET, (err, _decoded) => {
+	jwt.verify(token, JWT_SECRET as string, (err, _decoded) => {
 		if (err) {
 			return next();
 		}
