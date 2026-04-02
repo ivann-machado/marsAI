@@ -4,7 +4,7 @@ function Loading({ dashboard }) {
   return (
     <div
       className="loadingContainer"
-      style={dashboard && "margin-left: 16rem;"}
+      style={dashboard ? { marginLeft: "16rem" } : {}}
     >
       {/* Logo */}
       <img
