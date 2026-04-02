@@ -7,13 +7,13 @@ import {
 	createVideo,
 	setVideo,
 	removeVideo,
-} from "../controllers/video.controller.js";
+} from "#controllers";
 import {
 	verifyToken,
 	requireSuperAdmin,
-} from "../middlewares/auth.middleware.js";
-import { processAndUpload } from "../middlewares/upload.middleware.ts";
-import { CreateVideoSchema, UpdateVideoSchema } from "../schemas/video.schema.ts";
+	processAndUpload
+} from "#middlewares";
+import { CreateVideoSchema, UpdateVideoSchema } from "#schemas";
 
 const router = express.Router();
 

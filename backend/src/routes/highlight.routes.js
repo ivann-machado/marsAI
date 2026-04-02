@@ -4,17 +4,18 @@ import {
 	createHighlight,
 	setHighlight,
 	removeHighlight,
-} from "../controllers/highlight.controller.js";
-import { cache, clearCache } from "../middlewares/cache.middleware.js";
+} from "#controllers";
 import {
+	cache,
+	clearCache,
 	verifyToken,
 	requireSuperAdmin,
-} from "../middlewares/auth.middleware.js";
-import { validate } from "../middlewares/validate.middleware.js";
+	validate
+} from "#middlewares";
 import {
 	CreateHighlightSchema,
 	UpdateHighlightSchema,
-} from "../schemas/highlight.schema.ts";
+} from "#schemas";
 import express from "express";
 
 const router = express.Router();

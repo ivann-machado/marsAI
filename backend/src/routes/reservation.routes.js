@@ -4,10 +4,9 @@ import {
 	getAllReservations,
 	getReservationById,
 	removeReservation,
-} from "../controllers/reservation.controller.js";
-import { validate } from "../middlewares/validate.middleware.js";
-import { cache } from "../middlewares/cache.middleware.js";
-import { CreateReservationSchema } from "../schemas/reservation.schema.ts";
+} from "#controllers";
+import { validate, cache } from "#middlewares";
+import { CreateReservationSchema } from "#schemas";
 
 const router = express.Router();
 

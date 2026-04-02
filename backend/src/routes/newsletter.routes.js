@@ -5,15 +5,15 @@ import {
 	getAllNewsletters,
 	removeNewsletter,
 	sendNewsletter,
-} from "../controllers/newsletter.controller.js";
+} from "#controllers";
 
 import {
 	verifyToken,
 	requireSuperAdmin,
-} from "../middlewares/auth.middleware.js";
-import { validate } from "../middlewares/validate.middleware.js";
-import { cache } from "../middlewares/cache.middleware.js";
-import { CreateNewsletterSubscriptionSchema, SendNewsletterSchema } from "../schemas/newsletter.schema.ts";
+	validate,
+	cache
+} from "#middlewares";
+import { CreateNewsletterSubscriptionSchema, SendNewsletterSchema } from "#schemas";
 
 const router = Router();
 

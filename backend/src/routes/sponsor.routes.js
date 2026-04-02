@@ -5,11 +5,15 @@ import {
 	getSponsorById,
 	updateSponsor,
 	removeSponsor,
-} from "../controllers/sponsor.controller.js";
-import { verifyToken, requireSuperAdmin } from "../middlewares/auth.middleware.js";
-import { processAndUpload } from "../middlewares/upload.middleware.ts";
-import { cache, clearCache } from "../middlewares/cache.middleware.js";
-import { CreateSponsorSchema, UpdateSponsorSchema } from "../schemas/sponsor.schema.ts";
+} from "#controllers";
+import {
+	verifyToken,
+	requireSuperAdmin,
+	processAndUpload,
+	cache,
+	clearCache
+} from "#middlewares";
+import { CreateSponsorSchema, UpdateSponsorSchema } from "#schemas";
 
 const router = express.Router();
 

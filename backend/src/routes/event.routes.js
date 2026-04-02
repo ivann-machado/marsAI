@@ -1,15 +1,19 @@
 import express from "express";
-import { processAndUpload } from "../middlewares/upload.middleware.ts";
 import {
 	createEvent,
 	getAllEvents,
 	getEventById,
 	setEvent,
 	removeEvent,
-} from "../controllers/event.controller.js";
-import { verifyToken, requireSuperAdmin } from "../middlewares/auth.middleware.js";
-import { cache, clearCache } from "../middlewares/cache.middleware.js";
-import { CreateEventSchema, UpdateEventSchema } from "../schemas/event.schema.ts";
+} from "#controllers";
+import {
+	verifyToken,
+	requireSuperAdmin,
+	cache,
+	clearCache,
+	processAndUpload
+} from "#middlewares";
+import { CreateEventSchema, UpdateEventSchema } from "#schemas";
 
 const router = express.Router();
 
