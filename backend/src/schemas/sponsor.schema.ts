@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { sponsorsSchema, sponsors_typeSchema } from "../generated/zod/index.ts";
-import { fileSchema } from "./file.schema.js";
+import { fileSchema } from "./file.schema.ts";
 
 /**
  * Create a new sponsor.

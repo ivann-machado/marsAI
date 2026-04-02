@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { jurySchema } from "../generated/zod/index.ts";
-import { fileSchema } from "./file.schema.js";
+import { fileSchema } from "./file.schema.ts";
 /**
  * Create a jury member.
  * `photo` is omitted because it comes from a file upload (req.file).
