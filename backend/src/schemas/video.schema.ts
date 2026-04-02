@@ -1,13 +1,13 @@
 import { z } from "zod";
 import { videosSchema } from "../generated/zod/index.ts";
-import { fileSchema } from "./file.schema.js";
-import { getMp4Metadata } from "../utils/file.util.js";
+import { fileSchema } from "./file.schema.ts";
+import { getMp4Metadata } from "../utils/file.util.ts";
 
 /**
  * Base video schema.
  * System-managed fields (`id`, `url`, `status`) are omitted.
  */
-const VideoSchema = videosSchema
+const VideoSchemaBody = videosSchema
 	.omit({ id: true, url: true, status: true })
 	.extend({
 		edition_id: z
@@ -63,17 +63,20 @@ const VideoSchema = videosSchema
 		subtitle: fileSchema(2 * 1024 * 1024, ['application/x-subrip', 'text/srt'])
 			.optional(),
 	});
-const videoRefinement = (schema) => schema.superRefine((data, ctx) => {
-	if (!data.filename) return;
-	const metadata = getMp4Metadata(data.filename?.buffer);
+
+const videoRefinement = (schema: z.ZodTypeAny) => schema.superRefine(async (data: any, ctx: z.RefinementCtx) => {
+	if (!data.filename || !data.filename.path) return;
+
+	const metadata = await getMp4Metadata(data.filename.path);
+
 	if (!metadata) {
-		ctx.addIssue({ code: "custom", path: ["filename"], message: "Could not parse video metadata" });
+		ctx.addIssue({ code: "custom", path: ["filename"], message: "Could not parse video metadata from disk" });
 		return;
 	}
-	if (metadata.duration > 90) {
+	if (metadata.duration && metadata.duration > 90) {
 		ctx.addIssue({ code: "custom", path: ["filename"], message: "Video duration must not exceed 90 seconds" });
 	}
-	if (metadata.aspectRatio !== "16:9") {
+	if (metadata.aspectRatio && metadata.aspectRatio !== "16:9") {
 		ctx.addIssue({ code: "custom", path: ["filename"], message: "Video aspect ratio must be 16:9" });
 	}
 });
@@ -81,8 +84,9 @@ const videoRefinement = (schema) => schema.superRefine((data, ctx) => {
 /**
  * Create a new video.
  */
-export const CreateVideoSchema = videoRefinement(VideoSchema);
+export const CreateVideoSchema = videoRefinement(VideoSchemaBody);
+
 /**
  * Update a video – all fields optional.
  */
-export const UpdateVideoSchema = videoRefinement(VideoSchema.partial());
+export const UpdateVideoSchema = videoRefinement(VideoSchemaBody.partial());
