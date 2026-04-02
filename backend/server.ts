@@ -14,9 +14,8 @@ const settingStartTime = Date.now();
 await loadSettings();
 console.log(`Settings loaded in ${Date.now() - settingStartTime}ms at ${Math.round(Date.now() - perf.timeOrigin)}ms process time`);
 
-const server: Server = createServer(app as RequestListener);
-
-server.on('listening', () => console.log(`Server started on http://localhost:${PORT} in ${Math.round(Date.now() - perf.timeOrigin)}ms process time.`));
+const server: Server = createServer(app as RequestListener)
+	.on('listening', () => console.log(`Server started on http://localhost:${PORT} in ${Math.round(Date.now() - perf.timeOrigin)}ms process time.`));
 
 startServer(server, PORT);
 
