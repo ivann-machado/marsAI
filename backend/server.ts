@@ -1,9 +1,9 @@
 import { performance as perf } from 'node:perf_hooks';
 import { createServer, type Server, type RequestListener } from 'node:http';
-import { loadSettings } from './src/config/settings.ts';
-import { startServer, gracefulShutdown } from './src/utils/server.util.ts';
+import { loadSettings } from '#config';
+import { startServer, gracefulShutdown } from '#utils';
 import { startVideoWorker } from './src/workers/video.worker.ts';
-import app from './src/app.js';
+import app from './src/app.ts';
 
 const PORT: number = Number(process.env.PORT) || 3000;
 
