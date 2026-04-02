@@ -1,7 +1,7 @@
-import prisma from "../config/prisma.config.ts";
-import { paginate } from "../utils/paginate.util.js";
-import { getFileUrl } from "../services/s3.service.js";
-import { uploadVideo } from "../services/youtube.service.js";
+import { prisma } from "#config";
+import { paginate } from "#utils";
+import { getFileUrl } from "#services";
+import videoQueue from "../queues/video.queue.ts";
 
 /**
  * @openapi
@@ -139,39 +139,25 @@ export const createVideo = async (req, res) => {
 		});
 
 		const videoId = video.id;
-		const videoBuffer = req.file?.buffer;
 
 		res.status(201).json({
 			message: "Video created",
 			id: videoId,
 		});
 
-		if (videoBuffer) {
-			uploadVideo({
-				videoBuffer,
-				metadata: body,
-				callback: async (result) => {
-					try {
-						const youtubeId = result.videoId;
-						await prisma.$transaction([
-							prisma.videos.update({
-								where: { id: videoId },
-								data: { url: youtubeId },
-							}),
-							prisma.process_queue.create({
-								data: {
-									video_id: videoId,
-									filename: body.filename,
-									type: "yt_status_check",
-									status: "pending",
-								},
-							}),
-						]);
-					} catch (error) {
-						console.error("Error in YouTube callback:", error);
-					}
-				},
-			});
+		if (body.filename) {
+			await videoQueue.add(
+				'yt_upload',
+				{
+					type: 'yt_upload',
+					videoId,
+					filename: body.filename,
+					email: body.email,
+					title: body.title,
+					description: body.description,
+					tags: body.tags ? body.tags.split(',') : [],
+				}
+			);
 		}
 	} catch (err) {
 		console.error("Create Video Error:", err);
