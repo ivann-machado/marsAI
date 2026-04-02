@@ -1,6 +1,6 @@
-import { renderView } from "../utils/view.util.js";
-import { sendEmail } from "../services/brevo.service.js";
-import { CONTACT_MAIL } from "../config/index.ts";
+import { renderView } from "#utils";
+import { sendEmail } from "#services";
+import { CONTACT_MAIL } from "#config";
 
 
 /**

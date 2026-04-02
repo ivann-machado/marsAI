@@ -1,6 +1,6 @@
-import prisma from "../config/prisma.config.ts";
-import { paginate } from "../utils/paginate.util.js";
-import { sendEmail } from "../services/brevo.service.js";
+import { prisma } from "#config";
+import { paginate } from "#utils";
+import { sendEmail } from "#services";
 
 /**
  * Send newsletter to all subscribers

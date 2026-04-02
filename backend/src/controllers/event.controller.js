@@ -1,6 +1,6 @@
-import prisma from "../config/prisma.config.ts";
-import { paginate } from "../utils/paginate.util.js";
-import { deleteFile, getFileUrl } from "../services/s3.service.js";
+import { prisma } from "#config";
+import { paginate } from "#utils";
+import { deleteFile, getFileUrl } from "#services";
 
 /**
  * Create a new event.
