@@ -3,17 +3,17 @@ import {
 	GetObjectCommand,
 	DeleteObjectCommand,
 	ListObjectsV2Command,
-	HeadObjectCommand
+	HeadObjectCommand,
+	type GetObjectCommandOutput,
+	type ListObjectsV2CommandOutput
 } from '@aws-sdk/client-s3';
-import bucket from '../config/s3.config.ts';
-import { NODE_ENV } from '../config/index.ts';
+import { bucket, NODE_ENV } from '#config';
+import type { Readable } from 'node:stream';
 
 /**
  * Build the full object key by prepending the configured folder prefix
- * @param {string} filename
- * @returns {string}
  */
-const buildKey = (filename) => {
+const buildKey = (filename: string): string => {
 	const { folder } = bucket;
 	const prefix = folder ? `${folder}/` : '';
 	return `${prefix}${filename}`;
@@ -21,13 +21,13 @@ const buildKey = (filename) => {
 
 /**
  * Upload a file to the S3 bucket
- * @param {string} filename - Name / path of the object in the bucket
- * @param {Buffer|import('stream').Readable|string} body - File content
- * @param {string} acl - ACL of the object : public-read or private.
- * @param {string} [contentType='application/octet-stream'] - MIME type
- * @returns {Promise<object>} - S3 response
  */
-export const uploadFile = async (filename, body, acl, contentType = 'application/octet-stream') => {
+export const uploadFile = async (
+	filename: string,
+	body: Buffer | Readable | string,
+	acl: string,
+	contentType: string = 'application/octet-stream'
+): Promise<any> => {
 	try {
 		const { client, bucketName } = bucket;
 		const key = buildKey(filename);
@@ -39,7 +39,7 @@ export const uploadFile = async (filename, body, acl, contentType = 'application
 			Bucket: bucketName,
 			Key: key,
 			Body: body,
-			ACL: acl,
+			ACL: acl as any,
 			ContentType: contentType
 		});
 
@@ -50,7 +50,7 @@ export const uploadFile = async (filename, body, acl, contentType = 'application
 		}
 
 		return response;
-	} catch (error) {
+	} catch (error: any) {
 		console.error('Error uploading file to S3:', error);
 		throw new Error(`File upload failed: ${error.message}`);
 	}
@@ -58,10 +58,8 @@ export const uploadFile = async (filename, body, acl, contentType = 'application
 
 /**
  * Download / get a file from the S3 bucket
- * @param {string} filename - Name / path of the object in the bucket
- * @returns {Promise<import('@aws-sdk/client-s3').GetObjectCommandOutput>}
  */
-export const getFile = async (filename) => {
+export const getFile = async (filename: string): Promise<GetObjectCommandOutput> => {
 	try {
 		const { client, bucketName } = bucket;
 		const key = buildKey(filename);
@@ -76,7 +74,7 @@ export const getFile = async (filename) => {
 		});
 
 		return await client.send(command);
-	} catch (error) {
+	} catch (error: any) {
 		console.error('Error getting file from S3:', error);
 		throw new Error(`File retrieval failed: ${error.message}`);
 	}
@@ -84,10 +82,8 @@ export const getFile = async (filename) => {
 
 /**
  * Delete a file from the S3 bucket
- * @param {string} filename - Name / path of the object in the bucket
- * @returns {Promise<object>} - S3 response
  */
-export const deleteFile = async (filename) => {
+export const deleteFile = async (filename: string): Promise<any> => {
 	try {
 		const { client, bucketName } = bucket;
 		const key = buildKey(filename);
@@ -108,7 +104,7 @@ export const deleteFile = async (filename) => {
 		}
 
 		return response;
-	} catch (error) {
+	} catch (error: any) {
 		console.error('Error deleting file from S3:', error);
 		throw new Error(`File deletion failed: ${error.message}`);
 	}
@@ -116,11 +112,8 @@ export const deleteFile = async (filename) => {
 
 /**
  * List files in the S3 bucket (optionally filtered by prefix)
- * @param {string} [prefix=''] - Prefix to filter objects (appended after the configured folder)
- * @param {number} [maxKeys=1000] - Maximum number of keys to return
- * @returns {Promise<import('@aws-sdk/client-s3').ListObjectsV2CommandOutput>}
  */
-export const listFiles = async (prefix = '', maxKeys = 1000) => {
+export const listFiles = async (prefix = '', maxKeys = 1000): Promise<ListObjectsV2CommandOutput> => {
 	try {
 		const { client, bucketName, folder } = bucket;
 		const folderPrefix = folder ? `${folder}/` : '';
@@ -137,7 +130,7 @@ export const listFiles = async (prefix = '', maxKeys = 1000) => {
 		});
 
 		return await client.send(command);
-	} catch (error) {
+	} catch (error: any) {
 		console.error('Error listing files from S3:', error);
 		throw new Error(`File listing failed: ${error.message}`);
 	}
@@ -145,10 +138,8 @@ export const listFiles = async (prefix = '', maxKeys = 1000) => {
 
 /**
  * Check if a file exists in the S3 bucket
- * @param {string} filename - Name / path of the object in the bucket
- * @returns {Promise<boolean>}
  */
-export const fileExists = async (filename) => {
+export const fileExists = async (filename: string): Promise<boolean> => {
 	try {
 		const { client, bucketName } = bucket;
 		const key = buildKey(filename);
@@ -160,7 +151,7 @@ export const fileExists = async (filename) => {
 
 		await client.send(command);
 		return true;
-	} catch (error) {
+	} catch (error: any) {
 		if (error.name === 'NotFound' || error.$metadata?.httpStatusCode === 404) {
 			return false;
 		}
@@ -170,10 +161,8 @@ export const fileExists = async (filename) => {
 
 /**
  * Build the public URL for an object in the bucket
- * @param {string} filename - Name / path of the object in the bucket
- * @returns {string} - Public URL
  */
-export const getFileUrl = (filename) => {
+export const getFileUrl = (filename: string): string => {
 	const { endpoint, bucketName } = bucket;
 	const key = buildKey(filename);
 	return `${endpoint}/${bucketName}/${key}`;
@@ -181,10 +170,8 @@ export const getFileUrl = (filename) => {
 
 /**
  * Get the filename from a file URL
- * @param {string} fileUrl - Public URL of the object in the bucket
- * @returns {string} - Filename
  */
-export const getFilename = (fileUrl) => {
+export const getFilename = (fileUrl: string): string => {
 	const { endpoint, bucketName, folder } = bucket;
 	const prefix = folder ? `${folder}/` : '';
 	return fileUrl.replace(`${endpoint}/${bucketName}/${prefix}`, '');

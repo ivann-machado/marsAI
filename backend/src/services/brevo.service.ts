@@ -1,20 +1,21 @@
-import BrevoClient from '../config/brevo.config.ts';
-import { NODE_ENV } from '../config/index.ts';
+import { BrevoClient, NODE_ENV } from '#config';
+
+interface SenderOverride {
+	name?: string;
+	email?: string;
+}
 
 /**
  * Helper to configure the base SMTP email object
- * @param {string|string[]} to
- * @param {object} config
- * @param {object | null} [senderOverride]
- * @returns {Brevo.SendSmtpEmail}
  */
-const configureBaseEmail = (to, config, senderOverride = null) => {
-	const sendSmtpEmail = {};
+const configureBaseEmail = (to: string | string[], config: any, senderOverride: SenderOverride | null = null) => {
+	const sendSmtpEmail: any = {};
 
 	sendSmtpEmail.sender = {
 		name: senderOverride?.name || config.senderName,
 		email: senderOverride?.email || config.senderEmail
 	};
+
 	if (Array.isArray(to)) {
 		sendSmtpEmail.to = to.map(email => ({ email }));
 	} else {
@@ -31,14 +32,14 @@ const configureBaseEmail = (to, config, senderOverride = null) => {
 
 /**
  * Send a transactional email using Brevo
- * @param {string|string[]} to - Recipient email(s)
- * @param {string} subject - Email subject
- * @param {string} htmlContent - HTML content of the email
- * @param {string} [textContent] - Plain text content (optional, stripped from HTML if not provided)
- * @param {object | null} [senderOverride] - Optional sender override {name, email}
- * @returns {Promise<object>} - API response
  */
-export const sendEmail = async (to, subject, htmlContent, textContent = '', senderOverride = null) => {
+export const sendEmail = async (
+	to: string | string[],
+	subject: string,
+	htmlContent: string,
+	textContent: string = '',
+	senderOverride: SenderOverride | null = null
+): Promise<any> => {
 	try {
 		if (NODE_ENV !== 'production') {
 			console.log(`Preparing to send email to: ${to}`);
@@ -52,13 +53,13 @@ export const sendEmail = async (to, subject, htmlContent, textContent = '', send
 
 		const response = await BrevoClient.api.sendTransacEmail(sendSmtpEmail);
 
-		const messageId = response.messageId || response.body?.messageId;
+		const messageId = response.messageId || (response as any).body?.messageId;
 		if (NODE_ENV !== 'production') {
 			console.log(`Email sent successfully! Message ID: ${messageId}`);
 		}
 		return response;
 
-	} catch (error) {
+	} catch (error: any) {
 		console.error('Error sending email via Brevo:', error);
 		if (error.response && error.response.body) {
 			console.error('Brevo API Error Details:', error.response.body);
@@ -69,12 +70,12 @@ export const sendEmail = async (to, subject, htmlContent, textContent = '', send
 
 /**
  * Send a template-based email (if you use Brevo templates)
- * @param {string|string[]} to - Recipient email(s)
- * @param {number} templateId - Brevo Template ID
- * @param {object} params - Dynamic parameters for the template
- * @returns {Promise<object>}
  */
-export const sendTemplateEmail = async (to, templateId, params = {}) => {
+export const sendTemplateEmail = async (
+	to: string | string[],
+	templateId: number,
+	params: Record<string, any> = {}
+): Promise<any> => {
 	try {
 		if (NODE_ENV !== 'production') {
 			console.log(`Preparing to send template email (${templateId}) to: ${to}`);
@@ -87,13 +88,13 @@ export const sendTemplateEmail = async (to, templateId, params = {}) => {
 
 		const response = await BrevoClient.api.sendTransacEmail(sendSmtpEmail);
 
-		const messageId = response.body?.messageId || response.messageId;
+		const messageId = (response as any).body?.messageId || response.messageId;
 		if (NODE_ENV !== 'production') {
 			console.log(`Template email sent successfully! Message ID: ${messageId}`);
 		}
 		return response;
 
-	} catch (error) {
+	} catch (error: any) {
 		console.error('Error sending template email via Brevo:', error);
 		if (error.response && error.response.body) {
 			console.error('Brevo API Error Details:', error.response.body);
