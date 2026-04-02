@@ -12,8 +12,8 @@ import {
 	verifyToken,
 	requireSuperAdmin,
 } from "../middlewares/auth.middleware.js";
-import { processAndUpload } from "../middlewares/upload.middleware.js";
-import { CreateVideoSchema, UpdateVideoSchema } from "../schemas/video.schema.js";
+import { processAndUpload } from "../middlewares/upload.middleware.ts";
+import { CreateVideoSchema, UpdateVideoSchema } from "../schemas/video.schema.ts";
 
 const router = express.Router();
 

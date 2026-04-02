@@ -1,5 +1,5 @@
 import express from "express";
-import { processAndUpload } from "../middlewares/upload.middleware.js";
+import { processAndUpload } from "../middlewares/upload.middleware.ts";
 import {
 	createJury,
 	getAllJuries,
@@ -9,7 +9,7 @@ import {
 } from "../controllers/jury.controller.js";
 import { verifyToken, requireSuperAdmin } from "../middlewares/auth.middleware.js";
 import { cache, clearCache } from "../middlewares/cache.middleware.js";
-import { CreateJurySchema, UpdateJurySchema } from "../schemas/jury.schema.js";
+import { CreateJurySchema, UpdateJurySchema } from "../schemas/jury.schema.ts";
 
 const router = express.Router();
 

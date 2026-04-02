@@ -14,7 +14,7 @@ import { cache, clearCache } from "../middlewares/cache.middleware.js";
 import {
 	CreatePrizedVideoSchema,
 	UpdatePrizedVideoSchema,
-} from "../schemas/prized.schema.js";
+} from "../schemas/prized.schema.ts";
 
 const router = express.Router();
 

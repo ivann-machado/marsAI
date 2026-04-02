@@ -12,7 +12,7 @@ import {
 	requireGuest,
 } from "../middlewares/auth.middleware.js";
 import { validate } from "../middlewares/validate.middleware.js";
-import { LoginSchema, InviteAdminSchema, InviteTokenSchema, AcceptInviteSchema } from "../schemas/admin.schema.js";
+import { LoginSchema, InviteAdminSchema, InviteTokenSchema, AcceptInviteSchema } from "../schemas/admin.schema.ts";
 
 const router = express.Router();
 /**

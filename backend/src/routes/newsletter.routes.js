@@ -13,7 +13,7 @@ import {
 } from "../middlewares/auth.middleware.js";
 import { validate } from "../middlewares/validate.middleware.js";
 import { cache } from "../middlewares/cache.middleware.js";
-import { CreateNewsletterSubscriptionSchema, SendNewsletterSchema } from "../schemas/newsletter.schema.js";
+import { CreateNewsletterSubscriptionSchema, SendNewsletterSchema } from "../schemas/newsletter.schema.ts";
 
 const router = Router();
 

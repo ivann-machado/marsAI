@@ -14,7 +14,7 @@ import { cache } from "../middlewares/cache.middleware.js";
 import {
 	CreateReviewSchema,
 	UpdateReviewSchema,
-} from "../schemas/review.schema.js";
+} from "../schemas/review.schema.ts";
 
 const router = express.Router();
 

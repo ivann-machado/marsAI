@@ -3,7 +3,7 @@ import { getAllContent, setContent } from "../controllers/content.controller.js"
 import { verifyToken, requireSuperAdmin } from "../middlewares/auth.middleware.js";
 import { validate } from "../middlewares/validate.middleware.js";
 import { cache, clearCache } from "../middlewares/cache.middleware.js";
-import { UpdateContentSchema } from "../schemas/content.schema.js";
+import { UpdateContentSchema } from "../schemas/content.schema.ts";
 
 const router = express.Router();
 
