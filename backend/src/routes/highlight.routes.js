@@ -14,7 +14,7 @@ import { validate } from "../middlewares/validate.middleware.js";
 import {
 	CreateHighlightSchema,
 	UpdateHighlightSchema,
-} from "../schemas/highlight.schema.js";
+} from "../schemas/highlight.schema.ts";
 import express from "express";
 
 const router = express.Router();

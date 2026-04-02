@@ -7,9 +7,9 @@ import {
 	removeSponsor,
 } from "../controllers/sponsor.controller.js";
 import { verifyToken, requireSuperAdmin } from "../middlewares/auth.middleware.js";
-import { processAndUpload } from "../middlewares/upload.middleware.js";
+import { processAndUpload } from "../middlewares/upload.middleware.ts";
 import { cache, clearCache } from "../middlewares/cache.middleware.js";
-import { CreateSponsorSchema, UpdateSponsorSchema } from "../schemas/sponsor.schema.js";
+import { CreateSponsorSchema, UpdateSponsorSchema } from "../schemas/sponsor.schema.ts";
 
 const router = express.Router();
 

@@ -7,7 +7,7 @@ import {
 } from "../controllers/reservation.controller.js";
 import { validate } from "../middlewares/validate.middleware.js";
 import { cache } from "../middlewares/cache.middleware.js";
-import { CreateReservationSchema } from "../schemas/reservation.schema.js";
+import { CreateReservationSchema } from "../schemas/reservation.schema.ts";
 
 const router = express.Router();
 
