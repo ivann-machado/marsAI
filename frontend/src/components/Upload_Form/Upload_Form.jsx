@@ -1,6 +1,5 @@
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import "../Upload_Form/upload.css";
 import { useFlash } from "../../context/FlashContext";
 import LoadingButton from "../Loading/LoadingButton";
 import { countryListFr, countryListEn } from "../Utils/CountryList";
@@ -54,7 +53,7 @@ function UploadForm() {
   } else {
     countryOptions = countryListEn.sort((a, b) =>
       a.label.localeCompare(b.label),
-    );
+      );
   }
   const movieTypeOption = [
     { label: t("upload_form.production_type_select.label"), value: "" },
@@ -340,38 +339,38 @@ function UploadForm() {
       showFlash(
         "error",
         "Titre: " +
-          (titleError != ""
-            ? titleError
-            : t("upload_form.errors.default_field_error")),
-      );
+        (titleError != ""
+          ? titleError
+          : t("upload_form.errors.default_field_error")),
+        );
       SetLoading(false);
       return;
     } else if (!descCheck()) {
       showFlash(
         "error",
         "Description: " +
-          (descError != ""
-            ? descError
-            : t("upload_form.errors.default_field_error")),
-      );
+        (descError != ""
+          ? descError
+          : t("upload_form.errors.default_field_error")),
+        );
       SetLoading(false);
       return;
     } else if (!videoCheck()) {
       showFlash(
         "error",
         "Vidéo: " +
-          (videoError != "" ? videoError : t("upload_form.errors.no_file")),
-      );
+        (videoError != "" ? videoError : t("upload_form.errors.no_file")),
+        );
       SetLoading(false);
       return;
     } else if (!coverImageCheck()) {
       showFlash(
         "error",
         "Miniature du film: " +
-          (coverImageError != ""
-            ? coverImageError
-            : t("upload_form.errors.default_no_file")),
-      );
+        (coverImageError != ""
+          ? coverImageError
+          : t("upload_form.errors.default_no_file")),
+        );
       SetLoading(false);
       return;
     } else {
@@ -386,70 +385,70 @@ function UploadForm() {
       showFlash(
         "error",
         "Producteur: " +
-          (producerError != ""
-            ? producerError
-            : t("upload_form.errors.default_field_error")),
-      );
+        (producerError != ""
+          ? producerError
+          : t("upload_form.errors.default_field_error")),
+        );
       SetLoading(false);
       return;
     } else if (!emailCheck()) {
       showFlash(
         "error",
         "Email: " +
-          (emailError != ""
-            ? emailError
-            : t("upload_form.errors.default_field_error")),
-      );
+        (emailError != ""
+          ? emailError
+          : t("upload_form.errors.default_field_error")),
+        );
       SetLoading(false);
       return;
     } else if (!movieTypeCheck()) {
       showFlash(
         "error",
         "Type de production:" +
-          (movieTypeError != ""
-            ? movieTypeError
-            : t("upload_form.errors.default_field_error")),
-      );
+        (movieTypeError != ""
+          ? movieTypeError
+          : t("upload_form.errors.default_field_error")),
+        );
       SetLoading(false);
       return;
     } else if (!scenarioAiCheck()) {
       showFlash(
         "error",
         "IA scénario: " +
-          (scenarioAiError != ""
-            ? scenarioAiError
-            : t("upload_form.errors.default_field_error")),
-      );
+        (scenarioAiError != ""
+          ? scenarioAiError
+          : t("upload_form.errors.default_field_error")),
+        );
       SetLoading(false);
       return;
     } else if (!videoAiCheck()) {
       showFlash(
         "error",
         "IA générative de vidéos: " +
-          (videoAiError != ""
-            ? videoAiError
-            : t("upload_form.errors.default_field_error")),
-      );
+        (videoAiError != ""
+          ? videoAiError
+          : t("upload_form.errors.default_field_error")),
+        );
       SetLoading(false);
       return;
     } else if (!soundAiCheck()) {
       showFlash(
         "error",
         "IA sons et musiques: " +
-          (soundAiError != ""
-            ? soundAiError
-            : t("upload_form.errors.default_field_error")),
-      );
+        (soundAiError != ""
+          ? soundAiError
+          : t("upload_form.errors.default_field_error")),
+        );
       SetLoading(false);
       return;
     } else if (!postProdAiCheck()) {
       showFlash(
         "error",
         "IA post-production: " +
-          (postProdAiError != ""
-            ? postProdAiError
-            : t("upload_form.errors_default_field_error")),
-      );
+        (postProdAiError != ""
+          ? postProdAiError
+          : t("upload_form.errors_default_field_error")),
+        );
       SetLoading(false);
       return;
     } else {
@@ -470,11 +469,11 @@ function UploadForm() {
       tiktok.current.value,
       instagram.current.value,
     ]
-      .filter((e) => e)
-      .map((option) =>
-        option.startsWith("http") || option.startsWith("https")
-          ? option
-          : "https://" + option,
+    .filter((e) => e)
+    .map((option) =>
+      option.startsWith("http") || option.startsWith("https")
+      ? option
+      : "https://" + option,
       );
     const uploadData = {
       title: title.current.value,
@@ -536,58 +535,58 @@ function UploadForm() {
       showFlash(
         "error",
         "Titre: " +
-          (titleError != ""
-            ? titleError
-            : t("upload_form.errors.default_field_error")),
-      );
+        (titleError != ""
+          ? titleError
+          : t("upload_form.errors.default_field_error")),
+        );
       SetLoading(false);
       return;
     } else if (!descCheck()) {
       showFlash(
         "error",
         "Description: " +
-          (descError != ""
-            ? descError
-            : t("upload_form.errors.default_field_error")),
-      );
+        (descError != ""
+          ? descError
+          : t("upload_form.errors.default_field_error")),
+        );
       SetLoading(false);
       return;
     } else if (!videoCheck()) {
       showFlash(
         "error",
         "Vidéo: " +
-          (videoError != "" ? videoError : t("upload_form.errors.no_file")),
-      );
+        (videoError != "" ? videoError : t("upload_form.errors.no_file")),
+        );
       SetLoading(false);
       return;
     } else if (!coverImageCheck()) {
       showFlash(
         "error",
         "Miniature du film: " +
-          (coverImageError != ""
-            ? coverImageError
-            : t("upload_form.errors.no_file")),
-      );
+        (coverImageError != ""
+          ? coverImageError
+          : t("upload_form.errors.no_file")),
+        );
       SetLoading(false);
       return;
     } else if (!producerCheck()) {
       showFlash(
         "error",
         "Producteur: " +
-          (producerError != ""
-            ? producerError
-            : t("upload_form.errors.default_field_error")),
-      );
+        (producerError != ""
+          ? producerError
+          : t("upload_form.errors.default_field_error")),
+        );
       SetLoading(false);
       return;
     } else if (!emailCheck()) {
       showFlash(
         "error",
         "Email: " +
-          (emailError != ""
-            ? emailError
-            : t("upload_form.errors.default_field_error")),
-      );
+        (emailError != ""
+          ? emailError
+          : t("upload_form.errors.default_field_error")),
+        );
       SetLoading(false);
       return;
     }
@@ -606,90 +605,90 @@ function UploadForm() {
       showFlash(
         "error",
         "Type de production:" +
-          (movieTypeError != ""
-            ? movieTypeError
-            : t("upload_form.errors.default_field_error")),
-      );
+        (movieTypeError != ""
+          ? movieTypeError
+          : t("upload_form.errors.default_field_error")),
+        );
       SetLoading(false);
       return;
     } else if (!scenarioAiCheck()) {
       showFlash(
         "error",
         "IA scénario: " +
-          (scenarioAiError != ""
-            ? scenarioAiError
-            : t("upload_form.errors.default_field_error")),
-      );
+        (scenarioAiError != ""
+          ? scenarioAiError
+          : t("upload_form.errors.default_field_error")),
+        );
       SetLoading(false);
       return;
     } else if (!videoAiCheck()) {
       showFlash(
         "error",
         "IA générative de vidéos: " +
-          (videoAiError != ""
-            ? videoAiError
-            : t("upload_form.errors.default_field_error")),
-      );
+        (videoAiError != ""
+          ? videoAiError
+          : t("upload_form.errors.default_field_error")),
+        );
       SetLoading(false);
       return;
     } else if (!soundAiCheck()) {
       showFlash(
         "error",
         "IA sons et musiques: " +
-          (soundAiError != ""
-            ? soundAiError
-            : t("upload_form.errors.default_field_error")),
-      );
+        (soundAiError != ""
+          ? soundAiError
+          : t("upload_form.errors.default_field_error")),
+        );
       SetLoading(false);
       return;
     } else if (!postProdAiCheck()) {
       showFlash(
         "error",
         "IA post-production: " +
-          (postProdAiError != ""
-            ? postProdAiError
-            : t("upload_form.errors_default_field_error")),
-      );
+        (postProdAiError != ""
+          ? postProdAiError
+          : t("upload_form.errors_default_field_error")),
+        );
       SetLoading(false);
       return;
     } else if (!linkedinCheck()) {
       showFlash(
         "error",
         "Linkedin: " +
-          (linkedinError != ""
-            ? linkedinError
-            : t("upload_form.errors.default_field_error")),
-      );
+        (linkedinError != ""
+          ? linkedinError
+          : t("upload_form.errors.default_field_error")),
+        );
       SetLoading(false);
       return;
     } else if (!youtubeCheck()) {
       showFlash(
         "error",
         "Youtube: " +
-          (youtubeError != ""
-            ? youtubeError
-            : t("upload_form.errors.default_field_error")),
-      );
+        (youtubeError != ""
+          ? youtubeError
+          : t("upload_form.errors.default_field_error")),
+        );
       SetLoading(false);
       return;
     } else if (!instagramCheck()) {
       showFlash(
         "error",
         "Instagram: " +
-          (instagramError != ""
-            ? instagramError
-            : t("upload_form.errors.default_field_error")),
-      );
+        (instagramError != ""
+          ? instagramError
+          : t("upload_form.errors.default_field_error")),
+        );
       SetLoading(false);
       return;
     } else if (!tagCheck()) {
       showFlash(
         "error",
         "tags: " +
-          (tagError != ""
-            ? tagError
-            : t("upload_form.errors.default_field_error")),
-      );
+        (tagError != ""
+          ? tagError
+          : t("upload_form.errors.default_field_error")),
+        );
       SetLoading(false);
       return;
     } else if (!countrySelectcheck()) {
@@ -718,7 +717,7 @@ function UploadForm() {
       SetLoading(false);
       Object.entries(data.errors).forEach((key) =>
         showFlash("error", key[1].join("&para")),
-      );
+        );
       // data.errors.forEach((error) => showFlash("error", error.join("<br/>")));
 
       // console.log(data.errors);
@@ -746,8 +745,8 @@ function UploadForm() {
           <div
             className={`transition-all duration-500 w-full ${
               step === 0
-                ? "opacity-100 translate-x-0"
-                : "opacity-0 -translate-x-full absolute"
+              ? "opacity-100 translate-x-0"
+              : "opacity-0 -translate-x-full absolute"
             }`}
           >
             <p className="text-3xl md:text-4xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-orange-300 text-center mb-8  pb-2 pt-2">
@@ -875,10 +874,10 @@ function UploadForm() {
           <div
             className={`transition-all duration-500 w-full ${
               step === 1
-                ? "opacity-100 translate-x-0"
-                : step < 1
-                  ? "opacity-0 translate-x-full absolute"
-                  : "opacity-0 -translate-x-full absolute"
+              ? "opacity-100 translate-x-0"
+              : step < 1
+              ? "opacity-0 translate-x-full absolute"
+              : "opacity-0 -translate-x-full absolute"
             }`}
           >
             <p className="text-3xl md:text-4xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-orange-300 text-center mb-8">
@@ -975,7 +974,7 @@ function UploadForm() {
                     <option key={option.value} value={option.value}>
                       {option.label}
                     </option>
-                  ))}
+                    ))}
                 </select>
                 <p className="text-white">{movieTypeError}</p>
               </div>
@@ -1084,8 +1083,8 @@ function UploadForm() {
           <div
             className={`transition-all duration-500 w-full ${
               step === 2
-                ? "opacity-100 translate-x-0"
-                : "opacity-0 translate-x-full absolute"
+              ? "opacity-100 translate-x-0"
+              : "opacity-0 translate-x-full absolute"
             }`}
           >
             <p className="text-3xl md:text-4xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-orange-300 text-center mb-8">
@@ -1226,7 +1225,7 @@ function UploadForm() {
                     <option key={option.value} value={option.value + 1}>
                       {option.label}
                     </option>
-                  ))}
+                    ))}
                 </select>
               </div>
             </div>
@@ -1308,7 +1307,7 @@ function UploadForm() {
       {/* //   )}
       // </div> */}
     </div>
-  );
+    );
 }
 
 export default UploadForm;
