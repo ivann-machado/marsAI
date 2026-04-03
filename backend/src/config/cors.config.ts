@@ -20,7 +20,7 @@ const checkOrigin = (origin: string | undefined, callback: (err: Error | null, a
 		return callback(null, true);
 	}
 
-	// Check for subdomains using cached URLs
+	// Check for subdomains
 	try {
 		const originUrl = new URL(origin);
 		const isAllowedSubdomain = ALLOWED_ORIGIN_URLS.some((allowedUrl) => {
@@ -35,9 +35,10 @@ const checkOrigin = (origin: string | undefined, callback: (err: Error | null, a
 		}
 	} catch (_e) {
 		console.warn(`Invalid origin URL blocked: ${origin}`);
+		return callback(null, false);
 	}
-
-	callback(new Error('Origin not allowed'));
+	console.warn(`Origin not allowed: ${origin}`);
+	return callback(null, false);
 };
 
 export default {

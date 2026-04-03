@@ -1,4 +1,4 @@
-import prisma from "../config/prisma.config.ts";
+import { prisma } from "#config";
 
 /**
  * Get all content entries.

@@ -1,0 +1,14 @@
+export { default as adminRoutes } from './admin.routes.ts';
+export { default as authRoutes } from './auth.routes.ts';
+export { default as contactRoutes } from './contact.routes.ts';
+export { default as contentRoutes } from './content.routes.ts';
+export { default as eventRoutes } from './event.routes.ts';
+export { default as highlightRoutes } from './highlight.routes.ts';
+export { default as juryRoutes } from './jury.routes.ts';
+export { default as newsletterRoutes } from './newsletter.routes.ts';
+export { default as prizedRoutes } from './prized.routes.ts';
+export { default as reservationRoutes } from './reservation.routes.ts';
+export { default as reviewRoutes } from './review.routes.ts';
+export { default as settingRoutes } from './setting.routes.ts';
+export { default as sponsorRoutes } from './sponsor.routes.ts';
+export { default as videoRoutes } from './videos.routes.ts';

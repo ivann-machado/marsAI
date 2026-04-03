@@ -1,6 +1,6 @@
 import type { Server } from "node:http";
-import prisma from "../config/prisma.config.ts";
-import redis from "../config/redis.config.ts";
+import type { Worker } from "bullmq";
+import { prisma, redis } from "#config";
 
 /**
  * Start the server with retry logic for port binding.
@@ -33,8 +33,9 @@ export const startServer = (server: Server, port: number, retries: number = 20):
  * Gracefully shut down the server.
  * @param server - The HTTP server instance.
  * @param err - Error object or signal string.
+ * @param worker - Optional BullMQ worker to close.
  */
-export const gracefulShutdown = (server: Server, err: Error | string): void => {
+export const gracefulShutdown = (server: Server, err: Error | string, worker?: Worker): void => {
 	const isSignal = typeof err === 'string' && err.startsWith('SIG');
 	if (err instanceof Error) {
 		console.error('Uncaught Exception or Rejection :', err);
@@ -49,15 +50,17 @@ export const gracefulShutdown = (server: Server, err: Error | string): void => {
 	server.close(async () => {
 		console.log('Closed out remaining connections');
 		try {
-			await Promise.all([
+			const teardowns: Promise<unknown>[] = [
 				prisma.$disconnect(),
-				redis.quit()
-			]);
-			console.log('Database & Redis disconnected');
+				redis.quit(),
+			];
+			if (worker) teardowns.push(worker.close());
+			await Promise.all(teardowns);
+			console.log('Database, Redis & worker disconnected');
 			clearTimeout(forceExit);
 			process.exit((!isSignal && err) ? 1 : 0);
 		} catch (dbErr) {
-			console.error('Error disconnecting database', dbErr);
+			console.error('Error disconnecting', dbErr);
 			process.exit(1);
 		}
 	});

@@ -1,4 +1,4 @@
-import { selectAllSettings } from '../models/setting.model.js';
+import { selectAllSettings } from '#models';
 export interface SettingValue {
 	value: string;
 	updatedAt: Date;

@@ -1,0 +1,42 @@
+import { Router } from "express";
+
+import {
+	createNewsletter,
+	getAllNewsletters,
+	removeNewsletter,
+	sendNewsletter,
+} from "#controllers";
+
+import {
+	verifyToken,
+	requireSuperAdmin,
+	validate,
+	cache
+} from "#middlewares";
+import { CreateNewsletterSubscriptionSchema, SendNewsletterSchema } from "#schemas";
+
+const router: Router = Router();
+
+/**
+ * Newsletter routes
+ *
+ * PUBLIC
+ * POST   /subscribe         → subscribe user
+ *
+ * ADMIN ONLY
+ * GET    /                  → get all subscribers
+ * DELETE /:email           → remove subscriber
+ * POST   /send             → send newsletter to all subscribers
+ */
+
+// Subscribe (public)
+router.post("/", validate(CreateNewsletterSubscriptionSchema), createNewsletter);
+
+// Admin routes
+router.get("/", verifyToken, requireSuperAdmin, cache({ etagOnly: true }), getAllNewsletters);
+
+router.delete("/:email", verifyToken, requireSuperAdmin, removeNewsletter);
+router.post("/send", verifyToken, requireSuperAdmin, validate(SendNewsletterSchema), sendNewsletter);
+
+
+export default router;
