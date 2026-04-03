@@ -8,7 +8,7 @@ import type { Request, Response, NextFunction } from "express";
  */
 export const validate = (schema: z.ZodSchema) => {
 	return (req: Request, res: Response, next: NextFunction) => {
-		const result = schema.safeParse(req.body);
+		const result = schema.safeParse({ ...req.body, ...req.params, ...req.query });
 		if (!result.success) {
 			return res.status(400).json({ errors: result.error.issues.map(d => d.message) });
 		}
