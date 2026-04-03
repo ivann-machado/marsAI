@@ -1,14 +1,13 @@
-import { getAllSettings, updateSetting } from "../models/setting.model.js";
+import prisma from "../config/prisma.config.ts";
 
 /**
- * Get all application settings.
+ * Get all settings.
  * @param {import('express').Request} req
  * @param {import('express').Response} res
- * @returns {Promise<void>}
  */
 export const getSettings = async (req, res) => {
 	try {
-		const settings = await getAllSettings();
+		const settings = await prisma.settings.findMany();
 		res.status(200).json(settings);
 	} catch (error) {
 		console.error("Get Settings Error:", error);
@@ -17,31 +16,34 @@ export const getSettings = async (req, res) => {
 };
 
 /**
- * Update a single setting by name.
- * Expects `{ name, value }` in the request body.
+ * Update a setting value by name.
  * @param {import('express').Request} req
  * @param {import('express').Response} res
- * @returns {Promise<void>}
+ * @param {import('express').NextFunction} next
  */
-export const setSetting = async (req, res) => {
+export const setSetting = async (req, res, next) => {
 	try {
 		const { name, value } = req.body;
 
 		if (!name || value === undefined) {
-			return res
-				.status(400)
-				.json({ message: "Name and value are required" });
+			return res.status(400).json({ message: "Name and value are required" });
 		}
 
-		const affectedRows = await updateSetting(name, value);
-
-		if (affectedRows === 0) {
-			return res.status(404).json({ message: "Setting not found" });
-		}
+		await prisma.settings.update({
+			where: { name },
+			data: { value },
+		});
 
 		res.status(200).json({ message: "Setting updated successfully" });
+		next();
 	} catch (error) {
-		console.error("Update Setting Error:", error);
+		if (error.code === "P2025") {
+			return res.status(404).json({ message: "Setting not found" });
+		}
+		console.error("Set Setting Error:", error);
 		res.status(500).json({ message: "Server error" });
 	}
 };
+
+
+

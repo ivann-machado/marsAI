@@ -1,0 +1,18 @@
+{
+	"$schema": "../node_modules/prisma-zod-generator/lib/config/schema.json",
+	"mode": "custom",
+	"pureModels": true,
+	"useMultipleFiles": false,
+	"singleFileName": "index.ts",
+	"variants": {
+		"pure": {
+			"enabled": true
+		},
+		"input": {
+			"enabled": false
+		},
+		"result": {
+			"enabled": false
+		}
+	}
+}

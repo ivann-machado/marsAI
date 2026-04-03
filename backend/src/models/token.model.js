@@ -1,42 +1,44 @@
-import { pool } from "../config/db.js";
+import prisma from "../config/prisma.config.ts";
 
 /**
  * Create a new invite token linked to an admin.
- * @param {string} token - Random token value.
+ * @param {string} tokenValue - Random token value.
  * @param {number} admin_id - Related admin ID.
- * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
- * @returns {Promise<number>} Inserted token ID.
+ * @returns {Promise<Object>} Compatibility result with insertId.
  */
-export const createToken = async (token, admin_id, conn = null) => {
-	const query = `INSERT INTO tokens (value, admin_id) VALUES (?, ?)`;
-	const db = conn || pool;
-	const result = await db.query(query, [token, admin_id]);
-	return result.insertId;
+export const insertToken = async (tokenValue, admin_id) => {
+	const token = await prisma.tokens.create({
+		data: {
+			value: tokenValue,
+			admin_id: Number(admin_id),
+			status: "pending",
+		},
+	});
+	return { insertId: token.id };
 };
 
 /**
- * Find a token row by its value.
- * @param {string} token
- * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
- * @returns {Promise<Object|undefined>} Token row or undefined if not found.
+ * Find a token by its value.
+ * @param {string} tokenValue
+ * @returns {Promise<Object[]>} Compatibility result (array of rows).
  */
-export const findToken = async (token, conn = null) => {
-	const query = `SELECT * FROM tokens WHERE value = ?`;
-	const db = conn || pool;
-	const rows = await db.query(query, [token]);
-	return rows[0];
+export const selectTokenByValue = async (tokenValue) => {
+	const token = await prisma.tokens.findUnique({
+		where: { value: tokenValue },
+	});
+	return token ? [token] : [];
 };
 
 /**
- * Update the token status (eg. 'pending', 'used', 'revoked').
- * @param {string} token
+ * Update the status of a token.
+ * @param {string} tokenValue
  * @param {string} status
- * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
- * @returns {Promise<Object>} Result row from the update query.
+ * @returns {Promise<Object>} Affected rows compatibility result.
  */
-export const updateTokenStatus = async (token, status, conn = null) => {
-	const query = `UPDATE tokens set status = ? WHERE value = ?`;
-	const db = conn || pool;
-	const rows = await db.query(query, [status, token]);
-	return rows[0];
+export const updateTokenStatus = async (tokenValue, status) => {
+	await prisma.tokens.update({
+		where: { value: tokenValue },
+		data: { status },
+	});
+	return { affectedRows: 1 };
 };

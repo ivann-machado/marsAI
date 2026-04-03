@@ -1,43 +1,136 @@
+import Loading from "../Utils/Loading";
 import { useState, useEffect } from "react";
+import { useAuth } from "../../context/AuthContext";
+import { useFlash } from "../../context/FlashContext";
+import { Link } from "react-router";
 
 function AdminOverview() {
   const [data, setData] = useState(null);
-  let address = window.location.host.split(".").slice(1);
+  const [content, setContent] = useState(null);
+  const authToken = useAuth();
+  const { showFlash } = useFlash();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/data.json");
+        const response = await fetch(
+          import.meta.env.VITE_API_URL + "/api/content",
+          {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          },
+        );
         if (!response.ok) throw new Error("Erreur fetch JSON");
         const json = await response.json();
-        setData(json.mockedData);
+        setContent(
+          json.reduce((a, i) => {
+            a[i.name] = i.value;
+            return a;
+          }, {}),
+        );
       } catch (err) {
         console.error(err);
       }
     };
-
     fetchData();
   }, []);
 
-  function changePhase() {
-    if (data.phase < 3) {
-      setData((prev) => ({ ...prev, phase: prev.phase + 1 }));
-      //fetch pour modifier phase en DB}
-    }
-  }
+  const changePhase = async () => {
+    if (content.phase < 3) {
+      try {
+        const response = await fetch(
+          import.meta.env.VITE_API_URL + "/api/content/",
+          {
+            method: "PUT",
+            headers: {
+              Authorization: "Bearer " + authToken.token,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name: "phase",
+              value: String(Number(content.phase) + 1),
+            }),
+          },
+        );
+        if (!response.ok) throw new Error("Erreur fetch JSON");
+        // const json = await response.json();
+        setContent((prev) => ({
+          ...prev,
+          phase: Number(prev.phase) + 1,
+        }));
 
-  if (!data) return <p>Loading...</p>;
+        showFlash("success", "La phase a été changée");
+      } catch (err) {
+        showFlash("error", "Erreur de mise à jour de la phase");
+        console.error(err);
+      }
+
+      // setModified(false);
+    }
+  };
+
+  if (!content) return <Loading dashboard={true} />;
 
   return (
     <>
-      <div className="text-gray-200 bg-gray-950 w-4/5">
+      <div className="bg-gradient-to-br from-gray-950 via-gray-800 to-gray-950 px-4 font-inter w-full ml-64 text-white min-h-screen">
         <h1 className="font-bold text-2xl m-4">Vue d'ensemble</h1>
-        <p className="m-4 text-lg border-b">
-          Informations generales sur le festival et le site web.
+        <p className="m-4 text-lg">Bienvenue sur le dashboard admin</p>
+        <p className="m-4 text-lg">
+          Vous trouverez sur la gauche les differentes menus d'administration:
         </p>
-        <div className="">
+        <ul className="ml-8">
+          <li>
+            <span className="text-amber-500">Videos</span> - Liste compéte de
+            videos
+          </li>
+          <li>
+            {" "}
+            <span className="text-amber-500">To Review</span> - Videos à noter
+          </li>
+          <li>
+            {" "}
+            <span className="text-amber-500">Users</span> - Administration
+            comptes admin{" "}
+          </li>
+          <li>
+            {" "}
+            <span className="text-amber-500">Events</span> - Géres les
+            evenements
+          </li>
+          <li>
+            {" "}
+            <span className="text-amber-500">Settings</span> - Parametres
+            back-end
+          </li>
+          <li>
+            {" "}
+            <span className="text-amber-500">Content</span> - Parametres
+            front-end{" "}
+          </li>
+          <li>
+            {" "}
+            <span className="text-amber-500">Jury</span> - Gérer le contenu de
+            la page jury{" "}
+          </li>
+          <li>
+            {" "}
+            <span className="text-amber-500">Partners</span> - Gérer le contenu
+            de la page partenaires{" "}
+          </li>
+          <li>
+            {" "}
+            <span className="text-amber-500">Prizes</span> - Gérer les prix{" "}
+          </li>
+          <li>
+            {" "}
+            <span className="text-amber-500">Edit Pages</span> - Modifier
+            contenu statique des pages{" "}
+          </li>
+        </ul>
+        <div className="border-t">
           <div className="flex justify-around border-b py-8">
-            <div className="p-4 bg-gray-800 border rounded-xl min-w-48 w-1/5 min-h-48">
+            {/*  <div className="p-4 bg-gray-800 border rounded-xl min-w-48 w-1/5 min-h-48">
               <p>Statistiques Videos:</p>
               <p>Total: {data.videos_total}</p>
               <p>Evaluées: {data.videos_evaluated}</p>
@@ -60,13 +153,14 @@ function AdminOverview() {
             <div className="p-4 bg-gray-800 border rounded-xl min-w-48 w-1/5 min-h-48">
               <p>Pays:</p>
               <p>{data.countries}</p>
-            </div>
+            </div> */}
             <div className="p-4 bg-gray-800 border rounded-xl min-w-48 w-1/5 min-h-48">
-              <p>Phase:</p>
-              <p>{data.phase}</p>
-              {data.phase < 3 ? (
+              <p className="text-center text-2xl text-bold p-8">
+                Phase: {content.phase}
+              </p>
+              {content.phase < 3 ? (
                 <button
-                  className="p-2 border bg-gray-400 hover:bg-amber-400"
+                  className="p-2 border bg-gray-700 hover:text-amber-400"
                   onClick={() => {
                     if (window.confirm("Passer à la phase suivante?"))
                       changePhase();
@@ -79,7 +173,7 @@ function AdminOverview() {
               )}
             </div>
           </div>
-          <div>
+          {/* <div>
             <h4 className="text-xl font-bold m-4">Top Films:</h4>
             {data.top_videos.map((video) => (
               <a
@@ -97,8 +191,12 @@ function AdminOverview() {
                 </div>
               </a>
             ))}
-          </div>
-          <a href="/videos">Acceder à la liste des films</a>
+          </div> */}
+          {/* <div className="flex justify-center p-8">
+            <Link className="text-3xl hover:underline" to="/videos">
+              Acceder à la liste des films
+            </Link>
+          </div> */}
         </div>
       </div>
     </>

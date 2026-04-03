@@ -1,47 +1,49 @@
-import { getAllContent, updateContent } from "../models/content.model.js";
+import prisma from "../config/prisma.config.ts";
 
 /**
  * Get all content entries.
  * @param {import('express').Request} req
  * @param {import('express').Response} res
- * @returns {Promise<void>}
  */
-export const getContent = async (req, res) => {
+export const getAllContent = async (req, res) => {
 	try {
-		const content = await getAllContent();
+		const content = await prisma.content.findMany();
 		res.status(200).json(content);
 	} catch (error) {
-		console.error("Get Content Error:", error);
+		console.error("Get All Content Error:", error);
 		res.status(500).json({ message: "Server error" });
 	}
 };
 
 /**
- * Update a single content entry by name.
- * Expects `{ name, value }` in the request body.
+ * Update a content entry by name.
  * @param {import('express').Request} req
  * @param {import('express').Response} res
- * @returns {Promise<void>}
+ * @param {import('express').NextFunction} next
  */
-export const setContent = async (req, res) => {
+export const setContent = async (req, res, next) => {
 	try {
 		const { name, value } = req.body;
 
 		if (!name || value === undefined) {
-			return res
-				.status(400)
-				.json({ message: "Name and value are required" });
+			return res.status(400).json({ message: "Name and value are required" });
 		}
 
-		const affectedRows = await updateContent(name, value);
-
-		if (affectedRows === 0) {
-			return res.status(404).json({ message: "Content entry not found" });
-		}
+		await prisma.content.update({
+			where: { name },
+			data: { value },
+		});
 
 		res.status(200).json({ message: "Content updated successfully" });
+		next();
 	} catch (error) {
-		console.error("Update Content Error:", error);
+		if (error.code === "P2025") {
+			return res.status(404).json({ message: "Content entry not found" });
+		}
+		console.error("Set Content Error:", error);
 		res.status(500).json({ message: "Server error" });
 	}
 };
+
+
+

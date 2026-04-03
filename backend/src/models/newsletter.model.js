@@ -1,56 +1,47 @@
-import { pool } from "../config/db.js";
+import prisma from "../config/prisma.config.ts";
 
 /**
- * Create a newsletter subscription.
- *
- * @param {string} email - Email address to subscribe
- * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
- * @returns {Promise<number>} Inserted newsletter ID
+ * Add a new email to the newsletter list.
+ * @param {string} email
+ * @returns {Promise<any>} raw MariaDB-like result for compatibility.
  */
-export const createNewsletter = async (email, conn = null) => {
-	const sql = "INSERT INTO newsletters (email) VALUES (?)";
-	const db = conn || pool;
-	const result = await db.query(sql, [email]);
-	return result.insertId;
+export const insertNewsletter = async (email) => {
+	const res = await prisma.newsletters.create({
+		data: { email },
+	});
+	return { insertId: res.id };
 };
 
 /**
  * Find a newsletter subscription by email.
- *
- * @param {string} email - Email address to search
- * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
- * @returns {Promise<Object|null>} Newsletter row or null if not found
+ * @param {string} email
+ * @returns {Promise<Object[]>} Compatibility result (array of rows).
  */
-export const findNewsletterByEmail = async (email, conn = null) => {
-	const sql = "SELECT id FROM newsletters WHERE email = ?";
-	const db = conn || pool;
-	const rows = await db.query(sql, [email]);
-	return rows[0] || null;
+export const selectNewsletterByEmail = async (email) => {
+	const sub = await prisma.newsletters.findUnique({
+		where: { email },
+	});
+	return sub ? [sub] : [];
 };
 
 /**
- * Retrieve all newsletter subscriptions.
- *
- * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
- * @returns {Promise<Array>} List of all newsletter subscriptions
+ * Get all newsletter subscriptions.
+ * @returns {Promise<Object[]>} Compliance result (array of rows).
  */
-export const findAllNewsletters = async (conn = null) => {
-	const sql = "SELECT * FROM newsletters ORDER BY id DESC";
-	const db = conn || pool;
-	const rows = await db.query(sql);
-	return rows;
+export const selectAllNewsletters = async () => {
+	return prisma.newsletters.findMany({
+		orderBy: { created_at: "desc" },
+	});
 };
 
 /**
- * Delete a newsletter subscription by email.
- *
- * @param {string} email - Email address to delete
- * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
- * @returns {Promise<any>} Database delete result
+ * Delete a newsletter entry by email.
+ * @param {string} email
+ * @returns {Promise<any>} raw MariaDB-like result for compatibility.
  */
-export const deleteNewsletterByEmail = async (email, conn = null) => {
-	const sql = "DELETE FROM newsletters WHERE email = ?";
-	const db = conn || pool;
-	return db.query(sql, [email]);
+export const deleteNewsletterByEmail = async (email) => {
+	await prisma.newsletters.delete({
+		where: { email },
+	});
+	return { affectedRows: 1 };
 };
-

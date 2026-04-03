@@ -1,14 +1,42 @@
 import { Router } from "express";
+
 import {
-	subscribeNewsletter,
+	createNewsletter,
 	getAllNewsletters,
-	deleteNewsletter,
+	removeNewsletter,
+	sendNewsletter,
 } from "../controllers/newsletter.controller.js";
+
+import {
+	verifyToken,
+	requireSuperAdmin,
+} from "../middlewares/auth.middleware.js";
+import { validate } from "../middlewares/validate.middleware.js";
+import { cache } from "../middlewares/cache.middleware.js";
+import { CreateNewsletterSubscriptionSchema, SendNewsletterSchema } from "../schemas/newsletter.schema.js";
 
 const router = Router();
 
-router.post("/subscribe", subscribeNewsletter);
-router.get("/", getAllNewsletters);
-router.delete("/:email", deleteNewsletter);
+/**
+ * Newsletter routes
+ *
+ * PUBLIC
+ * POST   /subscribe         → subscribe user
+ *
+ * ADMIN ONLY
+ * GET    /                  → get all subscribers
+ * DELETE /:email           → remove subscriber
+ * POST   /send             → send newsletter to all subscribers
+ */
+
+// Subscribe (public)
+router.post("/", validate(CreateNewsletterSubscriptionSchema), createNewsletter);
+
+// Admin routes
+router.get("/", verifyToken, requireSuperAdmin, cache({ etagOnly: true }), getAllNewsletters);
+
+router.delete("/:email", verifyToken, requireSuperAdmin, removeNewsletter);
+router.post("/send", verifyToken, requireSuperAdmin, validate(SendNewsletterSchema), sendNewsletter);
+
 
 export default router;

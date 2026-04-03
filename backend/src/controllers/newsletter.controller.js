@@ -1,45 +1,50 @@
-import {
-	createNewsletter,
-	findNewsletterByEmail,
-	findAllNewsletters,
-	deleteNewsletterByEmail,
-} from "../models/newsletter.model.js";
+import prisma from "../config/prisma.config.ts";
+import { paginate } from "../utils/paginate.util.js";
+import { sendEmail } from "../services/brevo.service.js";
 
 /**
- * Subscribe an email address to the newsletter.
- *
- * @param {import('express').Request} req - Express request object
- * @param {import('express').Response} res - Express response object
- * @returns {Promise<void>}
+ * Send newsletter to all subscribers
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
  */
+export const sendNewsletter = async (req, res) => {
+	try {
+		const { subject, htmlContent } = req.body;
+
+		if (!subject || !htmlContent) {
+			return res.status(400).json({
+				message: "subject and htmlContent are required",
+			});
+		}
+
+		const subscribers = await prisma.newsletters.findMany();
+
+		if (!subscribers || subscribers.length === 0) {
+			return res.status(404).json({
+				message: "No subscribers found",
+			});
+		}
+
+		const emails = subscribers.map((sub) => sub.email);
+
+		await sendEmail(emails, subject, htmlContent);
+
+		res.status(200).json({
+			message: "Newsletter sent successfully",
+			total: emails.length,
+		});
+	} catch (error) {
+		console.error("Send Newsletter Error:", error);
+		res.status(500).json({ message: "Server error" });
+	}
+};
+
 /**
- * @openapi
- * /newsletter:
- *   post:
- *     summary: Subscribe to the newsletter
- *     tags: [Newsletter]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - email
- *             properties:
- *               email:
- *                 type: string
- *     responses:
- *       201:
- *         description: Subscription successful
- *       400:
- *         description: Email is required
- *       409:
- *         description: Email already subscribed
- *       500:
- *         description: Server error
+ * Subscribe to the newsletter
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
  */
-export const subscribeNewsletter = async (req, res) => {
+export const createNewsletter = async (req, res) => {
 	try {
 		const { email } = req.body;
 
@@ -47,80 +52,60 @@ export const subscribeNewsletter = async (req, res) => {
 			return res.status(400).json({ message: "Email is required" });
 		}
 
-		await createNewsletter(email);
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		if (!emailRegex.test(email)) {
+			return res.status(400).json({ message: "Invalid email format" });
+		}
+
+		await prisma.newsletters.create({
+			data: { email },
+		});
+
+		// welcome email
+		await sendEmail(
+			[email],
+			"Welcome to MarsAI Newsletter",
+			"<h2>Welcome to MarsAI</h2><p>Thank you for subscribing.</p>"
+		);
+
 		return res.status(201).json({ message: "Subscription successful" });
 	} catch (error) {
-		if (error.errno === 1062 || error.code === 'ER_DUP_ENTRY') {
+		if (error.code === "P2002") {
 			return res.status(409).json({ message: "Email already subscribed" });
 		}
-		console.error("Newsletter Subscribe Error:", error);
+		console.error("Create Newsletter Error:", error);
 		res.status(500).json({ message: "Server error" });
 	}
 };
 
 /**
- * Retrieve all newsletter subscriptions.
- *
- * @param {import('express').Request} req - Express request object
- * @param {import('express').Response} res - Express response object
- * @returns {Promise<void>}
- */
-/**
- * @openapi
- * /newsletter:
- *   get:
- *     summary: Retrieve all newsletter subscriptions
- *     tags: [Newsletter]
- *     responses:
- *       200:
- *         description: List of subscriptions
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *       500:
- *         description: Server error
+ * Get all newsletter subscriptions.
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
  */
 export const getAllNewsletters = async (req, res) => {
 	try {
-		const newsletters = await findAllNewsletters();
-		res.status(200).json(newsletters);
+		const { page, limit } = req.query;
+
+		const result = await paginate(prisma.newsletters, {
+			page,
+			limit,
+			orderBy: { created_at: "desc" },
+		});
+
+		res.status(200).json(result);
 	} catch (error) {
-		console.error("Get Newsletters Error:", error);
+		console.error("Get All Newsletters Error:", error);
 		res.status(500).json({ message: "Server error" });
 	}
 };
 
 /**
- * Delete a newsletter subscription by email.
- *
- * @param {import('express').Request} req - Express request object
- * @param {import('express').Response} res - Express response object
- * @returns {Promise<void>}
+ * Remove a newsletter subscription by email.
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
  */
-/**
- * @openapi
- * /newsletter/{email}:
- *   delete:
- *     summary: Delete a newsletter subscription
- *     tags: [Newsletter]
- *     parameters:
- *       - in: path
- *         name: email
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Subscription deleted
- *       400:
- *         description: Email is required
- *       500:
- *         description: Server error
- */
-export const deleteNewsletter = async (req, res) => {
+export const removeNewsletter = async (req, res) => {
 	try {
 		const { email } = req.params;
 
@@ -128,10 +113,21 @@ export const deleteNewsletter = async (req, res) => {
 			return res.status(400).json({ message: "Email is required" });
 		}
 
-		await deleteNewsletterByEmail(email);
-		res.status(200).json({ message: "Subscription deleted" });
+		// Prisma delete requires unique input, so we use delete if we can find by email
+		// or deleteMany if email is not a unique field in schema but we treat it as such.
+		// Assuming email is unique in schema.prisma as it was in the SQL.
+		await prisma.newsletters.delete({
+			where: { email },
+		});
+
+		res.status(200).json({ message: "Subscription deleted successfully" });
 	} catch (error) {
-		console.error("Delete Newsletter Error:", error);
+		if (error.code === "P2025") {
+			// Like original code, we don't necessarily error 404 if not found
+			// but Prisma delete will throw P2025. Original commented out 404 logic.
+			return res.status(200).json({ message: "Subscription deleted successfully" });
+		}
+		console.error("Remove Newsletter Error:", error);
 		res.status(500).json({ message: "Server error" });
 	}
 };

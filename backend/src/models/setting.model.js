@@ -1,27 +1,26 @@
-import { pool } from '../config/db.js';
+import prisma from "../config/prisma.config.ts";
 
 /**
  * Get all settings from the database.
- * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
- * @returns {Promise<Array>} Array of setting rows.
+ * @returns {Promise<Object[]>} Compliance result (array of rows).
  */
-export const getAllSettings = async (conn = null) => {
-	const query = `SELECT name, value, updated_at FROM settings`;
-	const db = conn || pool;
-	const rows = await db.query(query);
-	return rows;
+export const selectAllSettings = async () => {
+	return prisma.settings.findMany();
 };
 
 /**
  * Update a setting value by name.
- * @param {string} name - Setting key name.
- * @param {string} value - New value.
- * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
- * @returns {Promise<number>} Number of affected rows.
+ * @param {string} name
+ * @param {string} value
+ * @returns {Promise<any>} raw MariaDB-like result for compatibility.
  */
-export const updateSetting = async (name, value, conn = null) => {
-	const query = `UPDATE settings SET value = ?, updated_at = NOW() WHERE name = ?`;
-	const db = conn || pool;
-	const result = await db.query(query, [value, name]);
-	return result.affectedRows;
+export const updateSetting = async (name, value) => {
+	await prisma.settings.update({
+		where: { name },
+		data: { value },
+	});
+	return { affectedRows: 1 };
 };
+
+
+

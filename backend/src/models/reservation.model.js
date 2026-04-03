@@ -1,68 +1,54 @@
-import { pool } from "../config/db.js";
+import prisma from "../config/prisma.config.ts";
 
 /**
  * Create a new reservation.
- *
- * @param {Object} reservationData - Object containing event_id, firstname, lastname, email
- * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions
- * @returns {Promise<number>} Inserted reservation ID
+ * @param {Object} reservation
+ * @returns {Promise<Object>} raw MariaDB-like result for compatibility.
  */
-export const createReservation = async ({
-	event_id,
-	firstname,
-	lastname,
-	email,
-}, conn = null) => {
-	const sql =
-		"INSERT INTO reservations (event_id, firstname, lastname, email) VALUES (?, ?, ?, ?)";
-	const db = conn || pool;
-	const result = await db.query(sql, [
-		event_id,
-		firstname,
-		lastname,
-		email,
-	]);
-
-	return result.insertId;
+export const insertReservation = async ({ event_id, firstname, lastname, email }) => {
+	const res = await prisma.reservations.create({
+		data: {
+			event_id: Number(event_id),
+			firstname,
+			lastname,
+			email,
+		},
+	});
+	return { insertId: res.id };
 };
 
 /**
  * Find a reservation by ID.
- *
- * @param {number|string} id - Reservation ID
- * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions
- * @returns {Promise<Object|null>} Reservation row or null
+ * @param {number|string} id
+ * @returns {Promise<Object[]>} Compatibility result (array of rows).
  */
-export const findReservationById = async (id, conn = null) => {
-	const sql = "SELECT * FROM reservations WHERE id = ?";
-	const db = conn || pool;
-	const rows = await db.query(sql, [id]);
-	return rows[0] || null;
+export const selectReservationById = async (id) => {
+	const res = await prisma.reservations.findUnique({
+		where: { id: Number(id) },
+		include: { events: true },
+	});
+	return res ? [res] : [];
 };
 
 /**
  * Get all reservations.
- *
- * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions
- * @returns {Promise<Array>} List of reservations
+ * @returns {Promise<Object[]>} Compliance result (array of rows).
  */
-export const findAllReservations = async (conn = null) => {
-	const sql = "SELECT * FROM reservations ORDER BY id DESC";
-	const db = conn || pool;
-	const rows = await db.query(sql);
-	return rows;
+export const selectAllReservations = async () => {
+	return prisma.reservations.findMany({
+		include: { events: true },
+		orderBy: { id: "desc" },
+	});
 };
 
 /**
  * Delete a reservation by ID.
- *
- * @param {number|string} id - Reservation ID
- * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions
- * @returns {Promise<any>}
+ * @param {number|string} id
+ * @returns {Promise<Object>} raw MariaDB-like result for compatibility.
  */
-export const deleteReservationById = async (id, conn = null) => {
-	const sql = "DELETE FROM reservations WHERE id = ?";
-	const db = conn || pool;
-	return db.query(sql, [id]);
+export const deleteReservation = async (id) => {
+	await prisma.reservations.delete({
+		where: { id: Number(id) },
+	});
+	return { affectedRows: 1 };
 };
-

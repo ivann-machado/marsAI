@@ -1,7 +1,8 @@
-import fs from 'fs/promises';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { DEV_MODE } from '../config/index.js';
+// @ts-check
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { NODE_ENV } from '../config/index.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -22,7 +23,7 @@ export const renderView = async (viewPath, data = {}) => {
 			content = content.replaceAll(placeholder, value);
 		}
 
-		if (DEV_MODE) {
+		if (NODE_ENV !== 'production') {
 			console.log("Rendered view:", content);
 		}
 

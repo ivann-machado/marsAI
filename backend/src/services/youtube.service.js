@@ -1,18 +1,20 @@
-import fs from 'fs';
-import { getYouTubeClient, getOAuth2Client } from '../config/youtube.js';
+import { Readable } from 'node:stream';
+import getYouTubeClient from '../config/youtube.config.ts';
+import { NODE_ENV } from '../config/index.ts';
 
 /**
  * Upload a video to YouTube
- * @param {string} filePath - Path to the video file
+ * @param {Buffer} videoBuffer - Buffer of the video file
  * @param {object} metadata - Video metadata (title, description, tags, etc.)
  * @returns {Promise<{videoId: string, title: string}>}
  */
-export const uploadVideo = async (filePath, metadata = {}, privacyStatus = 'private') => {
+export const uploadVideo = async ({ videoBuffer, metadata = {}, privacy = 'unlisted', callback }) => {
 	try {
-		console.log('Starting YouTube video upload...');
-
-		if (!fs.existsSync(filePath)) {
-			throw new Error(`Video file not found: ${filePath}`);
+		if (NODE_ENV !== 'production') {
+			console.log('Starting YouTube video upload...');
+		}
+		if (!videoBuffer) {
+			throw new Error(`Video buffer is required`);
 		}
 
 		const youtube = getYouTubeClient();
@@ -21,7 +23,7 @@ export const uploadVideo = async (filePath, metadata = {}, privacyStatus = 'priv
 			title = metadata.title,
 			description = '',
 			tags = [],
-			privacyStatus = privacyStatus,
+			privacyStatus = privacy,
 			categoryId = '1'
 		} = metadata;
 
@@ -38,10 +40,11 @@ export const uploadVideo = async (filePath, metadata = {}, privacyStatus = 'priv
 		};
 
 		const mediaBody = {
-			body: fs.createReadStream(filePath)
+			body: Readable.from(videoBuffer)
 		};
-
-		console.log(`Uploading video: ${title}`);
+		if (NODE_ENV !== 'production') {
+			console.log(`Uploading video: ${title}`);
+		}
 
 		const response = await youtube.videos.insert({
 			part: ['snippet', 'status'],
@@ -50,17 +53,17 @@ export const uploadVideo = async (filePath, metadata = {}, privacyStatus = 'priv
 		});
 
 		const videoId = response.data.id;
-		console.log(`Video uploaded successfully! Video ID: ${videoId}`);
-		console.log(`View at: https://www.youtube.com/watch?v=${videoId}`);
-
-		return {
+		if (NODE_ENV !== 'production') {
+			console.log(`Video uploaded successfully! Video ID: ${videoId}`);
+			console.log(`View at: https://www.youtube.com/watch?v=${videoId}`);
+		}
+		callback({
 			videoId,
 			title: response.data.snippet.title,
 			uploadTime: new Date().toISOString()
-		};
+		});
 	} catch (error) {
 		console.error('Error uploading video to YouTube:', error.message);
-		throw new Error(`YouTube upload failed: ${error.message}`);
 	}
 };
 
@@ -71,7 +74,9 @@ export const uploadVideo = async (filePath, metadata = {}, privacyStatus = 'priv
  */
 export const checkVideoStatus = async (videoId) => {
 	try {
-		console.log(`Checking status for video: ${videoId}`);
+		if (NODE_ENV !== 'production') {
+			console.log(`Checking status for video: ${videoId}`);
+		}
 
 		const youtube = getYouTubeClient();
 
@@ -97,8 +102,10 @@ export const checkVideoStatus = async (videoId) => {
 			publishedAt: video.snippet.publishedAt
 		};
 
-		console.log(`Video Status: ${statusInfo.uploadStatus}`);
-		console.log(`Processing: ${statusInfo.processingStatus || 'N/A'}`);
+		if (NODE_ENV !== 'production') {
+			console.log(`Video Status: ${statusInfo.uploadStatus}`);
+			console.log(`Processing: ${statusInfo.processingStatus || 'N/A'}`);
+		}
 
 		return statusInfo;
 	} catch (error) {
@@ -117,19 +124,25 @@ export const checkVideoStatus = async (videoId) => {
 export const scheduleStatusCheck = (videoId, callback, delayMinutes = 10) => {
 	const delayMs = delayMinutes * 60 * 1000;
 
-	console.log(`Status check scheduled for video ${videoId} in ${delayMinutes} minutes`);
+	if (NODE_ENV !== 'production') {
+		console.log(`Status check scheduled for video ${videoId} in ${delayMinutes} minutes`);
+	}
 
 	const timeout = setTimeout(async () => {
 		try {
-			console.log(`\n Executing scheduled status check for video: ${videoId}`);
+			if (NODE_ENV !== 'production') {
+				console.log(`\n Executing scheduled status check for video: ${videoId}`);
+			}
 			const status = await checkVideoStatus(videoId);
 
-			console.log('\n Status Check Results:');
-			console.log(`Video ID: ${status.videoId}`);
-			console.log(`Title: ${status.title}`);
-			console.log(`Upload Status: ${status.uploadStatus}`);
-			console.log(`Processing Status: ${status.processingStatus || 'N/A'}`);
-			console.log(`Privacy Status: ${status.privacyStatus}`);
+			if (NODE_ENV !== 'production') {
+				console.log('\n Status Check Results:');
+				console.log(`Video ID: ${status.videoId}`);
+				console.log(`Title: ${status.title}`);
+				console.log(`Upload Status: ${status.uploadStatus}`);
+				console.log(`Processing Status: ${status.processingStatus || 'N/A'}`);
+				console.log(`Privacy Status: ${status.privacyStatus}`);
+			}
 			callback(status);
 		} catch (error) {
 			console.error(`Scheduled status check failed for video ${videoId}:`, error.message);
@@ -142,15 +155,15 @@ export const scheduleStatusCheck = (videoId, callback, delayMinutes = 10) => {
 /**
  * Upload video and schedule automatic status check
  * This is a convenience function that combines upload + scheduled check
- * @param {string} filePath - Path to the video file
- * @param {function} callback - Callback function to execute after status check
- * @param {object} metadata - Video metadata
- * @param {number} checkDelayMinutes - Delay before status check (default: 10)
- * @returns {Promise<{videoId: string, title: string, timeoutRef: NodeJS.Timeout}>}
+ * @param { Buffer } videoBuffer - Buffer of the video file
+ * @param { function} callback - Callback function to execute after status check
+ * @param { object } metadata - Video metadata
+ * @param { number } checkDelayMinutes - Delay before status check(default: 10)
+ * @returns { Promise < { videoId: string, title: string, timeoutRef: NodeJS.Timeout } >}
  */
-export const uploadAndScheduleCheck = async (filePath, callback, metadata = {}, checkDelayMinutes = 10) => {
+export const uploadAndScheduleCheck = async (videoBuffer, callback, metadata = {}, checkDelayMinutes = 10) => {
 	try {
-		const uploadResult = await uploadVideo(filePath, metadata);
+		const uploadResult = await uploadVideo(videoBuffer, metadata);
 		const timeoutRef = scheduleStatusCheck(uploadResult.videoId, callback, checkDelayMinutes);
 
 		return {

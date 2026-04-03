@@ -2,6 +2,10 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
+import Cookie from "../../components/Cookie/Cookie";
+import { useSettings } from "../../context/SettingsContext";
+import { Link } from "react-router-dom";
+import Editable from "../../components/Utils/Editable";
 
 const btn =
   "font-inter font-semibold text-sm tracking-wider uppercase rounded-full transition-all duration-300";
@@ -13,20 +17,36 @@ const container = "max-w-7xl mx-auto px-10";
 const h2Style =
   "font-orbitron font-black text-[clamp(36px,6vw,64px)] leading-tight mb-6 text-white";
 
-const stats = [
-  { number: "3,247", labelKey: "phase2_visitors", color: "text-[#10b981]" },
-  { number: "50", labelKey: "phase2_films_selection", color: "text-[#ec4899]" },
-  { number: "120", labelKey: "phase2_countries", color: "text-[#06b6d4]" },
-  { number: "60+", labelKey: "phase2_experts", color: "text-[#a855f7]" },
+let stats = [
+  {
+    number: "3,247",
+    labelKey: "homepage.phase2_visitors",
+    color: "text-[#10b981]",
+  },
+  {
+    number: "50",
+    labelKey: "homepage.phase2_films_selection",
+    color: "text-[#ec4899]",
+  },
+  {
+    number: "120",
+    labelKey: "homepage.phase2_countries",
+    color: "text-[#06b6d4]",
+  },
+  {
+    number: "60+",
+    labelKey: "homepage.phase2_experts",
+    color: "text-[#a855f7]",
+  },
 ];
 
-const films = [
+let films = [
   { title: "PROTOCOL\nALPHA", country: "France" },
   { title: "NEURAL\nDREAM", country: "Belgique" },
   { title: "CYBER\nMARSEILLE", country: "France" },
 ];
 
-const socials = [
+let socials = [
   {
     name: "Instagram",
     handle: "@marsai.festival",
@@ -44,11 +64,12 @@ const socials = [
   },
 ];
 
-const MAPS_URL =
+let MAPS_URL =
   "https://www.google.com/maps/place/École+La+Plateforme_+Marseille+-+Entrée+Sud/@43.3141763,5.3662017,17z";
 
 function HomepagePhase2() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const settings = useSettings();
   const [scrollY, setScrollY] = useState(0);
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
@@ -57,6 +78,12 @@ function HomepagePhase2() {
     seconds: 0,
   });
 
+  // LOAD SETTINGS
+  useEffect(() => {
+    if (settings.phase2_stats) stats = JSON.parse(settings.phase2_stats);
+    if (settings.phase2_socials) socials = JSON.parse(settings.phase2_socials);
+  }, []);
+
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener("scroll", handleScroll);
@@ -64,7 +91,33 @@ function HomepagePhase2() {
   }, []);
 
   useEffect(() => {
-    const target = new Date("2026-06-13T20:00:00").getTime();
+    /* FETCH LES FILMS EN BAS DE LA PAGE */
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          import.meta.env.VITE_API_URL + "/api/videos/?limit=3",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          },
+        );
+        if (!response.ok) throw new Error("Erreur fetch rest videos");
+        const res = await response.json();
+        films = res.data;
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const target = new Date(
+      settings.phase_3_date ? settings.phase_3_date : "2026-06-13T20:00:00",
+    ).getTime();
     const interval = setInterval(() => {
       const d = target - Date.now();
       if (d > 0)
@@ -80,7 +133,12 @@ function HomepagePhase2() {
 
   return (
     <>
+      <meta
+        name="description"
+        content="Bienvenue sur notre page d'accueil, ici vous pourrez commencer l'exploration de notre site présentant le festival MarsAi"
+      />
       <Header />
+      <Cookie />
       <div className="w-full overflow-hidden bg-[#050508]">
         {/* Hero */}
         <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -96,7 +154,8 @@ function HomepagePhase2() {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(236,72,153,0.15)_0%,transparent_50%),radial-gradient(circle_at_70%_50%,rgba(59,130,246,0.15)_0%,transparent_50%)] animate-pulse" />
 
           <div className="relative z-10 text-center px-4">
-            <div className="flex items-center justify-center gap-3 mb-8">
+            {/* COSMIN -> J'ai enlevé le LIVE dans le hero */}
+            {/* <div className="flex items-center justify-center gap-3 mb-8">
               <div className="flex items-center gap-2 px-6 py-3 bg-red-600/20 backdrop-blur-sm border border-red-500/50 rounded-full">
                 <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse" />
                 <span className="text-red-400 font-inter font-bold text-sm tracking-wider uppercase">
@@ -106,7 +165,7 @@ function HomepagePhase2() {
               <div className="text-[#06b6d4] text-xs tracking-[2px] uppercase font-inter">
                 {t("homepage.phase2_location")}
               </div>
-            </div>
+            </div> */}
 
             <h1 className="font-orbitron font-black text-[clamp(60px,12vw,140px)] leading-[0.9] mb-5 tracking-[-2px] uppercase">
               <span className="bg-gradient-to-br from-white to-[#e0e0ff] bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(168,85,247,0.5)]">
@@ -122,36 +181,72 @@ function HomepagePhase2() {
             </h1>
 
             <p className="font-orbitron font-semibold text-[clamp(20px,3vw,36px)] mb-6 text-white">
-              {t("homepage.phase2_event_ongoing")}{" "}
+              {settings.homepage_phase2_event_ongoing ? (
+                <Editable
+                  initialValue={settings.homepage_phase2_event_ongoing}
+                  contentKey={"homepage_phase2_event_ongoing"}
+                  language={i18n.language}
+                />
+              ) : (
+                t("homepage.phase2_event_ongoing")
+              )}{" "}
               <span className="text-[#10b981]">
-                {t("homepage.phase2_event_ongoing_status")}
+                {settings.homepage_phase2_event_ongoing_status ? (
+                  <Editable
+                    initialValue={settings.homepage_phase2_event_ongoing_status}
+                    contentKey={"homepage_phase2_event_ongoing_status"}
+                    language={i18n.language}
+                  />
+                ) : (
+                  t("homepage.phase2_event_ongoing_status")
+                )}
               </span>
             </p>
             <p className="text-[clamp(14px,2vw,18px)] text-[#a0a0b8] mb-3 max-w-3xl mx-auto">
-              {t("homepage.phase2_hero_description")}
+              {settings.homepage_phase2_hero_description ? (
+                <Editable
+                  initialValue={settings.homepage_phase2_hero_description}
+                  contentKey={"homepage_phase2_hero_description"}
+                  language={i18n.language}
+                />
+              ) : (
+                t("homepage.phase2_hero_description")
+              )}
               <br />
-              {t("homepage.phase2_hero_description_2")}
+              {settings.homepage_phase2_hero_description_2 ? (
+                <Editable
+                  initialValue={settings.homepage_phase2_hero_description_2}
+                  contentKey={"homepage_phase2_hero_description_2"}
+                  language={i18n.language}
+                />
+              ) : (
+                t("homepage.phase2_hero_description_2")
+              )}
             </p>
 
             <div className="flex gap-5 justify-center flex-wrap mt-12">
-              <button
+              {/* <button
                 className={`px-9 py-4 bg-gradient-to-br from-[#10b981] to-[#059669] text-white ${btn} ${btnHover} shadow-[0_10px_30px_rgba(16,185,129,0.3)] hover:shadow-[0_15px_40px_rgba(16,185,129,0.5)]`}
               >
                 <span className="flex items-center gap-2">
                   <span className="w-2 h-2 bg-white rounded-full animate-pulse" />
                   {t("homepage.phase2_live_program")}
                 </span>
-              </button>
-              <button
-                className={`px-9 py-4 bg-gradient-to-br from-[#a855f7] to-[#ec4899] text-white ${btn} ${btnHover} shadow-[0_10px_30px_rgba(168,85,247,0.3)] hover:shadow-[0_15px_40px_rgba(168,85,247,0.5)]`}
-              >
-                {t("homepage.phase2_official_selection_btn")}
-              </button>
-              <button
-                className={`px-9 py-4 bg-transparent text-white ${btn} ${btnHover} border-2 border-[#06b6d4] hover:bg-[#06b6d4] hover:shadow-[0_10px_30px_rgba(6,182,212,0.3)]`}
-              >
-                {t("homepage.phase2_practical_info_btn")}
-              </button>
+              </button> */}
+              <Link to="/gallery">
+                <button
+                  className={`px-9 py-4 bg-gradient-to-br from-[#a855f7] to-[#ec4899] text-white ${btn} ${btnHover} shadow-[0_10px_30px_rgba(168,85,247,0.3)] hover:shadow-[0_15px_40px_rgba(168,85,247,0.5)]`}
+                >
+                  {t("homepage.phase2_official_selection_btn")}
+                </button>
+              </Link>
+              <Link to="/faq">
+                <button
+                  className={`px-9 py-4 bg-transparent text-white ${btn} ${btnHover} border-2 border-[#06b6d4] hover:bg-[#06b6d4] hover:shadow-[0_10px_30px_rgba(6,182,212,0.3)]`}
+                >
+                  {t("homepage.phase2_practical_info_btn")}
+                </button>
+              </Link>
             </div>
           </div>
         </section>
@@ -183,28 +278,68 @@ function HomepagePhase2() {
             <div
               className={`${badge} bg-[#ec4899]/20 border border-[#ec4899]/50 text-[#ec4899] mb-8`}
             >
-              {t("homepage.phase2_closing_ceremony")}
+              {settings.homepage_phase2_closing_ceremony ? (
+                <Editable
+                  initialValue={settings.homepage_phase2_closing_ceremony}
+                  contentKey={"homepage_phase2_closing_ceremony"}
+                  language={i18n.language}
+                />
+              ) : (
+                t("homepage.phase2_closing_ceremony")
+              )}
             </div>
             <h2 className="font-orbitron font-black text-[clamp(32px,6vw,56px)] leading-tight mb-6 text-white">
-              {t("homepage.night_title")}{" "}
+              {settings.homepage_night_title ? (
+                <Editable
+                  initialValue={settings.homepage_night_title}
+                  contentKey={"homepage_night_title"}
+                  language={i18n.language}
+                />
+              ) : (
+                t("homepage.night_title")
+              )}{" "}
               <span className="text-[#ec4899]">
-                {t("homepage.night_title_highlight")}
+                {settings.homepage_night_title_highlight ? (
+                  <Editable
+                    initialValue={settings.homepage_night_title_highlight}
+                    contentKey={"homepage_night_title_highlight"}
+                    language={i18n.language}
+                  />
+                ) : (
+                  t("homepage.night_title_highlight")
+                )}
               </span>
             </h2>
             <p className="text-[#a0a0b8] text-lg mb-12 max-w-2xl mx-auto">
-              {t("homepage.phase2_night_description")}
+              {settings.homepage_phase2_night_description ? (
+                <Editable
+                  initialValue={settings.homepage_phase2_night_description}
+                  contentKey={"homepage_phase2_night_description"}
+                  language={i18n.language}
+                />
+              ) : (
+                t("homepage.phase2_night_description")
+              )}
               <br />
               <span className="text-white font-semibold">
-                {t("homepage.phase2_night_date")}
+                {settings.homepage_phase2_night_date ? (
+                  <Editable
+                    initialValue={settings.homepage_phase2_night_date}
+                    contentKey={"homepage_phase2_night_date"}
+                    language={i18n.language}
+                  />
+                ) : (
+                  t("homepage.phase2_night_date")
+                )}
               </span>
             </p>
 
             <div className="grid grid-cols-4 gap-6 max-w-3xl mx-auto mb-10">
               {[
-                { v: timeLeft.days, l: "phase2_days" },
-                { v: timeLeft.hours, l: "phase2_hours" },
-                { v: timeLeft.minutes, l: "phase2_minutes" },
-                { v: timeLeft.seconds, l: "phase2_seconds" },
+                { v: timeLeft.days, l: "homepage.phase2_days" },
+                { v: timeLeft.hours, l: "homepage.phase2_hours" },
+                { v: timeLeft.minutes, l: "homepage.phase2_minutes" },
+                { v: timeLeft.seconds, l: "homepage.phase2_seconds" },
               ].map((x, i) => (
                 <div key={i} className={`${card} p-8 border-[#ec4899]/30`}>
                   <div className="font-orbitron font-black text-6xl text-[#ec4899] mb-2">
@@ -216,12 +351,6 @@ function HomepagePhase2() {
                 </div>
               ))}
             </div>
-
-            <button
-              className={`px-12 py-4 bg-gradient-to-r from-[#ec4899] to-[#a855f7] text-white ${btn} text-base ${btnHover} hover:shadow-[0_20px_50px_rgba(236,72,153,0.6)]`}
-            >
-              {t("homepage.phase2_book_seat")}
-            </button>
           </div>
         </section>
 
@@ -232,19 +361,65 @@ function HomepagePhase2() {
               <div
                 className={`${badge} bg-[#a855f7]/20 border border-[#a855f7]/50 text-[#a855f7] mb-6`}
               >
-                {t("homepage.phase2_finalists")}
+                {settings.homepage_phase2_finalists ? (
+                  <Editable
+                    initialValue={settings.homepage_phase2_finalists}
+                    contentKey={"homepage_phase2_finalists"}
+                    language={i18n.language}
+                  />
+                ) : (
+                  t("homepage.phase2_finalists")
+                )}
               </div>
               <h2 className={h2Style}>
-                {t("homepage.phase2_official_selection")}
+                {settings.homepage_phase2_official_selection ? (
+                  <Editable
+                    initialValue={settings.homepage_phase2_official_selection}
+                    contentKey={"homepage_phase2_official_selection"}
+                    language={i18n.language}
+                  />
+                ) : (
+                  t("homepage.phase2_official_selection")
+                )}
                 <br />
                 <span className="text-[#a855f7] drop-shadow-[0_0_20px_rgba(168,85,247,0.5)]">
-                  {t("homepage.phase2_official_selection_year")}
+                  {settings.homepage_phase2_official_selection_year ? (
+                    <Editable
+                      initialValue={
+                        settings.homepage_phase2_official_selection_year
+                      }
+                      contentKey={"homepage_phase2_official_selection_year"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.phase2_official_selection_year")
+                  )}
                 </span>
               </h2>
               <p className="text-[#a0a0b8] text-lg max-w-3xl mx-auto">
-                {t("homepage.phase2_selection_description")}
+                {settings.homepage_phase2_selection_description ? (
+                  <Editable
+                    initialValue={
+                      settings.homepage_phase2_selection_description
+                    }
+                    contentKey={"homepage_phase2_selection_description"}
+                    language={i18n.language}
+                  />
+                ) : (
+                  t("homepage.phase2_selection_description")
+                )}
                 <br />
-                {t("homepage.phase2_selection_description_2")}
+                {settings.homepage_phase2_selection_description_2 ? (
+                  <Editable
+                    initialValue={
+                      settings.homepage_phase2_selection_description_2
+                    }
+                    contentKey={"homepage_phase2_selection_description_2"}
+                    language={i18n.language}
+                  />
+                ) : (
+                  t("homepage.phase2_selection_description_2")
+                )}
               </p>
             </div>
 
@@ -254,7 +429,11 @@ function HomepagePhase2() {
                   <div className="w-full aspect-video rounded-3xl mb-4 relative overflow-hidden group-hover:shadow-[0_30px_80px_rgba(168,85,247,0.4)] transition-all duration-300 group-hover:scale-[1.02]">
                     <iframe
                       className="w-full h-full rounded-3xl"
-                      src="https://www.youtube.com/embed/GwaRztMaoY0?si=lEsL-3XSi3un1keN"
+                      src={
+                        f.url
+                          ? "https://www.youtube.com/embed/" + f.url
+                          : "https://www.youtube.com/embed/GwaRztMaoY0?si=lEsL-3XSi3un1keN"
+                      }
                       title="Video"
                       frameBorder="0"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -274,11 +453,13 @@ function HomepagePhase2() {
             </div>
 
             <div className="text-center">
-              <button
-                className={`px-10 py-4 bg-gradient-to-r from-[#a855f7] to-[#ec4899] text-white ${btn} ${btnHover} hover:shadow-[0_15px_40px_rgba(168,85,247,0.5)]`}
-              >
-                {t("homepage.phase2_view_50_films")}
-              </button>
+              <Link to="/gallery">
+                <button
+                  className={`px-10 py-4 bg-gradient-to-r from-[#a855f7] to-[#ec4899] text-white ${btn} ${btnHover} hover:shadow-[0_15px_40px_rgba(168,85,247,0.5)]`}
+                >
+                  {t("homepage.phase2_view_50_films")}
+                </button>
+              </Link>
             </div>
           </div>
         </section>
@@ -287,73 +468,271 @@ function HomepagePhase2() {
         <section className="py-32 bg-[#0a0a0f]">
           <div className={container}>
             <h2 className={`${h2Style} text-center mb-16`}>
-              {t("homepage.phase2_practical_info")}
+              {settings.homepage_phase2_practical_info ? (
+                <Editable
+                  initialValue={settings.homepage_phase2_practical_info}
+                  contentKey={"homepage_phase2_practical_info"}
+                  language={i18n.language}
+                />
+              ) : (
+                t("homepage.phase2_practical_info")
+              )}
               <br />
               <span className="text-[#3b82f6] drop-shadow-[0_0_20px_rgba(59,130,246,0.5)]">
-                {t("homepage.phase2_practical_info_2")}
+                {settings.homepage_phase2_practical_info_2 ? (
+                  <Editable
+                    initialValue={settings.homepage_phase2_practical_info_2}
+                    contentKey={"homepage_phase2_practical_info_2"}
+                    language={i18n.language}
+                  />
+                ) : (
+                  t("homepage.phase2_practical_info_2")
+                )}
               </span>
             </h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
               <div className={`${card} p-10 border-white/5`}>
                 <h3 className="font-orbitron font-bold text-2xl mb-6 text-[#3b82f6]">
-                  {t("homepage.phase2_platform")}
+                  {settings.homepage_phase2_platform ? (
+                    <Editable
+                      initialValue={settings.homepage_phase2_platform}
+                      contentKey={"homepage_phase2_platform"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.phase2_platform")
+                  )}
                 </h3>
                 <div className="space-y-4 text-[#a0a0b8]">
-                  {[
-                    "phase2_address",
-                    "phase2_tram",
-                    "phase2_parking",
-                    "phase2_accessibility",
+                  {/*  {[
+                    "homepage.phase2_address",
+                    "homepage.phase2_tram",
+                    "homepage.phase2_parking",
+                    "homepage.phase2_accessibility",
                   ].map((k) => (
                     <p key={k}>{t(k)}</p>
-                  ))}
+                  ))} */}
+                  <p>
+                    {settings.homepage_phase2_address ? (
+                      <Editable
+                        initialValue={settings.homepage_phase2_address}
+                        contentKey={"homepage_phase2_address"}
+                        language={i18n.language}
+                      />
+                    ) : (
+                      t("homepage.phase2_address")
+                    )}
+                  </p>
+                  <p>
+                    {settings.homepage_phase2_tram ? (
+                      <Editable
+                        initialValue={settings.homepage_phase2_tram}
+                        contentKey={"homepage_phase2_tram"}
+                        language={i18n.language}
+                      />
+                    ) : (
+                      t("homepage.phase2_tram")
+                    )}
+                  </p>
+                  <p>
+                    {settings.homepage_phase2_parking ? (
+                      <Editable
+                        initialValue={settings.homepage_phase2_parking}
+                        contentKey={"homepage_phase2_parking"}
+                        language={i18n.language}
+                      />
+                    ) : (
+                      t("homepage.phase2_parking")
+                    )}
+                  </p>
+                  <p>
+                    {settings.homepage_phase2_accessibility ? (
+                      <Editable
+                        initialValue={settings.homepage_phase2_accessibility}
+                        contentKey={"homepage_phase2_accessibility"}
+                        language={i18n.language}
+                      />
+                    ) : (
+                      t("homepage.phase2_accessibility")
+                    )}
+                  </p>
                 </div>
-                <a
-                  href={MAPS_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`mt-6 w-full px-6 py-3 bg-[#3b82f6]/20 border border-[#3b82f6]/50 text-[#3b82f6] ${btn} hover:bg-[#3b82f6] hover:text-white block text-center`}
-                >
-                  {t("homepage.phase2_view_map")}
-                </a>
+                <div className="mt-6 flex flex-col gap-4">
+                  <div className="w-full rounded-3xl overflow-hidden border border-[#3b82f6]/30">
+                    <iframe
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2904.1234567890123!2d5.3662017!3d43.3141763!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12c9c0c6c8c8c8c8%3A0x123456789abcdef!2s%C3%89cole%20La%20Plateforme_%20Marseille%20-%20Entr%C3%A9e%20Sud!5e0!3m2!1sfr!2sfr!4v1234567890123!5m2!1sfr!2sfr"
+                      width="100%"
+                      height="300"
+                      style={{ border: 0 }}
+                      allowFullScreen=""
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      title="La Plateforme Marseille"
+                    />
+                  </div>
+                  <a
+                    href={MAPS_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`w-full px-6 py-3 bg-[#3b82f6]/20 border border-[#3b82f6]/50 text-[#3b82f6] ${btn} hover:bg-[#3b82f6] hover:text-white block text-center`}
+                  >
+                    {t("homepage.phase2_view_map")}
+                  </a>
+                </div>
               </div>
               <div className="space-y-6">
-                {[
+                {/*  {[
                   {
-                    titleKey: "venue_room_1_title",
-                    descKey: "phase2_sugar_hall_desc",
-                    capKey: "phase2_sugar_hall_capacity",
+                    titleKey: "homepage.venue_room_1_title",
+                    descKey: "homepage.phase2_sugar_hall_desc",
+                    capKey: "homepage.phase2_sugar_hall_capacity",
                     color: "text-[#10b981]",
                     bg: `${card} border-white/5`,
                   },
                   {
-                    titleKey: "venue_room_2_title",
-                    descKey: "phase2_plaza_hall_desc",
-                    capKey: "phase2_plaza_hall_capacity",
+                    titleKey: "homepage.venue_room_2_title",
+                    descKey: "homepage.phase2_plaza_hall_desc",
+                    capKey: "homepage.phase2_plaza_hall_capacity",
                     color: "text-[#ec4899]",
                     bg: `${card} border-white/5`,
                   },
                   {
-                    titleKey: "phase2_free_entry",
-                    descKey: "phase2_free_entry_desc",
-                    capKey: "phase2_free_entry_desc_2",
+                    titleKey: "homepage.phase2_free_entry",
+                    descKey: "homepage.phase2_free_entry_desc",
+                    capKey: "homepage.phase2_free_entry_desc_2",
                     color: "text-white",
                     bg: "bg-gradient-to-r from-[#a855f7]/20 to-[#ec4899]/20 rounded-3xl border border-[#a855f7]/30",
                   },
                 ].map((r, i) => (
-                  <div key={i} className={`${r.bg} p-8`}>
+                  <div key={i} className={`${card} border-white/5 `}>
                     <h4
-                      className={`font-orbitron font-bold text-xl mb-3 ${r.color}`}
+                      className={`font-orbitron font-bold text-xl mb-3 text-[#10b981]`}
                     >
-                      {t(r.titleKey)}
+                      {t("homepage.venue_room_1_title")}
                     </h4>
                     <p className="text-sm text-[#a0a0b8] leading-relaxed">
-                      {t(r.descKey)}
+                      {t("homepage.phase2_sugar_hall_desc")}
                       <br />
-                      {t(r.capKey)}
+                      {t("homepage.phase2_sugar_hall_capacity")}
                     </p>
                   </div>
-                ))}
+                ))} */}
+                <div className={`${card} border-white/5 p-8`}>
+                  <h4
+                    className={`font-orbitron font-bold text-xl mb-3 text-[#10b981]`}
+                  >
+                    {settings.homepage_venue_room_1_title ? (
+                      <Editable
+                        initialValue={settings.homepage_venue_room_1_title}
+                        contentKey={"homepage_venue_room_1_title"}
+                        language={i18n.language}
+                      />
+                    ) : (
+                      t("homepage.venue_room_1_title")
+                    )}
+                  </h4>
+                  <p className="text-sm text-[#a0a0b8] leading-relaxed">
+                    {settings.homepage_phase2_sugar_hall_desc ? (
+                      <Editable
+                        initialValue={settings.homepage_phase2_sugar_hall_desc}
+                        contentKey={"homepage_phase2_sugar_hall_desc"}
+                        language={i18n.language}
+                      />
+                    ) : (
+                      t("homepage.phase2_sugar_hall_desc")
+                    )}
+                    <br />
+                    {settings.homepage_phase2_sugar_hall_capacity ? (
+                      <Editable
+                        initialValue={
+                          settings.homepage_phase2_sugar_hall_capacity
+                        }
+                        contentKey={"homepage_phase2_sugar_hall_capacity"}
+                        language={i18n.language}
+                      />
+                    ) : (
+                      t("homepage.phase2_sugar_hall_capacity")
+                    )}
+                  </p>
+                </div>
+                <div className={`${card} border-white/5 p-8`}>
+                  <h4
+                    className={`font-orbitron font-bold text-xl mb-3 text-[#ec4899]`}
+                  >
+                    {settings.homepage_venue_room_2_title ? (
+                      <Editable
+                        initialValue={settings.homepage_venue_room_2_title}
+                        contentKey={"homepage_venue_room_2_title"}
+                        language={i18n.language}
+                      />
+                    ) : (
+                      t("homepage.venue_room_2_title")
+                    )}
+                  </h4>
+                  <p className="text-sm text-[#a0a0b8] leading-relaxed">
+                    {settings.homepage_venue_room_2_title ? (
+                      <Editable
+                        initialValue={settings.homepage_venue_room_2_title}
+                        contentKey={"homepage_venue_room_2_title"}
+                        language={i18n.language}
+                      />
+                    ) : (
+                      t("homepage.phase2_plaza_hall_desc")
+                    )}
+                    <br />
+                    {settings.homepage_phase2_plaza_hall_capacity ? (
+                      <Editable
+                        initialValue={
+                          settings.homepage_phase2_plaza_hall_capacity
+                        }
+                        contentKey={"homepage_phase2_plaza_hall_capacity"}
+                        language={i18n.language}
+                      />
+                    ) : (
+                      t("homepage.phase2_plaza_hall_capacity")
+                    )}
+                  </p>
+                </div>
+                <div
+                  className={`bg-gradient-to-r from-[#a855f7]/20 to-[#ec4899]/20 rounded-3xl border border-[#a855f7]/30 p-8`}
+                >
+                  <h4
+                    className={`font-orbitron font-bold text-xl mb-3 "text-white`}
+                  >
+                    {settings.homepage_phase2_free_entry ? (
+                      <Editable
+                        initialValue={settings.homepage_phase2_free_entry}
+                        contentKey={"homepage_phase2_free_entry"}
+                        language={i18n.language}
+                      />
+                    ) : (
+                      t("homepage.phase2_free_entry")
+                    )}
+                  </h4>
+                  <p className="text-sm text-[#a0a0b8] leading-relaxed">
+                    {settings.homepage_phase2_free_entry_desc ? (
+                      <Editable
+                        initialValue={settings.homepage_phase2_free_entry_desc}
+                        contentKey={"homepage_phase2_free_entry_desc"}
+                        language={i18n.language}
+                      />
+                    ) : (
+                      t("homepage.phase2_free_entry_desc")
+                    )}
+                    <br />
+                    {settings.homepage_phase2_free_entry_desc_2 ? (
+                      <Editable
+                        initialValue={
+                          settings.homepage_phase2_free_entry_desc_2
+                        }
+                        contentKey={"homepage_phase2_free_entry_desc_2"}
+                        language={i18n.language}
+                      />
+                    ) : (
+                      t("homepage.phase2_free_entry_desc_2")
+                    )}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -364,13 +743,37 @@ function HomepagePhase2() {
           <div className={container}>
             <div className="text-center mb-12">
               <h2 className="font-orbitron font-black text-4xl mb-4 text-white">
-                {t("homepage.phase2_follow_live")}{" "}
+                {settings.homepage_phase2_follow_live ? (
+                  <Editable
+                    initialValue={settings.homepage_phase2_follow_live}
+                    contentKey={"homepage_phase2_follow_live"}
+                    language={i18n.language}
+                  />
+                ) : (
+                  t("homepage.phase2_follow_live")
+                )}{" "}
                 <span className="text-[#ec4899]">
-                  {t("homepage.phase2_follow_live_2")}
+                  {settings.homepage_phase2_follow_live_2 ? (
+                    <Editable
+                      initialValue={settings.homepage_phase2_follow_live_2}
+                      contentKey={"homepage_phase2_follow_live_2"}
+                      language={i18n.language}
+                    />
+                  ) : (
+                    t("homepage.phase2_follow_live_2")
+                  )}
                 </span>
               </h2>
               <p className="text-[#a0a0b8]">
-                {t("homepage.phase2_join_conversation")}
+                {settings.homepage_phase2_join_conversation ? (
+                  <Editable
+                    initialValue={settings.homepage_phase2_join_conversation}
+                    contentKey={"homepage_phase2_join_conversation"}
+                    language={i18n.language}
+                  />
+                ) : (
+                  t("homepage.phase2_join_conversation")
+                )}
               </p>
             </div>
             <div className="flex justify-center gap-6 flex-wrap">

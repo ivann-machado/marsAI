@@ -1,27 +1,26 @@
-import { pool } from '../config/db.js';
+import prisma from "../config/prisma.config.ts";
 
 /**
  * Get all content entries from the database.
- * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
- * @returns {Promise<Array>} Array of content rows.
+ * @returns {Promise<Object[]>} Compliance result (array of rows).
  */
-export const getAllContent = async (conn = null) => {
-	const query = `SELECT name, value, updated_at FROM content`;
-	const db = conn || pool;
-	const rows = await db.query(query);
-	return rows;
+export const selectAllContent = async () => {
+	return prisma.content.findMany();
 };
 
 /**
  * Update a content entry by name.
- * @param {string} name - Content name.
- * @param {string} value - New value.
- * @param {import('mariadb').PoolConnection} [conn] - Optional connection for transactions.
- * @returns {Promise<number>} Number of affected rows.
+ * @param {string} name
+ * @param {string} value
+ * @returns {Promise<any>} raw MariaDB-like result for compatibility.
  */
-export const updateContent = async (name, value, conn = null) => {
-	const query = `UPDATE content SET value = ?, updated_at = NOW() WHERE name = ?`;
-	const db = conn || pool;
-	const result = await db.query(query, [value, name]);
-	return result.affectedRows;
+export const updateContent = async (name, value) => {
+	await prisma.content.update({
+		where: { name },
+		data: { value },
+	});
+	return { affectedRows: 1 };
 };
+
+
+
