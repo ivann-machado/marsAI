@@ -313,11 +313,17 @@ function Gallery() {
                   <span className="text-[#a855f7] text-sm font-inter font-semibold uppercase tracking-wider">
                     Film sélectionné • {filmIndex + 1}/{films.length}
                   </span>
-                  <h2 className="font-orbitron font-black text-4xl lg:text-5xl text-white leading-tight">
+                  <h2
+                    className="font-orbitron font-black text-4xl lg:text-5xl text-white leading-tight"
+                    itemprop="name"
+                  >
                     {film.title}
                   </h2>
                   <div className="flex flex-wrap items-center gap-4 text-[#a0a0b8]">
-                    <span className="flex items-center gap-2">
+                    <span
+                      className="flex items-center gap-2"
+                      itemprop="director"
+                    >
                       <svg
                         className="w-5 h-5"
                         fill="none"
