@@ -45,7 +45,10 @@ function AdminRegister() {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ password: password }),
+          body: JSON.stringify({
+            password: password,
+            confirmPassword: passwordConfirm,
+          }),
         },
       );
       if (!response.ok) throw new Error("Erreur fetch JSON");
