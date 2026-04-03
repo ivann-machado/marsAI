@@ -85,7 +85,7 @@ export const inviteAdmin = async (req, res) => {
 				},
 			});
 
-			const inviteLink = `${FRONTEND_URL}/validate/${tokenValue}`;
+			const inviteLink = `${FRONTEND_URL.replace('://', `://admin.`)}/register/${tokenValue}`;
 			const htmlContent = await renderView('emails/inviteAdmin.html', { inviteLink });
 
 			await sendEmail(login, "Invitation Admin MarsAI", htmlContent);
